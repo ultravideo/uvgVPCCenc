@@ -1,0 +1,15 @@
+# Use Kvazaar CI base image which includes the build tools and ffmpeg + hmdec in ${HOME}/bin
+image: ultravideo/kvazaar_ci_base:latest
+
+# Build and test kvazaar
+test-uvgvpcc: &test-template
+  stage: test
+  script:
+    - export PATH="${HOME}/bin:${PATH}"
+    - cmake --preset=CI
+    - cmake --build --preset=CI
+    - ctest --preset=CI
+  artifacts:
+    paths:
+    - _build/CI/src/app/uvgVPCCenc
+    expire_in: 1 week
