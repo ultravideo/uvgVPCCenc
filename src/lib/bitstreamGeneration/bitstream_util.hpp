@@ -34,9 +34,7 @@
 
 #include <cassert>
 #include <cstring>
-
-#include "uvgvpcc/log.hpp"
-#include "uvgvpcc/uvgvpcc.hpp"
+#include <cstdint>
 
 #define BITSTREAM_DEBUG false
 
@@ -104,7 +102,7 @@ uint64_t uvg_bitstream_tell(const bitstream_t *stream);
 void uvg_bitstream_put_ue(bitstream_t *stream, uint32_t code_num);
 
 /* Calculate amount of bits required to represent a number in Exp-Golomb format */
-std::size_t uvg_calculate_ue_len(uint32_t number);
+size_t uvg_calculate_ue_len(uint32_t number);
 
 /* Add rbsp_trailing_bits syntax element, which aligns the bitstream */
 void uvg_bitstream_add_rbsp_trailing_bits(bitstream_t *const stream);

@@ -37,11 +37,11 @@ namespace uvgvpcc_enc {
 
 std::string get_version() { return "@uvgVPCCenc_VERSION@"; }
 
-std::size_t get_version_major() { return @uvgVPCCenc_VERSION_MAJOR@; }
+size_t get_version_major() { return @uvgVPCCenc_VERSION_MAJOR@; }
 
-std::size_t get_version_minor() { return @uvgVPCCenc_VERSION_MINOR@; }
+size_t get_version_minor() { return @uvgVPCCenc_VERSION_MINOR@; }
 
-std::size_t get_version_patch() { return @uvgVPCCenc_VERSION_PATCH@; }
+size_t get_version_patch() { return @uvgVPCCenc_VERSION_PATCH@; }
 
 // std::string get_git_hash() {return "@uvgVPCC_GIT_HASH@";}
 } // namespace uvgvpcc_enc

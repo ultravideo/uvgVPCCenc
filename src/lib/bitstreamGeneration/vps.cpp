@@ -44,13 +44,16 @@
 vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_enc::GOF>& gofUVG) {
     if (paramUVG.occupancyEncoderName=="Kvazaar" &&paramUVG.geometryEncoderName=="Kvazaar" &&paramUVG.attributeEncoderName=="Kvazaar" /*|| paramUVG.useEncoderCommand*/) {
         codec_group_ = 1;  // TMC2 : CODEC_GROUP_HEVC_MAIN10
-    } else if (paramUVG.occupancyEncoderName=="uvg266" &&paramUVG.geometryEncoderName=="uvg266" &&paramUVG.attributeEncoderName=="uvg266") {
+    
+    /**} else if (paramUVG.occupancyEncoderName=="uvg266" &&paramUVG.geometryEncoderName=="uvg266" &&paramUVG.attributeEncoderName=="uvg266") {
         codec_group_ = 3;  // TMC2 : CODEC_GROUP_VVC_MAIN10
+    **/
+    
     } else {
         throw std::runtime_error(
             "Error : unknown ptl_profile_codec_group_idc. This bitstream parameter indicates what codec is used to encode the 2D videos.");
     }
-    std::size_t vps_length_bits = 0;
+    size_t vps_length_bits = 0;
     ptl_ = fill_ptl(vps_length_bits);                // profile_tier_level
     vps_v3c_parameter_set_id_ = gofUVG->gofId % 16;  // The value of vps_v3c_parameter_set_id shall be in the range of 0 to 15
     vps_atlas_count_minus1_ = 0;                     // for atlas count 1
@@ -87,7 +90,7 @@ vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_
         vps_length_bits += 4;
 
         occupancy_information oi;
-        // to do: codec_id same as codec_group_idc?
+        // TODO(lf): codec_id same as codec_group_idc?
         oi.oi_occupancy_codec_id = codec_group_;
         oi.oi_lossy_occupancy_compression_threshold = 0;  // thresholdLossyOM from tmc2-interface
         oi.oi_occupancy_2d_bit_depth_minus1 = 7;
@@ -97,7 +100,7 @@ vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_
 
         geometry_information gi;
         gi.gi_geometry_codec_id = codec_group_;
-        const std::size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
+        const size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
         gi.gi_geometry_2d_bit_depth_minus1 = static_cast<uint8_t>(geometryNominal2dBitdepth - 1);
         gi.gi_geometry_MSB_align_flag = false;
         gi.gi_geometry_3d_coordinates_bit_depth_minus1 =
@@ -111,12 +114,12 @@ vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_
         vps_length_bits += 7;  // ai_attribute_count
         for (uint8_t i = 0; i < ai.ai_attribute_count; i++) {
             ai.ai_attribute_type_id.push_back(0);  // Texture
-            ai.ai_attribute_codec_id.push_back(codec_group_); // to do : here can be implemented different encoder for each maps
+            ai.ai_attribute_codec_id.push_back(codec_group_); // TODO(lf): This can be modified if we want to encode each maps with a different compression standard
             ai.ai_auxiliary_attribute_codec_id.push_back(codec_group_);
             vps_length_bits += 12 + (vps_auxiliary_video_present_flag_.at(k) ? 8 : 0);
 
             ai.ai_attribute_map_absolute_coding_persistence_flag.push_back(false);
-            ai.ai_attribute_dimension_minus1.push_back(2);  // to do: 2 comes from bitstreamGenInterface, why?
+            ai.ai_attribute_dimension_minus1.push_back(2);  // TODO(lf): 2 comes from bitstreamGenInterface, why?
             const uint8_t d = ai.ai_attribute_dimension_minus1.at(i);
             vps_length_bits += (vps_map_count_minus1_.at(k) > 0 ? 1 : 0) + 6;
 
@@ -128,7 +131,7 @@ vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_
             ai.ai_attribute_partition_channels_minus1.push_back({0});
             // Because ai_attribute_dimension_partitions_minus1 == 0, there is no ai_attribute_partition_channels_minus1
             // So vps_length_bits will not increment either
-            ai.ai_attribute_2d_bit_depth_minus1.push_back(7);  // to do: get this from paramUVG?
+            ai.ai_attribute_2d_bit_depth_minus1.push_back(7);  // TODO(lf): get this from paramUVG?
             ai.ai_attribute_MSB_align_flag.push_back(false);
             vps_length_bits += 6;
         }
@@ -163,7 +166,7 @@ bool vps::write_vps(bitstream_t* stream) {
     WRITE_U(stream, ptl_.ptl_toolset_constraints_present_flag, 1, "ptl_toolset_constraints_present_flag");
 
     // profile_toolset_constraints_information
-    // to do: Do we need profile_toolset_constraints_information? Not present from TMC2 interface
+    // TODO(lf): Do we need profile_toolset_constraints_information? Not present from TMC2 interface
 
     WRITE_U(stream, vps_v3c_parameter_set_id_, 4, "vps_v3c_parameter_set_id");
     WRITE_U(stream, 0, 8, "vps_reserved_zero_8bits");
@@ -263,13 +266,13 @@ bool vps::write_vps(bitstream_t* stream) {
     return true;
 }
 
-profile_tier_level vps::fill_ptl(std::size_t& len) const {
+profile_tier_level vps::fill_ptl(size_t& len) const {
     profile_tier_level ptl;
-    ptl.ptl_tier_flag = false;  // to do: Check if 1 (true) should be used instead
+    ptl.ptl_tier_flag = false;  // TODO(lf): Check if 1 (true) should be used instead
     ptl.ptl_profile_codec_group_idc = codec_group_;
-    ptl.ptl_profile_toolset_idc = 1;         // V-PCC Extended, to do: Add V-PCC Basic
-    ptl.ptl_profile_reconstruction_idc = 1;  // Rec0 reconstruction profile, to do: Should this be 255?
-    ptl.ptl_max_decodes_idc = 15;            // to do: 15 comes from tmc2, why? is it correct?
+    ptl.ptl_profile_toolset_idc = 1;         // V-PCC Extended, TODO(lf): Add V-PCC Basic
+    ptl.ptl_profile_reconstruction_idc = 1;  // Rec0 reconstruction profile, TODO(lf): Should this be 255?
+    ptl.ptl_max_decodes_idc = 15;            // TODO(lf): 15 comes from tmc2, why? is it correct?
     ptl.ptl_level_idc = 30;
     ptl.ptl_num_sub_profiles = 0;               // default (0)
     ptl.ptl_extended_sub_profile_flag = false;  // default (false)
@@ -284,7 +287,7 @@ profile_tier_level vps::fill_ptl(std::size_t& len) const {
     ptl.ptc.ptc_no_45degree_projection_patch_constraint_flag = false;
 
     len += 72 + ptl.ptl_num_sub_profiles * (ptl.ptl_extended_sub_profile_flag ? 64 : 32);
-    const std::size_t ptc_len = 40 + (ptl.ptc.ptc_num_reserved_constraint_bytes * 8);
+    const size_t ptc_len = 40 + (ptl.ptc.ptc_num_reserved_constraint_bytes * 8);
     len += (ptl.ptl_toolset_constraints_present_flag ? ptc_len : 0);
 
     return ptl;

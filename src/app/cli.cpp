@@ -32,9 +32,8 @@
 
 #include "cli.hpp"
 
-// NOLINTBEGIN(misc-include-cleaner) // lf : getopt-like headers are not detected by clang
+// NOLINTBEGIN(misc-include-cleaner)
 #include <getopt.h>
-
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
@@ -43,9 +42,7 @@
 #include <span>
 #include <stdexcept>
 #include <string>
-
 #include "uvgvpcc/log.hpp"
-#include "uvgvpcc/uvgvpcc.hpp"
 #include "uvgvpcc/version.hpp"
 
 namespace cli {
@@ -71,7 +68,7 @@ const std::array<struct option, 10> long_options{{{"input", required_argument, n
  * \param file_name    file name to get voxel size from
  * \return voxel_size on success, 0 on fail
  */
-std::size_t select_voxel_size_auto(std::string& file_name) {
+size_t select_voxel_size_auto(std::string& file_name) {
     const std::regex pattern("vox([0-9]+)");
     std::smatch match;
     size_t number = 0;
@@ -89,7 +86,7 @@ std::size_t select_voxel_size_auto(std::string& file_name) {
  * \param file_name    file name to get frame count from
  * \return frame count on success, 0 on fail
  */
-std::size_t select_frame_count_auto(std::string& file_name) {
+size_t select_frame_count_auto(std::string& file_name) {
     const std::regex pattern("([0-9]+)_%");
     std::smatch match;
     int number = 0;
@@ -107,7 +104,7 @@ std::size_t select_frame_count_auto(std::string& file_name) {
  * \param file_name    file name to get frame count from
  * \return start frame on success, 0 on fail
  */
-std::size_t select_start_frame_auto(std::string& file_name) {
+size_t select_start_frame_auto(std::string& file_name) {
     const std::regex pattern("([0-9]+)_[0-9]+_%");
     std::smatch match;
     int number = 0;
@@ -120,7 +117,7 @@ std::size_t select_start_frame_auto(std::string& file_name) {
 }
 }  // anonymous namespace
 
-void opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args) {
+bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args) {
 
     // Parse command line options
     for (optind = 0;;) {
@@ -176,10 +173,10 @@ void opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             opts.loop_input = std::stoi(optarg);
         } else if (name == "version") {
             cli::print_version();
-            exit(EXIT_SUCCESS);
+            return true;
         } else if (name == "help") {
             cli::print_help();
-            exit(EXIT_SUCCESS);
+            return true;
         }
     }
     // Check for extra arguments.
@@ -197,10 +194,11 @@ void opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         opts.inputGeoPrecision = select_voxel_size_auto(opts.inputPath);
         if (opts.inputGeoPrecision == 0) {
             throw std::runtime_error("Input geometry precision is not manually set by the application and it is not detected from the file name. The geometry precision (the library parameter 'geoBitDepthInput', a.k.a voxel size) is a parameter needed by the encoder. It should be set in the application using function 'uvgvpcc_enc::API::setParameter()'.\n");
-        } else {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION",
-                "The input geometry precision is not manually set by the application but it is detected from file name: " + std::to_string(opts.inputGeoPrecision) + ".\n");
         }
+        // else 
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION",
+            "The input geometry precision is not manually set by the application but it is detected from file name: " + std::to_string(opts.inputGeoPrecision) + ".\n");
+    
     }
 
     if (opts.frames == 0) {
@@ -212,14 +210,16 @@ void opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         }
     }
 
-    if (opts.startFrame == std::numeric_limits<std::size_t>::max()) {
+    if (opts.startFrame == std::numeric_limits<size_t>::max()) {
         opts.startFrame = select_start_frame_auto(opts.inputPath);
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION",
                                  "Detected start frame from file name: " + std::to_string(opts.startFrame) + ".\n");
-        if (opts.startFrame == std::numeric_limits<std::size_t>::max()) {
+        if (opts.startFrame == std::numeric_limits<size_t>::max()) {
             throw std::runtime_error("Input error: Frame count is zero");
         }
     }
+
+    return false;
 }
 
 void print_usage(void) {

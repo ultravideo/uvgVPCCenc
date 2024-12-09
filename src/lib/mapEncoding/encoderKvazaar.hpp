@@ -46,10 +46,6 @@ public:
     void configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const ENCODER_TYPE& encoderType) override;
     void encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) override;
 private:
-    // inline void initializeKvazaarApi(kvz_api*& api, kvz_config*& config, const std::size_t& width, const std::size_t& height,
-    //                                                const std::string& preset);  
-
-
     kvz_api* api_;
     kvz_config* config_;
 

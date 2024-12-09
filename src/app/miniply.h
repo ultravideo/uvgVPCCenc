@@ -8,7 +8,7 @@ of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+furnished TODO(lf)so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
@@ -241,7 +241,7 @@ class PLYReader {
     bool which(const char* values[], uint32_t* index);
     bool which_property_type(PLYPropertyType* type);
     bool keyword(const char* kw);
-    bool identifier(char* dest, std::size_t destLen);
+    bool identifier(char* dest, size_t destLen);
 
     template <class T>  // T must be a type compatible with uint32_t.
     bool typed_which(const char* values[], T* index) {
@@ -259,11 +259,11 @@ class PLYReader {
     bool load_fixed_size_element(PLYElement& elem);
     bool load_variable_size_element(PLYElement& elem);
 
-    bool load_ascii_scalar_property(PLYProperty& prop, std::size_t& destIndex);
+    bool load_ascii_scalar_property(PLYProperty& prop, size_t& destIndex);
     bool load_ascii_list_property(PLYProperty& prop);
-    bool load_binary_scalar_property(PLYProperty& prop, std::size_t& destIndex);
+    bool load_binary_scalar_property(PLYProperty& prop, size_t& destIndex);
     bool load_binary_list_property(PLYProperty& prop);
-    bool load_binary_scalar_property_big_endian(PLYProperty& prop, std::size_t& destIndex);
+    bool load_binary_scalar_property_big_endian(PLYProperty& prop, size_t& destIndex);
     bool load_binary_list_property_big_endian(PLYProperty& prop);
 
     bool ascii_value(PLYPropertyType propType, uint8_t value[8]);
@@ -285,7 +285,7 @@ class PLYReader {
     int m_minorVersion = 0;
     std::vector<PLYElement> m_elements;  //!< Element descriptors for this file.
 
-    std::size_t m_currentElement = 0;
+    size_t m_currentElement = 0;
     bool m_elementLoaded = false;
     std::vector<uint8_t> m_elementData;
 

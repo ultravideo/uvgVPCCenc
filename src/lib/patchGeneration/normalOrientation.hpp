@@ -41,6 +41,6 @@ namespace NormalOrientation {
 
 void orientNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
                    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                   const std::vector<std::vector<std::size_t>>& pointsNNList);
+                   const std::vector<std::vector<size_t>>& pointsNNList);
 
 }  // namespace NormalOrientation

@@ -34,6 +34,8 @@
 
 #include <string>
 #include <utility>
+#include <stdexcept>
+#include <vector>
 
 #include "utils/parameters.hpp"
 #include "uvgvpcc/log.hpp"
@@ -44,6 +46,7 @@ namespace {
 
 using Preset = std::vector<std::pair<const char*, const char*>>;
 
+// NOLINTBEGIN(cert-err58-cpp)
 Preset preset_vox9_fast = {
     // ___ General parameters __ //
     {"sizeGOF","16"},
@@ -63,8 +66,8 @@ Preset preset_vox9_fast = {
     {"refineSegmentationIterationCount","3"},
 
     // ___ Patch generation ___ //   (patch segmentation)
-    {"minPointCountPerCC","16"},   // TODO-PRESET: subjective quality and performance only 
-    {"maxPatchSize","608"},    // TODO-PRESET: subjective quality and performance only
+    {"minPointCountPerCC","16"},   // TODO(lf)-PRESET: subjective quality and performance only 
+    {"maxPatchSize","608"},    // TODO(lf)-PRESET: subjective quality and performance only
 
     // ___ Patch packing ___ //
     {"mapWidth","608"},
@@ -73,8 +76,8 @@ Preset preset_vox9_fast = {
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","16"},
     {"occupancyEncodingPreset","ultrafast"}, // (Always lossless) Negligeable impact on both performance and bitrate (Kvazaar)
-    {"geometryEncodingPreset","fast"}, // TODO-PRESET: fast or medium ?
-    {"attributeEncodingPreset","ultrafast"}  // TODO-PRESET: fixed ?
+    {"geometryEncodingPreset","fast"}, // TODO(lf)-PRESET: fast or medium ?
+    {"attributeEncodingPreset","ultrafast"}  // TODO(lf)-PRESET: fixed ?
 };
 
 Preset preset_vox9_slow = {
@@ -82,21 +85,21 @@ Preset preset_vox9_slow = {
     {"sizeGOF","8"},
 
     // ___ Voxelization ___ //       (grid-based segmentation)
-    {"geoBitDepthVoxelized","9"},   // TODO-PRESET: fixed
+    {"geoBitDepthVoxelized","9"},   // TODO(lf)-PRESET: fixed
     
     // ___ Normal computation ___ //
-    {"normalComputationKnnCount","12"}, // TODO-PRESET: fixed    
-    {"normalComputationMaxDiagonalStep","8"}, // TODO-PRESET: relaunch on all sequences all frames    
+    {"normalComputationKnnCount","12"}, // TODO(lf)-PRESET: fixed    
+    {"normalComputationMaxDiagonalStep","8"}, // TODO(lf)-PRESET: relaunch on all sequences all frames    
 
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
-    {"geoBitDepthRefineSegmentation","8"},  // TODO-PRESET: fixed
-    {"refineSegmentationMaxNNVoxelDistanceLUT","9"}, // TODO-PRESET: fixed
-    {"refineSegmentationMaxNNTotalPointCount","256"}, // TODO-PRESET: fixed
-    {"refineSegmentationLambda","3.0"}, // TODO-PRESET : should be tested with iterations
-    {"refineSegmentationIterationCount","15"}, // TODO-PRESET : should be tested with lambda
+    {"geoBitDepthRefineSegmentation","8"},  // TODO(lf)-PRESET: fixed
+    {"refineSegmentationMaxNNVoxelDistanceLUT","9"}, // TODO(lf)-PRESET: fixed
+    {"refineSegmentationMaxNNTotalPointCount","256"}, // TODO(lf)-PRESET: fixed
+    {"refineSegmentationLambda","3.0"}, // TODO(lf)-PRESET : should be tested with iterations
+    {"refineSegmentationIterationCount","15"}, // TODO(lf)-PRESET : should be tested with lambda
 
     // ___ Patch generation ___ //   (patch segmentation)
-    {"minPointCountPerCC","5"}, // TODO-PRESET: fixed
+    {"minPointCountPerCC","5"}, // TODO(lf)-PRESET: fixed
     {"maxPatchSize","608"},
 
     // ___ Patch packing ___ //
@@ -106,8 +109,8 @@ Preset preset_vox9_slow = {
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","8"},
     {"occupancyEncodingPreset","veryslow"},  // (Always lossless) Negligeable impact on both performance and bitrate (Kvazaar)
-    {"geometryEncodingPreset","veryslow"},  // TODO-PRESET: Really useful ?
-    {"attributeEncodingPreset","veryslow"}  // TODO-PRESET: Really useful ?
+    {"geometryEncodingPreset","veryslow"},  // TODO(lf)-PRESET: Really useful ?
+    {"attributeEncodingPreset","veryslow"}  // TODO(lf)-PRESET: Really useful ?
 };
 
 
@@ -242,6 +245,8 @@ Preset preset_vox11_slow = {
     {"geometryEncodingPreset","veryslow"},
     {"attributeEncodingPreset","veryslow"}
 };
+// NOLINTEND(cert-err58-cpp)
+
 
 void setPresetValues(const Preset& preset) {
     for(const auto& pair : preset) {
@@ -256,42 +261,26 @@ void applyPresetCommon(Parameters& param) {
 
     switch (param.geoBitDepthInput) {
         case 9:
-            if(param.presetName == "fast") selectedPreset = preset_vox9_fast;
-            if(param.presetName == "slow") selectedPreset = preset_vox9_slow;
+            if(param.presetName == "fast") {selectedPreset = preset_vox9_fast;}
+            if(param.presetName == "slow") {selectedPreset = preset_vox9_slow;}
             break;
         case 10:
-            if(param.presetName == "fast") selectedPreset = preset_vox10_fast;
-            if(param.presetName == "slow") selectedPreset = preset_vox10_slow;
+            if(param.presetName == "fast") {selectedPreset = preset_vox10_fast;}
+            if(param.presetName == "slow") {selectedPreset = preset_vox10_slow;}
             break;
         case 11:
-            if(param.presetName == "fast") selectedPreset = preset_vox11_fast;
-            if(param.presetName == "slow") selectedPreset = preset_vox11_slow;
-            break;                        
+            if(param.presetName == "fast") {selectedPreset = preset_vox11_fast;}
+            if(param.presetName == "slow") {selectedPreset = preset_vox11_slow;}
+            break; 
+        default:
+            Logger::log(
+                LogLevel::ERROR, "LIBRARY INTERFACE",
+                "In applyPresetCommon(), the geoBitDepthInput correspond to no preset: " + std::to_string(param.geoBitDepthInput) +
+                    ".\n");
+            throw std::runtime_error("uvgVPCC log of type ERROR");
     }
 
-    // if (param.geoBitDepthInput == 9 && param.presetName == "fast") {
-    //     selectedPreset = preset_vox9_fast;
-    // } else if (param.geoBitDepthInput == 9 && param.presetName == "slow") {
-    //     selectedPreset = preset_vox9_slow;
-    // } else if (param.geoBitDepthInput == 10 && param.presetName == "fast") {
-    //     selectedPreset = preset_vox10_fast;
-    // } else if (param.geoBitDepthInput == 10 && param.presetName == "slow") {
-    //     selectedPreset = preset_vox10_slow;
-    // } else if (param.geoBitDepthInput == 11 && param.presetName == "fast") {
-    //     selectedPreset = preset_vox11_fast;
-    // } else if (param.geoBitDepthInput == 11 && param.presetName == "slow") {
-    //     selectedPreset = preset_vox11_slow;
-    // } else {
-    //     Logger::log(
-    //         LogLevel::ERROR, "LIBRARY INTERFACE",
-    //         "Error occurred while parsing library arguments. This preset name '" + param.presetName +
-    //             "' is not recognized or does not exist for an input geometry bit depth of " + std::to_string(param.geoBitDepthInput) +
-    //             ".\nNotice that only two presets are currently available: 'fast' and 'slow'.\nNotice that uvgVPCC has been tested for voxel "
-    //             "9,10 and 11. Other input resolution sizes could be handled, but they are not supported yet.\n");
-    //     throw std::runtime_error("uvgVPCC log of type ERROR");
-    // }
     setPresetValues(selectedPreset);
-
 }
 
 }  // anonymous namespace
@@ -350,4 +339,4 @@ void applyPreset(Parameters& param) {
     }
 }
 
-} // uvgVPCCenc namespace
+} // namespace uvgvpcc_enc

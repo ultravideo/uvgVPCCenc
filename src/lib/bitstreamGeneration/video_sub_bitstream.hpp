@@ -32,17 +32,18 @@
 
 #pragma once
 
-#include "bitstream_util.hpp"
-#include "uvgvpcc/uvgvpcc.hpp"
+#include <cstdint>
+#include <string>
+#include <vector>
 
 struct nal_info {
-    std::size_t location = 0;
-    std::size_t size = 0;
+    size_t location = 0;
+    size_t size = 0;
 };
 
 /* Read data from file filename into vector data */
 bool read(const std::string &filename, std::vector<uint8_t> &data);
-void byteStreamToSampleStream(std::vector<uint8_t> &input_data, std::size_t precision, std::vector<nal_info> &nals,
+void byteStreamToSampleStream(std::vector<uint8_t> &input_data, size_t precision, std::vector<nal_info> &nals,
                               bool emulationPreventionBytes);
 
 // not used currently, this process is now included in byteStreamToSampleStream()

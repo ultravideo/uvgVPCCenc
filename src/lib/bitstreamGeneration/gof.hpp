@@ -42,14 +42,14 @@
 /* Statistics related to a V3C Group Of Frames (GOF) */
 class v3c_gof {
    public:
-    v3c_gof(std::size_t id) {
+    v3c_gof(size_t id) {
         v3c_unit_precision_ = 0;
         gof_id_ = id;
         n_frames_ = 0;
     };
 
     // Used for LD mode
-    void set_n_frames(std::size_t value) { n_frames_ = value; }
+    void set_n_frames(size_t value) { n_frames_ = value; }
 
     // Set the V3C unit precision. If smaller than before, do nothing
     void set_v3c_unit_precision(uint32_t new_precision) {
@@ -73,9 +73,9 @@ class v3c_gof {
                             const std::vector<nal_info> &avd_nals, uvgvpcc_enc::API::v3c_unit_stream *out, bool double_layer);
 
    private:
-    std::size_t gof_id_;
-    std::size_t v3c_unit_precision_;
-    std::size_t n_frames_;                               // N of frames in GOF, used for low-delay mode
+    size_t gof_id_;
+    size_t v3c_unit_precision_;
+    size_t n_frames_;                               // N of frames in GOF, used for low-delay mode
     std::unique_ptr<vps> v3c_vps_sub_;                   // no V3C header
     std::unique_ptr<atlas_context> v3c_ad_unit_;         // incl. V3C header
     std::unique_ptr<std::vector<uint8_t>> v3c_ovd_sub_;  // no V3C header

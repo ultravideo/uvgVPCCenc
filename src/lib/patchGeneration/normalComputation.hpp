@@ -41,14 +41,14 @@ namespace NormalComputation {
 
 void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
                     const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                    const std::vector<std::vector<std::size_t>>& pointsNNList);
+                    const std::vector<std::vector<size_t>>& pointsNNList);
 
 void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<std::size_t>& pointNn, const std::size_t nnCount);
+                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<size_t>& pointNn, const size_t nnCount);
 void diagonalize(const std::vector<uvgvpcc_enc::Vector3<double>>& A, std::vector<uvgvpcc_enc::Vector3<double>>& Q,
                  std::vector<uvgvpcc_enc::Vector3<double>>& D);
 
-void computeCovMat(std::vector<uvgvpcc_enc::Vector3<double>>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const std::size_t nnCount,
-                   const std::vector<std::size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry);
+void computeCovMat(std::vector<uvgvpcc_enc::Vector3<double>>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const size_t nnCount,
+                   const std::vector<size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry);
 
 }  // namespace NormalComputation

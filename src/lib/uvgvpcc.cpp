@@ -51,6 +51,8 @@
 #include <vector>
 #include <algorithm>
 
+
+#include "uvgvpcc/threadqueue.hpp"
 #include "patchPacking/patchPacking.hpp"
 #include "mapEncoding/mapEncoding.hpp"
 #include "mapGeneration/mapGenerationBaseLine.hpp"
@@ -84,7 +86,7 @@ void createDirectory(const std::string &path) {
 }  
 
 struct ThreadHandler {
-    std::size_t gofId;
+    size_t gofId;
     std::shared_ptr<GOF> currentGOF;
     std::shared_ptr<Job> currentGOFInterPackJob;
     std::shared_ptr<Job> currentGOFInitMapGenJob;
@@ -117,21 +119,10 @@ void verifyConfig() {
     if((p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) && (!std::filesystem::exists(p_->intermediateFilesDir) || !std::filesystem::is_directory(p_->intermediateFilesDir)) ) {
         throw std::runtime_error("The given 'intermediateFilesDir': '" +  p_->intermediateFilesDir + "' does not exist or is not a directory.\n");
     }
-    
-    if (p_->occupancyEncoderName=="uvg266" || p_->geometryEncoderName=="uvg266" || p_->attributeEncoderName=="uvg266") {
-        throw std::runtime_error("You choose to use uvg266. However, currently, VTM is not supported by the TMC2 decoder... An error message from TMC2 is displayed: 'VTM Codec not supported'.\n");
-    }
-    if (p_->occupancyEncodingIsLossless && p_->occupancyEncoderName=="uvg266") {
-        throw std::runtime_error("You choose to use uvg266 to encode the occupancy maps. However, currently, uvg266 does not support lossless encoding, meaning that uvg266 can't encode properly the occupancy maps. To have a compliant and decodable bitstream, you can set the occupancy encoding as lossy. However, the resulted decoded point cloud will not be great...\n");
-    }
 
-    if (!p_->occupancyEncodingIsLossless && p_->occupancyEncoderName=="uvg266") {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::WARNING, "VERIFY CONFIG","You choose to use uvg266 to encode the occupancy maps in a lossy way. You will obtain a compliant and decodable bitstream. However, the resulted decoded point cloud will not be great...\n");
-    }
-
-    if ( !((p_->occupancyEncoderName=="uvg266" && p_->geometryEncoderName=="uvg266" && p_->attributeEncoderName=="uvg266") || (p_->occupancyEncoderName=="Kvazaar" && p_->geometryEncoderName=="Kvazaar" && p_->attributeEncoderName=="Kvazaar"))) {
+    if ( !( (p_->occupancyEncoderName=="Kvazaar" && p_->geometryEncoderName=="Kvazaar" && p_->attributeEncoderName=="Kvazaar"))) {
         std::cerr << p_->occupancyEncoderName << " " << p_->geometryEncoderName << " " << p_->attributeEncoderName << std::endl;
-        throw std::runtime_error("Two 2D encoders are currently supported : 'Kvazaar' and 'uvg266'. Here are the values used : occupancy encoder: '" + p_->occupancyEncoderName + "',  geometry encoder: '" + p_->geometryEncoderName + "', attribute encoder: '" + p_->attributeEncoderName + "'. Moreover, you have to use the same 2D encoder for all maps (occupancy, geometry and attribute). This is due to the V3C parameter 'CodecGroupIdc' that operate at GOF level. (lf : Notice that a modification in vps.cpp could solve this issue).");
+        throw std::runtime_error("A single 2D encoder is currently supported : 'Kvazaar'. Here are the values used : occupancy encoder: '" + p_->occupancyEncoderName + "',  geometry encoder: '" + p_->geometryEncoderName + "', attribute encoder: '" + p_->attributeEncoderName + "'. Moreover, you have to use the same 2D encoder for all maps (occupancy, geometry and attribute). This is due to the V3C parameter 'CodecGroupIdc' that operate at GOF level. (Notice that a modification in vps.cpp could solve this issue).");
     }
 
     if (p_->gpaTresholdIoU < 0 && p_->gpaTresholdIoU > 1) {
@@ -154,9 +145,9 @@ void verifyConfig() {
     if (p_->sizeGOP2DEncoding != 8 && p_->sizeGOP2DEncoding != 16) {
         throw std::runtime_error("The parameter 'sizeGOP2DEncoding' has been set to " +
                                  std::to_string(static_cast<int>(p_->sizeGOP2DEncoding)) +
-                                 " which is not a valid. Currently, this parameter is only link to Kvazaar and uvg266. Those encoders accept "
+                                 " which is not a valid. Currently, this parameter is only link to Kvazaar. This encoder accept "
                                  "only a GOP size of 8 or 16. The GOP size is here link to the size of the inter coding pyramid. Lots of "
-                                 "other configurations are possible but they are not yet configurable through uvgVPCC.");
+                                 "other configurations are possible but they are not yet configurable through the uvgVPCC interface, but within the encoderKvazaar.cpp file directly.");
     }
 
     if ( (p_->geometryEncodingMode == "RA" || p_->attributeEncodingMode == "RA") && !p_->interPatchPacking) {
@@ -169,7 +160,7 @@ void verifyConfig() {
         throw std::runtime_error("You choose the format 'YUV400' for at least one of the 2D encoder. Currently, this format is not supported. The V3C bitstream and the TMC2 decoder can't handle YUV400 video.");        
     }
 
-    if (p_->occupancyEncodingIsLossless == 0 && p_->occupancyEncoderName != "uvg266") {
+    if (p_->occupancyEncodingIsLossless == 0) {
         throw std::runtime_error("The occupancy maps should not be encoded in lossy mode. (At least, this is a very dangerous things to try.)");
     }
 
@@ -180,16 +171,13 @@ void verifyConfig() {
     }
 
     if (roundUp(p_->minimumMapHeight, p_->occupancyMapResolution) != p_->minimumMapHeight ||
-        roundUp(p_->minimumMapHeight / p_->occupancyMapResolution, 8) != p_->minimumMapHeight / p_->occupancyMapResolution ||
-        roundUp(p_->minimumMapHeight, p_->cuSizeInPixels) != p_->minimumMapHeight) {
+        roundUp(p_->minimumMapHeight / p_->occupancyMapResolution, 8) != p_->minimumMapHeight / p_->occupancyMapResolution) {
         throw std::runtime_error(
             "To avoid a padding operation in Kvazaar, all the 2D maps (including the occupancy map) need to have width and height being "
-            "multiple of 8.\nMoreover, to avoid condition check during map generation, both map width and map height should be a multiple of "
-            "cuSizeInPixels, that is the size of the CU in pixels. The parameter "
+            "multiple of 8.\nThe parameter "
             "minimumMapHeight is set to: " +
             std::to_string(p_->minimumMapHeight) +
             "\nThe parameter occupancyMapResolution (OM block size) is set to: " + std::to_string(p_->occupancyMapResolution) +
-            "\nThe parameter cuSizeInPixels is set to: " + std::to_string(p_->cuSizeInPixels) +
             "\nMap height is multiple of OM block size ? " +
             ((roundUp(p_->minimumMapHeight, p_->occupancyMapResolution) == p_->minimumMapHeight) ? "YES" : "NO") +
             "\nOccupancy map height is multiple of 8 ? " +
@@ -197,36 +185,29 @@ void verifyConfig() {
               p_->minimumMapHeight / p_->occupancyMapResolution)
                  ? "YES"
                  : "NO") +
-            "\nMap height is multiple of cuSizeInPixels ? " +
-            ((roundUp(p_->minimumMapHeight, p_->cuSizeInPixels) == p_->minimumMapHeight) ? "YES" : "NO") +
+            "\n" +
             "\nNearest possible map height value : " +
             std::to_string(
                 std::max(roundUp(p_->minimumMapHeight, p_->occupancyMapResolution),
-                         std::max(p_->occupancyMapResolution * roundUp(p_->minimumMapHeight / p_->occupancyMapResolution, 8),
-                                  roundUp(p_->minimumMapHeight, p_->cuSizeInPixels)))));
+                         p_->occupancyMapResolution * roundUp(p_->minimumMapHeight / p_->occupancyMapResolution, 8))));
     }
 
     if (roundUp(p_->mapWidth, p_->occupancyMapResolution) != p_->mapWidth ||
-        roundUp(p_->mapWidth / p_->occupancyMapResolution, 8) != p_->mapWidth / p_->occupancyMapResolution ||
-        roundUp(p_->mapWidth, p_->cuSizeInPixels) != p_->mapWidth) {
+        roundUp(p_->mapWidth / p_->occupancyMapResolution, 8) != p_->mapWidth / p_->occupancyMapResolution) {
         throw std::runtime_error(
             "To avoid a padding operation in Kvazaar, all the 2D maps (including the occupancy map) need to have width and height being "
-            "multiple of 8.\nMoreover, to avoid condition check during map generation, the map width should be a multiple of cuSizeInPixels, "
-            "that is the size of the CU in pixels. The parameter "
+            "multiple of 8.\nThe parameter "
             "mapWidth is set to: " +
             std::to_string(p_->mapWidth) +
             "\nThe parameter occupancyMapResolution (OM block size) is set to: " + std::to_string(p_->occupancyMapResolution) +
-            "\nThe parameter cuSizeInPixels is set to: " + std::to_string(p_->cuSizeInPixels) +
             "\nMap width is multiple of OM block size ? " +
             ((roundUp(p_->mapWidth, p_->occupancyMapResolution) == p_->mapWidth) ? "YES" : "NO") +
             "\nOccupancy map width is multiple of 8 ? " +
             ((roundUp(p_->mapWidth / p_->occupancyMapResolution, 8) == p_->mapWidth / p_->occupancyMapResolution) ? "YES"
                                                                                                                                  : "NO") +
-            "\nMap width is multiple of cuSizeInPixels ? " +
-            ((roundUp(p_->mapWidth, p_->cuSizeInPixels) == p_->mapWidth) ? "YES" : "NO") + "\nMap width recommanded value : " +
+            "\nMap width recommanded value : " +
             std::to_string(std::max(roundUp(p_->mapWidth, p_->occupancyMapResolution),
-                                    std::max(roundUp(p_->mapWidth / p_->occupancyMapResolution, 8),
-                                             roundUp(p_->mapWidth, p_->cuSizeInPixels)))));
+                                    roundUp(p_->mapWidth / p_->occupancyMapResolution, 8))));
     }
 
     if(p_->intraFramePeriod != 64) {
@@ -364,7 +345,7 @@ void setMode() {
 
 
 
-// to do check in debug mode for example if rate and occupancyMapResolution are both in the lib command line to do a warning
+// TODO(lf)check in debug mode for example if rate and occupancyMapResolution are both in the lib command line TODO(lf)a warning
 void parseUvgvpccParameters() {
     
     // Special parameters need to be handle first
@@ -451,8 +432,6 @@ void Frame::printInfo() const {
                 "Frame " + std::to_string(frameId) + " :\n" + "\tPath: " + pointCloudPath + "\n" + "\tFrame Number: " +
                     std::to_string(frameNumber) + "\n" + "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
                     "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n" +
-                    // "\tGOF ID: " + std::to_string(gof.lock()->gofId) + "\n" +
-                    // "\tlimitHeightPatchPacking: " + std::to_string(limitHeightPatchPacking) + "\n" +
                     "\tpatchList size: " + std::to_string(patchList.size()) + "\n" + "\tpatchPartition size: " +
                     std::to_string(patchPartition.size()) + "\n" + "\toccupancyMap size: " + std::to_string(occupancyMap.size()) + "\n" +
                     "\tgeometryMapL1 size: " + std::to_string(geometryMapL1.size()) + "\n" + "\tgeometryMapL2 size: " +
@@ -501,7 +480,7 @@ void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
             g_threadHandler.currentGOFInterPackJob =
                 std::make_shared<Job>("GOF " + std::to_string(g_threadHandler.currentGOF->gofId) + " PatchPacking::gofPatchPacking", 3,
                                       PatchPacking::gofPatchPacking, g_threadHandler.currentGOF);
-            // to do : add a new priority level ?
+            // TODO(lf): add a new priority level ?
         }
         g_threadHandler.currentGOFInitMapGenJob =
             std::make_shared<Job>("GOF " + std::to_string(g_threadHandler.currentGOF->gofId) + " MapGeneration::initGOFMapGeneration", 3,

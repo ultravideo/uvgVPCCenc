@@ -8,7 +8,7 @@ of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+furnished TODO(lf)so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all
 copies or substantial portions of the Software.
@@ -502,7 +502,7 @@ bool PLYElement::convert_list_to_fixed_size(uint32_t listPropIdx, uint32_t listS
     // instead. This means we'll avoid allocating in all but the most extreme
     // cases.
     char inlineBuf[256];
-    std::size_t nameBufSize =
+    size_t nameBufSize =
         oldListProp.name.size() + 12;  // the +12 allows space for an '_', a number up to 10 digits long and the terminating null.
     char* nameBuf = inlineBuf;
     if (nameBufSize > sizeof(inlineBuf)) {
@@ -856,7 +856,7 @@ bool PLYReader::extract_properties(const uint32_t propIdxs[], uint32_t numProps,
             // within each row are, then we can do a single memcpy per row.
             const uint8_t* from = m_elementData.data() + elem->properties[propIdxs[0]].offset;
             const uint8_t* end = m_elementData.data() + m_elementData.size();
-            const std::size_t numBytes = expectedOffset - elem->properties[propIdxs[0]].offset;
+            const size_t numBytes = expectedOffset - elem->properties[propIdxs[0]].offset;
             while (from < end) {
                 std::memcpy(to, from, numBytes);
                 from += elem->rowStride;
@@ -867,7 +867,7 @@ bool PLYReader::extract_properties(const uint32_t propIdxs[], uint32_t numProps,
             const uint8_t* row = m_elementData.data();
             const uint8_t* end = m_elementData.data() + m_elementData.size();
             uint8_t* to = reinterpret_cast<uint8_t*>(dest);
-            std::size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
+            size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
             while (row < end) {
                 for (uint32_t i = 0; i < numProps; i++) {
                     uint32_t propIdx = propIdxs[i];
@@ -879,13 +879,13 @@ bool PLYReader::extract_properties(const uint32_t propIdxs[], uint32_t numProps,
             }
         }
     } else {
-        // We will have to do data type conversions on the column values here. We
+        // We will have TODO(lf)data type conversions on the column values here. We
         // cannot simply use memcpy in this case, every column has to be
         // processed separately.
         const uint8_t* row = m_elementData.data();
         const uint8_t* end = m_elementData.data() + m_elementData.size();
         uint8_t* to = reinterpret_cast<uint8_t*>(dest);
-        std::size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
+        size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
         while (row < end) {
             for (uint32_t i = 0; i < numProps; i++) {
                 uint32_t propIdx = propIdxs[i];
@@ -963,7 +963,7 @@ bool PLYReader::extract_properties_with_stride(const uint32_t propIdxs[], uint32
             // within each row are, then we can do a single memcpy per row.
             const uint8_t* from = m_elementData.data() + elem->properties[propIdxs[0]].offset;
             const uint8_t* end = m_elementData.data() + m_elementData.size();
-            const std::size_t numBytes = expectedOffset - elem->properties[propIdxs[0]].offset;
+            const size_t numBytes = expectedOffset - elem->properties[propIdxs[0]].offset;
             while (from < end) {
                 std::memcpy(to, from, numBytes);
                 from += elem->rowStride;
@@ -974,8 +974,8 @@ bool PLYReader::extract_properties_with_stride(const uint32_t propIdxs[], uint32
             const uint8_t* row = m_elementData.data();
             const uint8_t* end = m_elementData.data() + m_elementData.size();
             uint8_t* to = reinterpret_cast<uint8_t*>(dest);
-            const std::size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
-            const std::size_t colPadding = destStride - minDestStride;
+            const size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
+            const size_t colPadding = destStride - minDestStride;
             while (row < end) {
                 for (uint32_t i = 0; i < numProps; i++) {
                     uint32_t propIdx = propIdxs[i];
@@ -988,14 +988,14 @@ bool PLYReader::extract_properties_with_stride(const uint32_t propIdxs[], uint32
             }
         }
     } else {
-        // We will have to do data type conversions on the column values here. We
+        // We will have TODO(lf)data type conversions on the column values here. We
         // cannot simply use memcpy in this case, every column has to be
         // processed separately.
         const uint8_t* row = m_elementData.data();
         const uint8_t* end = m_elementData.data() + m_elementData.size();
         uint8_t* to = reinterpret_cast<uint8_t*>(dest);
-        std::size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
-        std::size_t colPadding = destStride - minDestStride;
+        size_t colBytes = kPLYPropertySize[uint32_t(destType)];  // size of an output column in bytes.
+        size_t colPadding = destStride - minDestStride;
         while (row < end) {
             for (uint32_t i = 0; i < numProps; i++) {
                 uint32_t propIdx = propIdxs[i];
@@ -1048,8 +1048,8 @@ bool PLYReader::extract_list_property(uint32_t propIdx, PLYPropertyType destType
         const uint8_t* from = prop.listData.data();
         const uint8_t* end = prop.listData.data() + prop.listData.size();
         uint8_t* to = reinterpret_cast<uint8_t*>(dest);
-        const std::size_t toBytes = kPLYPropertySize[uint32_t(destType)];
-        const std::size_t fromBytes = kPLYPropertySize[uint32_t(prop.type)];
+        const size_t toBytes = kPLYPropertySize[uint32_t(destType)];
+        const size_t fromBytes = kPLYPropertySize[uint32_t(prop.type)];
         while (from < end) {
             copy_and_convert(to, destType, from, prop.type);
             to += toBytes;
@@ -1107,8 +1107,8 @@ bool PLYReader::extract_triangles(uint32_t propIdx, const float pos[], uint32_t 
     bool convertSrc = !compatible_types(elem->properties[propIdx].type, PLYPropertyType::Int);
     bool convertDst = !compatible_types(PLYPropertyType::Int, destType);
 
-    std::size_t srcValBytes = kPLYPropertySize[uint32_t(prop.type)];
-    std::size_t destValBytes = kPLYPropertySize[uint32_t(destType)];
+    size_t srcValBytes = kPLYPropertySize[uint32_t(prop.type)];
+    size_t destValBytes = kPLYPropertySize[uint32_t(destType)];
 
     if (convertSrc && convertDst) {
         std::vector<int> faceIndices, triIndices;
@@ -1215,7 +1215,7 @@ bool PLYReader::refill_buffer() {
         m_buf[kPLYReadBufferSize] = '\0';
         m_bufEnd = m_buf + kPLYReadBufferSize;
     }
-    std::size_t keep = static_cast<std::size_t>(m_bufEnd - m_pos);
+    size_t keep = static_cast<size_t>(m_bufEnd - m_pos);
     if (keep > 0 && m_pos > m_buf) {
         std::memmove(m_buf, m_pos, sizeof(char) * keep);
         m_bufOffset += static_cast<int64_t>(m_pos - m_buf);
@@ -1224,7 +1224,7 @@ bool PLYReader::refill_buffer() {
     m_pos = m_buf;
 
     // Fill the remaining space in the buffer with data from the file.
-    std::size_t fetched = fread(m_buf + keep, sizeof(char), kPLYReadBufferSize - keep, m_f) + keep;
+    size_t fetched = fread(m_buf + keep, sizeof(char), kPLYReadBufferSize - keep, m_f) + keep;
     m_atEOF = fetched < kPLYReadBufferSize;
     m_bufEnd = m_buf + fetched;
 
@@ -1340,7 +1340,7 @@ bool PLYReader::which_property_type(PLYPropertyType* type) {
 
 bool PLYReader::keyword(const char* kw) { return match(kw) && !is_keyword_part(*m_end); }
 
-bool PLYReader::identifier(char* dest, std::size_t destLen) {
+bool PLYReader::identifier(char* dest, size_t destLen) {
     m_end = m_pos;
     if (!is_keyword_start(*m_end) || destLen == 0) {
         return false;
@@ -1349,7 +1349,7 @@ bool PLYReader::identifier(char* dest, std::size_t destLen) {
         ++m_end;
     } while (is_keyword_part(*m_end));
 
-    std::size_t len = static_cast<std::size_t>(m_end - m_pos);
+    size_t len = static_cast<size_t>(m_end - m_pos);
     if (len >= destLen) {
         return false;  // identifier too large for dest!
     }
@@ -1425,12 +1425,12 @@ bool PLYReader::parse_property(std::vector<PLYProperty>& properties) {
 }
 
 bool PLYReader::load_fixed_size_element(PLYElement& elem) {
-    std::size_t numBytes = static_cast<std::size_t>(elem.count) * elem.rowStride;
+    size_t numBytes = static_cast<size_t>(elem.count) * elem.rowStride;
 
     m_elementData.resize(numBytes);
 
     if (m_fileType == PLYFileType::ASCII) {
-        std::size_t back = 0;
+        size_t back = 0;
 
         for (uint32_t row = 0; row < elem.count; row++) {
             for (PLYProperty& prop : elem.properties) {
@@ -1445,9 +1445,9 @@ bool PLYReader::load_fixed_size_element(PLYElement& elem) {
         uint8_t* dst = m_elementData.data();
         uint8_t* dstEnd = dst + numBytes;
         while (dst < dstEnd) {
-            std::size_t bytesAvailable = static_cast<std::size_t>(m_bufEnd - m_pos);
+            size_t bytesAvailable = static_cast<size_t>(m_bufEnd - m_pos);
             if (dst + bytesAvailable > dstEnd) {
-                bytesAvailable = static_cast<std::size_t>(dstEnd - dst);
+                bytesAvailable = static_cast<size_t>(dstEnd - dst);
             }
             std::memcpy(dst, m_pos, bytesAvailable);
             m_pos += bytesAvailable;
@@ -1463,12 +1463,12 @@ bool PLYReader::load_fixed_size_element(PLYElement& elem) {
         }
 
         // We assume the CPU is little endian, so if the file is big-endian we
-        // need to do an endianness swap on every data item in the block.
+        // need TODO(lf)an endianness swap on every data item in the block.
         if (m_fileType == PLYFileType::BinaryBigEndian) {
             uint8_t* data = m_elementData.data();
             for (uint32_t row = 0; row < elem.count; row++) {
                 for (PLYProperty& prop : elem.properties) {
-                    std::size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
+                    size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
                     switch (numBytes) {
                         case 2:
                             endian_swap_2(data);
@@ -1493,7 +1493,7 @@ bool PLYReader::load_fixed_size_element(PLYElement& elem) {
 }
 
 bool PLYReader::load_variable_size_element(PLYElement& elem) {
-    m_elementData.resize(static_cast<std::size_t>(elem.count) * elem.rowStride);
+    m_elementData.resize(static_cast<size_t>(elem.count) * elem.rowStride);
 
     // Preallocate enough space for each row in the property to contain three
     // items. This is based on the assumptions that (a) the most common use for
@@ -1507,7 +1507,7 @@ bool PLYReader::load_variable_size_element(PLYElement& elem) {
     }
 
     if (m_fileType == PLYFileType::Binary) {
-        std::size_t back = 0;
+        size_t back = 0;
         for (uint32_t row = 0; row < elem.count; row++) {
             for (PLYProperty& prop : elem.properties) {
                 if (prop.countType == PLYPropertyType::None) {
@@ -1518,7 +1518,7 @@ bool PLYReader::load_variable_size_element(PLYElement& elem) {
             }
         }
     } else if (m_fileType == PLYFileType::ASCII) {
-        std::size_t back = 0;
+        size_t back = 0;
         for (uint32_t row = 0; row < elem.count; row++) {
             for (PLYProperty& prop : elem.properties) {
                 if (prop.countType == PLYPropertyType::None) {
@@ -1530,7 +1530,7 @@ bool PLYReader::load_variable_size_element(PLYElement& elem) {
             next_line();
         }
     } else {  // m_fileType == PLYFileType::BinaryBigEndian
-        std::size_t back = 0;
+        size_t back = 0;
         for (uint32_t row = 0; row < elem.count; row++) {
             for (PLYProperty& prop : elem.properties) {
                 if (prop.countType == PLYPropertyType::None) {
@@ -1546,13 +1546,13 @@ bool PLYReader::load_variable_size_element(PLYElement& elem) {
     return true;
 }
 
-bool PLYReader::load_ascii_scalar_property(PLYProperty& prop, std::size_t& destIndex) {
+bool PLYReader::load_ascii_scalar_property(PLYProperty& prop, size_t& destIndex) {
     uint8_t value[8];
     if (!ascii_value(prop.type, value)) {
         return false;
     }
 
-    std::size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
+    size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
     std::memcpy(m_elementData.data() + destIndex, value, numBytes);
     destIndex += numBytes;
     return true;
@@ -1565,11 +1565,11 @@ bool PLYReader::load_ascii_list_property(PLYProperty& prop) {
         return false;
     }
 
-    const std::size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
+    const size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
 
-    std::size_t back = prop.listData.size();
+    size_t back = prop.listData.size();
     prop.rowCount.push_back(static_cast<uint32_t>(count));
-    prop.listData.resize(back + numBytes * std::size_t(count));
+    prop.listData.resize(back + numBytes * size_t(count));
 
     for (uint32_t i = 0; i < uint32_t(count); i++) {
         if (!ascii_value(prop.type, prop.listData.data() + back)) {
@@ -1582,8 +1582,8 @@ bool PLYReader::load_ascii_list_property(PLYProperty& prop) {
     return true;
 }
 
-bool PLYReader::load_binary_scalar_property(PLYProperty& prop, std::size_t& destIndex) {
-    std::size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
+bool PLYReader::load_binary_scalar_property(PLYProperty& prop, size_t& destIndex) {
+    size_t numBytes = kPLYPropertySize[uint32_t(prop.type)];
     if (m_pos + numBytes > m_bufEnd) {
         if (!refill_buffer() || m_pos + numBytes > m_bufEnd) {
             m_valid = false;
@@ -1598,7 +1598,7 @@ bool PLYReader::load_binary_scalar_property(PLYProperty& prop, std::size_t& dest
 }
 
 bool PLYReader::load_binary_list_property(PLYProperty& prop) {
-    std::size_t countBytes = kPLYPropertySize[uint32_t(prop.countType)];
+    size_t countBytes = kPLYPropertySize[uint32_t(prop.countType)];
     if (m_pos + countBytes > m_bufEnd) {
         if (!refill_buffer() || m_pos + countBytes > m_bufEnd) {
             m_valid = false;
@@ -1617,14 +1617,14 @@ bool PLYReader::load_binary_list_property(PLYProperty& prop) {
     m_pos += countBytes;
     m_end = m_pos;
 
-    const std::size_t listBytes = kPLYPropertySize[uint32_t(prop.type)] * uint32_t(count);
+    const size_t listBytes = kPLYPropertySize[uint32_t(prop.type)] * uint32_t(count);
     if (m_pos + listBytes > m_bufEnd) {
         if (!refill_buffer() || m_pos + listBytes > m_bufEnd) {
             m_valid = false;
             return false;
         }
     }
-    std::size_t back = prop.listData.size();
+    size_t back = prop.listData.size();
     prop.rowCount.push_back(static_cast<uint32_t>(count));
     prop.listData.resize(back + listBytes);
     std::memcpy(prop.listData.data() + back, m_pos, listBytes);
@@ -1634,8 +1634,8 @@ bool PLYReader::load_binary_list_property(PLYProperty& prop) {
     return true;
 }
 
-bool PLYReader::load_binary_scalar_property_big_endian(PLYProperty& prop, std::size_t& destIndex) {
-    std::size_t startIndex = destIndex;
+bool PLYReader::load_binary_scalar_property_big_endian(PLYProperty& prop, size_t& destIndex) {
+    size_t startIndex = destIndex;
     if (load_binary_scalar_property(prop, destIndex)) {
         endian_swap(m_elementData.data() + startIndex, prop.type);
         return true;
@@ -1645,7 +1645,7 @@ bool PLYReader::load_binary_scalar_property_big_endian(PLYProperty& prop, std::s
 }
 
 bool PLYReader::load_binary_list_property_big_endian(PLYProperty& prop) {
-    std::size_t countBytes = kPLYPropertySize[uint32_t(prop.countType)];
+    size_t countBytes = kPLYPropertySize[uint32_t(prop.countType)];
     if (m_pos + countBytes > m_bufEnd) {
         if (!refill_buffer() || m_pos + countBytes > m_bufEnd) {
             m_valid = false;
@@ -1667,15 +1667,15 @@ bool PLYReader::load_binary_list_property_big_endian(PLYProperty& prop) {
     m_pos += countBytes;
     m_end = m_pos;
 
-    const std::size_t typeBytes = kPLYPropertySize[uint32_t(prop.type)];
-    const std::size_t listBytes = typeBytes * uint32_t(count);
+    const size_t typeBytes = kPLYPropertySize[uint32_t(prop.type)];
+    const size_t listBytes = typeBytes * uint32_t(count);
     if (m_pos + listBytes > m_bufEnd) {
         if (!refill_buffer() || m_pos + listBytes > m_bufEnd) {
             m_valid = false;
             return false;
         }
     }
-    std::size_t back = prop.listData.size();
+    size_t back = prop.listData.size();
     prop.rowCount.push_back(static_cast<uint32_t>(count));
     prop.listData.resize(back + listBytes);
 

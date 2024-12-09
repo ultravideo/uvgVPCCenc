@@ -32,7 +32,6 @@
 
 #pragma once
 
-#include <limits>
 #include <span>
 
 #include "uvgvpcc/uvgvpcc.hpp"
@@ -71,16 +70,16 @@ class PatchPacking {
    private:
     
 
-    static bool findPatchLocation(const std::size_t& occupancyMapHeight, const std::size_t& occupancyMapWidth,
-                                  std::size_t& maxPatchHeightInOccBlk, const std::vector<uint8_t>& occupancyMap,
+    static bool findPatchLocation(const size_t& occupancyMapHeight, const size_t& occupancyMapWidth,
+                                  size_t& maxPatchHeightInOccBlk, const std::vector<uint8_t>& occupancyMap,
                                   uvgvpcc_enc::Patch& patch);
-    static bool checkLocation(const std::size_t& occupancyMapHeight, const std::size_t& occupancyMapWidth,
-                              const std::vector<uint8_t>& occupancyMap, const std::size_t& posOMu, const std::size_t& posOMv,
-                              const std::size_t& patchWidth, const std::size_t& patchHeight, std::size_t& maxPatchHeightInOccBlk,
+    static bool checkLocation(const size_t& occupancyMapHeight, const size_t& occupancyMapWidth,
+                              const std::vector<uint8_t>& occupancyMap, const size_t& posOMu, const size_t& posOMv,
+                              const size_t& patchWidth, const size_t& patchHeight, size_t& maxPatchHeightInOccBlk,
                               uvgvpcc_enc::Patch& patch);
 
-    static bool checkFitPatch(const std::size_t& patchPosX, const std::size_t& patchPosY, const std::size_t& patchWidth,
-                              const std::size_t& patchHeight, const std::size_t& occupancyMapWidth, const std::size_t& occupancyMapHeight,
+    static bool checkFitPatch(const size_t& patchPosX, const size_t& patchPosY, const size_t& patchWidth,
+                              const size_t& patchHeight, const size_t& occupancyMapWidth, const size_t& occupancyMapHeight,
                               const std::vector<uint8_t>& occupancyMap);
 
     static void patchMatchingBetweenTwoFrames(const std::shared_ptr<uvgvpcc_enc::Frame>& currentFrame,

@@ -44,28 +44,27 @@ class PatchSegmentation {
    public:
     PatchSegmentation();
 
-    static void patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<std::size_t>& pointsPPIs);
-    static void createConnectedComponentsLUT(std::vector<std::vector<std::size_t>>& connectedComponents, std::vector<bool>& flags,
-                                             const std::vector<std::size_t>& rawPoints, const std::vector<std::size_t>& pointsPPIs,
-                                             std::unordered_map<std::size_t, std::size_t>& nnPropagationMapFlagTrue,
+    static void patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs);
+    static void createConnectedComponentsLUT(std::vector<std::vector<size_t>>& connectedComponents, std::vector<bool>& flags,
+                                             const std::vector<size_t>& rawPoints, const std::vector<size_t>& pointsPPIs,
+                                             std::unordered_map<size_t, size_t>& nnPropagationMapFlagTrue,
                                              const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry);
-    static void patchSplitting(std::vector<std::size_t>& connectedComponent, uvgvpcc_enc::Patch& patch,
+    static void patchSplitting(std::vector<size_t>& connectedComponent, uvgvpcc_enc::Patch& patch,
                                const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry);
-    static void computePatchBoundingBox(uvgvpcc_enc::Patch& patch, const std::vector<std::size_t>& connectedComponent,
+    static void computePatchBoundingBox(uvgvpcc_enc::Patch& patch, const std::vector<size_t>& connectedComponent,
                                         const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry);
-    static void computePatchDepthL1(uvgvpcc_enc::Patch& patch, const std::vector<std::size_t>& connectedComponent,
-                                    std::vector<std::size_t>& patchPartition,
+    static void computePatchDepthL1(uvgvpcc_enc::Patch& patch, const std::vector<size_t>& connectedComponent,
+                                    std::vector<size_t>& patchPartition,
                                     const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const bool isProjectionMode0);
-    static void computePatchDepthL2(uvgvpcc_enc::Patch& patch, const std::vector<std::size_t>& connectedComponent,
+    static void computePatchDepthL2(uvgvpcc_enc::Patch& patch, const std::vector<size_t>& connectedComponent,
                                     const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const bool isProjectionMode0);
     static void filterDepth(uvgvpcc_enc::Patch& patch, const bool isProjectionMode0);
-    static void resampledPointcloudLUT(std::unordered_set<std::size_t>& resamplePointSet, uvgvpcc_enc::Patch& patch);  // to do const patch ?
+    static void resampledPointcloudLUT(std::unordered_set<size_t>& resamplePointSet, uvgvpcc_enc::Patch& patch);  // TODO(lf)const patch ?
 
     static void computeAdditionalPatchInfo(uvgvpcc_enc::Patch& patch);
-    static void refillRawPointsLUT(const std::unordered_set<std::size_t>& resamplePointSet, std::vector<std::size_t>& rawPoints,
-                                   const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const std::size_t& pointCount,
-                                   std::vector<bool>& flags, std::unordered_map<std::size_t, std::size_t>& nnPropagationMapFlagTrue);
+    static void refillRawPointsLUT(const std::unordered_set<size_t>& resamplePointSet, std::vector<size_t>& rawPoints,
+                                   const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const size_t& pointCount,
+                                   std::vector<bool>& flags, std::unordered_map<size_t, size_t>& nnPropagationMapFlagTrue);
 
-   private:
     
 };

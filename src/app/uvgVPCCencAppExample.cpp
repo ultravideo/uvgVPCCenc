@@ -38,6 +38,7 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
+#include <sstream>
 #include <iterator>
 #include <memory>
 #include <regex>
@@ -55,7 +56,6 @@
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
-enum : std::uint16_t { MAX_PATH_SIZE = 4096, MAX_PLY_LINE_SIZE = 256 };
 
 namespace {
 
@@ -74,28 +74,22 @@ struct input_handler_args {
         : opts(opts), frame_in(std::move(frame)), retval(retval) {}
 };
 
-// #define RETVAL_RUNNING 0
-// #define RETVAL_FAILURE 1
-// #define RETVAL_EOF 2
-
 enum : std::uint8_t { RETVAL_RUNNING, RETVAL_FAILURE, RETVAL_EOF };
 
-const std::size_t FORCED_V3C_SIZE_PRECISION = 5;  // Should be enough to hold any V3C unit sizes
+const size_t MAX_PATH_SIZE = 4096;
+const size_t FORCED_V3C_SIZE_PRECISION = 5;  // Should be enough to hold any V3C unit sizes
 
 /* This function is used to write a number (V3C unit size) to a field of size len */
-void create_bytes(uint64_t value, char* dst, std::size_t len) {
+void create_bytes(uint64_t value, char* dst, size_t len) {
     const uint64_t mask = 0xFF;
-    for (std::size_t i = 0; i < len; ++i) {
+    for (size_t i = 0; i < len; ++i) {
         *std::next(dst, static_cast<std::ptrdiff_t>(len - 1U - i)) = static_cast<char>((value >> (8 * i)) & mask);
         // dst[len - 1 - i] = static_cast<uint8_t>((value >> (8 * i)) & mask);
     }
 }
 
 void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
-    // Our lib takes only unsigned geo ply //
-
-    // To do : At the moment, two passes are necessary to extract all information. One pass for xyz and one pass for rgb. Only one pass should
-    // be necessary.
+    // uvgVPCCenc currently support only geometry of type unsigned int
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "APPLICATION",
                              "Loading frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + "\n");
     miniply::PLYReader reader(frame->pointCloudPath.c_str());
@@ -135,7 +129,7 @@ void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
                                  frame->pointCloudPath + ")");
     }
 
-    const std::size_t vertexCount = reader.element()->count;
+    const size_t vertexCount = reader.element()->count;
     frame->pointsGeometry.resize(vertexCount);
     frame->pointsAttribute.resize(vertexCount);
 
@@ -146,8 +140,8 @@ void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
 
 void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     const cli::opts_t& appParameters = *args->opts;
-    std::size_t frameId = 0;
-    const std::size_t frameLimit = appParameters.frames * appParameters.loop_input;
+    size_t frameId = 0;
+    const size_t frameLimit = appParameters.frames * appParameters.loop_input;
     bool run = true;
     // Producer thread that reads input frames.
     while (run) {
@@ -195,7 +189,6 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         throw std::runtime_error("Bitstream writing : Could not open output file " + output_path);
     }
     const char v3c_sample_stream_header = static_cast<char>((FORCED_V3C_SIZE_PRECISION - 1U) << 5U);
-    // file.write(reinterpret_cast<const char*>(&v3c_sample_stream_header), 1);
     file.write(&v3c_sample_stream_header, 1);
 
     while (true) {
@@ -209,14 +202,13 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         }
         if (chunk.data != nullptr) {
             std::ptrdiff_t ptr = 0;  // Keep track of ptr in the V3C unit stream
-            for (uint64_t current_size : chunk.v3c_unit_sizes) {
+            for (const uint64_t current_size : chunk.v3c_unit_sizes) {
                 // Create and write the V3C unit size to file
                 std::array<char, FORCED_V3C_SIZE_PRECISION> size_field{};
                 create_bytes(current_size, size_field.data(), FORCED_V3C_SIZE_PRECISION);
                 file.write(size_field.data(), static_cast<std::streamsize>(FORCED_V3C_SIZE_PRECISION));
 
                 // Write the V3C unit to file
-
                 // NOLINTNEXTLINE(concurrency-mt-unsafe)
                 file.write(std::next(chunk.data.get(), ptr), static_cast<std::streamsize>(current_size));
                 ptr += static_cast<std::ptrdiff_t>(current_size);
@@ -225,11 +217,6 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "APPLICATION",
                                  "Wrote V3C chunk to file, size " + std::to_string(chunk.len) + " bytes.\n");
-
-        // lf : next line avoid a memory leak.
-        // delete[] chunks->v3c_chunks.front().data;
-        // gsl::owner<uint8_t*> data_ptr = chunks->v3c_chunks.front().data;
-        // delete[] data_ptr;
 
         chunks->v3c_chunks.pop();
         chunks->io_mutex.unlock();
@@ -242,7 +229,7 @@ void setParameters(const std::string& parametersCommand) {
     std::string segment;
     std::stringstream ss(parametersCommand);
     while (std::getline(ss, segment, ',')) {
-        if (segment.empty()) continue;  // Skip empty segments (e.g., trailing comma)
+        if (segment.empty()) {continue;}  // Skip empty segments (e.g., trailing comma)
 
         // Check if the segment matches the "parameterName=parameterValue" pair pattern
         std::smatch match;
@@ -250,7 +237,12 @@ void setParameters(const std::string& parametersCommand) {
             uvgvpcc_enc::API::setParameter(match[1],match[2]);
         } else {
             // If the regex does not match, the format is incorrect
-            throw std::runtime_error("Invalid format detected here: '" + segment + "'. Here is the expected format: 'parameterName=parameterValue'.\nThe full parameters command: " + parametersCommand + "\n");
+            std::string errorMessage = "Invalid format detected here: '";
+            errorMessage += segment;
+            errorMessage += "'. Here is the expected format: 'parameterName=parameterValue'.\nThe full parameters command: ";
+            errorMessage += parametersCommand;
+            errorMessage += "\n";
+            throw std::runtime_error(errorMessage);
         }
     }
 }
@@ -259,15 +251,14 @@ void setParameters(const std::string& parametersCommand) {
 
 int main(const int argc, const char* const argv[]) {
 
-    // to do : detect voxel resolion in filename, and ask for it if necessary 
+    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION", "uvgVPCCenc application starts.\n");
 
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION", "uvgVPCC application starts.\n");
-
-    cli::opts_t appParameters;
 
     // Parse application parameters //
+    cli::opts_t appParameters;
+    bool exitOnParse = false;
     try {
-        cli::opts_parse(appParameters, argc, std::span<const char* const>(argv, argc));
+        exitOnParse = cli::opts_parse(appParameters, argc, std::span<const char* const>(argv, argc));
     } catch (const std::exception& e) {
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "APPLICATION",
                                  "An exception was caught during the parsing of the application parameters.\n");
@@ -275,14 +266,21 @@ int main(const int argc, const char* const argv[]) {
         cli::print_usage();
         return EXIT_FAILURE;
     }
+    if(exitOnParse) {return EXIT_SUCCESS;}
 
     // The only way for the application to change the state of the encoder, that is to interact with its parameters, is via the uvgvpcc_enc::API::setParameter function.
-    setParameters(appParameters.uvgvpccParametersString); // Simple application wrapper taking a command string as input to set multiple parameters.
-    uvgvpcc_enc::API::setParameter("geoBitDepthInput",std::to_string(appParameters.inputGeoPrecision));
-    uvgvpcc_enc::API::setParameter("nbThreadPCPart",std::to_string(appParameters.threads));
-    uvgvpcc_enc::API::setParameter("occupancyEncodingNbThread",std::to_string(appParameters.threads));
-    uvgvpcc_enc::API::setParameter("geometryEncodingNbThread",std::to_string(appParameters.threads));
-    uvgvpcc_enc::API::setParameter("attributeEncodingNbThread",std::to_string(appParameters.threads));
+    try {
+        setParameters(appParameters.uvgvpccParametersString); // Simple application wrapper taking a command string as input to set multiple parameters.
+        uvgvpcc_enc::API::setParameter("geoBitDepthInput",std::to_string(appParameters.inputGeoPrecision));
+        uvgvpcc_enc::API::setParameter("nbThreadPCPart",std::to_string(appParameters.threads));
+        uvgvpcc_enc::API::setParameter("occupancyEncodingNbThread",std::to_string(appParameters.threads));
+        uvgvpcc_enc::API::setParameter("geometryEncodingNbThread",std::to_string(appParameters.threads));
+        uvgvpcc_enc::API::setParameter("attributeEncodingNbThread",std::to_string(appParameters.threads));
+    } catch (const std::exception& e) {
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "LIBRARY","An exception was caught when setting parameters in the application.\n");
+        return EXIT_FAILURE;
+    }
+    
     try {
         uvgvpcc_enc::API::initializeEncoder();
     } catch (const std::exception& e) {
@@ -295,7 +293,7 @@ int main(const int argc, const char* const argv[]) {
     const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(&appParameters, nullptr, RETVAL_RUNNING);
 
     std::thread inputTh(&inputReadThread, in_args);
-    std::size_t frameRead = 0;
+    size_t frameRead = 0;
     std::shared_ptr<uvgvpcc_enc::Frame> currFrame = nullptr;
     available_input_slots.release();
 
@@ -309,7 +307,8 @@ int main(const int argc, const char* const argv[]) {
         available_input_slots.release();
         if (in_args->retval == RETVAL_EOF) {
             break;
-        } else if (in_args->retval == RETVAL_FAILURE) {
+        }
+        if (in_args->retval == RETVAL_FAILURE) {
             return EXIT_FAILURE;
         }
         try {
@@ -323,8 +322,7 @@ int main(const int argc, const char* const argv[]) {
         frameRead++;
     }
 
-    /* After all frames are encoded, an empty v3c_chunk is pushed to output. It signals the end of data to file_writer thread.
-        This may be changed in the future */
+    /* After all frames are encoded, an empty v3c_chunk is pushed to output. It signals the end of data to file_writer thread.*/
     uvgvpcc_enc::API::emptyFrameQueue();
 
     output.io_mutex.lock();

@@ -47,7 +47,6 @@
 #include <cstdint>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays)
-// lf : Currently we manually handle most of the memory object in the bitstream generation.
 
 void v3c_gof::write_v3c_chunk(uvgvpcc_enc::API::v3c_unit_stream* out) {
     // --------------- Write V3C unit stream -----------------------------------------------------
@@ -56,9 +55,9 @@ void v3c_gof::write_v3c_chunk(uvgvpcc_enc::API::v3c_unit_stream* out) {
     uvg_bitstream_init(stream);
     uvgvpcc_enc::API::v3c_chunk new_chunk;
 
-    const std::size_t vps_id = gof_id_ % 16;  // The value of vps_v3c_parameter_set_id shall be in the range of 0 to 15
+    const size_t vps_id = gof_id_ % 16;  // The value of vps_v3c_parameter_set_id shall be in the range of 0 to 15
     // V3C_VPS
-    const std::size_t v3c_vps_unit_size = 4 + v3c_vps_sub_->get_vps_byte_len();  // 4 is v3c header
+    const size_t v3c_vps_unit_size = 4 + v3c_vps_sub_->get_vps_byte_len();  // 4 is v3c header
     new_chunk.v3c_unit_sizes.push_back(v3c_vps_unit_size);
     uvg_bitstream_put(stream, 0, 32);  // V3C_VPS unit header is just 4 bytes of 0
     v3c_vps_sub_->write_vps(stream);
@@ -145,21 +144,21 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
     uvg_bitstream_init(stream);
     uvgvpcc_enc::API::v3c_chunk new_chunk;
 
-    const std::size_t vps_id = gof_id_ % 16;  // The value of vps_v3c_parameter_set_id shall be in the range of 0 to 15
+    const size_t vps_id = gof_id_ % 16;  // The value of vps_v3c_parameter_set_id shall be in the range of 0 to 15
     // V3C_VPS - one per GOF
-    const std::size_t v3c_vps_unit_size = 4 + v3c_vps_sub_->get_vps_byte_len();  // 4 is v3c header
+    const size_t v3c_vps_unit_size = 4 + v3c_vps_sub_->get_vps_byte_len();  // 4 is v3c header
     new_chunk.v3c_unit_sizes.push_back(v3c_vps_unit_size);
     uvg_bitstream_put(stream, 0, 32);  // V3C_VPS unit header is just 4 bytes of 0
     v3c_vps_sub_->write_vps(stream);
 
-    std::size_t ovd_idx = 4;  // parameter sets x3 and SEI prefix
-    std::size_t gvd_idx = 4;  // parameter sets x3 and SEI prefix
-    std::size_t avd_idx = 4;  // parameter sets x3 and SEI prefix
+    size_t ovd_idx = 4;  // parameter sets x3 and SEI prefix
+    size_t gvd_idx = 4;  // parameter sets x3 and SEI prefix
+    size_t avd_idx = 4;  // parameter sets x3 and SEI prefix
     auto* atlas = v3c_ad_unit_.get();
-    std::vector<std::size_t> ad_nal_sizes = atlas->get_ad_nal_sizes();
-    for (std::size_t k = 0; k < n_frames_; ++k) {
+    std::vector<size_t> ad_nal_sizes = atlas->get_ad_nal_sizes();
+    for (size_t k = 0; k < n_frames_; ++k) {
         // V3C_AD size: V3C hdr, NAL sample header, NAL precision, NAL size
-        std::size_t current_v3c_ad_unit_size = 4 + 1 + atlas->get_ad_nal_precision() + ad_nal_sizes.at(k + 2);  // 0 and 1 are ASPS and AFPS
+        size_t current_v3c_ad_unit_size = 4 + 1 + atlas->get_ad_nal_precision() + ad_nal_sizes.at(k + 2);  // 0 and 1 are ASPS and AFPS
         if (k == 0) {  // First AD unit, so copy also parameter sets
             current_v3c_ad_unit_size += ad_nal_sizes.at(0) + ad_nal_sizes.at(1) + (atlas->get_ad_nal_precision() * 2);
         }
@@ -183,13 +182,13 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
         atlas->write_atlas_eob(stream);
 
         // V3C_OVD unit size
-        std::size_t current_v3c_ovd_unit_size = 4;  // V3C header
+        size_t current_v3c_ovd_unit_size = 4;  // V3C header
         if (k == 0) {                               // First OVD unit, so copy also parameter sets AND SEI prefix
-            for (std::size_t n = 0; n < 4; n++) {
+            for (size_t n = 0; n < 4; n++) {
                 current_v3c_ovd_unit_size += 4 + ovd_nals.at(n).size;
             }
         }
-        for (std::size_t n = 0; n < 1; n++) {  // 1 media NAL unit
+        for (size_t n = 0; n < 1; n++) {  // 1 media NAL unit
             current_v3c_ovd_unit_size += 4 + ovd_nals.at(ovd_idx).size;
             ovd_idx++;
         }
@@ -203,7 +202,7 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
         ovd_idx -= 1;                                          // reset index after size calculation
         // V3C_OVD NAL sub-bitstream
         if (k == 0) {  // First OVD unit, so copy also parameter sets AND SEI prefix
-            for (std::size_t n = 0; n < 4; n++) {
+            for (size_t n = 0; n < 4; n++) {
                 uvg_bitstream_put(stream, ovd_nals.at(n).size, 32);
                 uvg_bitstream_copy_bytes(stream, reinterpret_cast<uint8_t*>(v3c_ovd_sub_->data() + ovd_nals.at(n).location),
                                          ovd_nals.at(n).size);
@@ -216,9 +215,9 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
         ovd_idx++;
 
         // V3C_GVD size
-        std::size_t current_v3c_gvd_unit_size = 4;  // V3C header
+        size_t current_v3c_gvd_unit_size = 4;  // V3C header
         if (k == 0) {                               // First GVD unit, so copy also parameter sets AND SEI prefix
-            for (std::size_t n = 0; n < 4; n++) {
+            for (size_t n = 0; n < 4; n++) {
                 current_v3c_gvd_unit_size += 4 + gvd_nals.at(n).size;
             }
         }
@@ -237,7 +236,7 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
         uvg_bitstream_put(stream, 0, 12);                      // vuh_reserved_zero_12bits
         // V3C_GVD NAL sub-bitstream
         if (k == 0) {  // First GVD unit, so copy also parameter sets AND SEI prefix
-            for (std::size_t n = 0; n < 4; n++) {
+            for (size_t n = 0; n < 4; n++) {
                 uvg_bitstream_put(stream, gvd_nals.at(n).size, 32);
                 uvg_bitstream_copy_bytes(stream, reinterpret_cast<uint8_t*>(v3c_gvd_sub_->data() + gvd_nals.at(n).location),
                                          gvd_nals.at(n).size);
@@ -255,9 +254,9 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
         }
 
         // V3C_AVD size
-        std::size_t current_v3c_avd_unit_size = 4;  // V3C header
+        size_t current_v3c_avd_unit_size = 4;  // V3C header
         if (k == 0) {                               // First AVD unit, so copy also parameter sets AND SEI prefix
-            for (std::size_t n = 0; n < 4; n++) {
+            for (size_t n = 0; n < 4; n++) {
                 current_v3c_avd_unit_size += 4 + avd_nals.at(n).size;
             }
         }
@@ -277,7 +276,7 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
         uvg_bitstream_put(stream, 0, 1);                       // vuh_auxiliary_video_flag
         // V3C_AVD NAL sub-bitstream
         if (k == 0) {  // First AVD unit, so copy also parameter sets AND SEI prefix
-            for (std::size_t n = 0; n < 4; n++) {
+            for (size_t n = 0; n < 4; n++) {
                 uvg_bitstream_put(stream, avd_nals.at(n).size, 32);
                 uvg_bitstream_copy_bytes(stream, reinterpret_cast<uint8_t*>(v3c_avd_sub_->data() + avd_nals.at(n).location),
                                          avd_nals.at(n).size);

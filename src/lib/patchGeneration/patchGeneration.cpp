@@ -46,21 +46,20 @@
 #include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
+#include "utils/utils.hpp"
 
 using namespace uvgvpcc_enc;
 
-
-
-// to do : nearestNeighborCount should be static
-void PatchGeneration::computePointsNNList(const KdTree& kdTree, std::vector<std::vector<std::size_t>>& pointsNNList,
+// TODO(lf): nearestNeighborCount should be static
+void PatchGeneration::computePointsNNList(const KdTree& kdTree, std::vector<std::vector<size_t>>& pointsNNList,
                                           const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                                          const std::size_t& nnCount) {
+                                          const size_t& nnCount) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION", "computePointsNNList.\n");
     // Iterate over all points and find their k Nearest Neighbors //
-    // const std::size_t nearestNeighborCount = std::max(normalComputationKnnCount_, normalOrientationKnnCount_);
-    pointsNNList.resize(pointsGeometry.size(), std::vector<std::size_t>(nnCount));
+    // const size_t nearestNeighborCount = std::max(normalComputationKnnCount_, normalOrientationKnnCount_);
+    pointsNNList.resize(pointsGeometry.size(), std::vector<size_t>(nnCount));
 
-    for (std::size_t ptIndex = 0; ptIndex < pointsGeometry.size(); ++ptIndex) {
+    for (size_t ptIndex = 0; ptIndex < pointsGeometry.size(); ++ptIndex) {
         kdTree.knn(pointsGeometry[ptIndex], nnCount, pointsNNList[ptIndex]);
     }
 }
@@ -68,11 +67,11 @@ void PatchGeneration::computePointsNNList(const KdTree& kdTree, std::vector<std:
 // lf : This applyVoxelsDataToPoints function is done in the other direction in TMC2 -> Iterating over the input points, computing the related
 // voxel coords and finding the voxel PPI through a map(voxelCoord, voxelPPI)
 namespace {
-void applyVoxelsDataToPoints(const std::vector<std::size_t>& voxelsPPIs, std::vector<std::size_t>& pointsPPIs,
-                             const std::vector<std::vector<std::size_t>>& voxelIdToPointsId) {
+void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::vector<size_t>& pointsPPIs,
+                             const std::vector<std::vector<size_t>>& voxelIdToPointsId) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION", "Apply voxel data to points.\n");
-    for (std::size_t voxelIndex = 0; voxelIndex < voxelIdToPointsId.size(); ++voxelIndex) {
-        for (std::size_t pointIndex = 0; pointIndex < voxelIdToPointsId[voxelIndex].size(); ++pointIndex) {
+    for (size_t voxelIndex = 0; voxelIndex < voxelIdToPointsId.size(); ++voxelIndex) {
+        for (size_t pointIndex = 0; pointIndex < voxelIdToPointsId[voxelIndex].size(); ++pointIndex) {
             pointsPPIs[voxelIdToPointsId[voxelIndex][pointIndex]] = voxelsPPIs[voxelIndex];
         }
     }
@@ -85,7 +84,7 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
 
     // Voxelization //
     std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>> voxelizedPointsGeometry;
-    std::vector<std::vector<std::size_t>> voxelIdToPointsId;
+    std::vector<std::vector<size_t>> voxelIdToPointsId;
 
     if (p_->geoBitDepthInput == p_->geoBitDepthVoxelized) {
         voxelizedPointsGeometry = frame->pointsGeometry;  // deep copy
@@ -96,7 +95,7 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
 
     // kdtree init and knn searches //
     KdTree const kdTree(p_->kdTreeMaxLeafSize, voxelizedPointsGeometry);
-    std::vector<std::vector<std::size_t>> pointsNNList;
+    std::vector<std::vector<size_t>> pointsNNList;
     computePointsNNList(kdTree, pointsNNList, voxelizedPointsGeometry,
                         std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
 
@@ -106,13 +105,13 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     NormalOrientation::orientNormals(frame, pointsNormal, voxelizedPointsGeometry, pointsNNList);
 
     // Projection Plane Index Segmentation //
-    std::vector<std::size_t> voxelsPPIs(voxelizedPointsGeometry.size());
+    std::vector<size_t> voxelsPPIs(voxelizedPointsGeometry.size());
     PPISegmenter ppiSegmenter(voxelizedPointsGeometry, pointsNormal);
     ppiSegmenter.initialSegmentation(voxelsPPIs, frame->frameId);
     ppiSegmenter.refineSegmentation(voxelsPPIs, frame->frameId);
 
     // "De-voxelization"
-    std::vector<std::size_t> pointsPPIs(frame->pointsGeometry.size());
+    std::vector<size_t> pointsPPIs(frame->pointsGeometry.size());
     if (p_->geoBitDepthInput == p_->geoBitDepthVoxelized) {
         pointsPPIs = voxelsPPIs;
     } else {
@@ -123,7 +122,7 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     PatchSegmentation::patchSegmentation(frame, pointsPPIs);
 
     // Sort patches //
-    // Sort patches from the biggest to the smallest // // to do : might be better to use area ?
+    // Sort patches from the biggest to the smallest // // TODO(lf): might be better to use area ?
     // Notice that after this sorting, the patch Id does not correspond to the position of the patch in the frame.patchList
     std::sort(frame->patchList.begin(), frame->patchList.end(), [](const uvgvpcc_enc::Patch& patchA, const uvgvpcc_enc::Patch& patchB) {
         return std::max(patchA.widthInPixel_, patchA.heightInPixel_) > std::max(patchB.widthInPixel_, patchB.heightInPixel_);

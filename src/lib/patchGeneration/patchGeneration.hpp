@@ -32,8 +32,6 @@
 
 #pragma once
 
-#include <unordered_map>
-
 #include "kdTree.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
@@ -43,6 +41,6 @@ class PatchGeneration {
 
    private:
     
-    static void computePointsNNList(const KdTree& kdTree, std::vector<std::vector<std::size_t>>& pointsNNList,
-                                    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const std::size_t& nnCount);
+    static void computePointsNNList(const KdTree& kdTree, std::vector<std::vector<size_t>>& pointsNNList,
+                                    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const size_t& nnCount);
 };

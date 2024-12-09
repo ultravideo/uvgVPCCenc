@@ -40,7 +40,7 @@
 #include <new>
 
 // NOLINTBEGIN(cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,hicpp-no-malloc,cppcoreguidelines-pro-bounds-pointer-arithmetic) //
-// lf : Currently we manually handle most of the memory object in the bitstream generation.
+// TODO(gg) : lf : Currently we manually handle most of the memory object in the bitstream generation. Consider reducing alloc use to minimum
 
 const std::array<uint32_t, 32> uvg_bit_set_mask = {
     0x00000001, 0x00000002, 0x00000004, 0x00000008, 0x00000010, 0x00000020, 0x00000040, 0x00000080, 0x00000100, 0x00000200, 0x00000400,
@@ -54,7 +54,7 @@ unsigned uvg_math_floor_log2(unsigned value) {
 
     unsigned result = 0;
 
-    for (std::size_t i = 4;; --i) {
+    for (size_t i = 4;; --i) {
         const unsigned bits = 1ULL << i;
         const unsigned shift = value >= (1U << bits) ? bits : 0;
         result += shift;
@@ -145,7 +145,7 @@ uvg_data_chunk *uvg_bitstream_take_chunks(bitstream_t *const stream) {
 }
 
 void uvg_bitstream_finalize(bitstream_t *const stream) {
-    // uvg_bitstream_clear(stream); // to do : to delete
+    // uvg_bitstream_clear(stream); // TODO(lf): to delete
     uvg_bitstream_free_chunks(stream->first);
     delete stream;
 }
@@ -173,8 +173,8 @@ void uvg_bitstream_put_ue(bitstream_t *stream, uint32_t code_num) {
     uvg_bitstream_put(stream, value, num_bits);
 }
 
-// to do : rename this function
-std::size_t uvg_calculate_ue_len(uint32_t number) {
+// TODO(lf): rename this function
+size_t uvg_calculate_ue_len(uint32_t number) {
     const unsigned code_num_log2 = uvg_math_floor_log2(number + 1);
     //   unsigned prefix = 1 << code_num_log2;
     //   unsigned suffix = number + 1 - prefix;

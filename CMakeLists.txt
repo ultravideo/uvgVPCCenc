@@ -33,7 +33,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 if(${USE_CLANG_TIDY})
-  set(CLANG_TIDY_DEFAULT "clang-tidy;-checks=*,-llvmlibc-*,-llvm-*,-modernize-*,-fuchsia-*,-altera-*,-hicpp-use-auto,-bugprone-easily-swappable-parameters,-performance-avoid-endl,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-readability-identifier-length,-readability-math-missing-parentheses,-readability-function-cognitive-complexity,-boost-use-ranges,-misc-non-private-member-variables-in-classes,-cppcoreguidelines-avoid-non-const-global-variables,-abseil-string-find-str-contains,-cppcoreguidelines-avoid-do-while,-readability-use-std-min-max")
+  set(CLANG_TIDY_DEFAULT "clang-tidy;-checks=*,-llvmlibc-*,-llvm-*,-modernize-*,-fuchsia-*,-altera-*,-hicpp-use-auto,-bugprone-easily-swappable-parameters,-performance-avoid-endl,-cppcoreguidelines-pro-bounds-constant-array-index,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-readability-identifier-length,-readability-math-missing-parentheses,-readability-function-cognitive-complexity,-boost-use-ranges,-misc-non-private-member-variables-in-classes,-cppcoreguidelines-avoid-non-const-global-variables,-abseil-string-find-str-contains,-cppcoreguidelines-avoid-do-while,-readability-use-std-min-max,-google-build-using-namespace")
 endif()
 
 # Useful for debugging

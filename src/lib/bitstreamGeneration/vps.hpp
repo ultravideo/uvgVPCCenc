@@ -104,14 +104,14 @@ class vps {
     /* Write the VPS into a bitstream form */
     bool write_vps(bitstream_t* stream);
 
-    std::size_t get_vps_byte_len() { return vps_length_bytes_; };
+    size_t get_vps_byte_len() { return vps_length_bytes_; };
 
    private:
     /* Fill the PTL values in VPS */
-    profile_tier_level fill_ptl(std::size_t& len) const;
+    profile_tier_level fill_ptl(size_t& len) const;
 
     // helper variables
-    std::size_t vps_length_bytes_;
+    size_t vps_length_bytes_;
     uint8_t codec_group_;  // AVD, VVC, HEVC, or other
 
     profile_tier_level ptl_;
@@ -119,8 +119,8 @@ class vps {
     uint8_t vps_atlas_count_minus1_;
 
     std::vector<uint8_t> vps_atlas_id_;
-    std::vector<std::size_t> vps_frame_width_;
-    std::vector<std::size_t> vps_frame_height_;
+    std::vector<size_t> vps_frame_width_;
+    std::vector<size_t> vps_frame_height_;
     std::vector<uint8_t> vps_map_count_minus1_;
     std::vector<bool> vps_multiple_map_streams_present_flag_;
     std::vector<std::vector<bool>> vps_map_absolute_coding_enabled_flag_;
@@ -137,6 +137,6 @@ class vps {
     bool vps_packing_information_present_flag_;
     bool vps_miv_extension_present_flag_;
     uint8_t vps_extension_6bits_;
-    std::size_t vps_extension_length_minus1_;
+    size_t vps_extension_length_minus1_;
     uint8_t vps_extension_data_byte_;
 };

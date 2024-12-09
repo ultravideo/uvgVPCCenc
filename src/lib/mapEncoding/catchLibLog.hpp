@@ -42,4 +42,4 @@ extern lib_log_callback kvazaar_log_callback;
 extern lib_log_callback uvg266_log_callback;
 
 int kvazaar_lib_log_callback(FILE* stream, const char* log_content, ...);
-int uvg266_lib_log_callback(FILE* stream, const char* log_content, ...);
+/*int uvg266_lib_log_callback(FILE* stream, const char* log_content, ...);*/

@@ -42,7 +42,6 @@
 #include <string>
 #include <vector>
 
-#include "uvgvpcc/threadqueue.hpp"
 #include "../utils/utils.hpp"
 #include "../utils/parameters.hpp"
 
@@ -57,65 +56,63 @@ namespace uvgvpcc_enc {
 extern const Parameters* p_; // Const pointer to a non-const Parameter struct instance in parameters.cpp
 
 struct Patch {
-    std::size_t patchIndex_;
-    std::size_t patchPpi_;  // viewId   // projection plane of the patch isn't it ? // to do : make an enum
+    size_t patchIndex_;
+    size_t patchPpi_;       // viewId  
 
-    std::size_t normalAxis_;     // x
-    std::size_t tangentAxis_;    // y
-    std::size_t bitangentAxis_;  // z
+    size_t normalAxis_;     // x
+    size_t tangentAxis_;    // y
+    size_t bitangentAxis_;  // z
 
     bool projectionMode_;  // 0: related to the min depth value; 1: related to the max value
 
-    std::size_t posU_;  // u1_ minU_       // tangential shift
-    std::size_t posV_;  // v1_ minV_       // bitangential shift
-    std::size_t posD_;  // d1_ minD_       // depth shift
+    size_t posU_;  // u1_ minU_       // tangential shift
+    size_t posV_;  // v1_ minV_       // bitangential shift
+    size_t posD_;  // d1_ minD_       // depth shift
 
-    std::size_t sizeD_;  // size for depth (to do : is it the real patch thickness or the maximum possible thickness?)
+    size_t sizeD_;  // size for depth (TODO(lf): is it the real patch thickness or the maximum possible thickness?)
 
-    std::size_t widthInPixel_ = 0;   // size for U
-    std::size_t heightInPixel_ = 0;  // size for V
-    std::size_t widthInOccBlk_;      // sizeU0_     // size of occupancy map (n*occupancyMapResolution_)
-    std::size_t heightInOccBlk_;     // sizeV0_     // size of occupancy map (n*occupancyMapResolution_)
-    std::size_t omPosX_;             // u0_         // location in packed image (n*occupancyMapResolution_) // lf  posBlkU
-    std::size_t omPosY_;             // v0_         // location in packed image (n*occupancyMapResolution_)
+    size_t widthInPixel_ = 0;   // size for U
+    size_t heightInPixel_ = 0;  // size for V
+    size_t widthInOccBlk_;      // sizeU0_     // size of occupancy map (n*occupancyMapResolution_)
+    size_t heightInOccBlk_;     // sizeV0_     // size of occupancy map (n*occupancyMapResolution_)
+    size_t omPosX_;             // u0_         // location in packed image (n*occupancyMapResolution_) // lf  posBlkU
+    size_t omPosY_;             // v0_         // location in packed image (n*occupancyMapResolution_)
 
-    bool axisSwap_;  // patch orientation    // in canvas atlas  (false default, true axis swap)x-tu
+    bool axisSwap_;  // patch orientation    // in canvas atlas  (false default, true axis swap)
 
-    std::vector<typeGeometryInput> depthL1_;  // depth value First layer // to do : geo type def !? Or not ?
+    std::vector<typeGeometryInput> depthL1_;  // depth value First layer // TODO(lf): Using the geo type here might lead to issue?
     std::vector<typeGeometryInput> depthL2_;  // depth value Second layer
-    std::vector<std::size_t>
-        depthPCidxL1_;  // Index of the point in the PC for (Surface separation?) attribute retrieving during attribute map generation
-    std::vector<std::size_t> depthPCidxL2_;
+    std::vector<size_t>
+        depthPCidxL1_;  // Index of the point in the PC for attribute retrieving during attribute map generation TODO(lf): use for Surface separation?
+    std::vector<size_t> depthPCidxL2_;
 
-    std::size_t size2DXInPixel_;
-    std::size_t size2DYInPixel_;
+    size_t size2DXInPixel_;
+    size_t size2DYInPixel_;
 
     std::vector<bool> patchOccupancy_;  // occupancy map (downscaled world)
 
     // inter packing //
-    std::size_t area_ = 0;
-    std::size_t referencePatchId_ =
+    size_t area_ = 0;
+    size_t referencePatchId_ =
         g_infinitenumber;  // Store the id of the best reference patch in the previous frame. Notice that even if the current patch is not
                            // matched, a reference patch id is still found. Then, this reference id will be used to check if the iou treshold
                            // is respected or not, then indicating if this patch is matched or not.
-    std::size_t bestMatchIdx = INVALID_PATCH_INDEX;
+    size_t bestMatchIdx = INVALID_PATCH_INDEX;
     // Store not the id but the position in the list of patch of the best reference patch in the previous frame. Notice that even if
     // the current patch is not matched, a reference patch id is still found. Then, this reference id will be used to check if the
     // iou treshold is respected or not, then indicating if this patch is matched or not.
     bool isMatched_ = false;    // This patch match with a patch from the previous frame (the iou treshold is respected).
-    bool isReference_ = false;  // This patch is a reference for a patch in the next frame.
-
     bool isLinkToAMegaPatch = false;
-    std::size_t unionPatchReferenceIdx = INVALID_PATCH_INDEX;
+    size_t unionPatchReferenceIdx = INVALID_PATCH_INDEX;
 
-    void setAxis(std::size_t normalAxis, std::size_t tangentAxis, std::size_t bitangentAxis, bool projectionMode) {
+    void setAxis(size_t normalAxis, size_t tangentAxis, size_t bitangentAxis, bool projectionMode) {
         normalAxis_ = normalAxis;
         tangentAxis_ = tangentAxis;
         bitangentAxis_ = bitangentAxis;
-        projectionMode_ = projectionMode;  // to do : projection mode optimization per patch
+        projectionMode_ = projectionMode;  // TODO(lf): projection mode optimization per patch
     }
 
-    void setPatchPpi(std::size_t patchPpi) {
+    void setPatchPpi(size_t patchPpi) {
         patchPpi_ = patchPpi;
         // now set the other variables according to the viewId
         switch (patchPpi_) {
@@ -170,25 +167,23 @@ struct Patch {
 
 struct GOF;
 
-// to do : check if when a member of a struct is resize, the whole struct can be copied/mode in another memory location
+// TODO(lf): Avid using both constant sized and dynamic sized memory member within the same struct.
 struct Frame {
-    std::size_t frameId;      // aka relative index (0 if first encoded frame)
-    std::size_t frameNumber;  // aka number from the input frame file name
+    size_t frameId;      // aka relative index (0 if first encoded frame)
+    size_t frameNumber;  // aka number from the input frame file name
     std::weak_ptr<GOF> gof;
 
     std::string pointCloudPath;
 
-    std::size_t pointCount;
+    size_t pointCount;
     std::vector<Vector3<typeGeometryInput>> pointsGeometry;
     std::vector<Vector3<uint8_t>> pointsAttribute;
 
     std::vector<Patch> patchList;
-    std::vector<std::size_t> patchPartition;  // Associate a point index to the index of its patch
+    std::vector<size_t> patchPartition;  // Associate a point index to the index of its patch
 
-    std::string pointCloudBasePath;
-
-    std::size_t occupancyMapHeight = 0;
-    std::size_t mapsHeight = 0;  // Will be a gof parameter
+    size_t occupancyMapHeight = 0;
+    size_t mapsHeight = 0;              // TODO(lf): Will be a gof parameter
 
     std::vector<uint8_t> occupancyMap;
 
@@ -198,26 +193,8 @@ struct Frame {
     std::vector<uint8_t> attributeMapL1;  // Store the three channels continuously (all R, then all G, than all B)
     std::vector<uint8_t> attributeMapL2;
 
-    void setInputBaseName() {
-        // Extract the base name of the input file, useful when exporting intermediary files such as point clouds or maps
-        std::string baseName;
-        std::size_t found = pointCloudPath.find_last_of('/');
-        if (found != std::string::npos) {
-            baseName = pointCloudPath.substr(found + 1);
-        } else {
-            baseName = pointCloudPath;
-        }
-        found = baseName.find_last_of('_');
-        if (found != std::string::npos) {
-            baseName = baseName.substr(0, found - 1);
-        }
-        pointCloudBasePath = baseName;
-    }
-
-    Frame(const std::size_t& frameId, const std::size_t& frameNumber, const std::string& pointCloudPath)
-        : frameId(frameId), frameNumber(frameNumber), pointCloudPath(pointCloudPath), pointCount(0) {
-        setInputBaseName();
-    }
+    Frame(const size_t& frameId, const size_t& frameNumber, const std::string& pointCloudPath)
+        : frameId(frameId), frameNumber(frameNumber), pointCloudPath(pointCloudPath), pointCount(0) {}
 
     void printInfo() const;
 };
@@ -225,11 +202,11 @@ struct Frame {
 
 struct GOF {
     std::vector<std::shared_ptr<Frame>> frames;
-    std::size_t nbFrames;
-    std::size_t gofId;
+    size_t nbFrames;
+    size_t gofId;
 
-    std::size_t mapsHeight;
-    std::size_t occupancyMapHeight;
+    size_t mapsHeight;
+    size_t occupancyMapHeight;
 
     std::string baseNameOccupancy = "";
     std::string baseNameGeometry = "";
@@ -279,17 +256,17 @@ struct GOF {
 namespace API {
 
 struct v3c_chunk {
-    std::size_t len = 0;           // Length of data in buffer
+    size_t len = 0;           // Length of data in buffer
     std::unique_ptr<char[]> data;  // Actual data (char type can be used to describe a byte. No need for uint8_t or unsigned char types.)
-    std::vector<std::size_t> v3c_unit_sizes = {};
+    std::vector<size_t> v3c_unit_sizes = {};
 
     v3c_chunk() = default;
-    v3c_chunk(std::size_t len, std::unique_ptr<char[]> data) : len(len), data(std::move(data)) {}
+    v3c_chunk(size_t len, std::unique_ptr<char[]> data) : len(len), data(std::move(data)) {}
 };
 /* A V3C unit stream is composed of only V3C units without parsing information in the bitstream itself.
     The parsing information is here given separately. */
 struct v3c_unit_stream {
-    std::size_t v3c_unit_size_precision_bytes = 0;
+    size_t v3c_unit_size_precision_bytes = 0;
     std::queue<v3c_chunk> v3c_chunks = {};
     std::counting_semaphore<> available_chunks{0};
     std::mutex io_mutex;  // Locks production and consumption in the v3c_chunks queue

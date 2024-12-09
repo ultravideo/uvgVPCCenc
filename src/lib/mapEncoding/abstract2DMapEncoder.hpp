@@ -55,15 +55,15 @@ protected:
     ENCODER_TYPE encoderType_;
     std::string encoderName_; // Use for debugging and log
     bool lossLess_;
-    std::size_t nbThread_;
+    size_t nbThread_;
     std::string preset_;
     std::string format_;
     std::string mode_;
-    std::size_t qp_;
+    size_t qp_;
     
     // Initialized for each GOF
-    std::size_t width_;
-    std::size_t height_;
+    size_t width_;
+    size_t height_;
 
 
 

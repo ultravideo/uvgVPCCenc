@@ -30,11 +30,11 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-#include "catchLibLog.hpp"
 
 #include <cstdarg>
 #include <cstdio>
 
+#include "catchLibLog.hpp"
 #include "uvgvpcc/log.hpp"
 
 #if defined(__GNUC__) && !defined(__clang__)
@@ -47,6 +47,8 @@
 #pragma clang diagnostic ignored "-Wunused-parameter"
 #endif
 
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay,hicpp-named-parameter,readability-named-parameter,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cert-dcl50-cpp)
+
 int kvazaar_lib_log_callback(FILE*, const char* log_content, ...) {
     va_list args;
     va_start(args, log_content);
@@ -55,13 +57,16 @@ int kvazaar_lib_log_callback(FILE*, const char* log_content, ...) {
     return 0;
 }
 
-int uvg266_lib_log_callback(FILE*, const char* log_content, ...) {
+/*int uvg266_lib_log_callback(FILE*, const char* log_content, ...) {
     va_list args;
     va_start(args, log_content);
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "UVG266", uvgvpcc_enc::Logger::vprintfStrToStdStr(log_content, args));
     va_end(args);
     return 0;
-}
+}*/
+
+// NOLINTEND(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay,hicpp-named-parameter,readability-named-parameter,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cert-dcl50-cpp)
+
 
 #if defined(__GNUC__) && !defined(__clang__)
 // For GCC

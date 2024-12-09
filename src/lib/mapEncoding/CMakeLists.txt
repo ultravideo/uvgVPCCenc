@@ -85,7 +85,7 @@ add_library(${UVG266_STDIO_LIB} STATIC
     ${STDIO_PREFIX}_stdio.c
 )
 
-# TODO: Fix: uvg266 seems compile uvg-bin with ninja
+# TODO(lf): Fix: uvg266 seems compile uvg-bin with ninja
 # The workaround below should be solved at some point
 if (CMAKE_GENERATOR STREQUAL "Ninja")
     set(UVG266_TARGET "libuvg266.a")
@@ -133,9 +133,7 @@ set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_DEFAULT}")
 
 # Define the library
 add_library(mapEncodingLibrary STATIC
-    abstract2DMapEncoder.cpp
     encoderKvazaar.cpp
-    encoderUvg266.cpp
     mapEncoding.cpp
     catchLibLog.cpp
 )
@@ -148,5 +146,5 @@ add_dependencies(mapEncodingLibrary uvg266 kvazaar)
 target_compile_options(mapEncodingLibrary PRIVATE -fPIC)
 target_link_libraries(mapEncodingLibrary PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/libkvazaar.a ${CMAKE_CURRENT_BINARY_DIR}/libuvg266.a ${KVAZAAR_STDIO_LIB} ${UVG266_STDIO_LIB})
 
-# to do : following line might be useless (#gg)
+# TODO(lf): following line might be useless (#gg)
 target_compile_options(catchLibLogLibrary PRIVATE -fPIC)

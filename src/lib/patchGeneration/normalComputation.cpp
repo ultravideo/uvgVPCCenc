@@ -36,6 +36,7 @@
 #include <cassert>
 #include <cmath>
 #include <cstddef>
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <vector>
@@ -43,6 +44,7 @@
 #include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
+#include "utils/utils.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -50,12 +52,12 @@ namespace NormalComputation {
 
 void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
                     const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                    const std::vector<std::vector<std::size_t>>& pointsNNList) {
+                    const std::vector<std::vector<size_t>>& pointsNNList) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION",
                              "Compute normals of frame " + std::to_string(frame->frameId) + "\n");
     assert(p_->normalComputationKnnCount <= pointsGeometry.size());
 
-    for (std::size_t pointIdx = 0; pointIdx < pointsGeometry.size(); ++pointIdx) {
+    for (size_t pointIdx = 0; pointIdx < pointsGeometry.size(); ++pointIdx) {
         computeNormal(normals[pointIdx], pointsGeometry, pointsGeometry[pointIdx], pointsNNList[pointIdx], p_->normalComputationKnnCount);
     }
 
@@ -72,9 +74,9 @@ void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vecto
 }
 
 void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<std::size_t>& pointNn, const std::size_t nnCount) {
+                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<size_t>& pointNn, const size_t nnCount) {
     uvgvpcc_enc::Vector3<double> bary{static_cast<double>(point[0]), static_cast<double>(point[1]), static_cast<double>(point[2])};
-    for (std::size_t i = 1; i < nnCount; ++i) {  // The first point return by the KNN is the query point. It is the initial value of bary.
+    for (size_t i = 1; i < nnCount; ++i) {  // The first point return by the KNN is the query point. It is the initial value of bary.
         bary += pointsGeometry[pointNn[i]];
     }
     bary /= nnCount;
@@ -105,11 +107,11 @@ void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvp
     }
 }
 
-void computeCovMat(std::vector<uvgvpcc_enc::Vector3<double>>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const std::size_t nnCount,
-                   const std::vector<std::size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
+void computeCovMat(std::vector<uvgvpcc_enc::Vector3<double>>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const size_t nnCount,
+                   const std::vector<size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
     covMat = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
     uvgvpcc_enc::Vector3<double> pt;
-    for (std::size_t i = 0; i < nnCount; ++i) {
+    for (size_t i = 0; i < nnCount; ++i) {
         pt = pointsGeometry[nnIndices[i]] - bary;
 
         covMat[0][0] += pt[0] * pt[0];
@@ -141,14 +143,14 @@ void computeCovMat(std::vector<uvgvpcc_enc::Vector3<double>>& covMat, const uvgv
 // NOLINTBEGIN(cppcoreguidelines-init-variables)
 void diagonalize(const std::vector<uvgvpcc_enc::Vector3<double>>& A, std::vector<uvgvpcc_enc::Vector3<double>>& Q,
                  std::vector<uvgvpcc_enc::Vector3<double>>& D) {
-    const std::size_t maxsteps = p_->normalComputationMaxDiagonalStep;
+    const size_t maxsteps = p_->normalComputationMaxDiagonalStep;
     uvgvpcc_enc::Vector3<double> o;
     uvgvpcc_enc::Vector3<double> m;
     std::array<double, 4> q{0.0, 0.0, 0.0, 1.0};
     std::array<double, 4> jr{0.0, 0.0, 0.0, 0.0};
     std::array<uvgvpcc_enc::Vector3<double>, 3> AQ;
 
-    for (std::size_t i = 0; i < maxsteps; ++i) {
+    for (size_t i = 0; i < maxsteps; ++i) {
         // quat to matrix
         const double sqx = q[0] * q[0];
         const double sqy = q[1] * q[1];

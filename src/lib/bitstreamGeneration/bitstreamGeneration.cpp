@@ -95,7 +95,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     byteStreamToSampleStream(*bitstream_avd.get(), 4, avd_nals, false);
 
     // --------------- Calculate V3C unit size precision -------------------------------------------
-    std::size_t v3c_max_size = v3c_parameter_set.get()->get_vps_byte_len();
+    size_t v3c_max_size = v3c_parameter_set.get()->get_vps_byte_len();
     if (atlas.get()->get_atlas_sub_size() + 4 > v3c_max_size) {
         v3c_max_size = atlas.get()->get_atlas_sub_size() + 4;
     }
@@ -132,5 +132,3 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     }
     output->available_chunks.release();
 }
-
-// to do : check TMC2 HM config for single or double map

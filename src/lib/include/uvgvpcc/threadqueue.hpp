@@ -37,7 +37,6 @@
 #include <condition_variable>
 #include <deque>
 #include <functional>
-#include <map>
 #include <memory>
 #include <mutex>
 #include <thread>
@@ -79,7 +78,7 @@ class Job : public std::enable_shared_from_this<Job> {
     using JobFunction = std::function<void()>;
     // Variadic template constructor
     template <typename Func, typename... Args>
-    Job(std::string name, std::size_t priority, Func&& func, Args&&... args)
+    Job(std::string name, size_t priority, Func&& func, Args&&... args)
         : name_(name),
           func_(std::bind(std::forward<Func>(func), std::forward<Args>(args)...)),
           state_(threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED),
@@ -101,7 +100,7 @@ class Job : public std::enable_shared_from_this<Job> {
     JobFunction func_;
     threadqueue_job_state state_;
     std::atomic<int> dependencies_;
-    std::atomic<std::size_t> priority;
+    std::atomic<size_t> priority;
 
    private:
     std::condition_variable cv_;

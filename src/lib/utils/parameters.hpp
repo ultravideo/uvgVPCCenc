@@ -46,10 +46,10 @@ namespace uvgvpcc_enc {
 struct Parameters {
     
     // ___ General parameters __ //
-    std::size_t geoBitDepthInput;      // (inputGeometryBitDepth3D?) geometry3dCoordinatesBitdepth  // to do rename in resolution or something more catchy ?
+    size_t geoBitDepthInput;      // (inputGeometryBitDepth3D?) geometry3dCoordinatesBitdepth  // TODO(lf)rename in resolution or something more catchy ?
     std::string presetName;
-    std::size_t sizeGOF;
-    std::size_t nbThreadPCPart = 0; // 0 means the actual number of detected threads
+    size_t sizeGOF;
+    size_t nbThreadPCPart = 0; // 0 means the actual number of detected threads
     bool doubleLayer = true;
     std::string logLevel = "INFO";
     bool errorsAreFatal = true;
@@ -63,61 +63,60 @@ struct Parameters {
     bool lowDelayBitstream = false;
 
     // ___ Voxelization ___ //       (grid-based segmentation)
-    std::size_t geoBitDepthVoxelized;  // voxelizedGeometryBitDepth3D         // grid-based segmentation
+    size_t geoBitDepthVoxelized;  // voxelizedGeometryBitDepth3D         // grid-based segmentation
 
     // ___ KdTree ___ //
-    std::size_t kdTreeMaxLeafSize = 10; // to do deprecated no ? (as there are other parameterrs for it, for each kdtree case)
+    size_t kdTreeMaxLeafSize = 10; // TODO(lf)deprecated no ? (as there are other parameterrs for it, for each kdtree case)
 
     // Normal computation //
-    std::size_t normalComputationKnnCount;
-    std::size_t normalComputationMaxDiagonalStep;
+    size_t normalComputationKnnCount;
+    size_t normalComputationMaxDiagonalStep;
 
 
     // Normal orientation //
-    std::size_t normalOrientationKnnCount = 4;
+    size_t normalOrientationKnnCount = 4;
 
 
     // PPI segmentation //
-    // const std::vector<std::array<double,3>> projectionPlaneOrientations = {
     const std::vector<Vector3<double>> projectionPlaneOrientations = {
         {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}, {-1.0, 0.0, 0.0}, {0.0, -1.0, 0.0}, {0.0, 0.0, -1.0}}};
-    const std::size_t projectionPlaneCount = 6; // to do : move out from parameters ?
+    const size_t projectionPlaneCount = 6; // TODO(lf): move out from parameters ?
 
 
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
-    std::size_t geoBitDepthRefineSegmentation;  // refineSegmentationGeometryBitDepth3D   
-    // to do verify that all scale set by user are compatible
-    std::size_t refineSegmentationMaxNNVoxelDistanceLUT;  // lf note : 9**2 = 81 ~ 192/2
-    std::size_t refineSegmentationMaxNNTotalPointCount;
+    size_t geoBitDepthRefineSegmentation;  // refineSegmentationGeometryBitDepth3D   
+    // TODO(lf)verify that all scale set by user are compatible
+    size_t refineSegmentationMaxNNVoxelDistanceLUT;  // lf note : 9**2 = 81 ~ 192/2
+    size_t refineSegmentationMaxNNTotalPointCount;
     double refineSegmentationLambda;
-    std::size_t refineSegmentationIterationCount;
-    // to do check the config if all concerned parameters are poqwer of two
+    size_t refineSegmentationIterationCount;
+    // TODO(lf)check the config if all concerned parameters are poqwer of two
 
 
     // ___ Patch generation ___ //   (patch segmentation)
-    std::size_t maxAllowedDist2RawPointsDetection = 5; // to do : add verification to avoid segfault because index out of bound
-    std::size_t minPointCountPerCC;
-    std::size_t maxPatchSize;               // to do : debug when maxPatchSize = 200
-    std::size_t maxNNCountPatchSegmentation = 5;  // to do check max all NN
-    std::size_t patchSegmentationMaxPropagationDistance = 3;  
-        // lf : for reworked function only. If the value is 4, the euclidian distance is 16.  // to do: the default value should be 2 I
-            // guess // Nop, it should be 1 // to do : make sure to use <= instead of < in the for loop so to avoid this confusion.
+    size_t maxAllowedDist2RawPointsDetection = 5; // TODO(lf): add verification to avoid segfault because index out of bound
+    size_t minPointCountPerCC;
+    size_t maxPatchSize;               // TODO(lf): debug when maxPatchSize = 200
+    size_t maxNNCountPatchSegmentation = 5;  // TODO(lf)check max all NN
+    size_t patchSegmentationMaxPropagationDistance = 3;  
+        // lf : for reworked function only. If the value is 4, the euclidian distance is 16.  // TODO(lf): the default value should be 2 I
+            // guess // Nop, it should be 1 // TODO(lf): make sure to use <= instead of < in the for loop so to avoid this confusion.
     bool enablePatchSplitting = true;
-    // to do there is a mix with occupancyPrecision // to do rename it as blocSizeOccupancyMap or something like this
-    std::size_t minLevel = 64;  // to do : must be a power of 2 ? So give the power of two and do only shifting, no division // might be
+    // TODO(lf)there is a mix with occupancyPrecision // TODO(lf)rename it as blocSizeOccupancyMap or something like this
+    size_t minLevel = 64;  // TODO(lf): must be a power of 2 ? So give the power of two and do only shifting, no division // might be
                                 // related to the different avaliable position of the projection plan of each path
-    std::size_t log2QuantizerSizeX = 4;
-    std::size_t log2QuantizerSizeY = 4;
-    std::size_t quantizerSizeX = static_cast<std::size_t>(1) << log2QuantizerSizeX; // to do : investigate
-    std::size_t quantizerSizeY = static_cast<std::size_t>(1) << log2QuantizerSizeY;
-    std::size_t surfaceThickness = 4;
+    size_t log2QuantizerSizeX = 4;
+    size_t log2QuantizerSizeY = 4;
+    size_t quantizerSizeX = static_cast<size_t>(1) << log2QuantizerSizeX; // TODO(lf): investigate
+    size_t quantizerSizeY = static_cast<size_t>(1) << log2QuantizerSizeY;
+    size_t surfaceThickness = 4;
 
 
     // ___ Patch packing ___ //
-    std::size_t mapWidth;  // to do check if it is a multipl of occupancy resolution
-    std::size_t minimumMapHeight;
-    // to do : lf : As Joose explain to me, in theory, it would be the height which is constant and equals to 64*nbThreads
-    std::size_t spacePatchPacking = 1;
+    size_t mapWidth;  // TODO(lf)check if it is a multipl of occupancy resolution
+    size_t minimumMapHeight;
+    // TODO(lf): lf : As Joose explain to me, in theory, it would be the height which is constant and equals to 64*nbThreads
+    size_t spacePatchPacking = 1;
     bool interPatchPacking;
     float gpaTresholdIoU = 0.3;  // global patch allocation treshold for the intersection over union process
 
@@ -126,23 +125,22 @@ struct Parameters {
     bool mapGenerationFillEmptyBlock = true;
     size_t mapGenerationBackgroundValueAttribute = 128;
     size_t mapGenerationBackgroundValueGeometry = 128;
-    std::size_t cuSizeInPixels = 8;       // only for refacctored map gen to do : 8 is better than 16 for the quality, but what about computational time ?
 
 
     // ___ 2D encoding parameters ___ //
     std::string basenameOccupancyFiles;
     std::string basenameGeometryFiles;
     std::string basenameAttributeFiles;
-    std::size_t sizeGOP2DEncoding;
-    std::size_t intraFramePeriod = 64; // to do : Not useful yet as a new 2D encoder is created for each GOF. (64 is default Kvazaar value. In uvgVPCCenc, the value is indirectly set by 8 or 16, depending on the size of the 2D encoding GOP)
+    size_t sizeGOP2DEncoding;
+    size_t intraFramePeriod = 64; // TODO(lf): Not useful yet as a new 2D encoder is created for each GOF. (64 is default Kvazaar value. In uvgVPCCenc, the value is indirectly set by 8 or 16, depending on the size of the 2D encoding GOP)
 
     // Occupancy map
     std::string occupancyEncoderName = "Kvazaar";
     bool occupancyEncodingIsLossless = true;
     std::string occupancyEncodingMode;
     std::string occupancyEncodingFormat = "YUV420";
-    std::size_t occupancyEncodingNbThread = 0; // 0 by default means that this variable will have for value during execution the actual number of detected threads
-    std::size_t occupancyMapResolution; // 'Rate' or 'qp' for the occupancy map
+    size_t occupancyEncodingNbThread = 0; // 0 by default means that this variable will have for value during execution the actual number of detected threads
+    size_t occupancyMapResolution; // 'Rate' or 'qp' for the occupancy map
     std::string occupancyEncodingPreset;
 
     // Geometry map
@@ -150,8 +148,8 @@ struct Parameters {
     bool geometryEncodingIsLossless = false;
     std::string geometryEncodingMode;
     std::string geometryEncodingFormat = "YUV420";
-    std::size_t geometryEncodingNbThread = 0; // 0 by default means that this variable will have for value during execution the actual number of detected threads
-    std::size_t geometryEncodingQp;
+    size_t geometryEncodingNbThread = 0; // 0 by default means that this variable will have for value during execution the actual number of detected threads
+    size_t geometryEncodingQp;
     std::string geometryEncodingPreset;
 
     // Attribute map
@@ -159,8 +157,8 @@ struct Parameters {
     bool attributeEncodingIsLossless = false;
     std::string attributeEncodingMode;
     std::string attributeEncodingFormat = "YUV420";
-    std::size_t attributeEncodingNbThread = 0;  // 0 by default means that this variable will have for value during execution the actual number of detected threads        
-    std::size_t attributeEncodingQp;
+    size_t attributeEncodingNbThread = 0;  // 0 by default means that this variable will have for value during execution the actual number of detected threads        
+    size_t attributeEncodingQp;
     std::string attributeEncodingPreset;
 
 

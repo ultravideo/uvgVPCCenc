@@ -48,13 +48,13 @@ struct opts_t {
     /** \brief Output filename */
     std::string outputPath{};
     /** \brief Number of frames to encode */
-    std::size_t frames{};
+    size_t frames{};
     /** \brief Input geometry precision */
-    std::size_t inputGeoPrecision = 0; 
+    size_t inputGeoPrecision = 0; 
     /** \brief Frame number to start the encoding */
-    std::size_t startFrame = std::numeric_limits<std::size_t>::max();
+    size_t startFrame = std::numeric_limits<size_t>::max();
     /** \brief Maximum number of threads to be used */
-    std::size_t threads{};
+    size_t threads{};
     /** \brief Encoder configuration */
     std::string uvgvpccParametersString{};
     /** \brief Print help */
@@ -62,10 +62,10 @@ struct opts_t {
     /** \brief Print version */
     bool version = false;
     /** \brief Whether to loop input */
-    std::size_t loop_input = 1;
+    size_t loop_input = 1;
 };
 
-void opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args);
+bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args);
 
 void print_usage(void);
 void print_version(void);

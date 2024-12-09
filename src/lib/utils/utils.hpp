@@ -45,11 +45,11 @@ namespace uvgvpcc_enc {
 
 using typeGeometryInput = uint16_t;
 
-const typeGeometryInput g_infiniteDepth = (std::numeric_limits<typeGeometryInput>::max)();  // to do be sure it is well sync with type geo
-const std::size_t g_infinitenumber = (std::numeric_limits<std::size_t>::max)();
-const std::size_t g_valueNotSet = (std::numeric_limits<std::size_t>::max)();
+const typeGeometryInput g_infiniteDepth = (std::numeric_limits<typeGeometryInput>::max)();  // TODO(lf)be sure it is well sync with type geo
+const size_t g_infinitenumber = (std::numeric_limits<size_t>::max)();
+const size_t g_valueNotSet = (std::numeric_limits<size_t>::max)();
 
-constexpr std::size_t INVALID_PATCH_INDEX = std::numeric_limits<std::size_t>::max();
+constexpr size_t INVALID_PATCH_INDEX = std::numeric_limits<size_t>::max();
 
 
 template <typename T>
@@ -96,7 +96,7 @@ class Vector3 : public std::array<T, 3> {
     }
 };
 
-inline std::string zeroPad(std::size_t value, std::size_t width) {
+inline std::string zeroPad(size_t value, size_t width) {
     std::ostringstream oss;
     oss << std::setw(width) << std::setfill('0') << value;
     return oss.str();
@@ -105,6 +105,6 @@ inline std::string zeroPad(std::size_t value, std::size_t width) {
 // Round the given number to the nearest bigger multiple.
 // equivalent to : return = ceil(numberF/multipleF) * multiple;
 // Examples : roundUp(7,8) = 8;  roundUp(17,8) = 24;
-inline std::size_t roundUp(const std::size_t& number, const std::size_t& multiple) { return (number + multiple - 1) & -multiple; }
+inline size_t roundUp(const size_t& number, const size_t& multiple) { return (number + multiple - 1) & -multiple;}
 
 } // uvgvpcc_enc namespace

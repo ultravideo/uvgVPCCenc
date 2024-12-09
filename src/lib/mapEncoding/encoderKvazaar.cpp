@@ -59,20 +59,20 @@ void EncoderKvazaar::initializeLogCallback() {
 namespace {
 
 void encodeVideoKvazaar(const std::vector<std::reference_wrapper<std::vector<uint8_t>>>& mapList, kvz_api* api, kvz_config* config,
-                        std::size_t width, std::size_t height, std::vector<uint8_t>& bitstream, const std::string& encoderName) {
-    // to do : bitstream.reserve(...)
-
+                        size_t width, size_t height, std::vector<uint8_t>& bitstream, const std::string& encoderName) {
+    
+    // TODO(lf): bitstream.reserve(...)
     kvz_encoder* cpu_enc = api->encoder_open(config);
     if (cpu_enc == nullptr) {
-        throw std::runtime_error( encoderName + ": Failed to open Kvazaar encoder."); // to do : suggest to use log level debug to see Kvazaar log
+        throw std::runtime_error( encoderName + ": Failed to open Kvazaar encoder."); // TODO(lf): suggest to use log level debug to see Kvazaar log
     };
 
     kvz_data_chunk* chunks_out = nullptr;
     kvz_picture* pic = nullptr;
     uint32_t len_out = 0;
-    std::size_t frameCountIn = 0;
-    std::size_t frameCountOut = 0;
-    const std::size_t sizeMap = width * height;
+    size_t frameCountIn = 0;
+    size_t frameCountOut = 0;
+    const size_t sizeMap = width * height;
     while (frameCountOut < mapList.size()) {
         pic = nullptr;
         if (frameCountIn < mapList.size()) {
@@ -140,7 +140,7 @@ void EncoderKvazaar::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
 
     encodeVideoKvazaar(mapList, api_, config_, width_, height_, *bitstream, encoderName_);
 
-    if (p_->exportIntermediateMaps) { // to do : export intermediate bitstream param should be added
+    if (p_->exportIntermediateMaps) { // TODO(lf): export intermediate bitstream param should be added
         if(encoderType_ == OCCUPANCY) {
             writeBitstreamToFile(*bitstream, gof->baseNameOccupancy + ".hevc");
         } else if(encoderType_ == GEOMETRY) {
@@ -163,7 +163,7 @@ void EncoderKvazaar::configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>
         width_ = p_->mapWidth / p_->occupancyMapResolution;
         format_ = p_->occupancyEncodingFormat;
         height_ = gof->occupancyMapHeight;
-        qp_ = std::numeric_limits<std::size_t>::max(); // lf : This value should not be used (Occupancy use lossless mode)
+        qp_ = std::numeric_limits<size_t>::max(); // lf : This value should not be used (Occupancy use lossless mode)
     } else if(encoderType_ == GEOMETRY) {
         encoderName_ = "Kvazaar geometry map encoder";
         lossLess_ = p_->geometryEncodingIsLossless;
@@ -211,7 +211,7 @@ void EncoderKvazaar::configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>
         throw std::runtime_error(encoderName_ + ": Failed to initialize Kvazaar config.");
     }    
 
-    api_->config_parse(config_, "enable-logging", "1"); // todo what about performance ? It should depends on the log level
+    api_->config_parse(config_, "enable-logging", "1"); // TODO(lf) what about performance ? It should depends on the log level
     api_->config_parse(config_, "psnr", "0");
     api_->config_parse(config_, "hash", "none");
     api_->config_parse(config_, "threads", std::to_string(nbThread_).c_str());
@@ -225,7 +225,7 @@ void EncoderKvazaar::configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>
     }
 
     if(encoderType_ == OCCUPANCY) {
-        // to do : useless ?
+        // TODO(lf): useless ?
         api_->config_parse(config_, "period", "1");
         return;
     }

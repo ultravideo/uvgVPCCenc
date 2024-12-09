@@ -42,6 +42,7 @@
 #include <ctime>
 #include <iostream>
 #include <mutex>
+#include <stdexcept>
 #include <regex>
 #include <sstream>
 #include <string>
@@ -101,7 +102,7 @@ void Logger::log(LogLevel level, const std::string& context, const std::string& 
 
         std::cerr << log_color[static_cast<int>(level)] << oss.str() << RST;
 
-        // to do (ask GG) : 
+        // TODO(lf) : 
         // if (level == FATAL) : throw std::runtime_exception("");
         // if (level == ERROR && errorAreFatal): throw std::runtime_exception("");
         // display message, if you want to not stop the program ... set errorsAreFatal=false
@@ -115,7 +116,7 @@ std::string Logger::printfStrToStdStr(const char* fmt, ...) {
     va_start(args, fmt);
     if (vasprintf(&str, fmt, args) == -1) {
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::ERROR, "LOGGER", "vasprintf error in printfStrToStdStr function.\n");
-        if(errorsAreFatal_) throw std::runtime_error("");    
+        if(errorsAreFatal_) {throw std::runtime_error("");}
 
     }
     va_end(args);
@@ -128,7 +129,7 @@ std::string Logger::vprintfStrToStdStr(const char* fmt, va_list args) {
     char* str = nullptr;
     if (vasprintf(&str, fmt, args) == -1) {
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::ERROR, "LOGGER", "vasprintf error in vprintfStrToStdStr function.\n");
-        if(errorsAreFatal_) throw std::runtime_error("");    
+        if(errorsAreFatal_) {throw std::runtime_error("");}
     }
     std::string result(str);
     free(str);  // Free the allocated memory

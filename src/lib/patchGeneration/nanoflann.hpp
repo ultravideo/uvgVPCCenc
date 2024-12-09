@@ -1,5 +1,4 @@
-// This header merges noneflann.hpp, KDTreeVectorOfVectorsAdaptor.h and the related utils.h. (to do : distance using int, to do : check if we
-// can skip the first found point, as it is always the query point in our case) //
+// This header merges noneflann.hpp, KDTreeVectorOfVectorsAdaptor.h and the related utils.h. //
 
 /***********************************************************************
  * Software License Agreement (BSD License)
@@ -110,7 +109,7 @@ struct has_assign<T, decltype((void)std::declval<T>().assign(1, 0), 0)> : std::t
  * Free function to resize a resizable object
  */
 template <typename Container>
-inline typename std::enable_if<has_resize<Container>::value, void>::type resize(Container& c, const std::size_t nElements) {
+inline typename std::enable_if<has_resize<Container>::value, void>::type resize(Container& c, const size_t nElements) {
     c.resize(nElements);
 }
 
@@ -119,7 +118,7 @@ inline typename std::enable_if<has_resize<Container>::value, void>::type resize(
  * std::array) It raises an exception if the expected size does not match
  */
 template <typename Container>
-inline typename std::enable_if<!has_resize<Container>::value, void>::type resize(Container& c, const std::size_t nElements) {
+inline typename std::enable_if<!has_resize<Container>::value, void>::type resize(Container& c, const size_t nElements) {
     if (nElements != c.size()) throw std::logic_error("Try to change the size of a std::array.");
 }
 
@@ -127,7 +126,7 @@ inline typename std::enable_if<!has_resize<Container>::value, void>::type resize
  * Free function to assign to a container
  */
 template <typename Container, typename T>
-inline typename std::enable_if<has_assign<Container>::value, void>::type assign(Container& c, const std::size_t nElements, const T& value) {
+inline typename std::enable_if<has_assign<Container>::value, void>::type assign(Container& c, const size_t nElements, const T& value) {
     c.assign(nElements, value);
 }
 
@@ -135,15 +134,15 @@ inline typename std::enable_if<has_assign<Container>::value, void>::type assign(
  * Free function to assign to a std::array
  */
 template <typename Container, typename T>
-inline typename std::enable_if<!has_assign<Container>::value, void>::type assign(Container& c, const std::size_t nElements, const T& value) {
-    for (std::size_t i = 0; i < nElements; i++) c[i] = value;
+inline typename std::enable_if<!has_assign<Container>::value, void>::type assign(Container& c, const size_t nElements, const T& value) {
+    for (size_t i = 0; i < nElements; i++) c[i] = value;
 }
 
 /** @addtogroup result_sets_grp Result set classes
  *  @{ */
 
 /** Result set for KNN searches (N-closest neighbors) */
-template <typename _DistanceType, typename _IndexType = std::size_t, typename _CountType = std::size_t>
+template <typename _DistanceType, typename _IndexType = size_t, typename _CountType = size_t>
 class KNNResultSet {
    public:
     using DistanceType = _DistanceType;
@@ -206,7 +205,7 @@ class KNNResultSet {
 };
 
 /** Result set for RKNN searches (N-closest neighbors with a maximum radius) */
-template <typename _DistanceType, typename _IndexType = std::size_t, typename _CountType = std::size_t>
+template <typename _DistanceType, typename _IndexType = size_t, typename _CountType = size_t>
 class RKNNResultSet {
    public:
     using DistanceType = _DistanceType;
@@ -287,7 +286,7 @@ struct IndexDist_Sorter {
  * languages.
  * See: https://github.com/jlblancoc/nanoflann/issues/166
  */
-template <typename IndexType = std::size_t, typename DistanceType = double>
+template <typename IndexType = size_t, typename DistanceType = double>
 struct ResultItem {
     ResultItem() = default;
     ResultItem(const IndexType index, const DistanceType distance) : first(index), second(distance) {}
@@ -299,7 +298,7 @@ struct ResultItem {
 /**
  * A result-set class used when performing a radius based search.
  */
-template <typename _DistanceType, typename _IndexType = std::size_t>
+template <typename _DistanceType, typename _IndexType = size_t>
 class RadiusResultSet {
    public:
     using DistanceType = _DistanceType;
@@ -318,8 +317,8 @@ class RadiusResultSet {
     void init() { clear(); }
     void clear() { m_indices_dists.clear(); }
 
-    std::size_t size() const { return m_indices_dists.size(); }
-    std::size_t empty() const { return m_indices_dists.empty(); }
+    size_t size() const { return m_indices_dists.size(); }
+    size_t empty() const { return m_indices_dists.empty(); }
 
     bool full() const { return true; }
 
@@ -360,8 +359,8 @@ void save_value(std::ostream& stream, const T& value) {
 
 template <typename T>
 void save_value(std::ostream& stream, const std::vector<T>& value) {
-    std::size_t size = value.size();
-    stream.write(reinterpret_cast<const char*>(&size), sizeof(std::size_t));
+    size_t size = value.size();
+    stream.write(reinterpret_cast<const char*>(&size), sizeof(size_t));
     stream.write(reinterpret_cast<const char*>(value.data()), sizeof(T) * size);
 }
 
@@ -372,8 +371,8 @@ void load_value(std::istream& stream, T& value) {
 
 template <typename T>
 void load_value(std::istream& stream, std::vector<T>& value) {
-    std::size_t size;
-    stream.read(reinterpret_cast<char*>(&size), sizeof(std::size_t));
+    size_t size;
+    stream.read(reinterpret_cast<char*>(&size), sizeof(size_t));
     value.resize(size);
     stream.read(reinterpret_cast<char*>(value.data()), sizeof(T) * size);
 }
@@ -403,11 +402,11 @@ struct L1_Adaptor {
 
     L1_Adaptor(const DataSource& _data_source) : data_source(_data_source) {}
 
-    DistanceType evalMetric(const T* a, const IndexType b_idx, std::size_t size, DistanceType worst_dist = -1) const {
+    DistanceType evalMetric(const T* a, const IndexType b_idx, size_t size, DistanceType worst_dist = -1) const {
         DistanceType result = DistanceType();
         const T* last = a + size;
         const T* lastgroup = last - 3;
-        std::size_t d = 0;
+        size_t d = 0;
 
         /* Process 4 items with each loop for efficiency. */
         while (a < lastgroup) {
@@ -430,7 +429,7 @@ struct L1_Adaptor {
     }
 
     template <typename U, typename V>
-    DistanceType accum_dist(const U a, const V b, const std::size_t) const {
+    DistanceType accum_dist(const U a, const V b, const size_t) const {
         return std::abs(a - b);
     }
 };
@@ -454,11 +453,11 @@ struct L2_Adaptor {
 
     L2_Adaptor(const DataSource& _data_source) : data_source(_data_source) {}
 
-    DistanceType evalMetric(const T* a, const IndexType b_idx, std::size_t size, DistanceType worst_dist = -1) const {
+    DistanceType evalMetric(const T* a, const IndexType b_idx, size_t size, DistanceType worst_dist = -1) const {
         DistanceType result = DistanceType();
         const T* last = a + size;
         const T* lastgroup = last - 3;
-        std::size_t d = 0;
+        size_t d = 0;
 
         /* Process 4 items with each loop for efficiency. */
         while (a < lastgroup) {
@@ -482,7 +481,7 @@ struct L2_Adaptor {
     }
 
     template <typename U, typename V>
-    DistanceType accum_dist(const U a, const V b, const std::size_t) const {
+    DistanceType accum_dist(const U a, const V b, const size_t) const {
         return (a - b) * (a - b);
     }
 };
@@ -506,9 +505,9 @@ struct L2_Simple_Adaptor {
 
     L2_Simple_Adaptor(const DataSource& _data_source) : data_source(_data_source) {}
 
-    DistanceType evalMetric(const T* a, const IndexType b_idx, std::size_t size) const {
+    DistanceType evalMetric(const T* a, const IndexType b_idx, size_t size) const {
         DistanceType result = DistanceType();
-        for (std::size_t i = 0; i < size; ++i) {
+        for (size_t i = 0; i < size; ++i) {
             const DistanceType diff = a[i] - data_source.kdtree_get_pt(b_idx, i);
             result += diff * diff;
         }
@@ -516,7 +515,7 @@ struct L2_Simple_Adaptor {
     }
 
     template <typename U, typename V>
-    DistanceType accum_dist(const U a, const V b, const std::size_t) const {
+    DistanceType accum_dist(const U a, const V b, const size_t) const {
         return (a - b) * (a - b);
     }
 };
@@ -540,14 +539,14 @@ struct SO2_Adaptor {
 
     SO2_Adaptor(const DataSource& _data_source) : data_source(_data_source) {}
 
-    DistanceType evalMetric(const T* a, const IndexType b_idx, std::size_t size) const {
+    DistanceType evalMetric(const T* a, const IndexType b_idx, size_t size) const {
         return accum_dist(a[size - 1], data_source.kdtree_get_pt(b_idx, size - 1), size - 1);
     }
 
     /** Note: this assumes that input angles are already in the range [-pi,pi]
      */
     template <typename U, typename V>
-    DistanceType accum_dist(const U a, const V b, const std::size_t) const {
+    DistanceType accum_dist(const U a, const V b, const size_t) const {
         DistanceType result = DistanceType();
         DistanceType PI = pi_const<DistanceType>();
         result = b - a;
@@ -578,12 +577,12 @@ struct SO3_Adaptor {
 
     SO3_Adaptor(const DataSource& _data_source) : distance_L2_Simple(_data_source) {}
 
-    DistanceType evalMetric(const T* a, const IndexType b_idx, std::size_t size) const {
+    DistanceType evalMetric(const T* a, const IndexType b_idx, size_t size) const {
         return distance_L2_Simple.evalMetric(a, b_idx, size);
     }
 
     template <typename U, typename V>
-    DistanceType accum_dist(const U a, const V b, const std::size_t idx) const {
+    DistanceType accum_dist(const U a, const V b, const size_t idx) const {
         return distance_L2_Simple.accum_dist(a, b, idx);
     }
 };
@@ -641,12 +640,12 @@ inline std::underlying_type<KDTreeSingleIndexAdaptorFlags>::type operator&(KDTre
 
 /**  Parameters (see README.md) */
 struct KDTreeSingleIndexAdaptorParams {
-    KDTreeSingleIndexAdaptorParams(std::size_t _leaf_max_size = 10,
+    KDTreeSingleIndexAdaptorParams(size_t _leaf_max_size = 10,
                                    KDTreeSingleIndexAdaptorFlags _flags = KDTreeSingleIndexAdaptorFlags::None,
                                    unsigned int _n_thread_build = 1)
         : leaf_max_size(_leaf_max_size), flags(_flags), n_thread_build(_n_thread_build) {}
 
-    std::size_t leaf_max_size;
+    size_t leaf_max_size;
     KDTreeSingleIndexAdaptorFlags flags;
     unsigned int n_thread_build;
 };
@@ -679,8 +678,8 @@ struct SearchParameters {
  *
  */
 class PooledAllocator {
-    static constexpr std::size_t WORDSIZE = 16;
-    static constexpr std::size_t BLOCKSIZE = 8192;
+    static constexpr size_t WORDSIZE = 16;
+    static constexpr size_t BLOCKSIZE = 8192;
 
     /* We maintain memory alignment to word boundaries by requiring that all
         allocations be in multiples of the machine wordsize.  */
@@ -732,7 +731,7 @@ class PooledAllocator {
      * Returns a pointer to a piece of new memory of the given size in bytes
      * allocated from the pool.
      */
-    void* malloc(const std::size_t req_size) {
+    void* malloc(const size_t req_size) {
         /* Round size up to a multiple of wordsize.  The following expression
             only works for WORDSIZE that is a power of 2, by masking last bits
            of incremented size to zero.
@@ -760,7 +759,7 @@ class PooledAllocator {
             base_ = m;
 
             Size shift = 0;
-            // int std::size_t = (WORDSIZE - ( (((std::size_t)m) + sizeof(void*)) &
+            // int size_t = (WORDSIZE - ( (((size_t)m) + sizeof(void*)) &
             // (WORDSIZE-1))) & (WORDSIZE-1);
 
             remaining_ = blocksize - sizeof(void*) - shift;
@@ -783,7 +782,7 @@ class PooledAllocator {
      * Returns: pointer (of type T*) to memory buffer
      */
     template <typename T>
-    T* allocate(const std::size_t count = 1) {
+    T* allocate(const size_t count = 1) {
         T* mem = static_cast<T*>(this->malloc(sizeof(T) * count));
         return mem;
     }
@@ -1246,11 +1245,11 @@ class KDTreeBaseClass {
  *
  *  \code
  *   // Must return the number of data poins
- *   std::size_t kdtree_get_point_count() const { ... }
+ *   size_t kdtree_get_point_count() const { ... }
  *
  *
  *   // Must return the dim'th component of the idx'th point in the class:
- *   T kdtree_get_pt(const std::size_t idx, const std::size_t dim) const { ... }
+ *   T kdtree_get_pt(const size_t idx, const size_t dim) const { ... }
  *
  *   // Optional bounding-box computation: return false to default to a standard
  * bbox computation loop.
@@ -1272,7 +1271,7 @@ class KDTreeBaseClass {
  * \tparam Distance The distance metric to use: nanoflann::metric_L1,
  * nanoflann::metric_L2, nanoflann::metric_L2_Simple, etc. \tparam DIM
  * Dimensionality of data points (e.g. 3 for 3D points) \tparam IndexType Will
- * be typically std::size_t or int
+ * be typically size_t or int
  */
 template <typename Distance, class DatasetAdaptor, int32_t DIM = -1, typename IndexType = uint32_t>
 class KDTreeSingleIndexAdaptor
@@ -1455,7 +1454,7 @@ class KDTreeSingleIndexAdaptor
      *  If searchParams.sorted==true, the output list is sorted by ascending
      * distances.
      *
-     *  For a better performance, it is advisable to do a .reserve() on the
+     *  For a better performance, it is advisable TODO(lf)a .reserve() on the
      * vector if you have any wild guess about the number of expected matches.
      *
      *  \sa knnSearch, findNeighbors, radiusSearchCustomCallback
@@ -1638,10 +1637,10 @@ class KDTreeSingleIndexAdaptor
  *
  *  \code
  *   // Must return the number of data poins
- *   std::size_t kdtree_get_point_count() const { ... }
+ *   size_t kdtree_get_point_count() const { ... }
  *
  *   // Must return the dim'th component of the idx'th point in the class:
- *   T kdtree_get_pt(const std::size_t idx, const std::size_t dim) const { ... }
+ *   T kdtree_get_pt(const size_t idx, const size_t dim) const { ... }
  *
  *   // Optional bounding-box computation: return false to default to a standard
  * bbox computation loop.
@@ -1840,7 +1839,7 @@ class KDTreeSingleIndexDynamicAdaptor_ : public KDTreeBaseClass<KDTreeSingleInde
      * If searchParams.sorted==true, the output list is sorted by ascending
      * distances.
      *
-     * For a better performance, it is advisable to do a .reserve() on the
+     * For a better performance, it is advisable TODO(lf)a .reserve() on the
      * vector if you have any wild guess about the number of expected matches.
      *
      *  \sa knnSearch, findNeighbors, radiusSearchCustomCallback
@@ -1853,7 +1852,7 @@ class KDTreeSingleIndexDynamicAdaptor_ : public KDTreeBaseClass<KDTreeSingleInde
     Size radiusSearch(const ElementType* query_point, const DistanceType& radius,
                       std::vector<ResultItem<IndexType, DistanceType>>& IndicesDists, const SearchParameters& searchParams = {}) const {
         RadiusResultSet<DistanceType, IndexType> resultSet(radius, IndicesDists);
-        const std::size_t nFound = radiusSearchCustomCallback(query_point, resultSet, searchParams);
+        const size_t nFound = radiusSearchCustomCallback(query_point, resultSet, searchParams);
         if (searchParams.sorted) std::sort(IndicesDists.begin(), IndicesDists.end(), IndexDist_Sorter());
         return nFound;
     }
@@ -1983,7 +1982,7 @@ class KDTreeSingleIndexDynamicAdaptor_ : public KDTreeBaseClass<KDTreeSingleInde
  * \tparam Distance The distance metric to use: nanoflann::metric_L1,
  * nanoflann::metric_L2, nanoflann::metric_L2_Simple, etc. \tparam DIM
  * Dimensionality of data points (e.g. 3 for 3D points) \tparam IndexType
- * Will be typically std::size_t or int
+ * Will be typically size_t or int
  */
 template <typename Distance, class DatasetAdaptor, int32_t DIM = -1, typename IndexType = uint32_t>
 class KDTreeSingleIndexDynamicAdaptor {
@@ -2060,16 +2059,16 @@ class KDTreeSingleIndexDynamicAdaptor {
      */
     explicit KDTreeSingleIndexDynamicAdaptor(const int dimensionality, const DatasetAdaptor& inputData,
                                              const KDTreeSingleIndexAdaptorParams& params = KDTreeSingleIndexAdaptorParams(),
-                                             const std::size_t maximumPointCount = 1000000000U)
+                                             const size_t maximumPointCount = 1000000000U)
         : dataset_(inputData), index_params_(params), distance_(inputData) {
-        treeCount_ = static_cast<std::size_t>(std::log2(maximumPointCount)) + 1;
+        treeCount_ = static_cast<size_t>(std::log2(maximumPointCount)) + 1;
         pointCount_ = 0U;
         dim_ = dimensionality;
         treeIndex_.clear();
         if (DIM > 0) dim_ = DIM;
         leaf_max_size_ = params.leaf_max_size;
         init();
-        const std::size_t num_initial_points = dataset_.kdtree_get_point_count();
+        const size_t num_initial_points = dataset_.kdtree_get_point_count();
         if (num_initial_points > 0) {
             addPoints(0, num_initial_points - 1);
         }
@@ -2112,7 +2111,7 @@ class KDTreeSingleIndexDynamicAdaptor {
     }
 
     /** Remove a point from the set (Lazy Deletion) */
-    void removePoint(std::size_t idx) {
+    void removePoint(size_t idx) {
         if (idx >= pointCount_) return;
         removedPoints_.insert(idx);
         treeIndex_[idx] = -1;
@@ -2136,7 +2135,7 @@ class KDTreeSingleIndexDynamicAdaptor {
      */
     template <typename RESULTSET>
     bool findNeighbors(RESULTSET& result, const ElementType* vec, const SearchParameters& searchParams = {}) const {
-        for (std::size_t i = 0; i < treeCount_; i++) {
+        for (size_t i = 0; i < treeCount_; i++) {
             index_[i].findNeighbors(result, &vec[0], searchParams);
         }
         return result.full();
@@ -2238,7 +2237,7 @@ struct KDTreeEigenMatrixAdaptor {
     }
 
     // Returns the dim'th component of the idx'th point in the class:
-    num_t kdtree_get_pt(const IndexType idx, std::size_t dim) const {
+    num_t kdtree_get_pt(const IndexType idx, size_t dim) const {
         if (row_major)
             return m_data_matrix.get().coeff(idx, IndexType(dim));
         else
@@ -2309,10 +2308,10 @@ struct KDTreeEigenMatrixAdaptor {
  *  \tparam Distance The distance metric to use: nanoflann::metric_L1,
  *          nanoflann::metric_L2, nanoflann::metric_L2_Simple, etc.
  *  \tparam IndexType The type for indices in the KD-tree index
- *         (typically, std::size_t of int)
+ *         (typically, size_t of int)
  */
 template <class VectorOfVectorsType, typename num_t = double, int DIM = -1, class Distance = nanoflann::metric_L2,
-          typename IndexType = std::size_t>
+          typename IndexType = size_t>
 struct KDTreeVectorOfVectorsAdaptor {
     using self_t = KDTreeVectorOfVectorsAdaptor<VectorOfVectorsType, num_t, DIM, Distance, IndexType>;
     using metric_t = typename Distance::template traits<num_t, self_t>::distance_t;
@@ -2324,11 +2323,11 @@ struct KDTreeVectorOfVectorsAdaptor {
 
     /// Constructor: takes a const ref to the vector of vectors object with the
     /// data points
-    KDTreeVectorOfVectorsAdaptor(const std::size_t /* dimensionality */, const VectorOfVectorsType& mat, const int leaf_max_size = 10,
+    KDTreeVectorOfVectorsAdaptor(const size_t /* dimensionality */, const VectorOfVectorsType& mat, const int leaf_max_size = 10,
                                  const unsigned int n_thread_build = 1)
         : m_data(mat) {
         assert(mat.size() != 0 && mat[0].size() != 0);
-        const std::size_t dims = mat[0].size();
+        const size_t dims = mat[0].size();
         if (DIM > 0 && static_cast<int>(dims) != DIM)
             throw std::runtime_error(
                 "Data set dimensionality does not match the 'DIM' template "
@@ -2347,7 +2346,7 @@ struct KDTreeVectorOfVectorsAdaptor {
      *  Note that this is a short-cut method for index->findNeighbors().
      *  The user can also call index->... methods as desired.
      */
-    inline void query(const num_t* query_point, const std::size_t num_closest, IndexType* out_indices, num_t* out_distances_sq) const {
+    inline void query(const num_t* query_point, const size_t num_closest, IndexType* out_indices, num_t* out_distances_sq) const {
         nanoflann::KNNResultSet<num_t, IndexType> resultSet(num_closest);
         resultSet.init(out_indices, out_distances_sq);
         index->findNeighbors(resultSet, query_point);
@@ -2360,10 +2359,10 @@ struct KDTreeVectorOfVectorsAdaptor {
     self_t& derived() { return *this; }
 
     // Must return the number of data points
-    inline std::size_t kdtree_get_point_count() const { return m_data.size(); }
+    inline size_t kdtree_get_point_count() const { return m_data.size(); }
 
     // Returns the dim'th component of the idx'th point in the class:
-    inline num_t kdtree_get_pt(const std::size_t idx, const std::size_t dim) const { return m_data[idx][dim]; }
+    inline num_t kdtree_get_pt(const size_t idx, const size_t dim) const { return m_data[idx][dim]; }
 
     // Optional bounding-box computation: return false to default to a standard
     // bbox computation loop.
@@ -2392,13 +2391,13 @@ struct PointCloud {
     std::vector<Point> pts;
 
     // Must return the number of data points
-    inline std::size_t kdtree_get_point_count() const { return pts.size(); }
+    inline size_t kdtree_get_point_count() const { return pts.size(); }
 
     // Returns the dim'th component of the idx'th point in the class:
     // Since this is inlined and the "dim" argument is typically an immediate
     // value, the
     //  "if/else's" are actually solved at compile time.
-    inline T kdtree_get_pt(const std::size_t idx, const std::size_t dim) const {
+    inline T kdtree_get_pt(const size_t idx, const size_t dim) const {
         if (dim == 0)
             return pts[idx].x;
         else if (dim == 1)
@@ -2419,10 +2418,10 @@ struct PointCloud {
 };
 
 template <typename T>
-void generateRandomPointCloudRanges(PointCloud<T>& pc, const std::size_t N, const T max_range_x, const T max_range_y, const T max_range_z) {
+void generateRandomPointCloudRanges(PointCloud<T>& pc, const size_t N, const T max_range_x, const T max_range_y, const T max_range_z) {
     // Generating Random Point Cloud
     pc.pts.resize(N);
-    for (std::size_t i = 0; i < N; i++) {
+    for (size_t i = 0; i < N; i++) {
         pc.pts[i].x = max_range_x * (rand() % 1000) / T(1000);
         pc.pts[i].y = max_range_y * (rand() % 1000) / T(1000);
         pc.pts[i].z = max_range_z * (rand() % 1000) / T(1000);
@@ -2430,7 +2429,7 @@ void generateRandomPointCloudRanges(PointCloud<T>& pc, const std::size_t N, cons
 }
 
 template <typename T>
-void generateRandomPointCloud(PointCloud<T>& pc, const std::size_t N, const T max_range = 10) {
+void generateRandomPointCloud(PointCloud<T>& pc, const size_t N, const T max_range = 10) {
     generateRandomPointCloudRanges(pc, N, max_range, max_range, max_range);
 }
 
@@ -2444,13 +2443,13 @@ struct PointCloud_Quat {
     std::vector<Point> pts;
 
     // Must return the number of data points
-    inline std::size_t kdtree_get_point_count() const { return pts.size(); }
+    inline size_t kdtree_get_point_count() const { return pts.size(); }
 
     // Returns the dim'th component of the idx'th point in the class:
     // Since this is inlined and the "dim" argument is typically an immediate
     // value, the
     //  "if/else's" are actually solved at compile time.
-    inline T kdtree_get_pt(const std::size_t idx, const std::size_t dim) const {
+    inline T kdtree_get_pt(const size_t idx, const size_t dim) const {
         if (dim == 0)
             return pts[idx].w;
         else if (dim == 1)
@@ -2473,11 +2472,11 @@ struct PointCloud_Quat {
 };
 
 template <typename T>
-void generateRandomPointCloud_Quat(PointCloud_Quat<T>& point, const std::size_t N) {
+void generateRandomPointCloud_Quat(PointCloud_Quat<T>& point, const size_t N) {
     // Generating Random Quaternions
     point.pts.resize(N);
     T theta, X, Y, Z, sinAng, cosAng, mag;
-    for (std::size_t i = 0; i < N; i++) {
+    for (size_t i = 0; i < N; i++) {
         theta = static_cast<T>(nanoflann::pi_const<double>() * (((double)rand()) / RAND_MAX));
         // Generate random value in [-1, 1]
         X = static_cast<T>(2 * (((double)rand()) / RAND_MAX) - 1);
@@ -2506,13 +2505,13 @@ struct PointCloud_Orient {
     std::vector<Point> pts;
 
     // Must return the number of data points
-    inline std::size_t kdtree_get_point_count() const { return pts.size(); }
+    inline size_t kdtree_get_point_count() const { return pts.size(); }
 
     // Returns the dim'th component of the idx'th point in the class:
     // Since this is inlined and the "dim" argument is typically an immediate
     // value, the
     //  "if/else's" are actually solved at compile time.
-    inline T kdtree_get_pt(const std::size_t idx, const std::size_t dim = 0) const { return pts[idx].theta; }
+    inline T kdtree_get_pt(const size_t idx, const size_t dim = 0) const { return pts[idx].theta; }
 
     // Optional bounding-box computation: return false to default to a standard
     // bbox computation loop.
@@ -2526,10 +2525,10 @@ struct PointCloud_Orient {
 };
 
 template <typename T>
-void generateRandomPointCloud_Orient(PointCloud_Orient<T>& point, const std::size_t N) {
+void generateRandomPointCloud_Orient(PointCloud_Orient<T>& point, const size_t N) {
     // Generating Random Orientations
     point.pts.resize(N);
-    for (std::size_t i = 0; i < N; i++) {
+    for (size_t i = 0; i < N; i++) {
         point.pts[i].theta =
             static_cast<T>((2 * nanoflann::pi_const<double>() * (((double)rand()) / RAND_MAX)) - nanoflann::pi_const<double>());
     }
@@ -2539,7 +2538,7 @@ inline void dump_mem_usage() {
     FILE* f = fopen("/proc/self/statm", "rt");
     if (!f) return;
     char str[300];
-    std::size_t n = fread(str, 1, 200, f);
+    size_t n = fread(str, 1, 200, f);
     str[n] = 0;
     printf("MEM: %s\n", str);
     fclose(f);

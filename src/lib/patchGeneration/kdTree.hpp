@@ -33,23 +33,22 @@
 #pragma once
 
 #include "nanoflann.hpp"
-#include "uvgvpcc/uvgvpcc.hpp"
+#include "utils/utils.hpp"
 
 using namespace uvgvpcc_enc;
 
-
 using nanoflannAdaptorType =
-    KDTreeVectorOfVectorsAdaptor<std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>, double, 3, nanoflann::metric_L2_Simple, std::size_t>;
+    KDTreeVectorOfVectorsAdaptor<std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>, double, 3, nanoflann::metric_L2_Simple, size_t>;
 
 class KdTree {
    public:
-    KdTree(const std::size_t& kdTreeMaxLeafSize, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry);
-    void knn(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const std::size_t nnCount, std::vector<std::size_t>& nnIndices) const;
-    void knnDist(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const std::size_t nnCount,
+    KdTree(const size_t& kdTreeMaxLeafSize, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry);
+    void knn(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const size_t nnCount, std::vector<size_t>& nnIndices) const;
+    void knnDist(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const size_t nnCount,
                  std::vector<int16_t>& out_dists_sqr) const;
 
-    // void knnRadius(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const int16_t maxNNCount, const uint16_t radius,
-    //                std::vector<std::size_t>& nnIndices) const;
+    /*void knnRadius(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const int16_t maxNNCount, const uint16_t radius,
+                    std::vector<size_t>& nnIndices) const;*/
 
    private:
     std::unique_ptr<nanoflannAdaptorType> const index_;

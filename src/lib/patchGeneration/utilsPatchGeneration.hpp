@@ -32,17 +32,16 @@
 
 #pragma once
 
-#include "uvgvpcc/uvgvpcc.hpp"
+#include "utils/utils.hpp"
 #include "uvgvpcc/log.hpp"
 #include <fstream>
-
+#include <vector>
+#include <unordered_map>
 
 using namespace uvgvpcc_enc;
 
 
-
-
-// to do : how to handle this type of lut table variable ?
+// TODO(lf): how to handle this type of lut table variable ?
 // NOLINTNEXTLINE(cert-err58-cpp)
 static const std::array<std::vector<Vector3<int32_t>>, 9> adjacentPointsSearch = {{
     // Adjacent shift for squared distance 1
@@ -72,7 +71,7 @@ static const std::array<std::vector<Vector3<int32_t>>, 9> adjacentPointsSearch =
     {{2, 1, 1},   {2, 1, -1},   {2, -1, 1},  {2, -1, -1},  {1, 2, 1},  {1, 2, -1},  {1, 1, 2},   {1, 1, -2},
      {1, -1, 2},  {1, -1, -2},  {1, -2, 1},  {1, -2, -1},  {-1, 2, 1}, {-1, 2, -1}, {-1, 1, 2},  {-1, 1, -2},
      {-1, -1, 2}, {-1, -1, -2}, {-1, -2, 1}, {-1, -2, -1}, {-2, 1, 1}, {-2, 1, -1}, {-2, -1, 1}, {-2, -1, -1}},
-    // Adjacent shift for squared distance 7
+    // Adjacent shift for squared distance 7 (does not exist in an integer grid)
     {},
     // Adjacent shift for squared distance 8
     {{2, 2, 0},
@@ -93,15 +92,6 @@ static const std::array<std::vector<Vector3<int32_t>>, 9> adjacentPointsSearch =
      {-1, -2, 2}, {-1, -2, -2}, {-2, 2, 1}, {-2, 2, -1}, {-2, 1, 2}, {-2, 1, -2}, {-2, -1, 2}, {-2, -1, -2}, {-2, -2, 1}, {-2, -2, -1}},
 }};
 
-// const std::array<Vector3<uint8_t>, 6> ppiColors = {{
-//     {255, 0, 0},    // Red
-//     {0, 255, 0},    // Green
-//     {0, 0, 255},    // Blue
-//     {255, 255, 0},  // Yellow
-//     {255, 0, 255},  // Magenta
-//     {0, 255, 255}   // Cyan
-// }};
-
 const std::array<Vector3<uint8_t>, 6> ppiColors = {{
     {51, 51, 51},    // Charcoal Gray
     {0, 102, 51},    // Forest Green
@@ -111,21 +101,15 @@ const std::array<Vector3<uint8_t>, 6> ppiColors = {{
     {102, 204, 204}  // Muted Cyan
 }};
 
-
-//\{\d+,\d+,\d+\}
 const std::array<Vector3<uint8_t>, 114> patchColors = {{
     // Red color is for points not being part of a patch before the 2D projection.
 {139,0,0},{165,42,42},{178,34,34},{220,20,60},{255,99,71},{255,127,80},{205,92,92},{240,128,128},{233,150,122},{250,128,114},{255,160,122},{255,69,0},{255,140,0},{255,165,0},{255,215,0},{184,134,11},{218,165,32},{238,232,170},{189,183,107},{240,230,140},{255,255,0},{32,178,170},{0,128,128},{0,139,139},{0,255,255},{0,255,255},{224,255,255},{0,206,209},{72,209,204},{175,238,238},{176,224,230},{95,158,160},{70,130,180},{100,149,237},{0,191,255},{30,144,255},{173,216,230},{135,206,235},{135,206,250},{25,25,112},{0,0,128},{0,0,139},{0,0,205},{0,0,255},{65,105,225},{138,43,226},{75,0,130},{72,61,139},{106,90,205},{123,104,238},{147,112,219},{139,0,139},{148,0,211},{153,50,204},{186,85,211},{128,0,128},{216,191,216},{221,160,221},{238,130,238},{255,0,255},{218,112,214},{199,21,133},{219,112,147},{255,20,147},{255,105,180},{255,182,193},{255,192,203},{250,235,215},{245,245,220},{255,228,196},{255,235,205},{245,222,179},{255,248,220},{255,250,205},{250,250,210},{255,255,224},{139,69,19},{160,82,45},{210,105,30},{205,133,63},{244,164,96},{222,184,135},{210,180,140},{188,143,143},{255,228,181},{255,222,173},{255,218,185},{255,228,225},{255,240,245},{250,240,230},{253,245,230},{255,239,213},{255,245,238},{245,255,250},{112,128,144},{119,136,153},{176,196,222},{230,230,250},{255,250,240},{240,248,255},{248,248,255},{240,255,240},{255,255,240},{240,255,255},{255,250,250},{0,0,0},{105,105,105},{128,128,128},{169,169,169},{192,192,192},{211,211,211},{220,220,220},{245,245,245},{255,255,255},
 }};
 
-
-
-
 template <typename T, typename TT>
 inline double dotProduct(const std::array<T, 3>& arr1, const std::array<TT, 3>& arr2) {
     return arr1[0] * arr2[0] + arr1[1] * arr2[1] + arr1[2] * arr2[2];
 }
-
 
 inline void exportPointCloud(const std::string& plyFilePath, const std::vector<Vector3<typeGeometryInput>>& geometries,
                       const std::vector<Vector3<uint8_t>>& attributes,
@@ -154,7 +138,7 @@ inline void exportPointCloud(const std::string& plyFilePath, const std::vector<V
     fout << "\nend_header\n";
 
     fout << std::setprecision(std::numeric_limits<double>::max_digits10);
-    for (std::size_t i = 0; i < geometries.size(); ++i) {
+    for (size_t i = 0; i < geometries.size(); ++i) {
         fout << geometries[i][0] << " " << geometries[i][1] << " " << geometries[i][2];
         if (hasNormals) {
             fout << " " << normals[i][0] << " " << normals[i][1] << " " << normals[i][2];
@@ -166,13 +150,12 @@ inline void exportPointCloud(const std::string& plyFilePath, const std::vector<V
     fout.close();
 }
 
-
 // Hash function for vector3
 template <typename T>
 struct vector3Hash {
-    std::size_t operator()(const Vector3<T>& vector) const {
+    size_t operator()(const Vector3<T>& vector) const {
         std::hash<T> hasher;
-        std::size_t hash = 0;
+        size_t hash = 0;
         for (const auto& elem : vector) {
             // Use a simple hash combining algorithm
             hash ^= hasher(elem) + 0x9e3779b9 + (hash << 6U) + (hash >> 2U);
@@ -223,43 +206,40 @@ struct vector3Hash {
 // voxelizations.
 inline void voxelization(const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,
                   std::vector<Vector3<typeGeometryInput>>& voxelizedPointsGeometry,
-                  std::vector<std::vector<std::size_t>>& voxelIdToPointsId, const std::size_t inputBitResolution,
-                  const std::size_t outputBitResolution) {
+                  std::vector<std::vector<size_t>>& voxelIdToPointsId, const size_t inputBitResolution,
+                  const size_t outputBitResolution) {
     Logger::log(
         LogLevel::TRACE, "PATCH GENERATION",
         "Voxelization from " + std::to_string(inputBitResolution) + " to " + std::to_string(outputBitResolution) + " bits of resolution.\n");
 
-    std::unordered_map<Vector3<typeGeometryInput>, std::size_t, vector3Hash<typeGeometryInput>>
+    std::unordered_map<Vector3<typeGeometryInput>, size_t, vector3Hash<typeGeometryInput>>
         voxelCoordToVoxelIndex;
 
     // Maximum number of voxel is : (1 << outputBitResolution)^3 (aka number of cell in the grid)
     // approximateVoxelCount is : (1 << outputBitResolution)^2 = (1 << outputBitResolution x 2)
-    // todo : check if it is more clever to divide the inputPointsGeometry.size() by the bit resolution difference
-    const std::size_t approximateVoxelCount = 1U << (outputBitResolution * 2U);  // Rough approximation
+    // TODO(lf) : check if it is more clever to divide the inputPointsGeometry.size() by the bit resolution difference
+    const size_t approximateVoxelCount = 1U << (outputBitResolution * 2U);  // Rough approximation
     voxelizedPointsGeometry.reserve(approximateVoxelCount);
     voxelIdToPointsId.reserve(approximateVoxelCount);
     voxelCoordToVoxelIndex.reserve(approximateVoxelCount);
 
     // Maximum number of points in one voxel : (inputBitResolution - outputBitResolution)^3
     // approximatePointsCountInOneVoxel :  (inputBitResolution - outputBitResolution)^2
-    const std::size_t approximatePointsCountInOneVoxel =
+    const size_t approximatePointsCountInOneVoxel =
         (inputBitResolution - outputBitResolution) * (inputBitResolution - outputBitResolution);
-    const std::size_t voxelizationShift = inputBitResolution - outputBitResolution;
+    const size_t voxelizationShift = inputBitResolution - outputBitResolution;
 
     // Iteration over all input points //
-    for (std::size_t inputPointIndex = 0; inputPointIndex < inputPointsGeometry.size(); ++inputPointIndex) {
+    for (size_t inputPointIndex = 0; inputPointIndex < inputPointsGeometry.size(); ++inputPointIndex) {
         const Vector3<typeGeometryInput>& inputPoint = inputPointsGeometry[inputPointIndex];
 
-        // to do : Discuss it together. The +halfVoxelSize seems natural (is done in TMC2). However, it is repsonsible for a "bug" in
+        // TODO(lf): Discuss it together. The +halfVoxelSize seems natural (is done in TMC2). However, it is repsonsible for a "bug" in
         // ready_for_winter_9 (frame number 5), where the bottom of the shoes is at the very top of the bounding box in the decoded point
         // cloud (congruence)
         const Vector3<typeGeometryInput> voxCoord{
             static_cast<typeGeometryInput>(inputPoint[0] >> voxelizationShift),
             static_cast<typeGeometryInput>(inputPoint[1] >> voxelizationShift),
             static_cast<typeGeometryInput>(inputPoint[2] >> voxelizationShift)
-            //     static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(inputPoint[0] + halfVoxelSize) >> voxelizationShift),
-            //     static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(inputPoint[1] + halfVoxelSize) >> voxelizationShift),
-            //     static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(inputPoint[2] + halfVoxelSize) >> voxelizationShift)};
         };
 
         // Check if the voxel corresponding to the current input point was already created.
@@ -270,7 +250,7 @@ inline void voxelization(const std::vector<Vector3<typeGeometryInput>>& inputPoi
             // The voxel index corresponds to its index in the list of voxel. That is, to its index in 'voxelizedPointsGeometry'. This
             // corresponds to the size of 'voxelizedPointsGeometry' before to add the voxel. Indeed and for example, the 4th voxel has an
             // index of 3. Notice that voxelIndex = voxelizedPointsGeometry.size() = voxelIdToPointsId.size() = voxelCoordToVoxelIndex.size()
-            const std::size_t voxelIndex = voxelizedPointsGeometry.size();
+            const size_t voxelIndex = voxelizedPointsGeometry.size();
 
             // Add an item to the map 'voxelCoordToVoxelIndex', that associate the voxel coordinates to its voxel index.
             // Get a pointer to this new item.

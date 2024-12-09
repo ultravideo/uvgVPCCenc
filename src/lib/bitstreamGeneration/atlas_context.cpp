@@ -45,7 +45,7 @@
 #include "bitstream_util.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
-atlas_tile_header atlas_context::create_atlas_tile_header(std::size_t frameIndex, std::size_t tileIndex,
+atlas_tile_header atlas_context::create_atlas_tile_header(size_t frameIndex, size_t tileIndex,
                                                           const uvgvpcc_enc::Parameters& paramUVG) const {
     atlas_tile_header ath;
 
@@ -59,8 +59,8 @@ atlas_tile_header atlas_context::create_atlas_tile_header(std::size_t frameIndex
     if (afps_.afps_output_flag_present_flag) {
         ath.ath_atlas_output_flag = false;  // by default
     }
-    const std::size_t Log2MaxAtlasFrmOrderCntLsb = asps_.asps_log2_max_atlas_frame_order_cnt_lsb_minus4 + 4;
-    ath.ath_atlas_frm_order_cnt_lsb = frameIndex % (static_cast<std::size_t>(1) << Log2MaxAtlasFrmOrderCntLsb);
+    const size_t Log2MaxAtlasFrmOrderCntLsb = asps_.asps_log2_max_atlas_frame_order_cnt_lsb_minus4 + 4;
+    ath.ath_atlas_frm_order_cnt_lsb = frameIndex % (static_cast<size_t>(1) << Log2MaxAtlasFrmOrderCntLsb);
 
     ath.ath_ref_atlas_frame_list_asps_flag = false;  // default value, usually changes to true below
     if (asps_.asps_num_ref_atlas_frame_lists_in_asps > 0) {
@@ -68,12 +68,12 @@ atlas_tile_header atlas_context::create_atlas_tile_header(std::size_t frameIndex
     }
     if (!ath.ath_ref_atlas_frame_list_asps_flag) {
         std::cout << "ERROR: NOT IMPLEMENTED" << std::endl;
-        const ref_list_struct refs;  // to do: fill values
+        const ref_list_struct refs;  // TODO(lf): fill values
     } else if (asps_.asps_num_ref_atlas_frame_lists_in_asps > 1) {
         ath.ath_ref_atlas_frame_list_idx = 0;  // default value
     }
-    const std::size_t NumLtrAtlasFrmEntries = 1;  // default value, usually a single ref list
-    for (std::size_t j = 0; j < NumLtrAtlasFrmEntries; j++) {
+    const size_t NumLtrAtlasFrmEntries = 1;  // default value, usually a single ref list
+    for (size_t j = 0; j < NumLtrAtlasFrmEntries; j++) {
         ath.ath_additional_afoc_lsb_present_flag.push_back(false);
         if (ath.ath_additional_afoc_lsb_present_flag.back()) {
             ath.ath_additional_afoc_lsb_val.push_back(0);  // default value
@@ -91,7 +91,7 @@ atlas_tile_header atlas_context::create_atlas_tile_header(std::size_t frameIndex
             ath.ath_patch_size_y_info_quantizer = paramUVG.log2QuantizerSizeY;
         }
 
-        const std::size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
+        const size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
         if (afps_.afps_raw_3d_offset_bit_count_explicit_mode_flag) {
             ath.ath_raw_3d_offset_axis_bit_count_minus1 = paramUVG.geoBitDepthInput + 1 - geometryNominal2dBitdepth - 1;
         }
@@ -111,12 +111,12 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
 
     atlas_tile_data_unit atdu;
     // all patches
-    // const std::size_t quantizerSizeX = 1U << paramUVG.log2QuantizerSizeX;
-    // const std::size_t quantizerSizeY = 1U << paramUVG.log2QuantizerSizeY;
-    const std::size_t levelOfDetailX = 1;  // lf addition, in TMC2 those are patch parameters. However, they are also global parameters.
-    const std::size_t levelOfDetailY = 1;  // to do : check if those are really constant, and do not depends on other parameters
+    // const size_t quantizerSizeX = 1U << paramUVG.log2QuantizerSizeX;
+    // const size_t quantizerSizeY = 1U << paramUVG.log2QuantizerSizeY;
+    const size_t levelOfDetailX = 1;  // lf addition, in TMC2 those are patch parameters. However, they are also global parameters.
+    const size_t levelOfDetailY = 1;  // TODO(lf): check if those are really constant, and do not depends on other parameters
 
-    for (std::size_t patch_index = 0; patch_index < frameUVG.patchList.size(); ++patch_index) {
+    for (size_t patch_index = 0; patch_index < frameUVG.patchList.size(); ++patch_index) {
         // std::cout << "-- DEBUG: Creating atlas patch, index: " << patch_index << std::endl;
         const uvgvpcc_enc::Patch& patchUVG = frameUVG.patchList[patch_index];
         const uint8_t patchMode = static_cast<uint8_t>(ATDU_PATCH_MODE_I_TILE::I_INTRA);
@@ -131,16 +131,16 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
         pdu.pdu_3d_offset_u = patchUVG.posU_;
         pdu.pdu_3d_offset_v = patchUVG.posV_;
 
-        const std::size_t minLevel = static_cast<std::size_t>(pow(2., ath.ath_pos_min_d_quantizer));
+        const size_t minLevel = static_cast<size_t>(pow(2., ath.ath_pos_min_d_quantizer));
         // Update from commit "Integration of m62985 patch A." of TMC2 version 22
         pdu.pdu_3d_offset_d = (patchUVG.posD_ / minLevel);
 
         // if( asps_normal_axis_max_delta_value_enabled_flag ) == true
-        const std::size_t quantDD = patchUVG.sizeD_ == 0 ? 0 : ((patchUVG.sizeD_ + 1) / minLevel);
+        const size_t quantDD = patchUVG.sizeD_ == 0 ? 0 : ((patchUVG.sizeD_ + 1) / minLevel);
         pdu.pdu_3d_range_d = quantDD;
 
         pdu.pdu_projection_id = patchUVG.patchPpi_;
-        pdu.pdu_orientation_index = static_cast<std::size_t>(patchUVG.axisSwap_);
+        pdu.pdu_orientation_index = static_cast<size_t>(patchUVG.axisSwap_);
 
         if (afps_.afps_lod_mode_enabled_flag) {
             pdu.pdu_lod_enabled_flag = (levelOfDetailX > 1 || levelOfDetailY > 1);
@@ -159,7 +159,7 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
     return atdu;
 }
 
-atlas_tile_layer_rbsp atlas_context::create_atlas_tile_layer_rbsp(std::size_t frameIndex, std::size_t tileIndex,
+atlas_tile_layer_rbsp atlas_context::create_atlas_tile_layer_rbsp(size_t frameIndex, size_t tileIndex,
                                                                   const uvgvpcc_enc::Parameters& paramUVG,
                                                                   const uvgvpcc_enc::Frame& frameUVG) {
     atlas_tile_layer_rbsp rbsp;
@@ -176,8 +176,8 @@ atlas_tile_layer_rbsp atlas_context::create_atlas_tile_layer_rbsp(std::size_t fr
 }
 
 atlas_frame_tile_information atlas_context::create_atlas_frame_tile_information() const {
-    const std::size_t NumPartitionsInAtlasFrame = 1;  // to do get this // lf : change from 0 to 1 to avoid overflow when -1 is applied later
-    // to do: this is not complete, its not used yet anyways
+    const size_t NumPartitionsInAtlasFrame = 1;  // TODO(lf)get this // lf : change from 0 to 1 to avoid overflow when -1 is applied later
+    // TODO(lf): this is not complete, its not used yet anyways
 
     atlas_frame_tile_information afti;
     afti.afti_single_tile_in_atlas_frame_flag = true;
@@ -193,10 +193,10 @@ atlas_frame_tile_information atlas_context::create_atlas_frame_tile_information(
             afti.afti_partition_column_width_minus1.resize(afti.afti_num_partition_columns_minus1 + 1, 0);
             afti.afti_partition_column_width_minus1.resize(afti.afti_num_partition_rows_minus1 + 1, 0);
 
-            for (std::size_t i = 0; i < afti.afti_num_partition_columns_minus1; ++i) {
+            for (size_t i = 0; i < afti.afti_num_partition_columns_minus1; ++i) {
                 afti.afti_partition_column_width_minus1.at(i) = 0;
             }
-            for (std::size_t i = 0; i < afti.afti_num_partition_rows_minus1; ++i) {
+            for (size_t i = 0; i < afti.afti_num_partition_rows_minus1; ++i) {
                 afti.afti_partition_row_height_minus1.at(i) = 0;
             }
         }
@@ -207,7 +207,7 @@ atlas_frame_tile_information atlas_context::create_atlas_frame_tile_information(
             afti.afti_bottom_right_partition_row_offset.resize(afti.afti_num_tiles_in_atlas_frame_minus1 + 1, 0);
 
             afti.afti_num_tiles_in_atlas_frame_minus1 = 0;
-            for (std::size_t i = 0; i < afti.afti_num_tiles_in_atlas_frame_minus1; ++i) {
+            for (size_t i = 0; i < afti.afti_num_tiles_in_atlas_frame_minus1; ++i) {
                 afti.afti_top_left_partition_idx.at(i) = 0;
                 afti.afti_bottom_right_partition_column_offset.at(i) = 0;
                 afti.afti_bottom_right_partition_row_offset.at(i) = 0;
@@ -224,7 +224,7 @@ atlas_frame_tile_information atlas_context::create_atlas_frame_tile_information(
     if (asps_.asps_auxiliary_video_enabled_flag) {
         afti.afti_auxiliary_video_tile_row_width_minus1 = 0;
         afti.afti_auxiliary_video_tile_row_height.resize(afti.afti_num_tiles_in_atlas_frame_minus1 + 1, 0);
-        for (std::size_t i = 0; i < afti.afti_num_tiles_in_atlas_frame_minus1 + 1; i++) {
+        for (size_t i = 0; i < afti.afti_num_tiles_in_atlas_frame_minus1 + 1; i++) {
             afti.afti_auxiliary_video_tile_row_height.at(i) = 0;
         }
     }
@@ -232,11 +232,11 @@ atlas_frame_tile_information atlas_context::create_atlas_frame_tile_information(
     if (afti.afti_signalled_tile_id_flag) {
         afti.afti_signalled_tile_id_length_minus1 = 0;
         afti.afti_tile_id.resize(afti.afti_num_tiles_in_atlas_frame_minus1 + 1, 0);
-        for (std::size_t i = 0; i < afti.afti_num_tiles_in_atlas_frame_minus1 + 1; i++) {
+        for (size_t i = 0; i < afti.afti_num_tiles_in_atlas_frame_minus1 + 1; i++) {
             afti.afti_tile_id.at(i) = 0;
         }
     }
-    // to do: missing some values
+    // TODO(lf): missing some values
     return afti;
 }
 
@@ -265,7 +265,7 @@ atlas_sequence_parameter_set atlas_context::create_atlas_sequence_parameter_set(
     asps.asps_frame_width = paramUVG.mapWidth;
     asps.asps_frame_height = gofUVG->mapsHeight;
     asps.asps_geometry_3d_bit_depth_minus1 = paramUVG.geoBitDepthInput;
-    const std::size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
+    const size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
     asps.asps_geometry_2d_bit_depth_minus1 = geometryNominal2dBitdepth - 1;
     asps.asps_log2_max_atlas_frame_order_cnt_lsb_minus4 = 10 - 4;
     asps.asps_max_dec_atlas_frame_buffering_minus1 = 0;
@@ -274,7 +274,7 @@ atlas_sequence_parameter_set atlas_context::create_atlas_sequence_parameter_set(
 
     ref_list_struct refs;
     refs.num_ref_entries = 1;
-    for (std::size_t i = 0; i < refs.num_ref_entries; ++i) {
+    for (size_t i = 0; i < refs.num_ref_entries; ++i) {
         refs.st_ref_atlas_frame_flag.push_back(true);
         if (asps.asps_long_term_ref_atlas_frames_flag) {
             refs.st_ref_atlas_frame_flag.at(i) = false;
@@ -302,7 +302,7 @@ atlas_sequence_parameter_set atlas_context::create_atlas_sequence_parameter_set(
     asps.asps_pixel_deinterleaving_enabled_flag = false;
 
     if (asps.asps_pixel_deinterleaving_enabled_flag) {
-        for (std::size_t j = 0; j < asps.asps_map_count_minus1; ++j) {
+        for (size_t j = 0; j < asps.asps_map_count_minus1; ++j) {
             asps.asps_map_pixel_deinterleaving_flag.push_back(false);
         }
     }
@@ -310,7 +310,7 @@ atlas_sequence_parameter_set atlas_context::create_atlas_sequence_parameter_set(
     asps.asps_raw_patch_enabled_flag = false;
     asps.asps_eom_patch_enabled_flag = false;
     if (asps.asps_eom_patch_enabled_flag && asps.asps_map_count_minus1 == 0) {
-        const std::size_t EOMFixBitCount_ = 2;
+        const size_t EOMFixBitCount_ = 2;
         asps.asps_eom_fix_bit_count_minus1 = EOMFixBitCount_ - 1;
     }
     if (asps.asps_raw_patch_enabled_flag || asps.asps_eom_patch_enabled_flag) {
@@ -348,11 +348,11 @@ void atlas_context::initialize_atlas_context(const std::shared_ptr<uvgvpcc_enc::
     asps_ = create_atlas_sequence_parameter_set(gofUVG, paramUVG);
     afps_ = create_atlas_frame_parameter_set();
     // Create create_atlas_tile_layer_rbsp for each atlas frame/NAL unit
-    for (std::size_t frame_index = 0; frame_index < gofUVG->nbFrames; ++frame_index) {
+    for (size_t frame_index = 0; frame_index < gofUVG->nbFrames; ++frame_index) {
         // std::cout << "DEBUG: Creating atlas RBSP, index: " << frame_index << std::endl;
         auto& frameUVG = *(gofUVG->frames[frame_index]);
 
-        const std::size_t tile_index = 0;  // Always 0, because we only have one tile per frame
+        const size_t tile_index = 0;  // Always 0, because we only have one tile per frame
         const atlas_tile_layer_rbsp rbsp = create_atlas_tile_layer_rbsp(frame_index, tile_index, paramUVG, frameUVG);
         atlas_data_.push_back(rbsp);
     }
@@ -379,10 +379,10 @@ void atlas_context::write_atlas_seq_parameter_set(bitstream_t* stream) {
     WRITE_U(stream, asps_.asps_long_term_ref_atlas_frames_flag, 1, "asps_long_term_ref_atlas_frames_flag");
     WRITE_UE(stream, asps_.asps_num_ref_atlas_frame_lists_in_asps, "asps_num_ref_atlas_frame_lists_in_asps");
 
-    for (std::size_t i = 0; i < asps_.asps_num_ref_atlas_frame_lists_in_asps; i++) {
+    for (size_t i = 0; i < asps_.asps_num_ref_atlas_frame_lists_in_asps; i++) {
         const ref_list_struct& ref = asps_.ref_lists.at(i);
         WRITE_UE(stream, ref.num_ref_entries, "num_ref_entries");
-        for (std::size_t i = 0; i < ref.num_ref_entries; ++i) {
+        for (size_t i = 0; i < ref.num_ref_entries; ++i) {
             if (asps_.asps_long_term_ref_atlas_frames_flag) {
                 WRITE_U(stream, ref.st_ref_atlas_frame_flag.at(i), 1, "st_ref_atlas_frame_flag");
             }
@@ -409,7 +409,7 @@ void atlas_context::write_atlas_seq_parameter_set(bitstream_t* stream) {
     WRITE_U(stream, asps_.asps_pixel_deinterleaving_enabled_flag, 1, "asps_pixel_deinterleaving_enabled_flag");
 
     if (asps_.asps_pixel_deinterleaving_enabled_flag) {  // false
-        for (std::size_t j = 0; j < asps_.asps_map_count_minus1; ++j) {
+        for (size_t j = 0; j < asps_.asps_map_count_minus1; ++j) {
             WRITE_U(stream, int(asps_.asps_map_pixel_deinterleaving_flag.at(j)), 1, "asps_map_pixel_deinterleaving_flag");
         }
     }
@@ -473,13 +473,13 @@ void atlas_context::write_atlas_tile_header(bitstream_t* stream, NAL_UNIT_TYPE n
     }
     WRITE_UE(stream, ath.ath_atlas_frame_parameter_set_id, "ath_atlas_frame_parameter_set_id");
     WRITE_UE(stream, ath.ath_atlas_adaptation_parameter_set_id, "ath_atlas_adaptation_parameter_set_id");
-    WRITE_U(stream, ath.ath_id, 0, "ath_id");  // to do: Dynamic bit length
+    WRITE_U(stream, ath.ath_id, 0, "ath_id");  // TODO(lf): Dynamic bit length
     // const uint16_t tileID = ath.ath_id;              // ath_id: This doesnt get written, as the length gets inferred to u(0)
     WRITE_UE(stream, ath.ath_type, "ath_type");
     if (afps_.afps_output_flag_present_flag) {
         WRITE_U(stream, ath.ath_atlas_output_flag, 1, "ath_atlas_output_flag");
     }
-    const std::size_t Log2MaxAtlasFrmOrderCntLsb = asps_.asps_log2_max_atlas_frame_order_cnt_lsb_minus4 + 4;
+    const size_t Log2MaxAtlasFrmOrderCntLsb = asps_.asps_log2_max_atlas_frame_order_cnt_lsb_minus4 + 4;
     WRITE_U(stream, int(ath.ath_atlas_frm_order_cnt_lsb), int(Log2MaxAtlasFrmOrderCntLsb), "ath_atlas_frm_order_cnt_lsb");  // u(v)
 
     if (asps_.asps_num_ref_atlas_frame_lists_in_asps > 0) {
@@ -490,11 +490,11 @@ void atlas_context::write_atlas_tile_header(bitstream_t* stream, NAL_UNIT_TYPE n
         return;
     }
     if (asps_.asps_num_ref_atlas_frame_lists_in_asps > 1) {
-        const std::size_t bit_len = std::ceil(std::log2(asps_.asps_num_ref_atlas_frame_lists_in_asps));
+        const size_t bit_len = std::ceil(std::log2(asps_.asps_num_ref_atlas_frame_lists_in_asps));
         WRITE_U(stream, int(ath.ath_ref_atlas_frame_list_idx), int(bit_len), "ath_ref_atlas_frame_list_idx");
     }
-    const std::size_t NumLtrAtlasFrmEntries = 0;  // default value, ref list is from ASPS to do: dynamic
-    for (std::size_t j = 0; j < NumLtrAtlasFrmEntries; j++) {
+    const size_t NumLtrAtlasFrmEntries = 0;  // default value, ref list is from ASPS TODO(lf): dynamic
+    for (size_t j = 0; j < NumLtrAtlasFrmEntries; j++) {
         WRITE_U(stream, ath.ath_additional_afoc_lsb_present_flag.at(j), 1, "ath_additional_afoc_lsb_present_flag");
         if (ath.ath_additional_afoc_lsb_present_flag.at(j)) {
             WRITE_U(stream, ath.ath_additional_afoc_lsb_val.at(j), afps_.afps_additional_lt_afoc_lsb_len, "ath_additional_afoc_lsb_val");
@@ -512,7 +512,7 @@ void atlas_context::write_atlas_tile_header(bitstream_t* stream, NAL_UNIT_TYPE n
             WRITE_U(stream, ath.ath_patch_size_y_info_quantizer, 3, "ath_patch_size_y_info_quantizer");
         }
         if (afps_.afps_raw_3d_offset_bit_count_explicit_mode_flag) {
-            const std::size_t bit_len = std::floor(std::log2(asps_.asps_geometry_3d_bit_depth_minus1 + 1));
+            const size_t bit_len = std::floor(std::log2(asps_.asps_geometry_3d_bit_depth_minus1 + 1));
             WRITE_U(stream, int(ath.ath_raw_3d_offset_axis_bit_count_minus1), int(bit_len), "ath_raw_3d_offset_axis_bit_count_minus1");
         }
         if (ath.ath_type == ATH_TYPE::P_TILE && NumLtrAtlasFrmEntries > 1) {
@@ -531,7 +531,7 @@ void atlas_context::write_atlas_tile_data_unit(bitstream_t* stream, const atlas_
         // skipPatchDataUnit(bitstream);
         //  This is just empty?
     } else {
-        for (std::size_t puCount = 0; puCount < atdu.patch_information_data_.size(); puCount++) {
+        for (size_t puCount = 0; puCount < atdu.patch_information_data_.size(); puCount++) {
             uvg_bitstream_put_ue(stream, atdu.patch_information_data_.at(puCount).patchMode);
 
             if (atdu.patch_information_data_.at(puCount).patchMode == ATDU_PATCH_MODE_I_TILE::I_END) {
@@ -663,8 +663,8 @@ void atlas_context::calculate_atlas_size_values() {
     atlas_sub_size_ += current_nal_size;
     previous_bitstream_size = current_bitstream_size;
 
-    for (std::size_t i = 0; i < atlas_data_.size(); ++i) {
-        write_nal_hdr(&temp_bitstream, NAL_IDR_N_LP, 0, 1);  // to do: Dynamic NALU type
+    for (size_t i = 0; i < atlas_data_.size(); ++i) {
+        write_nal_hdr(&temp_bitstream, NAL_IDR_N_LP, 0, 1);  // TODO(lf): Dynamic NALU type
         write_atlas_tile_layer_rbsp(&temp_bitstream, NAL_IDR_N_LP, atlas_data_.at(i));
         current_bitstream_size = uvg_bitstream_tell(&temp_bitstream) / 8;
         current_nal_size = current_bitstream_size - previous_bitstream_size;
@@ -704,9 +704,9 @@ void atlas_context::write_atlas_sub_bitstream(bitstream_t* stream) {
     write_nal_hdr(stream, NAL_AFPS, 0, 1);
     write_atlas_frame_parameter_set(stream);
 
-    for (std::size_t i = 0; i < atlas_data_.size(); ++i) {
+    for (size_t i = 0; i < atlas_data_.size(); ++i) {
         uvg_bitstream_put(stream, ad_nal_sizes_.at(i + 2), nal_precision_in_bits);  // i + 2 = Skip ASPS and AFPS
-        write_nal_hdr(stream, NAL_IDR_N_LP, 0, 1);                                  // to do: Dynamic NALU type
+        write_nal_hdr(stream, NAL_IDR_N_LP, 0, 1);                                  // TODO(lf): Dynamic NALU type
         write_atlas_tile_layer_rbsp(stream, NAL_IDR_N_LP, atlas_data_.at(i));
     }
 
@@ -729,11 +729,11 @@ void atlas_context::write_atlas_parameter_set_nals(bitstream_t* stream) {
     write_atlas_frame_parameter_set(stream);
 }
 
-void atlas_context::write_atlas_nal(bitstream_t* stream, std::size_t index) {
+void atlas_context::write_atlas_nal(bitstream_t* stream, size_t index) {
     const uint32_t nal_precision_in_bits = ad_nal_precision_ * 8;
 
     uvg_bitstream_put(stream, ad_nal_sizes_.at(index + 2), nal_precision_in_bits);  // index + 2 = Skip ASPS and AFPS
-    write_nal_hdr(stream, NAL_IDR_N_LP, 0, 1);                                      // to do: Dynamic NALU type
+    write_nal_hdr(stream, NAL_IDR_N_LP, 0, 1);                                      // TODO(lf): Dynamic NALU type
     write_atlas_tile_layer_rbsp(stream, NAL_IDR_N_LP, atlas_data_.at(index));
 }
 

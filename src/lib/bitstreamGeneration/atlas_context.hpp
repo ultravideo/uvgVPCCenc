@@ -51,7 +51,7 @@ class atlas_context {
     /* Write ASPS and AFPS nal units */
     void write_atlas_parameter_set_nals(bitstream_t* stream);
     /* Write an atlas NAL unit at index */
-    void write_atlas_nal(bitstream_t* stream, std::size_t index);
+    void write_atlas_nal(bitstream_t* stream, size_t index);
 
     /* Write an atlas NAL unit at index */
     void write_atlas_eob(bitstream_t* stream);
@@ -62,10 +62,10 @@ class atlas_context {
     atlas_frame_parameter_set& get_afps() { return afps_; };
 
     // -------------- Getters - helper variables --------------
-    std::size_t get_gof_id() { return gof_id_; };
-    std::size_t get_atlas_sub_size() { return atlas_sub_size_; };
-    std::vector<std::size_t> get_ad_nal_sizes() { return ad_nal_sizes_; };
-    std::size_t get_ad_nal_precision() { return ad_nal_precision_; };
+    size_t get_gof_id() { return gof_id_; };
+    size_t get_atlas_sub_size() { return atlas_sub_size_; };
+    std::vector<size_t> get_ad_nal_sizes() { return ad_nal_sizes_; };
+    size_t get_ad_nal_precision() { return ad_nal_precision_; };
 
    private:
     /* Calculate sizes of
@@ -79,10 +79,10 @@ class atlas_context {
                                                                             const uvgvpcc_enc::Parameters& paramUVG);
     atlas_frame_parameter_set create_atlas_frame_parameter_set();
     atlas_frame_tile_information create_atlas_frame_tile_information() const;
-    atlas_tile_header create_atlas_tile_header(std::size_t frameIndex, std::size_t tileIndex, const uvgvpcc_enc::Parameters& paramUVG) const;
+    atlas_tile_header create_atlas_tile_header(size_t frameIndex, size_t tileIndex, const uvgvpcc_enc::Parameters& paramUVG) const;
     atlas_tile_data_unit create_atlas_tile_data_unit(const uvgvpcc_enc::Parameters& paramUVG, const uvgvpcc_enc::Frame& frameUVG,
                                                      atlas_tile_header& ath) const;
-    atlas_tile_layer_rbsp create_atlas_tile_layer_rbsp(std::size_t frameIndex, std::size_t tileIndex, const uvgvpcc_enc::Parameters& paramUVG,
+    atlas_tile_layer_rbsp create_atlas_tile_layer_rbsp(size_t frameIndex, size_t tileIndex, const uvgvpcc_enc::Parameters& paramUVG,
                                                        const uvgvpcc_enc::Frame& frameUVG);
 
     // -------------- Functions to write data structures to bitstream --------------
@@ -104,8 +104,8 @@ class atlas_context {
     std::vector<atlas_tile_layer_rbsp> atlas_data_;
 
     /* -------------- Helper variables -------------- */
-    std::size_t gof_id_;
-    std::size_t atlas_sub_size_;
-    std::vector<std::size_t> ad_nal_sizes_;
-    std::size_t ad_nal_precision_;
+    size_t gof_id_;
+    size_t atlas_sub_size_;
+    std::vector<size_t> ad_nal_sizes_;
+    size_t ad_nal_precision_;
 };

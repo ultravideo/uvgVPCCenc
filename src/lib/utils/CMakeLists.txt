@@ -13,6 +13,6 @@ add_library(logLibrary STATIC
     log.cpp
 )
 
-# # Optionally, add additional configurations, dependencies, or options
+# Optionally, add additional configurations, dependencies, or options
 target_compile_options(utilsLibrary PRIVATE -fPIC)
 target_compile_options(logLibrary PRIVATE -fPIC)

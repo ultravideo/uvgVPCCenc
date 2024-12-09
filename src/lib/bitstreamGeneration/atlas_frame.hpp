@@ -53,7 +53,7 @@ struct atlas_tile_header {
     uint16_t ath_id = 0;
     ATH_TYPE ath_type;
     bool ath_atlas_output_flag = false;
-    std::size_t ath_atlas_frm_order_cnt_lsb = 0;
+    size_t ath_atlas_frm_order_cnt_lsb = 0;
     bool ath_ref_atlas_frame_list_asps_flag = false;
     ref_list_struct refs;
     uint8_t ath_ref_atlas_frame_list_idx = 0;
@@ -68,21 +68,20 @@ struct atlas_tile_header {
     uint8_t ath_num_ref_idx_active_minus1 = 0;
 };
 
-// TODO: implement plr data
 struct plr_data {};
 
 struct patch_data_unit {
     // from spec
-    std::size_t pdu_2d_pos_x = 0;
-    std::size_t pdu_2d_pos_y = 0;
+    size_t pdu_2d_pos_x = 0;
+    size_t pdu_2d_pos_y = 0;
     uint64_t pdu_2d_size_x_minus1 = 0;
     uint64_t pdu_2d_size_y_minus1 = 0;
-    std::size_t pdu_3d_offset_u = 0;
-    std::size_t pdu_3d_offset_v = 0;
-    std::size_t pdu_3d_offset_d = 0;
-    std::size_t pdu_3d_range_d = 0;
-    std::size_t pdu_projection_id = 0;
-    std::size_t pdu_orientation_index = 0;
+    size_t pdu_3d_offset_u = 0;
+    size_t pdu_3d_offset_v = 0;
+    size_t pdu_3d_offset_d = 0;
+    size_t pdu_3d_range_d = 0;
+    size_t pdu_projection_id = 0;
+    size_t pdu_orientation_index = 0;
     bool pdu_lod_enabled_flag = false;
     uint8_t pdu_lod_scale_x_minus1 = 0;
     uint8_t pdu_lod_scale_y_idc = 1;
@@ -169,7 +168,7 @@ struct atlas_sequence_parameter_set {
 
     bool asps_use_eight_orientations_flag = false;
     bool asps_extended_projection_enabled_flag = false;
-    std::size_t asps_max_number_projections_minus1 = 5;
+    size_t asps_max_number_projections_minus1 = 5;
     bool asps_normal_axis_limits_quantization_enabled_flag = true;
     bool asps_normal_axis_max_delta_value_enabled_flag = false;
     bool asps_patch_precedence_order_flag = false;

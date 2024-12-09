@@ -32,12 +32,12 @@
 
 #pragma once
 
-#include <cstdint>
 #include <string>
 
+// TODO(lf) : verify that all 'uvgvpcc_enc' follow the exact same writting
 namespace uvgvpcc_enc {
 std::string get_version();
-std::size_t get_version_major();
-std::size_t get_version_minor();
-std::size_t get_version_patch();
+size_t get_version_major();
+size_t get_version_minor();
+size_t get_version_patch();
 }  // namespace uvgvpcc_enc
