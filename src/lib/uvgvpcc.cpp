@@ -112,13 +112,6 @@ void initializeStaticFunctionPointers() {
 
 void verifyConfig() {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "VERIFY CONFIG", "Verify the parameter configuration.\n");
-    if((p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) && p_->intermediateFilesDir.empty()) {
-        throw std::runtime_error("You choose to export intermediate files ('exportIntermediateMaps' or 'exportIntermediatePointClouds') but the parameter 'intermediateFilesDir' is empty.\n");
-    } 
-    
-    if((p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) && (!std::filesystem::exists(p_->intermediateFilesDir) || !std::filesystem::is_directory(p_->intermediateFilesDir)) ) {
-        throw std::runtime_error("The given 'intermediateFilesDir': '" +  p_->intermediateFilesDir + "' does not exist or is not a directory.\n");
-    }
 
     if ( !( (p_->occupancyEncoderName=="Kvazaar" && p_->geometryEncoderName=="Kvazaar" && p_->attributeEncoderName=="Kvazaar"))) {
         std::cerr << p_->occupancyEncoderName << " " << p_->geometryEncoderName << " " << p_->attributeEncoderName << std::endl;
@@ -396,6 +389,10 @@ void parseUvgvpccParameters() {
     }       
 
     // Create sub-directory if necessary
+    if((p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) && p_->intermediateFilesDir.empty()) {
+        throw std::runtime_error("You choose to export intermediate files ('exportIntermediateMaps' or 'exportIntermediatePointClouds') but the parameter 'intermediateFilesDir' is empty.\n");
+    } 
+
     if(p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) {
         createDirectory(p_->intermediateFilesDir);
     }
