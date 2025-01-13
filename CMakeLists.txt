@@ -12,11 +12,7 @@ set(uvgVPCCenc_URL "https://github.com/ultravideo/uvgVPCCenc")
 set(KVAZAAR_REPO_URL "https://github.com/ultravideo/kvazaar.git")
 set(KVAZAAR_REPO_TAGS "bb836ff1422f247b490230e9d429a2d6658cd1a1")
 
-set(UVG266_REPO_URL "https://github.com/ultravideo/uvg266.git")
-set(UVG266_REPO_TAGS "63da66745a41c48cd8f2cb8cc99c5de3249ed261")
-
 set(KVAZAAR_EP_UPDATE_DISCONNECTED ON)
-set(UVG266_EP_UPDATE_DISCONNECTED ON)
 
 option(BUILD_SHARED_LIBS "Build using shared uvgVPCCenc library" ON)
 
