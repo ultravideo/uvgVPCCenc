@@ -52,7 +52,7 @@
 #include <vector>
 
 #include "cli.hpp"
-#include "miniply.h"
+#include "extras/miniply.h"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
