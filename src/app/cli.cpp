@@ -33,7 +33,7 @@
 #include "cli.hpp"
 
 // NOLINTBEGIN(misc-include-cleaner)
-#include <getopt.h>
+#include "extras/getopt.h"
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
