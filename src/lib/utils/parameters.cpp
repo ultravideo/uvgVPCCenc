@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Library parameters related operations.
+
 #include "utils/parameters.hpp"
 
 #include <numeric>
@@ -250,7 +252,7 @@ void initializeParameterMap(Parameters& param) {
 
 namespace {
 
-size_t LevenshteinDistance(const std::string& a, const std::string& b) {
+size_t levenshteinDistance(const std::string& a, const std::string& b) {
     const size_t m = a.size();
     const size_t n = b.size();
     std::vector<std::vector<size_t>> dp(m + 1, std::vector<size_t>(n + 1));
@@ -274,11 +276,11 @@ size_t LevenshteinDistance(const std::string& a, const std::string& b) {
 }
 
 
-std::string SuggestClosestString(const std::string& inputStr) {
+std::string suggestClosestString(const std::string& inputStr) {
     size_t minDistance = std::numeric_limits<size_t>::max();
     std::string closestString;
     for (const auto& option : parameterMap) {
-        const size_t distance = LevenshteinDistance(inputStr, option.first);
+        const size_t distance = levenshteinDistance(inputStr, option.first);
         if (distance < minDistance) {
             minDistance = distance;
             closestString = option.first;
@@ -294,7 +296,7 @@ void setParameterValue(const std::string& parameterName,const std::string& param
             uvgvpcc_enc::LogLevel::DEBUG, "API","Set parameter value: " + parameterName + " -> " + parameterValue + "\n");
     
     if(!parameterMap.contains(parameterName)) {
-        throw std::invalid_argument(std::string(fromPreset ? "[PRESET] " : "") + "The parameter '" + parameterName + "' is not a valid parameter name. Did you mean '" + SuggestClosestString(parameterName) + "'? (c.f. parameterMap)");
+        throw std::invalid_argument(std::string(fromPreset ? "[PRESET] " : "") + "The parameter '" + parameterName + "' is not a valid parameter name. Did you mean '" + suggestClosestString(parameterName) + "'? (c.f. parameterMap)");
     }
     if (parameterValue.empty()) {
         throw std::invalid_argument("It seems an empty value is assigned to the parameter " + parameterName + ".");

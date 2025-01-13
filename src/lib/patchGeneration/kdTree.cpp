@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Interface between uvgVPCCenc and the external nanoflann library.
+
 #include "kdTree.hpp"
 
 // TODO(lf): nanoflann is currently returning distances as double, even if they are integer value

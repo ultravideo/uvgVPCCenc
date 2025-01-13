@@ -30,9 +30,9 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Entry point for the map encoding process.
+
 #include "uvgvpcc/uvgvpcc.hpp"
-
-
 
 namespace MapEncoding {
 void initializeStaticParameters();

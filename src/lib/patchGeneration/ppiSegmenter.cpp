@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file This file combine both the initial segmentation and the refine segmentation. Assign a PPI (projection plan index) to each point.
+
 #include "ppiSegmenter.hpp"
 
 #include <algorithm>
@@ -112,7 +114,7 @@ void PPISegmenter::initialSegmentation(std::vector<size_t>& pointsPPIs, const si
 // TODO(lf): the number of points in the voxel is usefull only for DE-V voxel no ? So why to set the value for all voxels ?
 // TODO(lf): use two flags, compute one time the flag for S or M instead of checking it like the other classification
 
-inline void PPISegmenter::updateVoxelAttributeOptimPaper(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
+inline void PPISegmenter::updateVoxelAttribute(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
                                                          const std::vector<size_t>& pointsPPIs) {
     std::vector<size_t>& voxScore = voxAttribute.voxScore_;
 
@@ -143,7 +145,7 @@ inline void PPISegmenter::updateVoxelAttributeOptimPaper(VoxelAttribute& voxAttr
     voxAttribute.voxPPI_ = static_cast<size_t>(std::distance(voxScore.begin(), maxScore));
 }
 
-void PPISegmenter::computeExtendedScoreOptimPaper(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
+void PPISegmenter::computeExtendedScore(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
                                                   const std::vector<VoxelAttribute>& voxAttributeList) {
     std::fill(voxExtendedScore.begin(), voxExtendedScore.end(), 0);
     for (const auto& voxelIndex : ADJ_List) {
@@ -154,7 +156,7 @@ void PPISegmenter::computeExtendedScoreOptimPaper(std::vector<size_t>& voxExtend
 }
 
 // TODO(lf)warning : adjacent (old name) voxel contain the voxel itself!
-void PPISegmenter::updateAdjacentVoxelsClassOptimPaper(std::vector<VoxelAttribute>& voxAttributeList,
+void PPISegmenter::updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAttributeList,
                                                        const std::vector<size_t>& voxExtendedScore,
                                                        const std::vector<size_t>& IDEV_List) {
     // Common and effective way to find the index of the maximum element in a C++ container
@@ -169,7 +171,7 @@ void PPISegmenter::updateAdjacentVoxelsClassOptimPaper(std::vector<VoxelAttribut
     }
 }
 
-inline bool PPISegmenter::checkNEVOptimPaper(const VoxClass voxClass, const size_t voxPPI,
+inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI,
                                              const std::vector<size_t>& voxExtendedScore) {
     // TODO(lf): why not to check if S_DIRECT_EDGE ?
 
@@ -196,7 +198,7 @@ inline bool PPISegmenter::checkNEVOptimPaper(const VoxClass voxClass, const size
 }
 
 // TODO(lf): special algorithm trajectory for S_DIRECT_EDGE_VOXEL
-inline void PPISegmenter::refinePointsPPIsOptimPaper(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices,
+inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices,
                                                      const double weight, const std::vector<size_t>& voxExtendedScore) const {
     std::vector<double> weightedScoreSmooth(p_->projectionPlaneCount);
     for (size_t k = 0; k < p_->projectionPlaneCount; ++k) {
@@ -263,7 +265,7 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vecto
 
 // TODO(lf): tackle the cognitive complexity
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void PPISegmenter::fillNeighborAndAdjacentListsFromPaper(
+void PPISegmenter::fillNeighborAndAdjacentLists(
     std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, std::unordered_map<size_t, size_t>& voxelIdxMap,
     std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
     std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightListOptimPaper,
@@ -278,7 +280,7 @@ void PPISegmenter::fillNeighborAndAdjacentListsFromPaper(
             // Single Direct Edge Voxel : One point in the voxel //
             voxAttribute.voxClass_ = VoxClass::S_DIRECT_EDGE;
         }
-        updateVoxelAttributeOptimPaper(voxAttribute, pointListInVoxels[v_idx], pointsPPIs);
+        updateVoxelAttribute(voxAttribute, pointListInVoxels[v_idx], pointsPPIs);
 
         const size_t cur_pos_1D = filledVoxels[v_idx];
         // find valid 3D search range centered on cur_pos_1D //
@@ -392,7 +394,7 @@ void PPISegmenter::refineSegmentation(std::vector<size_t>& pointsPPIs, const siz
     std::vector<std::vector<size_t>> ADJ_List(voxelCount);   // large    // This is voxNeighborsList
     std::vector<std::vector<size_t>> IDEV_List(voxelCount);  // small    // This is voxAdjacentsList
     std::vector<double> voxWeightListOptimPaper(voxelCount);
-    fillNeighborAndAdjacentListsFromPaper(filledVoxels, occFlagArray, voxelIdxMap, ADJ_List, IDEV_List, pointListInVoxels,
+    fillNeighborAndAdjacentLists(filledVoxels, occFlagArray, voxelIdxMap, ADJ_List, IDEV_List, pointListInVoxels,
                                           voxWeightListOptimPaper, voxAttributeListOptimPaper, pointsPPIs);
 
     // TODO(lf): find a way to break the refine segmentation iteration before reaching the number of iteration parameter (if number of updated
@@ -410,14 +412,14 @@ void PPISegmenter::refineSegmentation(std::vector<size_t>& pointsPPIs, const siz
             }
 
             std::vector<size_t> voxExtendedScore(p_->projectionPlaneCount, 0);
-            computeExtendedScoreOptimPaper(voxExtendedScore, ADJ_List[voxelIndex], voxAttributeListOptimPaper);
-            updateAdjacentVoxelsClassOptimPaper(voxAttributeListOptimPaper, voxExtendedScore, IDEV_List[voxelIndex]);
-            if (checkNEVOptimPaper(voxClass, voxAttributeListOptimPaper[voxelIndex].voxPPI_, voxExtendedScore)) {
+            computeExtendedScore(voxExtendedScore, ADJ_List[voxelIndex], voxAttributeListOptimPaper);
+            updateAdjacentVoxelsClass(voxAttributeListOptimPaper, voxExtendedScore, IDEV_List[voxelIndex]);
+            if (checkNEV(voxClass, voxAttributeListOptimPaper[voxelIndex].voxPPI_, voxExtendedScore)) {
                 continue;  // The current iteration found that this voxel is NE-V //
             }
 
             // The voxel is not NE-V, so it is D-EV or IDE-V and its points PPI can be refined //
-            refinePointsPPIsOptimPaper(pointsPPIs, pointListInVoxels[voxelIndex], voxWeightListOptimPaper[voxelIndex], voxExtendedScore);
+            refinePointsPPIs(pointsPPIs, pointListInVoxels[voxelIndex], voxWeightListOptimPaper[voxelIndex], voxExtendedScore);
             voxAttributeListOptimPaper[voxelIndex].updateFlag_ = true;
         }
 
@@ -429,7 +431,7 @@ void PPISegmenter::refineSegmentation(std::vector<size_t>& pointsPPIs, const siz
             }
             voxAttributeListOptimPaper[voxelIndex].updateFlag_ = false;
             std::fill(voxAttributeListOptimPaper[voxelIndex].voxScore_.begin(), voxAttributeListOptimPaper[voxelIndex].voxScore_.end(), 0);
-            updateVoxelAttributeOptimPaper(voxAttributeListOptimPaper[voxelIndex], pointListInVoxels[voxelIndex], pointsPPIs);
+            updateVoxelAttribute(voxAttributeListOptimPaper[voxelIndex], pointListInVoxels[voxelIndex], pointsPPIs);
         }
     }
 

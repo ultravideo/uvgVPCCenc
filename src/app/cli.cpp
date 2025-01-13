@@ -117,9 +117,10 @@ size_t select_start_frame_auto(std::string& file_name) {
 }
 }  // anonymous namespace
 
+/// @brief Parse command line options
+/// @return True if the execution should end (for exemple if the flag --help is used).
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args) {
 
-    // Parse command line options
     for (optind = 0;;) {
         int long_options_index = -1;
 
@@ -222,13 +223,19 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
     return false;
 }
 
+/// @brief Print the default usage of the application.
+/// @param  
 void print_usage(void) {
     std::cout << "usage: uvpVPCCenc -i <input> -n <frame number> -o <output>\n"
               << "       --help for more information" << std::endl;
 }
 
+/// @brief Print the version of the uvgVPCCenc library.
+/// @param  
 void print_version(void) { std::cout << "uvgVPCC " << uvgvpcc_enc::get_version() << std::endl; }
 
+/// @brief Print the help message of the application.
+/// @param  
 void print_help(void) {
     std::cout << "Usage: uvpVPCCenc -i <input> -n <frame number> -o <output>\n\n";
                  /* Word wrap to this width to stay under 80 characters (including ") *************/
@@ -239,15 +246,15 @@ void print_help(void) {
     std::cout << "  -s, --start-frame <number>   Frame number to start the encoding\n";
     std::cout << "  -g, --geo-precision <number> Geometry precision for encoding\n";
     std::cout << "  -t, --threads <number>       Maximum number of threads to be used\n";
-    std::cout << "      --uvgvpcc <params>       Encoder configuration parameters\n";
     std::cout << "  -l, --loop-input <number>    Number of input loop\n";
+    std::cout << "      --uvgvpcc <params>       Encoder configuration parameters\n";
     std::cout << "      --help                   Show this help message\n";
     std::cout << "      --version                Show version information\n";
     
     std::cout << "\nDescription:\n";
     std::cout << "  This tool encodes point cloud video frames using the uvgVPCCenc codec\n";
     std::cout << "  with specified parameters.\n";
-    std::cout << "  The input and output file paths must be specified, using \%0Xd\n";
+    std::cout << "  The input file path must be specified using \%0Xd\n";
 }
 }  // namespace cli
 // NOLINTEND(misc-include-cleaner)

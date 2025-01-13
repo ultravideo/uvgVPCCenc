@@ -79,7 +79,10 @@ enum : std::uint8_t { RETVAL_RUNNING, RETVAL_FAILURE, RETVAL_EOF };
 const size_t MAX_PATH_SIZE = 4096;
 const size_t FORCED_V3C_SIZE_PRECISION = 5;  // Should be enough to hold any V3C unit sizes
 
-/* This function is used to write a number (V3C unit size) to a field of size len */
+/// @brief This function is used to write a number (V3C unit size) to a field of size len.
+/// @param value 
+/// @param dst 
+/// @param len 
 void create_bytes(uint64_t value, char* dst, size_t len) {
     const uint64_t mask = 0xFF;
     for (size_t i = 0; i < len; ++i) {
@@ -88,6 +91,8 @@ void create_bytes(uint64_t value, char* dst, size_t len) {
     }
 }
 
+/// @brief Simple wrapper for the miniply library for parsing a .ply file.
+/// @param frame 
 void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     // uvgVPCCenc currently support only geometry of type unsigned int
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "APPLICATION",
@@ -138,6 +143,8 @@ void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     frame->printInfo();
 }
 
+/// @brief Application thread reading the input .ply files.
+/// @param args 
 void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     const cli::opts_t& appParameters = *args->opts;
     size_t frameId = 0;
@@ -183,6 +190,9 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     }
 }
 
+/// @brief Application thread writing the final output bitstream.
+/// @param chunks 
+/// @param output_path 
 void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& output_path) {
     std::ofstream file(output_path, std::ios::binary);
     if (!file.is_open()) {
@@ -223,7 +233,8 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
     }
 }
 
-
+/// @brief Simple application wrapper taking a command string as input to set multiple encoder parameters.
+/// @param parametersCommand 
 void setParameters(const std::string& parametersCommand) {
     // Iterate over each substring separated by commas
     std::string segment;
@@ -249,6 +260,10 @@ void setParameters(const std::string& parametersCommand) {
 
 }  // anonymous namespace
 
+/// @brief This example application offers a simple approach to working with the uvgVPCCenc library and highlights the essential setup steps required for its use.
+/// @param argc 
+/// @param argv Application command line
+/// @return 
 int main(const int argc, const char* const argv[]) {
 
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION", "uvgVPCCenc application starts.\n");
@@ -266,11 +281,14 @@ int main(const int argc, const char* const argv[]) {
         cli::print_usage();
         return EXIT_FAILURE;
     }
-    if(exitOnParse) {return EXIT_SUCCESS;}
+    if(exitOnParse) {
+        // --version or --help //
+        return EXIT_SUCCESS;
+    }
 
-    // The only way for the application to change the state of the encoder, that is to interact with its parameters, is via the uvgvpcc_enc::API::setParameter function.
+    // The only way for the application to change the encoder parameters is through the uvgvpcc_enc::API::setParameter(...) function. //
     try {
-        setParameters(appParameters.uvgvpccParametersString); // Simple application wrapper taking a command string as input to set multiple parameters.
+        setParameters(appParameters.uvgvpccParametersString);
         uvgvpcc_enc::API::setParameter("geoBitDepthInput",std::to_string(appParameters.inputGeoPrecision));
         uvgvpcc_enc::API::setParameter("nbThreadPCPart",std::to_string(appParameters.threads));
         uvgvpcc_enc::API::setParameter("occupancyEncodingNbThread",std::to_string(appParameters.threads));
@@ -290,8 +308,8 @@ int main(const int argc, const char* const argv[]) {
         return EXIT_FAILURE;
     }
 
+    // Initialize the application input and output threads
     const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(&appParameters, nullptr, RETVAL_RUNNING);
-
     std::thread inputTh(&inputReadThread, in_args);
     size_t frameRead = 0;
     std::shared_ptr<uvgvpcc_enc::Frame> currFrame = nullptr;
@@ -300,6 +318,8 @@ int main(const int argc, const char* const argv[]) {
     uvgvpcc_enc::API::v3c_unit_stream output;  // Each v3c chunk gets appended to the V3C unit stream as they are encoded
     std::thread file_writer_thread;
     file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
+    
+    // Main loop of the application, feeding one frame to the encoder at each iteration
     for (;;) {
         filled_input_slots.acquire();
         currFrame = in_args->frame_in;
@@ -312,6 +332,7 @@ int main(const int argc, const char* const argv[]) {
             return EXIT_FAILURE;
         }
         try {
+            // Entry point of the uvgVPCCenc library
             uvgvpcc_enc::API::encodeFrame(currFrame, &output);
         } catch (const std::runtime_error& e) {
             // Only one try and catch block. All exceptions thrown by the library are catched here.
@@ -322,7 +343,7 @@ int main(const int argc, const char* const argv[]) {
         frameRead++;
     }
 
-    /* After all frames are encoded, an empty v3c_chunk is pushed to output. It signals the end of data to file_writer thread.*/
+    // After all frames are encoded, an empty v3c_chunk is pushed to output. It signals the end of data to file_writer thread.
     uvgvpcc_enc::API::emptyFrameQueue();
 
     output.io_mutex.lock();

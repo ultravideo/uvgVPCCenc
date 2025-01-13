@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Main file of the uvgVPCCenc library that defines the main structures (GOF, frame, patch) and the API.
+
 #include "uvgvpcc/uvgvpcc.hpp"
 
 #include <cassert>
@@ -55,7 +57,7 @@
 #include "uvgvpcc/threadqueue.hpp"
 #include "patchPacking/patchPacking.hpp"
 #include "mapEncoding/mapEncoding.hpp"
-#include "mapGeneration/mapGenerationBaseLine.hpp"
+#include "mapGeneration/mapGeneration.hpp"
 #include "patchGeneration/patchGeneration.hpp"
 #include "bitstreamGeneration/bitstreamGeneration.hpp"
 #include "utils/preset.hpp"
@@ -372,19 +374,19 @@ void parseUvgvpccParameters() {
 
     const std::string detectedThreadNumber = std::to_string(std::thread::hardware_concurrency());
     if(p_->nbThreadPCPart == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("nbThreadPCPart",detectedThreadNumber,false);
     }
     if(p_->occupancyEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'occupancyEncodingNbThread' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'occupancyEncodingNbThread' is set to 0. The number of thread used for the occcupancy video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("occupancyEncodingNbThread",detectedThreadNumber,false);
     }
     if(p_->geometryEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'geometryEncodingNbThread' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'geometryEncodingNbThread' is set to 0. The number of thread used for the geometry video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("geometryEncodingNbThread",detectedThreadNumber,false);
     }
     if(p_->attributeEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'attributeEncodingNbThread' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'attributeEncodingNbThread' is set to 0. The number of thread used for the attribute video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("attributeEncodingNbThread",detectedThreadNumber,false);
     }       
 
@@ -411,8 +413,6 @@ void parseUvgvpccParameters() {
 
 }
 
-
-
 static void initializeContext() {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "API", "Initialize context.\n");
     g_threadHandler.queue = std::make_shared<ThreadQueue>(p_->nbThreadPCPart);
@@ -436,6 +436,7 @@ void Frame::printInfo() const {
                     "\tattributeMapL2 size: " + std::to_string(attributeMapL2.size()) + "\n");
 }
 
+/// @brief Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given configuration is valid. Initialize static parameters and function pointers.
 void API::initializeEncoder() {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "API", "Initialize the encoder.\n");
     uvgvpcc_enc::initializeParameterMap(param);
@@ -448,9 +449,12 @@ void API::initializeEncoder() {
     initializationDone = true;
 }
 
+/// @brief The only way to modify the exposed uvgVPCCenc parameters is by calling this function.
+/// @param parameterName Name of the parameter. All exposed parameters are listed in the object parameterMap defined in lib/utils/parameters.cpp
+/// @param parameterValue The value of the parameter written as a string.
 void API::setParameter(const std::string& parameterName,const std::string& parameterValue) {
     if(initializationDone) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "API","The API functions 'setParameter' and 'setParameters' can't be called after the function 'initializeEncoder'.\n");
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "API","The API function 'setParameter' can't be called after the API function 'initializeEncoder'.\n");
         throw std::runtime_error("");
     }
     if(apiInputParameters.find(parameterName) != apiInputParameters.end()) {
@@ -460,6 +464,9 @@ void API::setParameter(const std::string& parameterName,const std::string& param
     apiInputParameters.emplace(parameterName,parameterValue);
 }
 
+/// @brief Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this frame. This function also handles the GOF processing.
+/// @param frame uvgvpcc_enc::Frame
+/// @param output GOF bitstream
 void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
     Logger::log(LogLevel::TRACE, "API", "Encoding frame " + std::to_string(frame->frameId) + "\n");
     if (frame == nullptr) {
@@ -468,6 +475,7 @@ void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
     }
 
     if (frame->frameId % p_->sizeGOF == 0) {
+        // The current frame is the first of its GOF. Create all GOF related jobs.
         g_threadHandler.currentGOF = std::make_shared<GOF>();
         g_threadHandler.currentGOF->gofId = g_threadHandler.gofId++;
         g_threadHandler.currentGOF->nbFrames = 0;
@@ -489,7 +497,6 @@ void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
         g_threadHandler.currentGOFBitstreamGenJob = std::make_shared<Job>(
             "GOF " + std::to_string(g_threadHandler.currentGOF->gofId) + " BitstreamGeneration::createV3CGOFBitstream", 5,
             BitstreamGeneration::createV3CGOFBitstream, g_threadHandler.currentGOF, *(p_), output);
-        // }
 
         if (p_->interPatchPacking) {
             g_threadHandler.currentGOFInitMapGenJob->addDependency(g_threadHandler.currentGOFInterPackJob);
@@ -543,6 +550,7 @@ void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
     }
 }
 
+/// @brief This function is called when all frames to be processed have been sent to the encoder. Wait for all remaining jobs to be executed.
 void API::emptyFrameQueue() {
     if (g_threadHandler.currentGOF != nullptr) {
         if (g_threadHandler.currentGOF->nbFrames < p_->sizeGOF) {
@@ -557,6 +565,7 @@ void API::emptyFrameQueue() {
     }
 }
 
+/// @brief Insure a proper end of the encoder execution.
 void API::stopEncoder() { g_threadHandler.queue->stop(); }
 
 }  // namespace uvgvpcc_enc

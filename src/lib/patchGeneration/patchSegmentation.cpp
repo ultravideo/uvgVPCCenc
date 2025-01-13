@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Entry point for the patch segmentation process which create the frame patch list.
+
 #include "patchSegmentation.hpp"
 
 #include <algorithm>
@@ -59,7 +61,7 @@ PatchSegmentation::PatchSegmentation() = default;
 // TODO(lf): why the second layers resample point are not added in the resample ?
 // TODO(lf): the unordered set could be a map, the value would be the patchIndex of the key point.
 // TODO(lf): find a better function name
-void PatchSegmentation::resampledPointcloudLUT(std::unordered_set<size_t>& resamplePointSet, uvgvpcc_enc::Patch& patch) {
+void PatchSegmentation::resampledPointcloud(std::unordered_set<size_t>& resamplePointSet, uvgvpcc_enc::Patch& patch) {
     patch.sizeD_ = 0;
     const int16_t projectionTypeIndication =
         static_cast<int16_t>(-2 * static_cast<int>(patch.projectionMode_) + 1);  // projection=0 -> 1, projection=1 -> -1
@@ -112,7 +114,7 @@ void PatchSegmentation::resampledPointcloudLUT(std::unordered_set<size_t>& resam
 
 // TODO(lf): tackle the cognitive complexity
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void PatchSegmentation::createConnectedComponentsLUT(std::vector<std::vector<size_t>>& connectedComponents, std::vector<bool>& flags,
+void PatchSegmentation::createConnectedComponents(std::vector<std::vector<size_t>>& connectedComponents, std::vector<bool>& flags,
                                                      const std::vector<size_t>& rawPoints,
                                                      //  const std::vector<std::vector<size_t>>& pointsNNList,
                                                      const std::vector<size_t>& pointsPPIs,
@@ -487,7 +489,7 @@ void PatchSegmentation::computeAdditionalPatchInfo(uvgvpcc_enc::Patch& patch) {
 // Warning : this is probably false, as some points are considerd as not raw but their distance is still saved in rawPointsDistance
 // TODO(lf): tackle the cognitive complexity
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void PatchSegmentation::refillRawPointsLUT(const std::unordered_set<size_t>& resamplePointSet, std::vector<size_t>& rawPoints,
+void PatchSegmentation::refillRawPoints(const std::unordered_set<size_t>& resamplePointSet, std::vector<size_t>& rawPoints,
                                            const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                                            const size_t& pointCount, std::vector<bool>& flags,
                                            std::unordered_map<size_t, size_t>& nnPropagationMapFlagTrue) {
@@ -600,7 +602,7 @@ void PatchSegmentation::patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& f
             connectedComponents;           // TODO(lf): why not to declare it outside the while and empty it after each iteration ?
         connectedComponents.reserve(256);  // TODO(lf)seems to big approximation
 
-        createConnectedComponentsLUT(connectedComponents, flags, rawPoints, pointsPPIs, nnPropagationMapFlagTrue, frame->pointsGeometry);
+        createConnectedComponents(connectedComponents, flags, rawPoints, pointsPPIs, nnPropagationMapFlagTrue, frame->pointsGeometry);
 
         if (connectedComponents.empty()) {
             break;
@@ -700,13 +702,13 @@ void PatchSegmentation::patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& f
             // my comment : this function compute the patch
             // occupancy map, and seems to definitley and properly set both layers
             // TODO(lf)a map with key : pointIndex and value : patchId is enough instead of this resampled point cloud
-            resampledPointcloudLUT(resamplePointSet, patch);
+            resampledPointcloud(resamplePointSet, patch);
 
             // TMC2 : note: patch.getSizeD() cannot generate maximum depth(e.g. getSizeD=255, quantDD=3, quantDD needs to be limitted
             // to satisfy the bitcount) max : (1<<std::min(geoBitDepthInput, geometryNominal2dBitdepth))
             computeAdditionalPatchInfo(patch);
         }
-        refillRawPointsLUT(resamplePointSet, rawPoints, frame->pointsGeometry, pointCount, flags, nnPropagationMapFlagTrue);
+        refillRawPoints(resamplePointSet, rawPoints, frame->pointsGeometry, pointCount, flags, nnPropagationMapFlagTrue);
     }
 
     if (p_->exportIntermediatePointClouds) {

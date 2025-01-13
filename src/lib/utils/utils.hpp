@@ -30,6 +30,9 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Common tools used by the uvgVPCCenc library.
+
+
 #pragma once
 
 #include <array>

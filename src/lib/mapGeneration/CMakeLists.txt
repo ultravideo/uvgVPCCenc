@@ -4,7 +4,7 @@ set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_DEFAULT}")
 
 # Define the library
 add_library(mapGenerationLibrary STATIC
-    mapGenerationBaseLine.cpp
+    mapGeneration.cpp
 )
 
 # Include directories for headers

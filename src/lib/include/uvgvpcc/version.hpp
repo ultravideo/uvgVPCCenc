@@ -31,7 +31,6 @@
  ****************************************************************************/
 
 #pragma once
-
 #include <string>
 
 // TODO(lf) : verify that all 'uvgvpcc_enc' follow the exact same writting

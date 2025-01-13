@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Custom thread pool implementation based on the Kvazaar own implementation.
+
 #include "uvgvpcc/threadqueue.hpp"
 
 #include <algorithm>

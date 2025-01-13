@@ -30,6 +30,7 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Custom mechanics allowing the retrieving of the Kvazaar logs and their use with the custom uvgVPCCenc log class.
 
 #include <cstdarg>
 #include <cstdio>

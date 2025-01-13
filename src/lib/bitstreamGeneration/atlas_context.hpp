@@ -32,6 +32,8 @@
 
 #pragma once
 
+/// \file Handle atlas information based on TMC2 implementation.
+
 #include "atlas_frame.hpp"
 #include "bitstream_common.hpp"
 #include "bitstream_util.hpp"

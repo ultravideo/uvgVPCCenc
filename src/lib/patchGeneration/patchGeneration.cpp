@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Entry point for the whole patch generation process.
+
 #include "patchGeneration.hpp"
 
 #include <algorithm>

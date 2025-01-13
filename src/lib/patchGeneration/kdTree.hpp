@@ -30,6 +30,9 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Interface between uvgVPCCenc and the external nanoflann library.
+
+
 #pragma once
 
 #include "nanoflann.hpp"

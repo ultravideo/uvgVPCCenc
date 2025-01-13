@@ -45,11 +45,7 @@
 #include "../utils/utils.hpp"
 #include "../utils/parameters.hpp"
 
-
-/**
- * \file
- * libuvgvpcc API
- */
+/// \file Main file of the uvgVPCCenc library that defines the main structures (GOF, frame, patch) and the API.
 
 namespace uvgvpcc_enc {
 
@@ -252,9 +248,10 @@ struct GOF {
     }
 };
 
-
+/// @brief API of the uvgVPCCenc library
 namespace API {
 
+/// @brief Bitstream writing miscellaneous
 struct v3c_chunk {
     size_t len = 0;           // Length of data in buffer
     std::unique_ptr<char[]> data;  // Actual data (char type can be used to describe a byte. No need for uint8_t or unsigned char types.)
@@ -263,8 +260,8 @@ struct v3c_chunk {
     v3c_chunk() = default;
     v3c_chunk(size_t len, std::unique_ptr<char[]> data) : len(len), data(std::move(data)) {}
 };
-/* A V3C unit stream is composed of only V3C units without parsing information in the bitstream itself.
-    The parsing information is here given separately. */
+
+// ht: A V3C unit stream is composed of only V3C units without parsing information in the bitstream itself. The parsing information is here given separately.
 struct v3c_unit_stream {
     size_t v3c_unit_size_precision_bytes = 0;
     std::queue<v3c_chunk> v3c_chunks = {};

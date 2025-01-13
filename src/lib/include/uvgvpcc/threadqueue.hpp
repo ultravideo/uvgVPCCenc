@@ -32,6 +32,9 @@
 
 #pragma once
 
+/// \file Custom thread pool implementation based on the Kvazaar own implementation.
+
+
 #include <atomic>
 #include <cassert>
 #include <condition_variable>

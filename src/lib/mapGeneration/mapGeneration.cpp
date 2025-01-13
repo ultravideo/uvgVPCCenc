@@ -30,7 +30,9 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-#include "mapGenerationBaseLine.hpp"
+/// \file Entry point for the map generation process. Use the 2D location of the patch obtained during patch packing to create the occupancy, geometry and attribute 2D maps.
+
+#include "mapGeneration.hpp"
 
 #include <algorithm>
 #include <array>

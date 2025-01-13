@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Interface between uvgVPCCenc and the 2D encoder Kvazaar that implement the 'abstract2DMapEncoder'.
+
 #include "abstract2DMapEncoder.hpp"
 #include "encoderKvazaar.hpp"
 

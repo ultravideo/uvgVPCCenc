@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Set of tools necessary for the patch generation process.
+
 #pragma once
 
 #include "utils/utils.hpp"

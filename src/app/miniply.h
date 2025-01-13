@@ -38,6 +38,7 @@ SOFTWARE.
 /// * http://paulbourke.net/dataformats/ply/
 /// * https://en.wikipedia.org/wiki/PLY_(file_format)
 
+/// @brief The example application for uvgVPCCenc uses the external library miniply to parse the .ply files.
 namespace miniply {
 
 //

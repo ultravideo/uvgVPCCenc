@@ -31,6 +31,9 @@
  ****************************************************************************/
 
 #pragma once
+
+/// \file Custom logging class that enables fine-tuning of the log level and retrieval of Kvazaar's own logs.
+
 #include <chrono>
 #include <cstdarg>
 #include <iomanip>

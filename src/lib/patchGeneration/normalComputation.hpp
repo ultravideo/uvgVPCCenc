@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Entry point for computing the normals of a point cloud frame.
+
 #pragma once
 
 #include "uvgvpcc/uvgvpcc.hpp"

@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Entry point for orienting the normals of a point cloud frame.
+
 #include "normalOrientation.hpp"
 
 #include <algorithm>

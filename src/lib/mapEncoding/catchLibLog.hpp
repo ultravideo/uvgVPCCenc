@@ -32,6 +32,8 @@
 
 #pragma once
 
+/// \file Custom mechanics allowing the retrieving of the Kvazaar logs and their use with the custom uvgVPCCenc log class.
+
 #include <cstdarg>
 #include <cstdio>
 

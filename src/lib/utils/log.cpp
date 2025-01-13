@@ -30,6 +30,9 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Custom logging class that enables fine-tuning of the log level and retrieval of Kvazaar's own logs.
+
+
 #include "uvgvpcc/log.hpp"
 
 // NOLINTNEXTLINE(hicpp-deprecated-headers)

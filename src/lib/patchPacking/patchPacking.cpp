@@ -30,6 +30,9 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file Entry point for the patch packing process. Assign a 2D location to each patch.
+
+
 #include "patchPacking.hpp"
 
 #include <algorithm>

@@ -30,6 +30,7 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+
 #include "atlas_context.hpp"
 
 #include <algorithm>

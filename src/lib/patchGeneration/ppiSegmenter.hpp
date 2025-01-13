@@ -30,6 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+/// \file This file combine both the initial segmentation and the refine segmentation. Assign a PPI (projection plan index) to each point.
+
 #pragma once
 
 #include <cstdint>
@@ -75,24 +77,24 @@ class PPISegmenter {
                                          std::vector<bool>& occFlagArray, std::unordered_map<size_t, size_t>& voxelIdxMap,
                                          std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);
 
-    static void fillNeighborAndAdjacentListsFromPaper(
+    static void fillNeighborAndAdjacentLists(
         std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, std::unordered_map<size_t, size_t>& voxelIdxMap,
         std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
         std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightListOptimPaper,
         std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs);
 
-    static void computeExtendedScoreOptimPaper(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
+    static void computeExtendedScore(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
                                                const std::vector<VoxelAttribute>& voxAttributeList);
 
-    static void updateAdjacentVoxelsClassOptimPaper(std::vector<VoxelAttribute>& voxAttributeList,
+    static void updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAttributeList,
                                                     const std::vector<size_t>& voxExtendedScore,
                                                     const std::vector<size_t>& IDEV_List);
-    static inline bool checkNEVOptimPaper(const VoxClass voxClass, const size_t voxPPI,
+    static inline bool checkNEV(const VoxClass voxClass, const size_t voxPPI,
                                           const std::vector<size_t>& voxExtendedScore);
 
-    inline void refinePointsPPIsOptimPaper(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices,
+    inline void refinePointsPPIs(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices,
                                            const double weight, const std::vector<size_t>& voxExtendedScore) const;
-    static inline void updateVoxelAttributeOptimPaper(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
+    static inline void updateVoxelAttribute(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
                                                       const std::vector<size_t>& pointsPPIs);
     
     const std::vector<Vector3<double>>& pointsNormals_;

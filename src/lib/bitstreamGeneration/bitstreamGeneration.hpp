@@ -31,6 +31,9 @@
  ****************************************************************************/
 
 #pragma once
+
+/// \file Entry point for the whole bitstream generation process.
+
 #include "uvgvpcc/uvgvpcc.hpp"
 
 class BitstreamGeneration {

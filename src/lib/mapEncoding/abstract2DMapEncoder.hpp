@@ -32,6 +32,8 @@
 
 #pragma once
 
+/// \file Abstract class defining the behaviour of any 2D encoder to be used within the uvgVPCCenc library. 
+
 #include <fstream>
 #include "uvgvpcc/uvgvpcc.hpp"
 
@@ -64,11 +66,6 @@ protected:
     // Initialized for each GOF
     size_t width_;
     size_t height_;
-
-
-
-
-
 };
 
 inline void writeBitstreamToFile(const std::vector<uint8_t>& bitstream, const std::string& filename) {

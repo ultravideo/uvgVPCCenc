@@ -49,6 +49,8 @@
 #include "video_sub_bitstream.hpp"
 #include "vps.hpp"
 
+/// \file Entry point for the whole bitstream generation process.
+
 using namespace uvgvpcc_enc;
 
 void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gofUVG, const uvgvpcc_enc::Parameters& paramUVG,

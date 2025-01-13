@@ -32,6 +32,9 @@
 
 #pragma once
 
+/// \file Interface between uvgVPCCenc and the 2D encoder Kvazaar that implement the 'abstract2DMapEncoder'.
+
+
 #include <kvazaar.h>
 
 #include "uvgvpcc/uvgvpcc.hpp"
