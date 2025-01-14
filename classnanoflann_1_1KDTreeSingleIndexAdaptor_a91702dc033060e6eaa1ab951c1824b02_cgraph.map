@@ -1,0 +1,7 @@
+<map id="nanoflann::KDTreeSingleIndexAdaptor::knnSearch" name="nanoflann::KDTreeSingleIndexAdaptor::knnSearch">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,221,77"/>
+<area shape="rect" id="Node000002" href="$classnanoflann_1_1KNNResultSet.html#a34d5e438b93c49aac9a915be0ab7cde9" title=" " alt="" coords="269,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="221,41,255,36,256,42,222,46"/>
+<area shape="rect" id="Node000003" href="$classnanoflann_1_1KNNResultSet.html#a58add38e4df731807f32c41b008bd1e2" title=" " alt="" coords="269,69,455,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="222,69,256,73,255,78,221,74"/>
+</map>

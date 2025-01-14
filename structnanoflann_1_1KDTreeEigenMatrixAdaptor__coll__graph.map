@@ -1,0 +1,16 @@
+<map id="nanoflann::KDTreeEigenMatrixAdaptor&lt; MatrixType, DIM, Distance, row_major &gt;" name="nanoflann::KDTreeEigenMatrixAdaptor&lt; MatrixType, DIM, Distance, row_major &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="463,1377,689,1732"/>
+<area shape="rect" id="Node000002" href="$classnanoflann_1_1KDTreeSingleIndexAdaptor.html" title=" " alt="" coords="451,840,701,1315"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="579,1315,579,1361,573,1361,573,1315"/>
+<area shape="rect" id="Node000003" href="$classnanoflann_1_1KDTreeBaseClass.html" title=" " alt="" coords="319,303,577,777"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="510,790,522,839,517,840,505,791"/>
+<area shape="rect" id="Node000004" href="$structnanoflann_1_1KDTreeBaseClass_1_1Node.html" title=" " alt="" coords="5,5,264,240"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="224,238,311,352,306,356,220,242"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="266,97,284,107,291,122,288,133,281,141,277,137,283,130,285,123,280,110,263,102"/>
+<area shape="rect" id="Node000005" href="$structnanoflann_1_1array__or__vector.html" title=" " alt="" coords="367,83,529,163"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="451,163,451,286,445,286,445,163"/>
+<area shape="rect" id="Node000006" href="$classnanoflann_1_1PooledAllocator.html" title=" " alt="" coords="554,40,742,205"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="611,207,571,289,567,287,606,204"/>
+<area shape="rect" id="Node000007" href="$structnanoflann_1_1KDTreeSingleIndexAdaptorParams.html" title=" " alt="" coords="601,473,809,607"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="692,608,640,825,634,823,687,607"/>
+</map>

@@ -1,0 +1,9 @@
+<map id="atlas_context::write_atlas_parameter_set_nals" name="atlas_context::write_atlas_parameter_set_nals">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,203,45"/>
+<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="251,13,395,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="203,23,237,23,237,28,203,28"/>
+<area shape="rect" id="Node000003" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="443,13,628,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="395,23,429,23,429,28,395,28"/>
+<area shape="rect" id="Node000004" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="676,5,831,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="629,23,662,23,662,28,629,28"/>
+</map>

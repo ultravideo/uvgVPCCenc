@@ -1,0 +1,21 @@
+<map id="miniply::PLYElement::find_property" name="miniply::PLYElement::find_property">
+<area shape="rect" id="Node000001" title=" " alt="" coords="605,133,760,173"/>
+<area shape="rect" id="Node000002" href="$structminiply_1_1PLYElement.html#a01df0314a97c209b2ce963839dee5009" title=" " alt="" coords="403,101,557,141"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="592,142,558,136,558,131,592,136"/>
+<area shape="rect" id="Node000010" href="$classminiply_1_1PLYReader.html#a31bffce6e8067881984b7d1c8bbcf8e3" title=" " alt="" coords="407,165,553,205"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="592,170,554,176,553,171,591,165"/>
+<area shape="rect" id="Node000003" href="$structminiply_1_1PLYElement.html#a7662a3dd6f24419a4a7ef904af61f7be" title=" " alt="" coords="200,69,355,109"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="389,110,355,104,356,99,390,104"/>
+<area shape="rect" id="Node000004" href="$classminiply_1_1PLYReader.html#ab6f68be0808073bcb0f4321cc1718d44" title="Equivalent to calling find_properties on the current element." alt="" coords="204,133,351,173"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="390,138,351,144,350,139,389,133"/>
+<area shape="rect" id="Node000005" href="$classminiply_1_1PLYReader.html#a1762f902e785c821ba0b58de743a5083" title=" " alt="" coords="5,5,152,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="206,129,198,123,182,107,174,91,165,75,150,59,132,48,135,43,154,55,169,72,178,88,187,104,202,119,209,124"/>
+<area shape="rect" id="Node000006" href="$classminiply_1_1PLYReader.html#a169d064aecfcf42796619e66e4319fc7" title=" " alt="" coords="5,69,152,109"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="201,132,140,112,142,107,202,127"/>
+<area shape="rect" id="Node000007" href="$classminiply_1_1PLYReader.html#ad9483def5341c12c751c7fbf73c4a115" title=" " alt="" coords="5,133,152,173"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="190,156,152,156,152,151,190,151"/>
+<area shape="rect" id="Node000008" href="$classminiply_1_1PLYReader.html#afa06fc5c6d73ee0e4074b38392c74a62" title=" " alt="" coords="5,197,152,237"/>
+<area shape="poly" id="edge7_Node000004_Node000008" title=" " alt="" coords="202,180,142,200,140,195,201,175"/>
+<area shape="rect" id="Node000009" href="$classminiply_1_1PLYReader.html#a3b5ec87cdab33318d088e3eee03332c4" title=" " alt="" coords="5,261,152,301"/>
+<area shape="poly" id="edge8_Node000004_Node000009" title=" " alt="" coords="245,184,202,218,153,252,131,264,128,259,151,247,199,214,241,180"/>
+</map>

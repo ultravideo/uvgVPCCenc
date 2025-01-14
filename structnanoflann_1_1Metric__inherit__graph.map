@@ -1,0 +1,13 @@
+<map id="nanoflann::Metric" name="nanoflann::Metric">
+<area shape="rect" id="Node000001" title=" " alt="" coords="367,5,493,71"/>
+<area shape="rect" id="Node000002" href="$structnanoflann_1_1metric__L1.html" title=" " alt="" coords="5,126,156,191"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="354,62,265,89,168,121,150,128,148,123,166,116,263,84,353,57"/>
+<area shape="rect" id="Node000003" href="$structnanoflann_1_1metric__L2.html" title=" " alt="" coords="180,126,331,191"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="373,81,304,128,301,123,370,77"/>
+<area shape="rect" id="Node000004" href="$structnanoflann_1_1metric__L2__Simple.html" title=" " alt="" coords="355,119,505,199"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="433,85,433,118,427,118,427,85"/>
+<area shape="rect" id="Node000005" href="$structnanoflann_1_1metric__SO2.html" title=" " alt="" coords="529,126,691,191"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="491,76,563,123,560,128,488,81"/>
+<area shape="rect" id="Node000006" href="$structnanoflann_1_1metric__SO3.html" title=" " alt="" coords="715,126,876,191"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="508,57,602,83,704,116,724,123,722,128,702,121,600,88,506,62"/>
+</map>

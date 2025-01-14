@@ -1,0 +1,5 @@
+<map id="uvgvpcc_enc::API::initializeEncoder" name="uvgvpcc_enc::API::initializeEncoder">
+<area shape="rect" id="Node000001" title="Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given conf..." alt="" coords="108,5,307,45"/>
+<area shape="rect" id="Node000002" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+</map>

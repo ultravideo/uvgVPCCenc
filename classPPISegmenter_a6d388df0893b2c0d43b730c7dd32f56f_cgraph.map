@@ -1,0 +1,11 @@
+<map id="PPISegmenter::refineSegmentation" name="PPISegmenter::refineSegmentation">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,55,255,80"/>
+<area shape="rect" id="Node000002" href="$utilsPatchGeneration_8hpp.html#a7e03bd9f637d6875e048306bf9f014a2" title=" " alt="" coords="329,5,463,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="199,52,315,30,316,36,200,57"/>
+<area shape="rect" id="Node000003" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="303,55,489,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,65,289,65,289,70,255,70"/>
+<area shape="rect" id="Node000005" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="313,104,479,129"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="200,77,314,99,313,104,199,83"/>
+<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="537,47,696,87"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="490,65,524,65,524,70,490,70"/>
+</map>

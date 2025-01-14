@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['radius_0',['radius',['../classnanoflann_1_1RadiusResultSet.html#a31110cc73f82eb69e0e020717bf04dcc',1,'nanoflann::RadiusResultSet']]],
+  ['raw_5fpatch_5fdata_5funit_5f_1',['raw_patch_data_unit_',['../structpatch__information__data.html#aa9f702a32e4f57bc5cc66158f6b20beb',1,'patch_information_data']]],
+  ['red_2',['RED',['../namespaceuvgvpcc__enc.html#ae44655d73caa3eb1883d8f44c12ac5f8',1,'uvgvpcc_enc']]],
+  ['redandbld_3',['REDANDBLD',['../namespaceuvgvpcc__enc.html#aa405eb2aa51926630894eec6973beec6',1,'uvgvpcc_enc']]],
+  ['ref_5flists_4',['ref_lists',['../structatlas__sequence__parameter__set.html#a780fc9c279c38adc26ae1ba210bc2c39',1,'atlas_sequence_parameter_set']]],
+  ['referencepatchid_5f_5',['referencePatchId_',['../structuvgvpcc__enc_1_1Patch.html#a8e0322de56b28446366e8e52c051f362',1,'uvgvpcc_enc::Patch']]],
+  ['refinesegmentationiterationcount_6',['refineSegmentationIterationCount',['../structuvgvpcc__enc_1_1Parameters.html#aa875f493a31dabb2898f1f2b4e6872f6',1,'uvgvpcc_enc::Parameters']]],
+  ['refinesegmentationlambda_7',['refineSegmentationLambda',['../structuvgvpcc__enc_1_1Parameters.html#a3f41d8ce02161b0a1cb36e9e39b3996d',1,'uvgvpcc_enc::Parameters']]],
+  ['refinesegmentationmaxnntotalpointcount_8',['refineSegmentationMaxNNTotalPointCount',['../structuvgvpcc__enc_1_1Parameters.html#a8a3e744e37e4bd009310431dae33be76',1,'uvgvpcc_enc::Parameters']]],
+  ['refinesegmentationmaxnnvoxeldistancelut_9',['refineSegmentationMaxNNVoxelDistanceLUT',['../structuvgvpcc__enc_1_1Parameters.html#a0e4b7f5480f14212c3797d65855f4a18',1,'uvgvpcc_enc::Parameters']]],
+  ['refs_10',['refs',['../structatlas__tile__header.html#a06a2245a704d17daaa1ffede3c300df8',1,'atlas_tile_header']]],
+  ['removedpoints_5f_11',['removedPoints_',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a61dbbca97a882ebcfbb0e18d33033386',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],
+  ['reversedependencies_5f_12',['reverseDependencies_',['../classuvgvpcc__enc_1_1Job.html#ab9a16d87d9c2dbaec347ad91f636ab83',1,'uvgvpcc_enc::Job']]],
+  ['right_13',['right',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#aa3c0e043ad01bb01dc45c1a3b3b46829',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['root_5fbbox_5f_14',['root_bbox_',['../classnanoflann_1_1KDTreeBaseClass.html#a9f89305d43e68ff67d7e42b324ddd2e6',1,'nanoflann::KDTreeBaseClass']]],
+  ['root_5fnode_5f_15',['root_node_',['../classnanoflann_1_1KDTreeBaseClass.html#a0d9f7c2b7fddcc129c7eca50705942a8',1,'nanoflann::KDTreeBaseClass']]],
+  ['rowcount_16',['rowCount',['../structminiply_1_1PLYProperty.html#a8ff1425fde363243e99262f72e2e3b12',1,'miniply::PLYProperty']]],
+  ['rowstride_17',['rowStride',['../structminiply_1_1PLYElement.html#a229ce73cc5f3f3c210872991ec8c589c',1,'miniply::PLYElement']]],
+  ['rst_18',['RST',['../namespaceuvgvpcc__enc.html#a331b14974cc0a3742a7d5df661bbba82',1,'uvgvpcc_enc']]]
+];

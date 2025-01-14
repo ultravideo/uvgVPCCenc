@@ -1,0 +1,10 @@
+<map id="miniply::PLYReader::extract_properties_with_stride" name="miniply::PLYReader::extract_properties_with_stride">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,155,60"/>
+<area shape="rect" id="Node000002" href="$classminiply_1_1PLYReader.html#a13bf1a5ab6c1547622af0729f707c52d" title=" " alt="" coords="400,13,547,53"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="155,27,203,26,352,26,386,27,386,32,352,31,203,31,155,33"/>
+<area shape="rect" id="Node000004" href="$classminiply_1_1PLYReader.html#a567b0c1b1aa8ee95da31305f8a0703dc" title=" " alt="" coords="203,41,352,81"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="155,41,189,46,189,51,155,46"/>
+<area shape="rect" id="Node000003" href="$classminiply_1_1PLYReader.html#a82366c40f8779bf12dbcbe3c4a22ae36" title=" " alt="" coords="595,13,741,53"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="547,30,581,30,581,35,547,35"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="352,47,386,42,387,48,353,53"/>
+</map>

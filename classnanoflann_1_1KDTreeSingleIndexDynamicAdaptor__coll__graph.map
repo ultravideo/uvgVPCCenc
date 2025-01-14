@@ -1,0 +1,17 @@
+<map id="nanoflann::KDTreeSingleIndexDynamicAdaptor&lt; Distance, DatasetAdaptor, DIM, IndexType &gt;" name="nanoflann::KDTreeSingleIndexDynamicAdaptor&lt; Distance, DatasetAdaptor, DIM, IndexType &gt;">
+<area shape="rect" id="Node000001" title=" " alt="" coords="503,1425,745,1729"/>
+<area shape="rect" id="Node000002" href="$classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html" title=" " alt="" coords="428,840,657,1304"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="569,1304,584,1401,585,1409,580,1410,579,1402,564,1305"/>
+<area shape="rect" id="Node000003" href="$classnanoflann_1_1KDTreeBaseClass.html" title=" " alt="" coords="319,303,577,777"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="495,790,504,840,499,840,490,791"/>
+<area shape="rect" id="Node000004" href="$structnanoflann_1_1KDTreeBaseClass_1_1Node.html" title=" " alt="" coords="5,5,264,240"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="224,238,311,352,306,356,220,242"/>
+<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="266,97,284,107,291,122,288,133,281,141,277,137,283,130,285,123,280,110,263,102"/>
+<area shape="rect" id="Node000005" href="$structnanoflann_1_1array__or__vector.html" title=" " alt="" coords="367,83,529,163"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="451,163,451,286,445,286,445,163"/>
+<area shape="rect" id="Node000006" href="$classnanoflann_1_1PooledAllocator.html" title=" " alt="" coords="554,40,742,205"/>
+<area shape="poly" id="edge6_Node000003_Node000006" title=" " alt="" coords="611,207,571,289,567,287,606,204"/>
+<area shape="rect" id="Node000007" href="$structnanoflann_1_1KDTreeSingleIndexAdaptorParams.html" title=" " alt="" coords="601,473,809,607"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="714,607,722,751,726,949,724,1060,717,1175,706,1290,689,1402,688,1410,683,1408,684,1401,701,1289,712,1174,718,1060,721,949,717,752,708,607"/>
+<area shape="poly" id="edge7_Node000002_Node000007" title=" " alt="" coords="679,609,640,691,592,779,582,791,574,802,567,825,562,823,570,800,578,787,587,776,635,689,674,606"/>
+</map>

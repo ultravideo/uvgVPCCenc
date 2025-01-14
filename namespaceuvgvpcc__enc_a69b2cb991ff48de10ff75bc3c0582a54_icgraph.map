@@ -1,0 +1,25 @@
+<map id="uvgvpcc_enc::zeroPad" name="uvgvpcc_enc::zeroPad">
+<area shape="rect" id="Node000001" title=" " alt="" coords="887,163,1052,189"/>
+<area shape="rect" id="Node000002" href="$structuvgvpcc__enc_1_1GOF.html#aaff1430efa0f031c9e58505ee7895e77" title=" " alt="" coords="609,5,819,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="947,155,900,106,870,81,837,60,811,48,813,43,840,55,873,77,904,102,951,151"/>
+<area shape="rect" id="Node000003" href="$namespaceNormalComputation.html#a46480ca405a1a36a28d865696ba485f0" title=" " alt="" coords="633,69,795,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="928,160,838,124,795,111,796,106,840,119,930,155"/>
+<area shape="rect" id="Node000007" href="$classPPISegmenter.html#a96b9ea22784cdc373e67a724e3019475" title=" " alt="" coords="589,134,839,159"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="873,168,824,162,825,157,873,162"/>
+<area shape="rect" id="Node000008" href="$namespaceNormalOrientation.html#a5fadc067a7ed313e80ad559d11e7c67f" title=" " alt="" coords="639,184,789,224"/>
+<area shape="poly" id="edge8_Node000001_Node000008" title=" " alt="" coords="874,189,790,198,789,193,873,184"/>
+<area shape="rect" id="Node000009" href="$classPatchSegmentation.html#a819536989846a15453734058b91521ee" title=" " alt="" coords="636,248,792,288"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="933,197,840,238,793,253,792,248,838,234,931,193"/>
+<area shape="rect" id="Node000010" href="$classPPISegmenter.html#a6d388df0893b2c0d43b730c7dd32f56f" title=" " alt="" coords="589,313,839,338"/>
+<area shape="poly" id="edge12_Node000001_Node000010" title=" " alt="" coords="952,201,906,253,874,280,840,302,808,315,806,310,837,298,871,276,902,249,948,198"/>
+<area shape="rect" id="Node000004" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="347,184,541,224"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="620,113,590,124,528,154,476,186,474,182,526,150,588,119,618,108"/>
+<area shape="rect" id="Node000005" href="$namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,184,299,224"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="333,207,299,207,299,201,333,201"/>
+<area shape="rect" id="Node000006" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,191,60,217"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="94,207,60,207,60,201,94,201"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="637,165,590,175,535,187,534,181,589,169,636,160"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="625,207,542,207,542,201,625,201"/>
+<area shape="poly" id="edge11_Node000009_Node000004" title=" " alt="" coords="622,249,529,227,530,221,623,244"/>
+<area shape="poly" id="edge13_Node000010_Node000004" title=" " alt="" coords="614,312,588,302,554,285,521,265,468,226,471,222,524,261,556,281,590,298,616,307"/>
+</map>

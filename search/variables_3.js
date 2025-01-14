@@ -1,0 +1,19 @@
+var searchData=
+[
+  ['data_0',['data',['../structbitstream__t.html#a26a20a6e5c1e7db50528d2daacba4469',1,'bitstream_t::data'],['../structuvgvpcc__enc_1_1API_1_1v3c__chunk.html#a80779ffe30a2e51047ab6a67249b7cf4',1,'uvgvpcc_enc::API::v3c_chunk::data'],['../structuvg__data__chunk.html#a98f9a3244625532adfbafc557c4e445d',1,'uvg_data_chunk::data']]],
+  ['data_5f_1',['data_',['../structFilter.html#a9e6319437fb1a57a33788af747641e39',1,'Filter']]],
+  ['data_5fsource_2',['data_source',['../structnanoflann_1_1L1__Adaptor.html#a3c1f1d03b9a638e55dda2f06ddb58bc7',1,'nanoflann::L1_Adaptor::data_source'],['../structnanoflann_1_1L2__Adaptor.html#af976595b2ba5fc8ce269dd90ab54dabf',1,'nanoflann::L2_Adaptor::data_source'],['../structnanoflann_1_1L2__Simple__Adaptor.html#a01613b2b80938f37ecca68218f9a1f2d',1,'nanoflann::L2_Simple_Adaptor::data_source'],['../structnanoflann_1_1SO2__Adaptor.html#a1c5092b561ad1e580de71340a701a3af',1,'nanoflann::SO2_Adaptor::data_source']]],
+  ['dataset_5f_3',['dataset_',['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#ab71a9a8dfac484f3bada92c99f2bc810',1,'nanoflann::KDTreeSingleIndexAdaptor::dataset_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#a42aa7719e96d0a9e0c9804fc7e81b576',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::dataset_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a578a31c35dae687d538df2fc3902fb46',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::dataset_']]],
+  ['dependencies_5f_4',['dependencies_',['../classuvgvpcc__enc_1_1Job.html#afe312258d6a3139c1d1407e1ca68b2b4',1,'uvgvpcc_enc::Job']]],
+  ['depthl1_5f_5',['depthL1_',['../structuvgvpcc__enc_1_1Patch.html#a947a565cb0b525a8e51a534a99befca6',1,'uvgvpcc_enc::Patch']]],
+  ['depthl2_5f_6',['depthL2_',['../structuvgvpcc__enc_1_1Patch.html#a2b269c18df2263ac884099d8aec0f148',1,'uvgvpcc_enc::Patch']]],
+  ['depthpcidxl1_5f_7',['depthPCidxL1_',['../structuvgvpcc__enc_1_1Patch.html#a9c6a98da0a656bf5bf182926bf4f7efe',1,'uvgvpcc_enc::Patch']]],
+  ['depthpcidxl2_5f_8',['depthPCidxL2_',['../structuvgvpcc__enc_1_1Patch.html#a8b792e845d1ba9aa359ee0978a136260',1,'uvgvpcc_enc::Patch']]],
+  ['dim_5f_9',['dim_',['../classnanoflann_1_1KDTreeBaseClass.html#aadbe8c77146a8e5b4bcf0a09b9e7f0ca',1,'nanoflann::KDTreeBaseClass::dim_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#aeac3ba772379276594368815dc604a40',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::dim_']]],
+  ['distance_5f_10',['distance_',['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#a1b32e282505a1c811b18277f6cd9ab2e',1,'nanoflann::KDTreeSingleIndexAdaptor::distance_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#af492fe57095790d8f24f6da96d5aa055',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::distance_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a3db73f40c0c5f598d19a7fdbf53b5197',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::distance_']]],
+  ['distance_5fl2_5fsimple_11',['distance_L2_Simple',['../structnanoflann_1_1SO3__Adaptor.html#a1eda8692746d89e24e5ce0269ab2ac69',1,'nanoflann::SO3_Adaptor']]],
+  ['divfeat_12',['divfeat',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a4013d8322f7d7a12deaba47992d5c7de',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['divhigh_13',['divhigh',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a050d1d18ec3392e0dcd995f10f352f85',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['divlow_14',['divlow',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a36d85fcaa2e26e2b8882c9645fb774e0',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['doublelayer_15',['doubleLayer',['../structuvgvpcc__enc_1_1Parameters.html#aae636549f46cbf81f22c604e6fc84501',1,'uvgvpcc_enc::Parameters']]]
+];

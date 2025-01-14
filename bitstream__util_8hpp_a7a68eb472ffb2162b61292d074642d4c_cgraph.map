@@ -1,0 +1,11 @@
+<map id="uvg_bitstream_align" name="uvg_bitstream_align">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,13,160,38"/>
+<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#a423bd5bc72b723f5642a91deb7a5cb0b" title=" " alt="" coords="208,5,391,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,23,194,23,194,28,160,28"/>
+<area shape="rect" id="Node000003" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="439,13,583,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="391,23,425,23,425,28,391,28"/>
+<area shape="rect" id="Node000004" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="631,13,816,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="583,23,617,23,617,28,583,28"/>
+<area shape="rect" id="Node000005" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="864,5,1019,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="817,23,850,23,850,28,817,28"/>
+</map>

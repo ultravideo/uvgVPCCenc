@@ -1,0 +1,24 @@
+var searchData=
+[
+  ['second_0',['second',['../structnanoflann_1_1ResultItem.html#a131d4fc59d80dc1bd0a509f6258889df',1,'nanoflann::ResultItem']]],
+  ['shift_5f_1',['shift_',['../structFilter.html#a663c45c0919bc293c5075012625b2ebb',1,'Filter']]],
+  ['size_2',['size',['../structnal__info.html#a8730ecc4139a7b3789c94b92a94c143f',1,'nal_info']]],
+  ['size2dxinpixel_5f_3',['size2DXInPixel_',['../structuvgvpcc__enc_1_1Patch.html#aee246586720edf61aa0fb53565dbe1d1',1,'uvgvpcc_enc::Patch']]],
+  ['size2dyinpixel_5f_4',['size2DYInPixel_',['../structuvgvpcc__enc_1_1Patch.html#a837162aac2639570d729b7231c2efbcb',1,'uvgvpcc_enc::Patch']]],
+  ['size_5f_5',['size_',['../classnanoflann_1_1KDTreeBaseClass.html#a3a142d37a32622c44c4e065934e364e1',1,'nanoflann::KDTreeBaseClass']]],
+  ['size_5fat_5findex_5fbuild_5f_6',['size_at_index_build_',['../classnanoflann_1_1KDTreeBaseClass.html#a5d1d38994ddd21a55fe08b4d5294bdf0',1,'nanoflann::KDTreeBaseClass']]],
+  ['sized_5f_7',['sizeD_',['../structuvgvpcc__enc_1_1Patch.html#a2ae4a3ef6999760ac40ecd166ca65f29',1,'uvgvpcc_enc::Patch']]],
+  ['sizegof_8',['sizeGOF',['../structuvgvpcc__enc_1_1Parameters.html#aaf6f5f9bfb78d3a7e90afb368877d5ed',1,'uvgvpcc_enc::Parameters']]],
+  ['sizegop2dencoding_9',['sizeGOP2DEncoding',['../structuvgvpcc__enc_1_1Parameters.html#a67e73137a28d4272820da5d7c012f8e3',1,'uvgvpcc_enc::Parameters']]],
+  ['skip_5fpatch_5fdata_5funit_5f_10',['skip_patch_data_unit_',['../structpatch__information__data.html#a4c6c937661e8f29ceef3c16dcced1740',1,'patch_information_data']]],
+  ['sorted_11',['sorted',['../structnanoflann_1_1SearchParameters.html#a6eae5a391d54610d538d9780cad8b344',1,'nanoflann::SearchParameters']]],
+  ['spacepatchpacking_12',['spacePatchPacking',['../structuvgvpcc__enc_1_1Parameters.html#ab53541c53ab5dc6a230980c5f4a25945',1,'uvgvpcc_enc::Parameters']]],
+  ['st_5fref_5fatlas_5fframe_5fflag_13',['st_ref_atlas_frame_flag',['../structref__list__struct.html#a44489fc56a6a93e0520f37028a0742f6',1,'ref_list_struct']]],
+  ['start_5f_14',['start_',['../structNormalOrientation_1_1WeightedEdge.html#a6739dbc87f8e327836fc9eee32d61c60',1,'NormalOrientation::WeightedEdge']]],
+  ['startframe_15',['startFrame',['../structcli_1_1opts__t.html#aae1580c59c4c9aaeaffcb3284a562c15',1,'cli::opts_t']]],
+  ['state_5f_16',['state_',['../classuvgvpcc__enc_1_1Job.html#aec5917340ff9f7fd544a52be050dcb4b',1,'uvgvpcc_enc::Job']]],
+  ['straf_5fentry_5fsign_5fflag_17',['straf_entry_sign_flag',['../structref__list__struct.html#a2766061b496323a38d1c8530de8bdbd6',1,'ref_list_struct']]],
+  ['stride_18',['stride',['../structminiply_1_1PLYProperty.html#a0bacfdc11d7e06cf136eb443deccf439',1,'miniply::PLYProperty']]],
+  ['sub_19',['sub',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a89fe94bb152658284a1af6736f0adae5',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['surfacethickness_20',['surfaceThickness',['../structuvgvpcc__enc_1_1Parameters.html#a3deed94ac0b0069bd65ed79731840fe8',1,'uvgvpcc_enc::Parameters']]]
+];

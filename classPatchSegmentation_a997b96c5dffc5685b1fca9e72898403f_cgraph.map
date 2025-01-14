@@ -1,0 +1,11 @@
+<map id="PatchSegmentation::patchSplitting" name="PatchSegmentation::patchSplitting">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,161,75"/>
+<area shape="rect" id="Node000002" href="$classPatchSegmentation.html#aa3b3fcb12079a71ee833e203847d78a3" title=" " alt="" coords="209,5,409,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,42,195,37,196,43,162,47"/>
+<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="216,70,403,95"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="162,62,203,67,202,72,161,67"/>
+<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc.html#a735c39eb14ded23670bac21df7dc8189" title=" " alt="" coords="457,13,627,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="410,23,443,23,443,28,410,28"/>
+<area shape="rect" id="Node000005" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="463,63,621,103"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="403,80,449,80,449,85,403,85"/>
+</map>

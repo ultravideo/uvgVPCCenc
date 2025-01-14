@@ -1,0 +1,9 @@
+<map id="uvgvpcc_enc::API::initializeEncoder" name="uvgvpcc_enc::API::initializeEncoder">
+<area shape="rect" id="Node000001" title="Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given conf..." alt="" coords="5,23,204,63"/>
+<area shape="rect" id="Node000002" href="$namespaceuvgvpcc__enc.html#a8eec80eff55cd4c2169744feac8f1209" title=" " alt="" coords="252,5,517,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="204,32,238,29,238,34,204,37"/>
+<area shape="rect" id="Node000003" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="291,55,478,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="204,49,278,56,278,61,204,54"/>
+<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="565,47,724,87"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="478,65,551,65,551,70,478,70"/>
+</map>

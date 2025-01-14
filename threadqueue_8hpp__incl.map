@@ -1,0 +1,21 @@
+<map id="src/lib/include/uvgvpcc/threadqueue.hpp" name="src/lib/include/uvgvpcc/threadqueue.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="401,5,572,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,93,72,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="401,41,258,64,86,96,85,91,257,59,401,36"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="96,93,165,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="402,47,180,96,178,90,401,42"/>
+<area shape="rect" id="Node000004" title=" " alt="" coords="190,93,333,119"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="434,48,308,91,306,86,432,43"/>
+<area shape="rect" id="Node000005" title=" " alt="" coords="357,93,419,119"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="464,48,415,87,412,82,461,43"/>
+<area shape="rect" id="Node000006" title=" " alt="" coords="443,93,530,119"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="489,46,489,79,484,79,484,46"/>
+<area shape="rect" id="Node000007" title=" " alt="" coords="555,93,632,119"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="514,43,568,83,565,87,511,48"/>
+<area shape="rect" id="Node000008" title=" " alt="" coords="656,93,720,119"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="536,43,647,86,645,91,534,48"/>
+<area shape="rect" id="Node000009" title=" " alt="" coords="744,93,808,119"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="557,43,731,90,730,95,555,48"/>
+<area shape="rect" id="Node000010" title=" " alt="" coords="833,93,895,119"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="573,40,819,91,818,96,572,45"/>
+</map>

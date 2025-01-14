@@ -1,0 +1,14 @@
+<map id="MapEncoding::initializeStaticParameters" name="MapEncoding::initializeStaticParameters">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,216,45"/>
+<area shape="rect" id="Node000002" href="$classEncoderKvazaar.html#adab91d200e76091ec41f96afc9eea4d0" title=" " alt="" coords="264,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,23,250,23,250,28,216,28"/>
+<area shape="rect" id="Node000003" href="$catchLibLog_8cpp.html#adbbbbd21939ee7e3d31fde350c5fda01" title=" " alt="" coords="503,13,688,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="455,23,489,23,489,28,455,28"/>
+<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="943,13,1129,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="688,20,736,19,895,19,929,19,929,25,895,24,736,24,688,25"/>
+<area shape="rect" id="Node000006" href="$classuvgvpcc__enc_1_1Logger.html#ac9681a9cbe3ddd401d9f6163e762b788" title=" " alt="" coords="736,33,895,73"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="689,34,723,39,722,44,688,40"/>
+<area shape="rect" id="Node000005" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="1177,5,1336,45"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="1130,23,1164,23,1164,28,1130,28"/>
+<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="894,41,929,36,929,42,895,46"/>
+</map>

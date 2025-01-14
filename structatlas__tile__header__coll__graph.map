@@ -1,0 +1,5 @@
+<map id="atlas_tile_header" name="atlas_tile_header">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,213,215,581"/>
+<area shape="rect" id="Node000002" href="$structref__list__struct.html" title=" " alt="" coords="19,5,201,151"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="113,151,113,197,107,197,107,151"/>
+</map>

@@ -1,0 +1,25 @@
+var searchData=
+[
+  ['occupancyencodername_0',['occupancyEncoderName',['../structuvgvpcc__enc_1_1Parameters.html#a148d57155731939323542c5aa3a9c5fb',1,'uvgvpcc_enc::Parameters']]],
+  ['occupancyencodingformat_1',['occupancyEncodingFormat',['../structuvgvpcc__enc_1_1Parameters.html#a320253dc98211e4d82b0959e298e6f19',1,'uvgvpcc_enc::Parameters']]],
+  ['occupancyencodingislossless_2',['occupancyEncodingIsLossless',['../structuvgvpcc__enc_1_1Parameters.html#aa123656dc971dc81836168a1a81fb109',1,'uvgvpcc_enc::Parameters']]],
+  ['occupancyencodingmode_3',['occupancyEncodingMode',['../structuvgvpcc__enc_1_1Parameters.html#af1c21cf7a25d8bddba476c318de1eeaf',1,'uvgvpcc_enc::Parameters']]],
+  ['occupancyencodingnbthread_4',['occupancyEncodingNbThread',['../structuvgvpcc__enc_1_1Parameters.html#acdedd88375df7ab0e6d42c9ba24e048f',1,'uvgvpcc_enc::Parameters']]],
+  ['occupancyencodingpreset_5',['occupancyEncodingPreset',['../structuvgvpcc__enc_1_1Parameters.html#a21e2a81be79cb44994a7f7862f1777b7',1,'uvgvpcc_enc::Parameters']]],
+  ['occupancymap_6',['occupancyMap',['../structuvgvpcc__enc_1_1Frame.html#a335507acd161401e0eea5f03dcc8aa95',1,'uvgvpcc_enc::Frame']]],
+  ['occupancymapheight_7',['occupancymapheight',['../structuvgvpcc__enc_1_1Frame.html#ac95d8c4224c3ef522bb4ce78618ddf21',1,'uvgvpcc_enc::Frame::occupancyMapHeight'],['../structuvgvpcc__enc_1_1GOF.html#ada634ba8ec6180e26e3e82cb53538c8c',1,'uvgvpcc_enc::GOF::occupancyMapHeight']]],
+  ['occupancymapresolution_8',['occupancyMapResolution',['../structuvgvpcc__enc_1_1Parameters.html#ac2fde486552e3436c7914b339169e3f4',1,'uvgvpcc_enc::Parameters']]],
+  ['offset_9',['offset',['../structminiply_1_1PLYProperty.html#a15b5528d6698e7382fe372d3a26e09c3',1,'miniply::PLYProperty']]],
+  ['oi_5flossy_5foccupancy_5fcompression_5fthreshold_10',['oi_lossy_occupancy_compression_threshold',['../structoccupancy__information.html#a1689ccacc09c734d3156ce90c0ff4b36',1,'occupancy_information']]],
+  ['oi_5foccupancy_5f2d_5fbit_5fdepth_5fminus1_11',['oi_occupancy_2d_bit_depth_minus1',['../structoccupancy__information.html#abda3eadf547534e4d3d41017c9032a2b',1,'occupancy_information']]],
+  ['oi_5foccupancy_5fcodec_5fid_12',['oi_occupancy_codec_id',['../structoccupancy__information.html#a0c55fc10ebe59c875dded6f9f8b53542',1,'occupancy_information']]],
+  ['oi_5foccupancy_5fmsb_5falign_5fflag_13',['oi_occupancy_MSB_align_flag',['../structoccupancy__information.html#a8532447a15ca9dc533c733f24330dad8',1,'occupancy_information']]],
+  ['omposx_5f_14',['omPosX_',['../structuvgvpcc__enc_1_1Patch.html#a4a8a31b7c3132f1364bb8a957647898b',1,'uvgvpcc_enc::Patch']]],
+  ['omposy_5f_15',['omPosY_',['../structuvgvpcc__enc_1_1Patch.html#a90a0fe0d878248b5e3a1f18c4a26e5cc',1,'uvgvpcc_enc::Patch']]],
+  ['optarg_16',['optarg',['../getopt_8c.html#adb50a0eab9fed92fc3bfc7dfa4f2c410',1,'optarg:&#160;getopt.c'],['../getopt_8h.html#adb50a0eab9fed92fc3bfc7dfa4f2c410',1,'optarg:&#160;getopt.c']]],
+  ['opterr_17',['opterr',['../getopt_8c.html#ae30f05ee1e2e5652f174a35c7875d25e',1,'opterr:&#160;getopt.c'],['../getopt_8h.html#ae30f05ee1e2e5652f174a35c7875d25e',1,'opterr:&#160;getopt.h']]],
+  ['optind_18',['optind',['../getopt_8c.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c'],['../getopt_8h.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c']]],
+  ['optopt_19',['optopt',['../getopt_8c.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.c'],['../getopt_8h.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.h']]],
+  ['optreset_20',['optreset',['../getopt_8c.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.c'],['../getopt_8h.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.h']]],
+  ['outputpath_21',['outputPath',['../structcli_1_1opts__t.html#a3717f025214afbd5667d2fc96cd7ae6c',1,'cli::opts_t']]]
+];

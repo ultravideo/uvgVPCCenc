@@ -1,0 +1,7 @@
+<map id="nanoflann::KDTreeEigenMatrixAdaptor::query" name="nanoflann::KDTreeEigenMatrixAdaptor::query">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,224,77"/>
+<area shape="rect" id="Node000002" href="$classnanoflann_1_1KDTreeSingleIndexAdaptor.html#abd45fe1957ef7656aa92b1ee194c25f7" title=" " alt="" coords="272,5,488,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="224,41,258,37,259,43,225,47"/>
+<area shape="rect" id="Node000003" href="$classnanoflann_1_1KNNResultSet.html#a34d5e438b93c49aac9a915be0ab7cde9" title=" " alt="" coords="287,69,473,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="225,68,274,74,273,79,224,73"/>
+</map>

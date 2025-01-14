@@ -1,0 +1,5 @@
+<map id="uvg_bitstream_copy_bytes" name="uvg_bitstream_copy_bytes">
+<area shape="rect" id="Node000001" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="5,5,160,45"/>
+<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="208,5,363,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,23,194,23,194,28,160,28"/>
+</map>

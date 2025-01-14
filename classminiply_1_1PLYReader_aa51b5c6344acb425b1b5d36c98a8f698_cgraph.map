@@ -1,0 +1,20 @@
+<map id="miniply::PLYReader::extract_triangles" name="miniply::PLYReader::extract_triangles">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,92,152,132"/>
+<area shape="rect" id="Node000002" href="$classminiply_1_1PLYReader.html#a13bf1a5ab6c1547622af0729f707c52d" title=" " alt="" coords="635,76,781,116"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,107,200,105,421,99,621,95,621,100,421,104,200,111,152,112"/>
+<area shape="rect" id="Node000004" href="$classminiply_1_1PLYReader.html#a2c71e492c56ebee22a9011c76cad0ae9" title=" " alt="" coords="421,5,587,45"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="122,89,199,61,307,40,408,29,408,34,307,46,201,67,123,94"/>
+<area shape="rect" id="Node000005" href="$classminiply_1_1PLYReader.html#a61b2399d231ea55e8fc1cf75f58b9b7f" title=" " alt="" coords="200,120,373,160"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="153,119,187,124,186,129,152,125"/>
+<area shape="rect" id="Node000007" href="$namespaceminiply.html#a505d30c8131323029c33db56227d0d85" title=" " alt="" coords="212,184,361,224"/>
+<area shape="poly" id="edge11_Node000001_Node000007" title=" " alt="" coords="119,130,201,170,217,176,215,181,199,174,117,135"/>
+<area shape="rect" id="Node000003" href="$classminiply_1_1PLYReader.html#a82366c40f8779bf12dbcbe3c4a22ae36" title=" " alt="" coords="829,76,976,116"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="781,93,815,93,815,99,781,99"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="563,43,637,69,636,74,562,48"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="587,31,681,44,782,61,820,70,818,75,781,67,680,49,586,37"/>
+<area shape="poly" id="edge7_Node000005_Node000002" title=" " alt="" coords="373,128,621,102,621,108,374,134"/>
+<area shape="rect" id="Node000006" href="$classminiply_1_1PLYReader.html#a6c3a307099823961ebb5fe6381d61a9c" title=" " alt="" coords="431,171,577,211"/>
+<area shape="poly" id="edge8_Node000005_Node000006" title=" " alt="" coords="373,157,418,168,417,173,372,163"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="547,168,651,119,653,124,549,173"/>
+<area shape="poly" id="edge10_Node000006_Node000003" title=" " alt="" coords="577,172,781,125,815,117,817,122,782,131,578,178"/>
+</map>

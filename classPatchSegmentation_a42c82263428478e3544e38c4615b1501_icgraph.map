@@ -1,0 +1,11 @@
+<map id="PatchSegmentation::createConnectedComponents" name="PatchSegmentation::createConnectedComponents">
+<area shape="rect" id="Node000001" title=" " alt="" coords="793,5,1008,45"/>
+<area shape="rect" id="Node000002" href="$classPatchSegmentation.html#a819536989846a15453734058b91521ee" title=" " alt="" coords="589,5,745,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="780,28,745,28,745,23,780,23"/>
+<area shape="rect" id="Node000003" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="347,5,541,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="575,28,541,28,541,23,575,23"/>
+<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,5,299,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="333,28,299,28,299,23,333,23"/>
+<area shape="rect" id="Node000005" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+</map>

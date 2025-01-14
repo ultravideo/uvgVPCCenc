@@ -1,0 +1,9 @@
+<map id="MapGenerationBaseLine::initGOFMapGeneration" name="MapGenerationBaseLine::initGOFMapGeneration">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,187,71"/>
+<area shape="rect" id="Node000002" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="235,13,421,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="187,38,220,34,221,40,188,43"/>
+<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc.html#a735c39eb14ded23670bac21df7dc8189" title=" " alt="" coords="243,62,413,87"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="188,57,230,62,230,67,187,63"/>
+<area shape="rect" id="Node000003" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="469,5,628,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="422,23,456,23,456,28,422,28"/>
+</map>

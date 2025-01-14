@@ -1,0 +1,11 @@
+<map id="miniply::PLYReader::num_triangles" name="miniply::PLYReader::num_triangles">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,152,75"/>
+<area shape="rect" id="Node000002" href="$classminiply_1_1PLYReader.html#a13bf1a5ab6c1547622af0729f707c52d" title=" " alt="" coords="395,5,541,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="152,47,381,29,381,35,152,52"/>
+<area shape="rect" id="Node000004" href="$classminiply_1_1PLYReader.html#a6c3a307099823961ebb5fe6381d61a9c" title=" " alt="" coords="200,63,347,103"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="152,63,187,68,186,73,152,68"/>
+<area shape="rect" id="Node000003" href="$classminiply_1_1PLYReader.html#a82366c40f8779bf12dbcbe3c4a22ae36" title=" " alt="" coords="589,35,736,75"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="542,34,576,39,575,44,541,39"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="341,60,386,47,387,52,343,65"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="347,75,575,58,576,64,347,80"/>
+</map>

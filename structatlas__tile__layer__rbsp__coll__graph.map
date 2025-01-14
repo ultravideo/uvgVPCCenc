@@ -1,0 +1,9 @@
+<map id="atlas_tile_layer_rbsp" name="atlas_tile_layer_rbsp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="203,644,353,709"/>
+<area shape="rect" id="Node000002" href="$structatlas__tile__header.html" title=" " alt="" coords="5,213,215,581"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="217,577,243,619,250,629,245,632,238,621,213,580"/>
+<area shape="rect" id="Node000003" href="$structref__list__struct.html" title=" " alt="" coords="19,5,201,151"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="113,151,113,197,107,197,107,151"/>
+<area shape="rect" id="Node000004" href="$structatlas__tile__data__unit.html" title=" " alt="" coords="239,365,429,430"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="330,431,290,629,285,628,325,430"/>
+</map>

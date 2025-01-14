@@ -1,0 +1,15 @@
+<map id="src/lib/bitstreamGeneration/atlas_frame.hpp" name="src/lib/bitstreamGeneration/atlas_frame.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="73,5,273,45"/>
+<area shape="rect" id="Node000002" href="$atlas__context_8cpp.html" title=" " alt="" coords="5,181,205,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="153,58,133,94,118,141,110,182,105,181,113,140,128,92,149,55"/>
+<area shape="rect" id="Node000003" href="$atlas__context_8hpp.html" title=" " alt="" coords="143,93,343,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="199,55,229,91,225,95,195,58"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="202,143,137,184,134,179,199,139"/>
+<area shape="rect" id="Node000004" href="$bitstreamGeneration_8cpp.html" title=" " alt="" coords="143,269,343,309"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="245,147,245,269,240,269,240,147"/>
+<area shape="rect" id="Node000005" href="$gof_8hpp.html" title=" " alt="" coords="280,181,480,221"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="286,139,351,179,349,184,283,143"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="339,231,274,272,271,267,337,227"/>
+<area shape="rect" id="Node000006" href="$gof_8cpp.html" title=" " alt="" coords="367,269,567,309"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="411,229,449,267,446,271,407,233"/>
+</map>
