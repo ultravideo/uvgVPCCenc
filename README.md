@@ -105,10 +105,10 @@ All user-accessible parameters for uvgVPCCenc are defined in the parameterMap va
 
 Here are a selection of common uvgVPCCenc parameters:
 ```
-    presetName          Preset name, i.e. slow or fast
-    rate                V-PCC rate, i.e. 16-22-2
-    mode                Encoding mode, i.e. AI or RA
-    logLevel            Level of logging, i.e. TRACE
+    presetName          Preset name, i.g. slow or fast
+    rate                V-PCC rate, i.g. 16-22-2
+    mode                Encoding mode, i.g. AI or RA
+    logLevel            Level of logging, i.g. TRACE
 ```
 
 ## Presets
