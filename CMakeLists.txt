@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.22)
 include(ExternalProject)
 
 set(uvgVPCCenc_VER 0.1.0)
-set(uvgVPCCenc_DESCR "uvgVPCCenc is an Real-Time V-PCC encoder library written in C++.")
+set(uvgVPCCenc_DESCR "uvgVPCCenc is a Real-Time V-PCC encoder library written in C++.")
 set(uvgVPCCenc_URL "https://github.com/ultravideo/uvgVPCCenc")
 
 set(KVAZAAR_REPO_URL "https://github.com/ultravideo/kvazaar.git")
