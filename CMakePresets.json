@@ -54,8 +54,16 @@
          "ENABLE_TESTING":true,
          "ENABLE_CI_TESTING":true,
          "ENABLE_MY_TESTING":false
+         }
+      },
+      {
+       "name":"docs",
+       "inherits":"RelWithDebInfo",
+       "generator":"Unix Makefiles",
+       "cacheVariables":{
+          "CMAKE_BUILD_TYPE":"RelWithDebInfo"
+       }
       }
-   }
   ],
   "buildPresets":[
      {
@@ -72,8 +80,14 @@
      },
      {
         "name":"CI",
-        "inherits":"RelWithDebInfo",
         "configurePreset":"CI"
+     },
+     {
+        "name":"docs",
+        "configurePreset":"docs",
+        "targets":[
+          "docs"
+        ]
      }
   ],
   "testPresets":[

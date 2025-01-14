@@ -1,5 +1,3 @@
-
-
 cmake_minimum_required(VERSION 3.22)
 
 # Include CMake modules
@@ -16,13 +14,17 @@ set(KVAZAAR_EP_UPDATE_DISCONNECTED ON)
 
 option(BUILD_SHARED_LIBS "Build using shared uvgVPCCenc library" ON)
 
-project(uvgVPCCenc VERSION ${uvgVPCCenc_VER})
+project(uvgVPCCenc
+  VERSION ${uvgVPCCenc_VER}
+  DESCRIPTION ${uvgVPCCenc_DESCR}
+  HOMEPAGE_URL ${uvgVPCCenc_URL}
+)
 
-if(MSVC)
-add_compile_options(/W3 /WX)
-else()
-add_compile_options(-W -Wall -Wno-unused-variable)
-endif()
+# if(MSVC)
+# add_compile_options(/W3 /WX)
+# else()
+# add_compile_options(-W -Wall -Wno-unused-variable)
+# endif()
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -70,30 +72,32 @@ add_custom_target(format
 # Find Doxygen package
 find_package(Doxygen)
 
-# Check if Doxygen is found
+# Doxygen configuration
 if(DOXYGEN_FOUND)
-    # Set input and output directories
-    set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile.in)
-    set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+  set(DOXYGEN_OUTPUT_DIRECTORY  ${CMAKE_SOURCE_DIR}/docs)
+  set(DOXYGEN_DISABLE_INDEX NO)
+  set(DOXYGEN_FULL_SIDEBAR NO)
+  set(DOXYGEN_MARKDOWN_SUPPORT YES)
+  set(DOXYGEN_USE_MDFILE_AS_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md")
+  set(DOXYGEN_EXTRACT_ALL YES)
+  set(DOXYGEN_SHOW_HEADERFILE YES)
+  set(RECURSIVE YES)
+  
+  set(DOXYGEN_HAVE_DOT YES)
+  set(DOXYGEN_CALL_GRAPH YES)
+  set(DOXYGEN_CALLER_GRAPH YES)
+  set(DOXYGEN_GRAPHICAL_HIERARCHY YES)
+  set(DOXYGEN_UML_LOOK YES)
+  set(DOXYGEN_CLASS_GRAPH YES)
+  set(DOXYGEN_INTERACTIVE_SVG YES)
+  set(DOXYGEN_DOT_IMAGE_FORMAT svg)
 
-    # Configure Doxygen file
-    configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
-
-    # Add a target to generate the API documentation
-    add_custom_target(docs
-        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        COMMENT "Generating API documentation with Doxygen"
-        VERBATIM
+    doxygen_add_docs(
+      docs
+      README.md ${CMAKE_SOURCE_DIR}/src
+      COMMENT "Generating API documentation with Doxygen"
     )
 endif()
-# lf : Needed step to setup doxygen
-# sudo apt-get install doxygen
-# sudo apt-get install graphviz, and 
-# git clone https://github.com/jothepro/doxygen-awesome-css.git
-# sudo mkdir -p /usr/local/share/doxygen-awesome-css/
-# sudo cp doxygen-awesome-css/doxygen-awesome.css /usr/local/share/doxygen-awesome-css/
-# sudo cp doxygen-awesome-css/doxygen-awesome-sidebar-only.css /usr/local/share/doxygen-awesome-css/
 
 # Include test configuration script
 if(ENABLE_TESTING)
