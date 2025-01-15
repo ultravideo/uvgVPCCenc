@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;0.1.0</span>
+   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.0.0</span>
    </div>
    <div id="projectbrief">uvgVPCCenc is a Real-Time V-PCC encoder library written in C++.</div>
   </td>
@@ -119,8 +119,8 @@ Example:</h2>
 <p>If the voxel size (aka voxel resolution or geometry precision) is not in the filename, the voxel size must be given: <code>--geo-precision=10</code>.</p>
 <p>If the start frame (the index of the first frame of the sequence) is not in the filename, the start frame must be given: <code>--start-frame=0</code>.</p>
 <p>uvgVPCCenc accepts .ply files, using positive integer for geometry.</p>
-<p>The application option <code>--uvgvpcc</code> accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command: uvgVPCCenc -i ReadyForWinter_UVG_vox9_25_0_250_%04d.ply -n 10 -o out.vpcc -t 20 &ndash;uvgvpcc rate=16-22-2,presetName=slow,mode=AI,</p>
-<p>Speed and compression quality can be selected with <code>--uvgvpcc presetName</code>, or by setting the uvgVPCCenc parameters manually.</p>
+<p>The application option <code>--uvgvpcc</code> accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command: </p><div class="fragment"><div class="line">uvgVPCCenc -i ReadyForWinter_UVG_vox9_25_0_250_%04d.ply -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI,</div>
+</div><!-- fragment --><p>Speed and compression quality can be selected with <code>--uvgvpcc presetName</code>, or by setting the uvgVPCCenc parameters manually.</p>
 <h1><a class="anchor" id="autotoc_md7"></a>
 Parameters</h1>
 <h2><a class="anchor" id="autotoc_md8"></a>
