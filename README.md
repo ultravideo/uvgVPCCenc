@@ -77,7 +77,9 @@ If the start frame (the index of the first frame of the sequence) is not in the 
 uvgVPCCenc accepts .ply files, using positive integer for geometry.
 
 The application option ```--uvgvpcc``` accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command:
+```
     uvgVPCCenc -i ReadyForWinter_UVG_vox9_25_0_250_%04d.ply -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI,
+```
 
 Speed and compression quality can be selected with ```--uvgvpcc presetName```, or by setting the uvgVPCCenc parameters manually.
 
