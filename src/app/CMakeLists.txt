@@ -19,7 +19,7 @@ add_executable(uvgVPCCenc
 target_compile_options(miniplyLibrary PRIVATE -fPIC)
 target_compile_options(getoptLibrary PRIVATE -fPIC)
 
-target_link_libraries(uvgVPCCenc uvgvpcc)
+target_link_libraries(uvgVPCCenc uvgvpccenc)
 
 # Define installation destinations
 install(TARGETS uvgVPCCenc DESTINATION bin)

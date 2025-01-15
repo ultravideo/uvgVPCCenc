@@ -1,0 +1,12 @@
+prefix=@DEFERRED@CMAKE_INSTALL_PREFIX@DEFERRED@
+exec_prefix=${prefix}
+libdir=@UVGVPCCENC_PC_LIBDIR@
+incdir=@UVGVPCCENC_PC_INCDIR@
+
+Name: libuvgvpccenc
+Description: @CMAKE_PROJECT_DESCRIPTION@
+URL: @CMAKE_PROJECT_HOMEPAGE_URL@
+Version: @PROJECT_VERSION@
+Libs: -L${libdir} -luvgvpccenc
+Libs.private: @LIBS@
+Cflags: -I${incdir}

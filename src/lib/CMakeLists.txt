@@ -17,12 +17,12 @@ set(LIB_SOURCES
 )
 
 if(BUILD_SHARED_LIBS)
-  add_library(uvgvpcc SHARED ${LIB_SOURCES})
+  add_library(uvgvpccenc SHARED ${LIB_SOURCES})
 else()
-  add_library(uvgvpcc STATIC ${LIB_SOURCES})
+  add_library(uvgvpccenc STATIC ${LIB_SOURCES})
 endif()
 
-target_link_libraries(uvgvpcc
+target_link_libraries(uvgvpccenc
     bitstreamGeneration
     patchGenerationLibrary
     patchPackingLibrary
@@ -36,11 +36,4 @@ target_link_libraries(uvgvpcc
 )
 
 # Include directories for headers
-target_include_directories(uvgvpcc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
-
-# Optionally, add additional configurations, dependencies, or options
-# target_compile_options(BitstreamGenerationLibrary PRIVATE -std=c++11)
-
-# Define installation destinations
-install(TARGETS uvgvpcc DESTINATION lib)
-install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include DESTINATION include)
+target_include_directories(uvgvpccenc PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)

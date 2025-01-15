@@ -20,6 +20,8 @@ project(uvgVPCCenc
   HOMEPAGE_URL ${uvgVPCCenc_URL}
 )
 
+set(DEFERRED "@")
+
 # if(MSVC)
 # add_compile_options(/W3 /WX)
 # else()
@@ -98,6 +100,34 @@ if(DOXYGEN_FOUND)
       COMMENT "Generating API documentation with Doxygen"
     )
 endif()
+
+# INSTALL
+include(GNUInstallDirs)
+
+# Set correct pkgconfig libdir variable
+if(IS_ABSOLUTE "${CMAKE_INSTALL_LIBDIR}")
+  set(UVGVPCCENC_PC_LIBDIR "${CMAKE_INSTALL_LIBDIR}")
+else()
+  set(UVGVPCCENC_PC_LIBDIR "\${exec_prefix}/${CMAKE_INSTALL_LIBDIR}")
+endif()
+
+# Set correct pkgconfig include variable
+if(IS_ABSOLUTE "${CMAKE_INSTALL_INCLUDEDIR}")
+  set(UVGVPCCENC_PC_INCDIR "${CMAKE_INSTALL_INCLUDEDIR}")
+else()
+  set(UVGVPCCENC_PC_INCDIR "\${exec_prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
+endif()
+
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/lib/uvgvpccenc.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc.temp" @ONLY)
+install(CODE "configure_file(\"${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc.temp\" \"${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc\" @ONLY)")
+
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+install(TARGETS uvgVPCCenc DESTINATION ${CMAKE_INSTALL_BINDIR})
+install(TARGETS uvgvpccenc
+  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/lib/include/uvgvpcc DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Include test configuration script
 if(ENABLE_TESTING)
