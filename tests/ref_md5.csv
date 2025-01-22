@@ -1,0 +1,13 @@
+test_name,md5_bitstream,md5_pc;
+ReadyForWinter_vox9_fast_RA_16-22-2,9a71f01e6977037cafa290556b726b64,;
+ReadyForWinter_vox9_slow_RA_32-42-4,479227f556dd955dd60d26394c9108ef,;
+ReadyForWinter_vox9_fast_AI_32-42-4,2fa5ae3344dbd7703e8eae60cd228672,;
+ReadyForWinter_vox9_slow_AI_16-22-2,73b01e11299f8b462b206afd7aaf7d34,;
+FlowerWave_vox10_fast_RA_32-42-4,70a9852d126a6a895a41e9fb02937d23,;
+Gymnast_vox10_slow_RA_16-22-2,8df2dd1215184875557f114d28659513,;
+Gymnast_vox10_fast_AI_32-42-4,7c488e8c9a8912ecceb0bab74c4040a6,;
+FlowerWave_vox10_fast_AI_16-22-2,9b8dfcc76e9d4f0d96d941582b2e0428,;
+CasualSquat_vox11_fast_RA_16-22-2,418b37d3ccad8f401a0f8f9922c03aea,;
+BlueBackpack_vox11_slow_RA_16-22-2,c9b321a4f81e680634ff470310379df5,;
+BlueBackpack_vox11_slow_AI_32-42-4,2615e98fd2dc5f3e96633f306522e9f6,;
+CasualSquat_vox11_slow_AI_32-42-4,0f8b0f48e9a9405d897d89dd9b87f194,;

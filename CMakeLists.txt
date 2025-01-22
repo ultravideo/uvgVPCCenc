@@ -4,13 +4,15 @@ cmake_minimum_required(VERSION 3.22)
 include(ExternalProject)
 
 set(uvgVPCCenc_VER 1.0.0)
-set(uvgVPCCenc_DESCR "uvgVPCCenc is a Real-Time V-PCC encoder library written in C++.")
+set(uvgVPCCenc_DESCR "uvgVPCCenc is an open-source real-time V-PCC encoder library written in C++ from scratch.")
 set(uvgVPCCenc_URL "https://github.com/ultravideo/uvgVPCCenc")
 
 set(KVAZAAR_REPO_URL "https://github.com/ultravideo/kvazaar.git")
 set(KVAZAAR_REPO_TAGS "bb836ff1422f247b490230e9d429a2d6658cd1a1")
 
 set(KVAZAAR_EP_UPDATE_DISCONNECTED ON)
+set(PCCSUM_EP_UPDATE_DISCONNECTED ON)
+set(TMC2_EP_UPDATE_DISCONNECTED ON)
 
 option(BUILD_SHARED_LIBS "Build using shared uvgVPCCenc library" ON)
 

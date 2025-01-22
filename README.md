@@ -3,7 +3,7 @@ uvgVPCCenc
 
 uvgVPCCenc is an academic open-source volumetric video encoder for the state of the art Video-based Point-Compression (V-PCC) standard. uvgVPCCenc is being developed in C++ under the BSD-3-Clause license. 
               
-The uvgVPCC encoder accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux and macOS. In version 1.0, the focus is on building a functional encoding pipeline using only essential tools and algorithms inspired by the TMC2 reference software. Prioritizing practical encoding, we’ve omitted lossless tools and those adding significant computational complexity such as geometry reconstruction. In the future we plan on developing innovative methods to reduce the massive complexity of the V-PCC encoding process. 
+The uvgVPCC encoder accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux. In version 1.0, the focus is on building a functional encoding pipeline using only essential tools and algorithms inspired by the TMC2 reference software. Prioritizing practical encoding, we’ve omitted lossless tools and those adding significant computational complexity such as geometry reconstruction. In the future we plan on developing innovative methods to reduce the massive complexity of the V-PCC encoding process. 
   
 uvgVPCCenc serves as a research platform for new coding tool development and other encoder research activities as well as provides a high-quality and practical V-PCC encoder for the public to use.
 
@@ -26,19 +26,11 @@ On Debian/Ubuntu:
 ```
 sudo apt install cmake ninja
 ```
-On MacOS:
-```
-brew install cmake ninja
-```
 
 To generate the documentation, ```doxygen``` and ```graphviz``` are required.
 On Debian/Ubuntu:
 ```
 sudo apt install doxygen graphviz
-```
-On MacOS:
-```
-brew install doxygen graphviz
 ```
 
 ### Compile and test uvgVPCCenc

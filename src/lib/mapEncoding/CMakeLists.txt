@@ -34,14 +34,14 @@ add_library(${KVAZAAR_STDIO_LIB} STATIC
 # Add kvazaar as an external project fetched from Git
 ExternalProject_Add(
     kvazaar
-    PREFIX ${CMAKE_BINARY_DIR}/external
+    PREFIX ${CMAKE_BINARY_DIR}/external/kvazaar
     GIT_REPOSITORY ${KVAZAAR_REPO_URL}
     GIT_TAG ${KVAZAAR_REPO_TAGS}
-    BUILD_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/include/${STDIO_PREFIX}_stdio.h ${CMAKE_BINARY_DIR}/external/src/kvazaar/src/stdio.h
+    BUILD_COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_CURRENT_BINARY_DIR}/include/${STDIO_PREFIX}_stdio.h ${CMAKE_BINARY_DIR}/external/kvazaar/src/kvazaar/src/stdio.h
                   COMMAND ${CMAKE_COMMAND} --build . --target kvazaar
     INSTALL_COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_CURRENT_BINARY_DIR}/include  # Create directory for headers
-                    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/src/kvazaar/src/kvazaar.h ${CMAKE_CURRENT_BINARY_DIR}/include/  # Copy main header file
-                    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/src/kvazaar-build/libkvazaar.a ${CMAKE_CURRENT_BINARY_DIR}/  # Copy static library file
+                    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/kvazaar/src/kvazaar/src/kvazaar.h ${CMAKE_CURRENT_BINARY_DIR}/include/  # Copy main header file
+                    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_BINARY_DIR}/external/kvazaar/src/kvazaar-build/libkvazaar.a ${CMAKE_CURRENT_BINARY_DIR}/  # Copy static library file
     BUILD_BYPRODUCTS libkvazaar.a
     UPDATE_DISCONNECTED ${KVAZAAR_EP_UPDATE_DISCONNECTED}
     CMAKE_ARGS
