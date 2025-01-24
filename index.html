@@ -23,7 +23,7 @@
   <td id="projectalign">
    <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.0.0</span>
    </div>
-   <div id="projectbrief">uvgVPCCenc is a Real-Time V-PCC encoder library written in C++.</div>
+   <div id="projectbrief">uvgVPCCenc is an open-source real-time V-PCC encoder library written in C++ from scratch.</div>
   </td>
  </tr>
  </tbody>
@@ -75,7 +75,7 @@ $(function() {
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
 <p>uvgVPCCenc is an academic open-source volumetric video encoder for the state of the art Video-based Point-Compression (V-PCC) standard. uvgVPCCenc is being developed in C++ under the BSD-3-Clause license.</p>
-<p>The uvgVPCC encoder accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux and macOS. In version 1.0, the focus is on building a functional encoding pipeline using only essential tools and algorithms inspired by the TMC2 reference software. Prioritizing practical encoding, we’ve omitted lossless tools and those adding significant computational complexity such as geometry reconstruction. In the future we plan on developing innovative methods to reduce the massive complexity of the V-PCC encoding process.</p>
+<p>The uvgVPCC encoder accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux. In version 1.0, the focus is on building a functional encoding pipeline using only essential tools and algorithms inspired by the TMC2 reference software. Prioritizing practical encoding, we’ve omitted lossless tools and those adding significant computational complexity such as geometry reconstruction. In the future we plan on developing innovative methods to reduce the massive complexity of the V-PCC encoding process.</p>
 <p>uvgVPCCenc serves as a research platform for new coding tool development and other encoder research activities as well as provides a high-quality and practical V-PCC encoder for the public to use.</p>
 <p>uvgVPCCenc is still under development. Speed and RD-quality will continue to improve.</p>
 <p><a href="https://ultravideo.fi/uvgvpccenc.html">https://ultravideo.fi/uvgvpccenc.html</a> for more information.</p>
@@ -95,9 +95,7 @@ Compilation and testing</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Dependencies</h2>
 <p>To compile the library and the application, please install <code>CMake</code> and <code>Ninja</code>. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install cmake ninja</div>
-</div><!-- fragment --><p> On MacOS: </p><div class="fragment"><div class="line">brew install cmake ninja</div>
 </div><!-- fragment --><p>To generate the documentation, <code>doxygen</code> and <code>graphviz</code> are required. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install doxygen graphviz</div>
-</div><!-- fragment --><p> On MacOS: </p><div class="fragment"><div class="line">brew install doxygen graphviz</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
 Compile and test uvgVPCCenc</h2>
 <p>To compile and test the encoder, please use following commands: </p><div class="fragment"><div class="line">cmake --preset=CI</div>
