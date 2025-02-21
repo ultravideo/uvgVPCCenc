@@ -18,8 +18,7 @@
            "ENABLE_TESTING":false,
            "CHECK_PC_MD5": false,
            "ENABLE_CI_TESTING":false,
-           "ENABLE_MY_TESTING":false,
-           "MY_TEST_PATH": ""
+           "ENABLE_MY_TESTING":false
         }
      },
      {
@@ -60,7 +59,7 @@
       },
       {
        "name":"docs",
-       "inherits":"RelWithDebInfo",
+       "inherits":"CI",
        "generator":"Unix Makefiles",
        "cacheVariables":{
           "CMAKE_BUILD_TYPE":"RelWithDebInfo"

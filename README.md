@@ -21,10 +21,10 @@ https://ultravideo.fi/uvgvpccenc.html for more information.
 
 ## Compilation and testing
 ### Dependencies
-To compile the library and the application, please install ```CMake``` and ```Ninja```.
+To compile the library and the application, please install ```CMake```,  ```Ninja``` and ```g++```.
 On Debian/Ubuntu:
 ```
-sudo apt install cmake ninja
+sudo apt install cmake ninja-build g++
 ```
 
 To generate the documentation, ```doxygen``` and ```graphviz``` are required.
@@ -57,10 +57,10 @@ To demonstrate how to use the uvgVPCCenc library, a straightforward example appl
 
 ### Example:
 ```
-    uvpVPCCenc -i ReadyForWinter_UVG_vox10_25_0_250_%04d.ply -n 10 -o out.vpcc
+    uvpVPCCenc -i <path_to_ply> -n 10 -o out.vpcc
 ```
 
-The mandatory parameters are input, output and the number of frames. The input path should use ```%0xd``` for frame numbering.
+The mandatory parameters are input, output and the number of frames. The input path should use ```%0xd``` for frame numbering. Example sequences are available in the [UVG-VPC](https://ultravideo.fi/UVG-VPC) dataset.
 
 If the voxel size (aka voxel resolution or geometry precision) is not in the filename, the voxel size must be given: ```--geo-precision=10```.
 
@@ -70,7 +70,7 @@ uvgVPCCenc accepts .ply files, using positive integer for geometry.
 
 The application option ```--uvgvpcc``` accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command:
 ```
-    uvgVPCCenc -i ReadyForWinter_UVG_vox9_25_0_250_%04d.ply -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI,
+    uvgVPCCenc -i <path_to_ply> -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI
 ```
 
 Speed and compression quality can be selected with ```--uvgvpcc presetName```, or by setting the uvgVPCCenc parameters manually.
@@ -115,5 +115,6 @@ exist for TMC2.
 If you use uvgVPCCenc in your research, please cite the most appropriate papers in the following papers:
 
 ```
-L. Fréneau, G. Gautier, H. Tampio, A. Mercat, and J. Vanne, “Real-Time Video-based Point Cloud Compression,” in Proc. IEEE Visual Comm. Image Proc., Tokyo, Japan, Dec. 2024.
+[1] L. Fréneau, G. Gautier, A. Mercat, and J. Vanne, “uvgVPCCenc: Practical open-source encoder for fast V-PCC compression,” Accepted to ACM Multimedia System, Stellenbosch, South Africa, Mar.—Apr. 2025.
+[2] L. Fréneau, G. Gautier, H. Tampio, A. Mercat, and J. Vanne, “Real-Time Video-based Point Cloud Compression,” in Proc. IEEE Visual Comm. Image Proc., Tokyo, Japan, Dec. 2024.
 ```
