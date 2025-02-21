@@ -94,7 +94,7 @@ Table of Contents</h1>
 Compilation and testing</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Dependencies</h2>
-<p>To compile the library and the application, please install <code>CMake</code> and <code>Ninja</code>. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install cmake ninja</div>
+<p>To compile the library and the application, please install <code>CMake</code>, <code>Ninja</code> and <code>g++</code>. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install cmake ninja-build g++</div>
 </div><!-- fragment --><p>To generate the documentation, <code>doxygen</code> and <code>graphviz</code> are required. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install doxygen graphviz</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
 Compile and test uvgVPCCenc</h2>
@@ -112,12 +112,12 @@ Using uvgVPCCenc</h1>
 <p>To demonstrate how to use the uvgVPCCenc library, a straightforward example application is provided in src/app, with its <a class="el" href="uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh...">main()</a> function located in <a href="src/app/uvgVPCCencAppExample.cpp">uvgVPCCencAppExample.cpp</a>.</p>
 <h2><a class="anchor" id="autotoc_md6"></a>
 Example:</h2>
-<div class="fragment"><div class="line">uvpVPCCenc -i ReadyForWinter_UVG_vox10_25_0_250_%04d.ply -n 10 -o out.vpcc</div>
-</div><!-- fragment --><p>The mandatory parameters are input, output and the number of frames. The input path should use <code>%0xd</code> for frame numbering.</p>
+<div class="fragment"><div class="line">uvpVPCCenc -i &lt;path_to_ply&gt; -n 10 -o out.vpcc</div>
+</div><!-- fragment --><p>The mandatory parameters are input, output and the number of frames. The input path should use <code>%0xd</code> for frame numbering. Example sequences are available in the <a href="https://ultravideo.fi/UVG-VPC">UVG-VPC</a> dataset.</p>
 <p>If the voxel size (aka voxel resolution or geometry precision) is not in the filename, the voxel size must be given: <code>--geo-precision=10</code>.</p>
 <p>If the start frame (the index of the first frame of the sequence) is not in the filename, the start frame must be given: <code>--start-frame=0</code>.</p>
 <p>uvgVPCCenc accepts .ply files, using positive integer for geometry.</p>
-<p>The application option <code>--uvgvpcc</code> accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command: </p><div class="fragment"><div class="line">uvgVPCCenc -i ReadyForWinter_UVG_vox9_25_0_250_%04d.ply -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI,</div>
+<p>The application option <code>--uvgvpcc</code> accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command: </p><div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI</div>
 </div><!-- fragment --><p>Speed and compression quality can be selected with <code>--uvgvpcc presetName</code>, or by setting the uvgVPCCenc parameters manually.</p>
 <h1><a class="anchor" id="autotoc_md7"></a>
 Parameters</h1>
@@ -147,7 +147,8 @@ Presets</h1>
 <h1><a class="anchor" id="autotoc_md11"></a>
 Papers</h1>
 <p>If you use uvgVPCCenc in your research, please cite the most appropriate papers in the following papers:</p>
-<div class="fragment"><div class="line">L. Fréneau, G. Gautier, H. Tampio, A. Mercat, and J. Vanne, “Real-Time Video-based Point Cloud Compression,” in Proc. IEEE Visual Comm. Image Proc., Tokyo, Japan, Dec. 2024.</div>
+<div class="fragment"><div class="line">[1] L. Fréneau, G. Gautier, A. Mercat, and J. Vanne, “uvgVPCCenc: Practical open-source encoder for fast V-PCC compression,” Accepted to ACM Multimedia System, Stellenbosch, South Africa, Mar.—Apr. 2025.</div>
+<div class="line">[2] L. Fréneau, G. Gautier, H. Tampio, A. Mercat, and J. Vanne, “Real-Time Video-based Point Cloud Compression,” in Proc. IEEE Visual Comm. Image Proc., Tokyo, Japan, Dec. 2024.</div>
 </div><!-- fragment --> </div></div><!-- PageDoc -->
 </div><!-- contents -->
 <!-- start footer part -->
