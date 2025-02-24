@@ -57,7 +57,7 @@ To demonstrate how to use the uvgVPCCenc library, a straightforward example appl
 
 ### Example:
 ```
-    uvpVPCCenc -i <path_to_ply> -n 10 -o out.vpcc
+    uvgVPCCenc -i <path_to_ply> -n 10 -o out.vpcc
 ```
 
 The mandatory parameters are input, output and the number of frames. The input path should use ```%0xd``` for frame numbering. Example sequences are available in the [UVG-VPC](https://ultravideo.fi/UVG-VPC) dataset.
