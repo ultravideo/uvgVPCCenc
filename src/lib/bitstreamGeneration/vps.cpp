@@ -63,7 +63,7 @@ vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_
     for (uint8_t k = 0; k < (vps_atlas_count_minus1_ + 1); k++) {
         vps_atlas_id_.push_back(0);
         vps_frame_width_.push_back(paramUVG.mapWidth);
-        vps_frame_height_.push_back(gofUVG->mapsHeight);
+        vps_frame_height_.push_back(gofUVG->mapHeightGOF);
 
         vps_length_bits += 6 + uvg_calculate_ue_len(vps_frame_width_.back()) + uvg_calculate_ue_len(vps_frame_height_.back());
 

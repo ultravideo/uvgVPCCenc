@@ -43,6 +43,7 @@
 #include <span>
 #include <string>
 #include <vector>
+#include <cassert>
 
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
@@ -53,8 +54,9 @@ using namespace uvgvpcc_enc;
 PatchPacking::PatchPacking() = default;
 
 inline bool PatchPacking::checkFitPatch(const size_t& patchPosX, const size_t& patchPosY, const size_t& patchWidth,
-                                        const size_t& patchHeight, const size_t& occupancyMapWidth,
-                                        const size_t& occupancyMapHeight, const std::vector<uint8_t>& occupancyMap) {
+                                        const size_t& patchHeight, const size_t& mapHeight, const std::vector<uint8_t>& frameOccupancyMap) {
+    // TODO(lf): deprecated comments
+
     // Iterate through the currrent patch occupancy. Weither a block is occupied or not in the patch occupancy map is not considered. The
     // whole patch bounding box need to fit in the occupancy map. (cf precedence in TMC2)
 
@@ -65,7 +67,7 @@ inline bool PatchPacking::checkFitPatch(const size_t& patchPosX, const size_t& p
 
     // To optimize this checking process, we first check all corners of this rectangle. Then we check the perimeter. Then all remaining OM
     // block.
-    const size_t spacePatchPacking = p_->spacePatchPacking;
+    const size_t spacePatchPacking = p_->spacePatchPacking * p_->occupancyMapDSResolution;
 
     // Everything in this function is accoridng to the downscaled occupancy map. So the unit is the OM block size. (It means that, for
     // example, in this function, patchWidth corresponds to patch.widthInOccBlk_ and not patch.widthInPixel_) The bounding box of the patch is
@@ -77,60 +79,61 @@ inline bool PatchPacking::checkFitPatch(const size_t& patchPosX, const size_t& p
     // with if condition TODO(lf): is there a risk for overflow with spacePatchPacking-1 or any other unsigned typed variable like this ?
     // spacePatchPacking can be 0
 
+    const size_t mapWidth = p_->mapWidth;
+
     const size_t areaPosX = patchPosX - std::min(spacePatchPacking, patchPosX);  // Check if near left map border
     const size_t areaPosY = patchPosY - std::min(spacePatchPacking, patchPosY);  // Check if near top map border
 
     // Check top left corner of the area
-    if (static_cast<bool>(occupancyMap[areaPosX + areaPosY * occupancyMapWidth])) {
+    if (static_cast<bool>(frameOccupancyMap[areaPosX + areaPosY * mapWidth])) {
         return false;
     }
 
     const size_t areaWidth =
-        patchWidth + std::min(spacePatchPacking, patchPosX) + std::min(spacePatchPacking, occupancyMapWidth - (patchPosX + patchWidth));
+        patchWidth + std::min(spacePatchPacking, patchPosX) + std::min(spacePatchPacking, mapWidth - (patchPosX + patchWidth));
 
     // Check top right corner of the area
-    if (static_cast<bool>(occupancyMap[areaPosX + areaWidth - 1 + areaPosY * occupancyMapWidth])) {
+    if (static_cast<bool>(frameOccupancyMap[areaPosX + areaWidth - 1 + areaPosY * mapWidth])) {
         return false;
     }
 
     const size_t areaHeight =
-        patchHeight + std::min(spacePatchPacking, patchPosY) + std::min(spacePatchPacking, occupancyMapHeight - (patchPosY + patchHeight));
+        patchHeight + std::min(spacePatchPacking, patchPosY) + std::min(spacePatchPacking, mapHeight - (patchPosY + patchHeight));
 
     // Check bottom left corner of the area
-    if (static_cast<bool>(occupancyMap[areaPosX + (areaPosY + areaHeight - 1) * occupancyMapWidth])) {
+    if (static_cast<bool>(frameOccupancyMap[areaPosX + (areaPosY + areaHeight - 1) * mapWidth])) {
         return false;
     }
     // Check bottom right corner of the area
-    if (static_cast<bool>(occupancyMap[areaPosX + areaWidth - 1 + (areaPosY + areaHeight - 1) * occupancyMapWidth])) {
+    if (static_cast<bool>(frameOccupancyMap[areaPosX + areaWidth - 1 + (areaPosY + areaHeight - 1) * mapWidth])) {
         return false;
     }
 
     // Check the top and bottom perimeter section of the area
-    for (size_t mapPos = areaPosX + 1 + areaPosY * occupancyMapWidth; mapPos < areaPosX + areaWidth - 1 + areaPosY * occupancyMapWidth;
-         ++mapPos) {
-        if (static_cast<bool>(occupancyMap[mapPos])) {
+    for (size_t mapPos = areaPosX + 1 + areaPosY * mapWidth; mapPos < areaPosX + areaWidth - 1 + areaPosY * mapWidth;++mapPos) {
+        if (static_cast<bool>(frameOccupancyMap[mapPos])) {
             return false;
         }
-        if (static_cast<bool>(occupancyMap[mapPos + (areaHeight - 1) * occupancyMapWidth])) {
+        if (static_cast<bool>(frameOccupancyMap[mapPos + (areaHeight - 1) * mapWidth])) {
             return false;
         }
     }
 
     // Check the left and right perimeter section of the area
     for (size_t areaY = 1; areaY < areaHeight - 1; ++areaY) {
-        if (static_cast<bool>(occupancyMap[areaPosX + (areaY + areaPosY) * occupancyMapWidth])) {
+        if (static_cast<bool>(frameOccupancyMap[areaPosX + (areaY + areaPosY) * mapWidth])) {
             return false;
         }
-        if (static_cast<bool>(occupancyMap[areaPosX + areaWidth - 1 + (areaY + areaPosY) * occupancyMapWidth])) {
+        if (static_cast<bool>(frameOccupancyMap[areaPosX + areaWidth - 1 + (areaY + areaPosY) * mapWidth])) {
             return false;
         }
     }
 
-    // Check remaining OM blocks of the area
+    // Check remaining pixels of the area // TODO(lf): should do mapY+=p_->resolutionDS and idem for mapX and everywhere else in the function (consider only DS blocks indirectly) (depends on the minimum size of a patch)
     for (size_t mapY = areaPosY + 1; mapY < areaPosY + areaHeight - 1; ++mapY) {
         for (size_t mapX = areaPosX + 1; mapX < areaPosX + areaWidth - 1; ++mapX) {
-            const size_t mapPos = mapX + mapY * occupancyMapWidth;
-            if (static_cast<bool>(occupancyMap[mapPos])) {
+            const size_t mapPos = mapX + mapY * mapWidth;
+            if (static_cast<bool>(frameOccupancyMap[mapPos])) {
                 return false;
             }
         }
@@ -139,46 +142,45 @@ inline bool PatchPacking::checkFitPatch(const size_t& patchPosX, const size_t& p
     return true;
 }
 
-inline bool PatchPacking::checkLocation(const size_t& occupancyMapHeight, const size_t& occupancyMapWidth,
-                                        const std::vector<uint8_t>& occupancyMap, const size_t& posOMu,
-                                        const size_t& posOMv, const size_t& patchWidth, const size_t& patchHeight,
-                                        size_t& maxPatchHeightInOccBlk, uvgvpcc_enc::Patch& patch) {
+inline bool PatchPacking::checkLocation(const size_t& mapHeight, const size_t& posOMu, const size_t& posOMv, const size_t& patchWidth, const size_t& patchHeight,
+                                        size_t& maxPatchHeight, uvgvpcc_enc::Patch& patch, const std::vector<uint8_t>& frameOccupancyMap) {
+
     const size_t heightBound = posOMv + patchHeight;
     const size_t widthBound = posOMu + patchWidth;
 
-    if (heightBound > occupancyMapHeight || widthBound > occupancyMapWidth) {
+    if (heightBound > mapHeight || widthBound > p_->mapWidth) {
         // At this location (posOmU,posOmV), the patch bounding box overlap the occupancy map border
         return false;
-    }
+    }    
 
-    const bool locationFound = checkFitPatch(posOMu, posOMv, patchWidth, patchHeight, occupancyMapWidth, occupancyMapHeight, occupancyMap);
+    const bool locationFound = checkFitPatch(posOMu, posOMv, patchWidth, patchHeight, mapHeight, frameOccupancyMap);
     if (locationFound) {
-        patch.omPosX_ = posOMu;
-        patch.omPosY_ = posOMv;
-        maxPatchHeightInOccBlk = std::max(maxPatchHeightInOccBlk, heightBound);
+        patch.omDSPosX_ = posOMu/p_->occupancyMapDSResolution;
+        patch.omDSPosY_ = posOMv/p_->occupancyMapDSResolution;
+        maxPatchHeight = std::max(maxPatchHeight, heightBound);
         return true;
     }
 
     return false;
 }
 
-bool PatchPacking::findPatchLocation(const size_t& occupancyMapHeight, const size_t& occupancyMapWidth,
-                                     size_t& maxPatchHeightInOccBlk, const std::vector<uint8_t>& occupancyMap,
-                                     uvgvpcc_enc::Patch& patch) {
+bool PatchPacking::findPatchLocation(const size_t& mapHeight, size_t& maxPatchHeight,uvgvpcc_enc::Patch& patch, const std::vector<uint8_t>& frameOccupancyMap) {
     // Iterate over the occupancy map. For each position, check if the patch fit with the default orientation and with its axis swaped.
     bool locationFound = false;
-    for (size_t posOMv = 0; posOMv < occupancyMapHeight && !locationFound; posOMv += 1 + p_->spacePatchPacking) {
-        for (size_t posOMu = 0; posOMu < occupancyMapWidth; posOMu += 1 + p_->spacePatchPacking) {
-            locationFound = checkLocation(occupancyMapHeight, occupancyMapWidth, occupancyMap, posOMu, posOMv, patch.widthInOccBlk_,
-                                          patch.heightInOccBlk_, maxPatchHeightInOccBlk, patch);
+    const size_t step = (1 + p_->spacePatchPacking)*p_->occupancyMapDSResolution;
+    assert(patch.widthInOccBlk_ * p_->occupancyMapDSResolution == patch.widthInPixel_);
+    for (size_t posOMv = 0; posOMv < mapHeight && !locationFound; posOMv += step ) {
+        for (size_t posOMu = 0; posOMu < p_->mapWidth; posOMu += step) {
+            locationFound = checkLocation(mapHeight, posOMu, posOMv,  patch.widthInPixel_,
+                                          patch.heightInPixel_, maxPatchHeight, patch,frameOccupancyMap);
             if (locationFound) {
                 patch.axisSwap_ = false;
                 return true;
             }
 
             // Swap patch width and height
-            locationFound = checkLocation(occupancyMapHeight, occupancyMapWidth, occupancyMap, posOMu, posOMv, patch.heightInOccBlk_,
-                                          patch.widthInOccBlk_, maxPatchHeightInOccBlk, patch);
+            locationFound = checkLocation(mapHeight, posOMu, posOMv, patch.heightInPixel_,
+                                          patch.widthInPixel_, maxPatchHeight, patch, frameOccupancyMap);
             if (locationFound) {
                 patch.axisSwap_ = true;
                 return true;
@@ -188,10 +190,15 @@ bool PatchPacking::findPatchLocation(const size_t& occupancyMapHeight, const siz
     return false;
 }
 
-void PatchPacking::allocateDefaultOccupancyMap(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
-    frame->occupancyMapHeight = p_->minimumMapHeight / p_->occupancyMapResolution;
-    frame->occupancyMap.resize((p_->mapWidth / p_->occupancyMapResolution) * frame->occupancyMapHeight, 0);
+void PatchPacking::allocateDefaultOccupancyMap(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t mapHeight) {
+    frame->mapHeight = mapHeight; // TODO(lf): can be done in the Frame constructor? (bad idea to put all memory allocaion at the same time no, or I mean too early ?)
+    frame->mapHeightDS = mapHeight / p_->occupancyMapDSResolution; // TODO(lf): can be done in the Frame constructor? (bad idea to put all memory allocaion at the same time no, or I mean too early ?)
+    frame->occupancyMap.resize(p_->mapWidth * frame->mapHeight,0);
+
 }
+
+// TODO(lf): First test swap patch rotation mode if this minimize hypothetic resulting map height
+
 
 // Patch placement and indirect occupancy map generation //
 void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::span<uvgvpcc_enc::Patch>* patchListSpan) {
@@ -205,49 +212,47 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
     // remaining non-matched patch. The patchListSpan will then correspond to the a specific section of the frame patch list.
     const std::span<uvgvpcc_enc::Patch>& patchList = patchListSpan != nullptr ? *patchListSpan : frame->patchList;
 
-    // The occupancy map is already downscalled when created. There is no downscalling process. //
-    size_t const occupancyMapWidth = p_->mapWidth / p_->occupancyMapResolution;
-    const std::shared_ptr<uvgvpcc_enc::GOF> gof = frame->gof.lock();
-    size_t occupancyMapHeight = frame->occupancyMapHeight;
-    size_t maxPatchHeightInOccBlk = 0;  // Maximum height occupied by a patch
+    size_t mapHeightTemp = frame->mapHeight;
+    size_t maxPatchHeight = 0; // Maximum height occupied by a patch
 
     // Iterate over all patches of the frame //
     for (auto& patch : patchList) {
         bool locationFound = false;
         for (;;) {
-            locationFound = findPatchLocation(occupancyMapHeight, occupancyMapWidth, maxPatchHeightInOccBlk, frame->occupancyMap, patch);
+            locationFound = findPatchLocation(mapHeightTemp,maxPatchHeight, patch,frame->occupancyMap);
             if (locationFound) {
                 break;
             }
-            occupancyMapHeight *= 2;
-            frame->occupancyMap.resize(occupancyMapWidth * occupancyMapHeight);
+
+            mapHeightTemp *= 2;
+            frame->occupancyMap.resize(p_->mapWidth * mapHeightTemp);
         }
 
         // Update the occupancy map by adding the current patch at its found location //
         if (!patch.axisSwap_) {
-            // Line by line, copy the patch occupancy into the occupancy map at the previously found location //
-            auto itPatchOM = patch.patchOccupancy_.begin();  // patch occupancy map
-            auto itPatchOMEnd = patch.patchOccupancy_.end();
-            auto itOM =
-                frame->occupancyMap.begin() + static_cast<int64_t>(patch.omPosX_ + patch.omPosY_ * occupancyMapWidth);  // frame occupancy map
-            int64_t const lineSize = static_cast<int64_t>(patch.widthInOccBlk_);  // line size (default orientation)
-            for (; itPatchOM < itPatchOMEnd; itPatchOM += lineSize, itOM += static_cast<int64_t>(occupancyMapWidth)) {
-                std::copy_n(itPatchOM, lineSize, itOM);
+            // Line by line, copy the 'patch DS occupancy map' into the 'frame DS occupancy map' at the previously found patch location //
+            for(size_t patchY=0; patchY<patch.heightInPixel_; ++patchY) {
+                for(size_t patchX=0; patchX<patch.widthInPixel_; ++patchX) {
+                    frame->occupancyMap[patch.omDSPosX_*p_->occupancyMapDSResolution + patchX + (patchY+patch.omDSPosY_*p_->occupancyMapDSResolution) *p_->mapWidth ] = patch.patchOccupancyMap_[patchX + patchY * patch.widthInPixel_];
+                }
             }
         } else {
             // As the patch axis are swaped, bulk copy (line by line) is not possible
             // The patch occupancy is read in a simple order (line by line)
             // The area of the occupancy map is written in an swapped way : colomn by colomn
-            auto itPatchOM = patch.patchOccupancy_.begin();
-            for (size_t omX = patch.omPosX_; omX < patch.omPosX_ + patch.heightInOccBlk_; ++omX) {
-                for (size_t omY = 0; omY < patch.widthInOccBlk_; ++omY) {
-                    frame->occupancyMap[omX + (omY + patch.omPosY_) * occupancyMapWidth] = static_cast<uint8_t>(*itPatchOM++);
+            for(size_t patchX=0; patchX<patch.widthInPixel_; ++patchX) {
+                for(size_t patchY=0; patchY<patch.heightInPixel_; ++patchY) {
+                    frame->occupancyMap[patch.omDSPosX_*p_->occupancyMapDSResolution + patchY + (patchX+patch.omDSPosY_*p_->occupancyMapDSResolution) *p_->mapWidth ] = patch.patchOccupancyMap_[patchX + patchY * patch.widthInPixel_];
                 }
             }
+
+
         }
     }
 
-    frame->occupancyMapHeight = std::max(frame->occupancyMapHeight, maxPatchHeightInOccBlk);
+    frame->mapHeight = std::max(frame->mapHeight, maxPatchHeight);
+    frame->mapHeightDS = frame->mapHeight / p_->occupancyMapDSResolution;
+    
 }
 
 // Patch placement and indirect occupancy map generation using union patch information for the matched patch //
@@ -256,37 +261,34 @@ void PatchPacking::frameInterPatchPacking(const std::vector<uvgvpcc_enc::Patch>&
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "GLOBAL PATCH PACKING",
                              "Inter patch packing of the matched patches of frame " + std::to_string(frame->frameId) + ".\n");
 
-    // The occupancy map is already downscalled when created. There is no downscalling process. //
-    size_t const occupancyMapWidth = p_->mapWidth / p_->occupancyMapResolution;
-
     // Iterate over all patches of the frame that are matched with a union match //
     for (auto& patch : *matchedPatchList) {
         const auto& linkedMegaPatch = unionPatches[patch.unionPatchReferenceIdx];
-        patch.omPosX_ = linkedMegaPatch.omPosX_;  // TODO(lf): might be nice to center the matched patch within the boundary of the union patch
-        patch.omPosY_ = linkedMegaPatch.omPosY_;
+        patch.omDSPosX_ = linkedMegaPatch.omDSPosX_;  // TODO(lf): might be nice to center the matched patch within the boundary of the union patch
+        patch.omDSPosY_ = linkedMegaPatch.omDSPosY_;
         patch.axisSwap_ = linkedMegaPatch.axisSwap_;
+
+        // TODO(ls) : code repetition with intra function (create a new function for writing patch?)
 
         // Update the occupancy map by adding the current patch at its found location //
         if (!patch.axisSwap_) {
             // Line by line, copy the patch occupancy into the occupancy map at the previously found location //
-            auto itPatchOM = patch.patchOccupancy_.begin();  // patch occupancy map
-            auto itPatchOMEnd = patch.patchOccupancy_.end();
-            auto itOM =
-                frame->occupancyMap.begin() + static_cast<int64_t>(patch.omPosX_ + patch.omPosY_ * occupancyMapWidth);  // frame occupancy map
-            int64_t const lineSize = static_cast<int64_t>(patch.widthInOccBlk_);  // line size (default orientation)
-            for (; itPatchOM < itPatchOMEnd; itPatchOM += lineSize, itOM += static_cast<int64_t>(occupancyMapWidth)) {
-                std::copy_n(itPatchOM, lineSize, itOM);
+            for(size_t patchY=0; patchY<patch.heightInPixel_; ++patchY) {
+                for(size_t patchX=0; patchX<patch.widthInPixel_; ++patchX) {
+                    frame->occupancyMap[patch.omDSPosX_*p_->occupancyMapDSResolution + patchX + (patchY+patch.omDSPosY_*p_->occupancyMapDSResolution) * p_->mapWidth ] = patch.patchOccupancyMap_[patchX + patchY * patch.widthInPixel_];
+                }
             }
+
         } else {
             // As the patch axis are swaped, bulk copy (line by line) is not possible
             // The patch occupancy is read in a simple order (line by line)
             // The area of the occupancy map is written in an swapped way : colomn by colomn
-            auto itPatchOM = patch.patchOccupancy_.begin();
-            for (size_t omX = patch.omPosX_; omX < patch.omPosX_ + patch.heightInOccBlk_; ++omX) {
-                for (size_t omY = 0; omY < patch.widthInOccBlk_; ++omY) {
-                    frame->occupancyMap[omX + (omY + patch.omPosY_) * occupancyMapWidth] = static_cast<uint8_t>(*itPatchOM++);
+            for(size_t patchX=0; patchX<patch.widthInPixel_; ++patchX) {
+                for(size_t patchY=0; patchY<patch.heightInPixel_; ++patchY) {
+                    frame->occupancyMap[patch.omDSPosX_*p_->occupancyMapDSResolution + patchY + (patchX+patch.omDSPosY_*p_->occupancyMapDSResolution) * p_->mapWidth ] = patch.patchOccupancyMap_[patchX + patchY * patch.widthInPixel_];
                 }
-            }
+            }    
+
         }
     }
 }
@@ -369,7 +371,7 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
         // No inter packing if the GOF is composed of a single frame
         // Basic intra packing method
         std::span<uvgvpcc_enc::Patch> patchList(firstFrame->patchList);
-        allocateDefaultOccupancyMap(firstFrame);
+        allocateDefaultOccupancyMap(firstFrame,p_->minimumMapHeight);
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH PACKING",
                                  "Intra pack patches of frame " + std::to_string(firstFrame->frameId) +
                                      " as it is the only frame within the GOF " + std::to_string(gof->gofId) + ".\n");
@@ -417,11 +419,13 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
             currentPatch->unionPatchReferenceIdx = unionPatchIdx;
             unionPatch.widthInOccBlk_ = std::max(unionPatch.widthInOccBlk_, currentPatch->widthInOccBlk_);
             unionPatch.heightInOccBlk_ = std::max(unionPatch.heightInOccBlk_, currentPatch->heightInOccBlk_);
+            unionPatch.widthInPixel_ = unionPatch.widthInOccBlk_ * p_->occupancyMapDSResolution;
+            unionPatch.heightInPixel_ = unionPatch.heightInOccBlk_ * p_->occupancyMapDSResolution;
             matchedPatchIdx = currentPatch->bestMatchIdx;
         }
 
         // Fill the patch occupancy map of the union patch //
-        unionPatch.patchOccupancy_.resize(unionPatch.widthInOccBlk_ * unionPatch.heightInOccBlk_, true);
+        unionPatch.patchOccupancyMap_.resize(unionPatch.widthInPixel_ * unionPatch.heightInPixel_, 1);
     }
 
     const size_t nbUnionPatch = unionPatches.size();
@@ -435,7 +439,7 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
     // This is a "mock" step. A true patch packing will still be applied to the first frame.
 
     std::span<uvgvpcc_enc::Patch> unionPatchList(unionPatches);
-    allocateDefaultOccupancyMap(firstFrame);
+    allocateDefaultOccupancyMap(firstFrame,p_->minimumMapHeight);
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH PACKING",
                              "Intra pack patches of the union patches of GOF " + std::to_string(gof->gofId) + ".\n");
     frameIntraPatchPacking(firstFrame, &unionPatchList);
@@ -487,11 +491,11 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
     // Iterate over each frame and pack first the matched patches (using the union patch position), and then the non-matched patches (using
     // default patch packing method)
     for (auto& frame : gof->frames) {
-        // Notice that gof->mapsHeight has been updated during the intra pacth packing of the union patches. It is usefull so that if the
+        // Notice that gof->mapHeightGOF has been updated during the intra pacth packing of the union patches. It is usefull so that if the
         // limit map height has been exceeded during the union patches packing, all new occupancy map of the gof will be allocated using the
         // new map height, not the default minimum limit height.
-        frame->occupancyMapHeight = firstFrame->occupancyMapHeight;
-        frame->occupancyMap.resize((p_->mapWidth / p_->occupancyMapResolution) * frame->occupancyMapHeight, 0);
+        
+        allocateDefaultOccupancyMap(frame,firstFrame->mapHeight);
 
         // Separate in two the frame patch list to distinguish the matched and non-matched patches. This symbolic or superficial, no impact on
         // memory.

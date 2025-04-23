@@ -165,44 +165,44 @@ void verifyConfig() {
                                  std::to_string(p_->minimumMapHeight) + ")");
     }
 
-    if (roundUp(p_->minimumMapHeight, p_->occupancyMapResolution) != p_->minimumMapHeight ||
-        roundUp(p_->minimumMapHeight / p_->occupancyMapResolution, 8) != p_->minimumMapHeight / p_->occupancyMapResolution) {
+    if (roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution) != p_->minimumMapHeight ||
+        roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8) != p_->minimumMapHeight / p_->occupancyMapDSResolution) {
         throw std::runtime_error(
             "To avoid a padding operation in Kvazaar, all the 2D maps (including the occupancy map) need to have width and height being "
             "multiple of 8.\nThe parameter "
             "minimumMapHeight is set to: " +
             std::to_string(p_->minimumMapHeight) +
-            "\nThe parameter occupancyMapResolution (OM block size) is set to: " + std::to_string(p_->occupancyMapResolution) +
+            "\nThe parameter occupancyMapDSResolution (OM block size) is set to: " + std::to_string(p_->occupancyMapDSResolution) +
             "\nMap height is multiple of OM block size ? " +
-            ((roundUp(p_->minimumMapHeight, p_->occupancyMapResolution) == p_->minimumMapHeight) ? "YES" : "NO") +
+            ((roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution) == p_->minimumMapHeight) ? "YES" : "NO") +
             "\nOccupancy map height is multiple of 8 ? " +
-            ((roundUp(p_->minimumMapHeight / p_->occupancyMapResolution, 8) ==
-              p_->minimumMapHeight / p_->occupancyMapResolution)
+            ((roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8) ==
+              p_->minimumMapHeight / p_->occupancyMapDSResolution)
                  ? "YES"
                  : "NO") +
             "\n" +
             "\nNearest possible map height value : " +
             std::to_string(
-                std::max(roundUp(p_->minimumMapHeight, p_->occupancyMapResolution),
-                         p_->occupancyMapResolution * roundUp(p_->minimumMapHeight / p_->occupancyMapResolution, 8))));
+                std::max(roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution),
+                         p_->occupancyMapDSResolution * roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8))));
     }
 
-    if (roundUp(p_->mapWidth, p_->occupancyMapResolution) != p_->mapWidth ||
-        roundUp(p_->mapWidth / p_->occupancyMapResolution, 8) != p_->mapWidth / p_->occupancyMapResolution) {
+    if (roundUp(p_->mapWidth, p_->occupancyMapDSResolution) != p_->mapWidth ||
+        roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8) != p_->mapWidth / p_->occupancyMapDSResolution) {
         throw std::runtime_error(
             "To avoid a padding operation in Kvazaar, all the 2D maps (including the occupancy map) need to have width and height being "
             "multiple of 8.\nThe parameter "
             "mapWidth is set to: " +
             std::to_string(p_->mapWidth) +
-            "\nThe parameter occupancyMapResolution (OM block size) is set to: " + std::to_string(p_->occupancyMapResolution) +
+            "\nThe parameter occupancyMapDSResolution (OM block size) is set to: " + std::to_string(p_->occupancyMapDSResolution) +
             "\nMap width is multiple of OM block size ? " +
-            ((roundUp(p_->mapWidth, p_->occupancyMapResolution) == p_->mapWidth) ? "YES" : "NO") +
+            ((roundUp(p_->mapWidth, p_->occupancyMapDSResolution) == p_->mapWidth) ? "YES" : "NO") +
             "\nOccupancy map width is multiple of 8 ? " +
-            ((roundUp(p_->mapWidth / p_->occupancyMapResolution, 8) == p_->mapWidth / p_->occupancyMapResolution) ? "YES"
+            ((roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8) == p_->mapWidth / p_->occupancyMapDSResolution) ? "YES"
                                                                                                                                  : "NO") +
             "\nMap width recommanded value : " +
-            std::to_string(std::max(roundUp(p_->mapWidth, p_->occupancyMapResolution),
-                                    roundUp(p_->mapWidth / p_->occupancyMapResolution, 8))));
+            std::to_string(std::max(roundUp(p_->mapWidth, p_->occupancyMapDSResolution),
+                                    roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8))));
     }
 
     if(p_->intraFramePeriod != 64) {
@@ -248,7 +248,7 @@ void setRate() {
             try {
                 setParameterValue("geometryEncodingQp", matches[1],false);
                 setParameterValue("attributeEncodingQp", matches[2],false);
-                setParameterValue("occupancyMapResolution", matches[3],false);
+                setParameterValue("occupancyMapDSResolution", matches[3],false);
             } catch (const std::invalid_argument& e) {
                 uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "LIBRARY", "A problem occured when assigning the values from the 'rate' parameter. Here is the full match: '" + matches[0].str() +"'\n");
                 throw;
@@ -261,7 +261,7 @@ void setRate() {
         try {
             setParameterValue("geometryEncodingQp", "16",false);
             setParameterValue("attributeEncodingQp", "22",false);
-            setParameterValue("occupancyMapResolution", "2" ,false  );     
+            setParameterValue("occupancyMapDSResolution", "2" ,false  );     
         } catch (const std::invalid_argument& e) {
             uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "API", "A problem occured when assigning the values from the 'rate' parameter.\n");
             throw;
@@ -340,7 +340,7 @@ void setMode() {
 
 
 
-// TODO(lf)check in debug mode for example if rate and occupancyMapResolution are both in the lib command line TODO(lf)a warning
+// TODO(lf)check in debug mode for example if rate and occupancyMapDSResolution are both in the lib command line TODO(lf)a warning
 void parseUvgvpccParameters() {
     
     // Special parameters need to be handle first
@@ -365,6 +365,10 @@ void parseUvgvpccParameters() {
     if (p_->basenameOccupancyFiles.empty()) {
         setParameterValue("basenameOccupancyFiles",p_->intermediateFilesDir + "/occupancyMaps/OCCUPANCY" + bodyPath,false);
     }
+    if (p_->basenameOccupancyDSFiles.empty()) {
+        setParameterValue("basenameOccupancyDSFiles",p_->intermediateFilesDir + "/occupancyMapsDS/OCCUPANCY-DS" + bodyPath,false);
+    }    
+
     if (p_->basenameGeometryFiles.empty()) {
         setParameterValue("basenameGeometryFiles",p_->intermediateFilesDir + "/geometryMaps/GEOMETRY" + bodyPath,false);
     }
@@ -398,11 +402,15 @@ void parseUvgvpccParameters() {
     if(p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) {
         createDirectory(p_->intermediateFilesDir);
     }
+    // TODO(lf): redo the intermediary files exportation
     if(p_->exportIntermediateMaps) {
         createDirectory(p_->intermediateFilesDir + "/occupancyMaps");
+        createDirectory(p_->intermediateFilesDir + "/occupancyMapsDS");
         createDirectory(p_->intermediateFilesDir + "/geometryMaps");
         createDirectory(p_->intermediateFilesDir + "/attributeMaps");
     }
+
+
     if(p_->exportIntermediatePointClouds) {
         createDirectory(p_->intermediateFilesDir + "/normalComputation");
         createDirectory(p_->intermediateFilesDir + "/normalOrientation");
@@ -430,11 +438,14 @@ void Frame::printInfo() const {
                     std::to_string(frameNumber) + "\n" + "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
                     "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n" +
                     "\tpatchList size: " + std::to_string(patchList.size()) + "\n" + "\tpatchPartition size: " +
-                    std::to_string(patchPartition.size()) + "\n" + "\toccupancyMap size: " + std::to_string(occupancyMap.size()) + "\n" +
+                    std::to_string(patchPartition.size()) + "\n" + "\toccupancyMapDS size: " + std::to_string(occupancyMapDS.size()) + "\n" +
                     "\tgeometryMapL1 size: " + std::to_string(geometryMapL1.size()) + "\n" + "\tgeometryMapL2 size: " +
                     std::to_string(geometryMapL2.size()) + "\n" + "\tattributeMapL1 size: " + std::to_string(attributeMapL1.size()) + "\n" +
                     "\tattributeMapL2 size: " + std::to_string(attributeMapL2.size()) + "\n");
 }
+
+
+
 
 /// @brief Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given configuration is valid. Initialize static parameters and function pointers.
 void API::initializeEncoder() {
@@ -479,8 +490,8 @@ void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
         g_threadHandler.currentGOF = std::make_shared<GOF>();
         g_threadHandler.currentGOF->gofId = g_threadHandler.gofId++;
         g_threadHandler.currentGOF->nbFrames = 0;
-        g_threadHandler.currentGOF->mapsHeight = p_->minimumMapHeight;
-        g_threadHandler.currentGOF->occupancyMapHeight = p_->minimumMapHeight / p_->occupancyMapResolution;
+        g_threadHandler.currentGOF->mapHeightGOF = p_->minimumMapHeight;
+        g_threadHandler.currentGOF->mapHeightDSGOF = p_->minimumMapHeight / p_->occupancyMapDSResolution;
         if (p_->interPatchPacking) {
             g_threadHandler.currentGOFInterPackJob =
                 std::make_shared<Job>("GOF " + std::to_string(g_threadHandler.currentGOF->gofId) + " PatchPacking::gofPatchPacking", 3,
@@ -519,7 +530,7 @@ void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
         g_threadHandler.currentGOFInterPackJob->addDependency(patchGen);
     } else {
         auto occAlloc = std::make_shared<Job>("Frame " + std::to_string(frame->frameId) + " PatchPacking::allocateDefaultOccupancyMap", 1,
-                                              PatchPacking::allocateDefaultOccupancyMap, frame);
+                                              PatchPacking::allocateDefaultOccupancyMap, frame, p_->minimumMapHeight);
         auto patchPack = std::make_shared<Job>("Frame " + std::to_string(frame->frameId) + " PatchPacking::framePatchPacking", 1,
                                                PatchPacking::frameIntraPatchPacking, frame, nullptr);
 

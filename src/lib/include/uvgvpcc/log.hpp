@@ -68,7 +68,7 @@ class Timer {
    public:
     Timer() : start(std::chrono::steady_clock::now()) {}
 
-    // Function to get elapsed time since the start of the program
+    // Function to get elapsed time since the start of the program (results in milliseconds)
     double elapsed() const {
         return std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::steady_clock::now() - start).count() / 1000000.0;
     }

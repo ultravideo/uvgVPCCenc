@@ -216,6 +216,7 @@ void initializeParameterMap(Parameters& param) {
 
         // ___ 2D encoding parameters ___ //
         {"basenameOccupancyFiles", {STRING, "", &param.basenameOccupancyFiles}},
+        {"basenameOccupancyDSFiles", {STRING, "", &param.basenameOccupancyDSFiles}},
         {"basenameGeometryFiles", {STRING, "", &param.basenameGeometryFiles}},
         {"basenameAttributeFiles", {STRING, "", &param.basenameAttributeFiles}},
         {"sizeGOP2DEncoding", {UINT, "8,16", &param.sizeGOP2DEncoding}},
@@ -227,7 +228,7 @@ void initializeParameterMap(Parameters& param) {
         {"occupancyEncodingMode", {STRING, "AI,RA", &param.occupancyEncodingMode}},
         {"occupancyEncodingFormat", {STRING, "YUV420", &param.occupancyEncodingFormat}},
         {"occupancyEncodingNbThread", {UINT, "", &param.occupancyEncodingNbThread}},
-        {"occupancyMapResolution", {UINT, "1,2,4,8", &param.occupancyMapResolution}},
+        {"occupancyMapDSResolution", {UINT, "1,2,4,8", &param.occupancyMapDSResolution}},
         {"occupancyEncodingPreset", {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.occupancyEncodingPreset}},
 
         // Geometry map

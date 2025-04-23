@@ -131,6 +131,7 @@ struct Parameters {
 
     // ___ 2D encoding parameters ___ //
     std::string basenameOccupancyFiles;
+    std::string basenameOccupancyDSFiles;
     std::string basenameGeometryFiles;
     std::string basenameAttributeFiles;
     size_t sizeGOP2DEncoding;
@@ -142,7 +143,7 @@ struct Parameters {
     std::string occupancyEncodingMode;
     std::string occupancyEncodingFormat = "YUV420";
     size_t occupancyEncodingNbThread = 0; // 0 by default means that this variable will have for value during execution the actual number of detected threads
-    size_t occupancyMapResolution; // 'Rate' or 'qp' for the occupancy map
+    size_t occupancyMapDSResolution; // 'Rate' or 'qp' for the occupancy map
     std::string occupancyEncodingPreset;
 
     // Geometry map

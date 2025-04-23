@@ -50,7 +50,7 @@ using namespace uvgvpcc_enc;
 
 namespace {
 
-std::unique_ptr<Abstract2DMapEncoder> occupancyMapEncoder;
+std::unique_ptr<Abstract2DMapEncoder> occupancyMapDSEncoder;
 std::unique_ptr<Abstract2DMapEncoder> geometryMapEncoder;
 std::unique_ptr<Abstract2DMapEncoder> attributeMapEncoder;
 
@@ -67,7 +67,7 @@ void MapEncoding::initializeStaticParameters() {
 void MapEncoding::initializeEncoderPointers() {
     
     if(p_->occupancyEncoderName == "Kvazaar") {
-        occupancyMapEncoder = std::make_unique<EncoderKvazaar>();
+        occupancyMapDSEncoder = std::make_unique<EncoderKvazaar>();
     } else {
         assert(false);
     }
@@ -89,8 +89,8 @@ void MapEncoding::initializeEncoderPointers() {
 void MapEncoding::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "MAP ENCODING", "Encode maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
-    occupancyMapEncoder->configureGOFEncoder(gof, OCCUPANCY);
-    occupancyMapEncoder->encodeGOFMaps(gof);
+    occupancyMapDSEncoder->configureGOFEncoder(gof, OCCUPANCY);
+    occupancyMapDSEncoder->encodeGOFMaps(gof);
 
     geometryMapEncoder->configureGOFEncoder(gof, GEOMETRY);
     geometryMapEncoder->encodeGOFMaps(gof);

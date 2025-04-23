@@ -116,7 +116,7 @@ void EncoderKvazaar::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
     std::vector<uint8_t> *bitstream = nullptr;
     if(encoderType_ == OCCUPANCY) {
         for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-            mapList.emplace_back(frame->occupancyMap);
+            mapList.emplace_back(frame->occupancyMapDS);
         }
         bitstream = &gof->bitstreamOccupancy;
 
@@ -144,7 +144,7 @@ void EncoderKvazaar::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
 
     if (p_->exportIntermediateMaps) { // TODO(lf): export intermediate bitstream param should be added
         if(encoderType_ == OCCUPANCY) {
-            writeBitstreamToFile(*bitstream, gof->baseNameOccupancy + ".hevc");
+            writeBitstreamToFile(*bitstream, gof->baseNameOccupancyDS + ".hevc");
         } else if(encoderType_ == GEOMETRY) {
             writeBitstreamToFile(*bitstream, gof->baseNameGeometry + ".hevc");
         } else { // encoderType_ == ATTRIBUTE
@@ -162,9 +162,9 @@ void EncoderKvazaar::configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>
         nbThread_ = p_->occupancyEncodingNbThread;
         preset_ = p_->occupancyEncodingPreset;
         mode_ = p_->occupancyEncodingMode;
-        width_ = p_->mapWidth / p_->occupancyMapResolution;
+        width_ = p_->mapWidth / p_->occupancyMapDSResolution;
         format_ = p_->occupancyEncodingFormat;
-        height_ = gof->occupancyMapHeight;
+        height_ = gof->mapHeightDSGOF;
         qp_ = std::numeric_limits<size_t>::max(); // lf : This value should not be used (Occupancy use lossless mode)
     } else if(encoderType_ == GEOMETRY) {
         encoderName_ = "Kvazaar geometry map encoder";
@@ -174,7 +174,7 @@ void EncoderKvazaar::configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>
         mode_ = p_->geometryEncodingMode;
         width_ = p_->mapWidth;
         format_ = p_->geometryEncodingFormat;
-        height_ = gof->mapsHeight;       
+        height_ = gof->mapHeightGOF;       
         qp_ = p_->geometryEncodingQp; 
     } else if(encoderType_ == ATTRIBUTE) {
         encoderName_ = "Kvazaar attribute map encoder";
@@ -184,7 +184,7 @@ void EncoderKvazaar::configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>
         mode_ = p_->attributeEncodingMode;
         width_ = p_->mapWidth;
         format_ = p_->attributeEncodingFormat;
-        height_ = gof->mapsHeight;        
+        height_ = gof->mapHeightGOF;        
         qp_ = p_->attributeEncodingQp; 
     } else {
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "MAP ENCODING",

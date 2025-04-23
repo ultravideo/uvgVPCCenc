@@ -47,10 +47,13 @@
 
 /// \file Main file of the uvgVPCCenc library that defines the main structures (GOF, frame, patch) and the API.
 
+// TODO(lf): why in include/uvgvpcc/ ? What about the related .cpp Why not "include/" only ?
+
 namespace uvgvpcc_enc {
 
 extern const Parameters* p_; // Const pointer to a non-const Parameter struct instance in parameters.cpp
 
+// A patch is a 3D object. Though, the word 'patch' can refer to the "2D version" of this patch
 struct Patch {
     size_t patchIndex_;
     size_t patchPpi_;       // viewId  
@@ -59,40 +62,43 @@ struct Patch {
     size_t tangentAxis_;    // y
     size_t bitangentAxis_;  // z
 
-    bool projectionMode_;  // 0: related to the min depth value; 1: related to the max value
-
     size_t posU_;  // u1_ minU_       // tangential shift
     size_t posV_;  // v1_ minV_       // bitangential shift
     size_t posD_;  // d1_ minD_       // depth shift
+    
+    bool projectionMode_;  // 0: related to the min depth value; 1: related to the max value
 
     size_t sizeD_;  // size for depth (TODO(lf): is it the real patch thickness or the maximum possible thickness?)
 
-    size_t widthInPixel_ = 0;   // size for U
-    size_t heightInPixel_ = 0;  // size for V
-    size_t widthInOccBlk_;      // sizeU0_     // size of occupancy map (n*occupancyMapResolution_)
-    size_t heightInOccBlk_;     // sizeV0_     // size of occupancy map (n*occupancyMapResolution_)
-    size_t omPosX_;             // u0_         // location in packed image (n*occupancyMapResolution_) // lf  posBlkU
-    size_t omPosY_;             // v0_         // location in packed image (n*occupancyMapResolution_)
+    std::vector<uint8_t> patchOccupancyMap_;  // patch occupancy map (boolean vector)
+    
+    size_t widthInPixel_ = 0;   // size for U  // width of the patch occupancy map (in pixels)
+    size_t heightInPixel_ = 0;  // size for V  // height of the patch occupancy map (in pixels)
+    
+    size_t widthInOccBlk_;      // sizeU0_     // width of the patch occupancy map within the down-scaled frame occupancy map (in DS occupancy map blocks).
+    size_t heightInOccBlk_;     // sizeV0_     // height of the patch occupancy map within the down-scaled frame occupancy map (in DS occupancy map blocks).
+
+    size_t omDSPosX_;           // u0_         // location in down-scaled occupancy map  // lf  posBlkU
+    size_t omDSPosY_;           // v0_         // location in down-scaled occupancy map
 
     bool axisSwap_;  // patch orientation    // in canvas atlas  (false default, true axis swap)
 
     std::vector<typeGeometryInput> depthL1_;  // depth value First layer // TODO(lf): Using the geo type here might lead to issue?
     std::vector<typeGeometryInput> depthL2_;  // depth value Second layer
-    std::vector<size_t>
-        depthPCidxL1_;  // Index of the point in the PC for attribute retrieving during attribute map generation TODO(lf): use for Surface separation?
+
+    // Index of the point in the PC for attribute retrieving during attribute map generation TODO(lf): use for Surface separation?
+    std::vector<size_t> depthPCidxL1_;
     std::vector<size_t> depthPCidxL2_;
 
-    size_t size2DXInPixel_;
-    size_t size2DYInPixel_;
-
-    std::vector<bool> patchOccupancy_;  // occupancy map (downscaled world)
 
     // inter packing //
     size_t area_ = 0;
-    size_t referencePatchId_ =
-        g_infinitenumber;  // Store the id of the best reference patch in the previous frame. Notice that even if the current patch is not
-                           // matched, a reference patch id is still found. Then, this reference id will be used to check if the iou treshold
-                           // is respected or not, then indicating if this patch is matched or not.
+    
+    size_t referencePatchId_ = g_infinitenumber;
+    // Store the id of the best reference patch in the previous frame. Notice that even if the current patch is not
+    // matched, a reference patch id is still found. Then, this reference id will be used to check if the iou treshold
+    // is respected or not, then indicating if this patch is matched or not.
+    
     size_t bestMatchIdx = INVALID_PATCH_INDEX;
     // Store not the id but the position in the list of patch of the best reference patch in the previous frame. Notice that even if
     // the current patch is not matched, a reference patch id is still found. Then, this reference id will be used to check if the
@@ -152,11 +158,9 @@ struct Patch {
         str << ", sizeV=" << heightInPixel_;
         str << ", sizeUom=" << widthInOccBlk_;
         str << ", sizeVom=" << heightInOccBlk_;
-        str << ", omPosX_=" << omPosX_;
-        str << ", omPosY_=" << omPosY_;
+        str << ", omDSPosX_=" << omDSPosX_;
+        str << ", omDSPosY_=" << omDSPosY_;
         str << ", axisSwap=" << axisSwap_;
-        str << ", size2DXInPixel=" << size2DXInPixel_;
-        str << ", size2DYInPixel=" << size2DYInPixel_;
         return str.str();
     }
 };
@@ -178,10 +182,12 @@ struct Frame {
     std::vector<Patch> patchList;
     std::vector<size_t> patchPartition;  // Associate a point index to the index of its patch
 
-    size_t occupancyMapHeight = 0;
-    size_t mapsHeight = 0;              // TODO(lf): Will be a gof parameter
+    size_t mapHeight = 0;              // TODO(lf): Will be a gof parameter ?
+    size_t mapHeightDS = 0;
 
-    std::vector<uint8_t> occupancyMap;
+
+    std::vector<uint8_t> occupancyMap; // (boolean vector)
+    std::vector<uint8_t> occupancyMapDS; // Down-scaled occupancy map of the frame (boolean vector)
 
     std::vector<uint8_t> geometryMapL1;  // first layer
     std::vector<uint8_t> geometryMapL2;  // second layer
@@ -196,15 +202,17 @@ struct Frame {
 };
 
 
+
 struct GOF {
     std::vector<std::shared_ptr<Frame>> frames;
     size_t nbFrames;
     size_t gofId;
 
-    size_t mapsHeight;
-    size_t occupancyMapHeight;
+    size_t mapHeightGOF;
+    size_t mapHeightDSGOF;
 
     std::string baseNameOccupancy = "";
+    std::string baseNameOccupancyDS = "";
     std::string baseNameGeometry = "";
     std::string baseNameAttribute = "";
 
@@ -215,17 +223,26 @@ struct GOF {
     void completeFileBaseNames(const Parameters* param) {
         const std::string gofIdStr = zeroPad(static_cast<int>(gofId), 3);
         const std::string nbFramesStr = zeroPad(static_cast<int>(nbFrames), 3);
-        const std::string widthOMStr = std::to_string(param->mapWidth / param->occupancyMapResolution);
-        const std::string heightOMStr = std::to_string(mapsHeight / param->occupancyMapResolution);
+        
         const std::string widthStr = std::to_string(param->mapWidth);
-        const std::string heightStr = std::to_string(mapsHeight);
+        const std::string heightStr = std::to_string(mapHeightGOF);
+        
+        const std::string widthOMStr = std::to_string(param->mapWidth / param->occupancyMapDSResolution);
+        const std::string heightOMStr = std::to_string(mapHeightGOF / param->occupancyMapDSResolution);
+
 
         try {
             baseNameOccupancy = param->basenameOccupancyFiles;
             baseNameOccupancy.replace(baseNameOccupancy.find("{GOFID}"), 7, gofIdStr)
                 .replace(baseNameOccupancy.find("{FRAMECOUNT}"), 12, nbFramesStr)
-                .replace(baseNameOccupancy.find("{WIDTH}"), 7, widthOMStr)
-                .replace(baseNameOccupancy.find("{HEIGHT}"), 8, heightOMStr);
+                .replace(baseNameOccupancy.find("{WIDTH}"), 7, widthStr)
+                .replace(baseNameOccupancy.find("{HEIGHT}"), 8, heightStr);
+
+            baseNameOccupancyDS = param->basenameOccupancyDSFiles;
+            baseNameOccupancyDS.replace(baseNameOccupancyDS.find("{GOFID}"), 7, gofIdStr)
+                .replace(baseNameOccupancyDS.find("{FRAMECOUNT}"), 12, nbFramesStr)
+                .replace(baseNameOccupancyDS.find("{WIDTH}"), 7, widthOMStr)
+                .replace(baseNameOccupancyDS.find("{HEIGHT}"), 8, heightOMStr); 
 
             baseNameGeometry = param->basenameGeometryFiles;
             baseNameGeometry.replace(baseNameGeometry.find("{GOFID}"), 7, gofIdStr)
@@ -242,6 +259,7 @@ struct GOF {
             throw std::runtime_error(
                 "\n# Catch an exception while completing the file base names :\n# " + std::string(e.what()) +
                 "\n# basenameOccupancyBlank : " + param->basenameOccupancyFiles + "\n# basenameOccupancy      : " + baseNameOccupancy +
+                "\n# basenameOccupancyDSBlank : " + param->basenameOccupancyDSFiles + "\n# basenameOccupancy      : " + baseNameOccupancyDS +
                 "\n# basenameGeometryBlank  : " + param->basenameGeometryFiles + "\n# basenameGeometry       : " + baseNameGeometry +
                 "\n# basenameAttributeBlank : " + param->basenameAttributeFiles + "\n# basenameAttribute      : " + baseNameAttribute + "\n");
         }

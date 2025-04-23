@@ -71,12 +71,12 @@ void PatchSegmentation::resampledPointcloud(std::unordered_set<size_t>& resample
             const size_t pos = v * patch.widthInPixel_ + u;
             if (patch.depthL1_[pos] < g_infiniteDepth) {
                 const typeGeometryInput depth0 = patch.depthL1_[pos];
-                const size_t uom = u / p_->occupancyMapResolution;
-                const size_t vom = v / p_->occupancyMapResolution;
-                const size_t pom = vom * patch.widthInOccBlk_ + uom;
-                assert(uom < patch.widthInOccBlk_);
-                assert(vom < patch.heightInOccBlk_);
-                patch.patchOccupancy_[pom] = true;  // my comment : downscalled world
+                // TODO(lf): next commented lines are deprecated. Shall be replaced by better assert
+                // const size_t uom = u / p_->occupancyMapDSResolution;
+                // const size_t vom = v / p_->occupancyMapDSResolution;
+                // assert(uom < patch.widthInOccBlk_);
+                // assert(vom < patch.heightInOccBlk_);
+                patch.patchOccupancyMap_[pos] = 1;
 
                 uvgvpcc_enc::Vector3<typeGeometryInput> point;
                 // TODO(lf): verify it is the right x y and z, everywhere, according to software description
@@ -272,8 +272,8 @@ void PatchSegmentation::computePatchBoundingBox(uvgvpcc_enc::Patch& patch, const
 
     // To have a size being a multiple of the OM block size avoid some check during map generation (write patch)
     // TODO(lf): remove the +1 and justify it
-    patch.widthInPixel_ = roundUp(1 + maxU - minU, p_->occupancyMapResolution);
-    patch.heightInPixel_ = roundUp(1 + maxV - minV, p_->occupancyMapResolution);
+    patch.widthInPixel_ = roundUp(1 + maxU - minU, p_->occupancyMapDSResolution);
+    patch.heightInPixel_ = roundUp(1 + maxV - minV, p_->occupancyMapDSResolution);
 
     patch.area_ = patch.widthInPixel_ * patch.heightInPixel_;
 
@@ -337,9 +337,9 @@ void PatchSegmentation::computePatchDepthL1(uvgvpcc_enc::Patch& patch, const std
 
         size2DXInPixel = (std::max)(size2DXInPixel, u);
         size2DYInPixel = (std::max)(size2DYInPixel, v);
-        sizeUom = (std::max)(sizeUom, u / p_->occupancyMapResolution);  // TODO(lf): u/occupancyMapResolution is donne so many time elsewhere,
+        sizeUom = (std::max)(sizeUom, u / p_->occupancyMapDSResolution);  // TODO(lf): u/occupancyMapDSResolution is donne so many time elsewhere,
                                                                         // that we should consider shifting or doing it once
-        sizeVom = (std::max)(sizeVom, v / p_->occupancyMapResolution);  // TODO(lf): should be done outside the iteration, on the size2DXInPixel
+        sizeVom = (std::max)(sizeVom, v / p_->occupancyMapDSResolution);  // TODO(lf): should be done outside the iteration, on the size2DXInPixel
                                                                         // (which is already doing the max algorithm)
     }
 
@@ -347,11 +347,13 @@ void PatchSegmentation::computePatchDepthL1(uvgvpcc_enc::Patch& patch, const std
                          // during the filterDepth function minLevel_ is so concerned
     patch.widthInOccBlk_ = sizeUom + 1;  // TODO(lf)explain the + 1 (lf : maybe to allow better packing and avoid overlapping ?)
     patch.heightInOccBlk_ = sizeVom + 1;
-    patch.patchOccupancy_.resize(patch.widthInOccBlk_ * patch.heightInOccBlk_,
-                                 false);  // TODO(lf): why to resize it here and not during resampledPointCloudRW ?
-    // TODO(lf)explain the + 1
-    patch.size2DXInPixel_ = p_->quantizerSizeX == 0 ? size2DXInPixel + 1 : roundUp(size2DXInPixel + 1, p_->quantizerSizeX);
-    patch.size2DYInPixel_ = p_->quantizerSizeY == 0 ? size2DYInPixel + 1 : roundUp(size2DYInPixel + 1, p_->quantizerSizeY);
+    //TODO(lf) why not to also update here patch.widthInPixels_ and patch.heightInPixels_ ?
+    patch.patchOccupancyMap_.resize(patch.widthInPixel_ * patch.heightInPixel_,0);
+    // TODO(lf): why to resize it here and not during resampledPointCloudRW ?
+    // TODO(lf): add an assert to check that the new size is bigger than the current one
+    
+    assert(patch.widthInOccBlk_ == patch.widthInPixel_/p_->occupancyMapDSResolution && patch.heightInOccBlk_ == patch.heightInPixel_/p_->occupancyMapDSResolution );
+    
 }
 
 void PatchSegmentation::computePatchDepthL2(uvgvpcc_enc::Patch& patch, const std::vector<size_t>& connectedComponent,
@@ -419,8 +421,8 @@ void PatchSegmentation::filterDepth(uvgvpcc_enc::Patch& patch,
             if (depth == g_infiniteDepth) {  // TODO(lf): might be a better way to iterate over point index
                 continue;
             }
-            const size_t uom = u / p_->occupancyMapResolution;  // u on the occupancy map
-            const size_t vom = v / p_->occupancyMapResolution;  // v on the occupancy map
+            const size_t uom = u / p_->occupancyMapDSResolution;  // u on the occupancy map
+            const size_t vom = v / p_->occupancyMapDSResolution;  // v on the occupancy map
             const size_t pom = vom * patch.widthInOccBlk_ + uom;
             if (isProjectionMode0) {
                 peakPerBlock[pom] = (std::min)(peakPerBlock[pom], depth);
@@ -441,8 +443,8 @@ void PatchSegmentation::filterDepth(uvgvpcc_enc::Patch& patch,
             if (depth == g_infiniteDepth) {
                 continue;
             }
-            const size_t uom = u / p_->occupancyMapResolution;
-            const size_t vom = v / p_->occupancyMapResolution;
+            const size_t uom = u / p_->occupancyMapDSResolution;
+            const size_t vom = v / p_->occupancyMapDSResolution;
             const size_t pom = vom * patch.widthInOccBlk_ + uom;
             const int tmp_a = std::abs(depth - peakPerBlock[pom]);
             const int tmp_b = static_cast<int>(p_->surfaceThickness) + projectionDirectionType * depth;

@@ -125,8 +125,8 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
         pid.patchMode = patchMode;
         patch_data_unit& pdu = pid.patch_data_unit_;
 
-        pdu.pdu_2d_pos_x = patchUVG.omPosX_;
-        pdu.pdu_2d_pos_y = patchUVG.omPosY_;
+        pdu.pdu_2d_pos_x = patchUVG.omDSPosX_;
+        pdu.pdu_2d_pos_y = patchUVG.omDSPosY_;
         pdu.pdu_2d_size_x_minus1 = patchUVG.widthInOccBlk_ - 1;
         pdu.pdu_2d_size_y_minus1 = patchUVG.heightInOccBlk_ - 1;
         pdu.pdu_3d_offset_u = patchUVG.posU_;
@@ -264,7 +264,7 @@ atlas_sequence_parameter_set atlas_context::create_atlas_sequence_parameter_set(
 
     asps.asps_atlas_sequence_parameter_set_id = 0;
     asps.asps_frame_width = paramUVG.mapWidth;
-    asps.asps_frame_height = gofUVG->mapsHeight;
+    asps.asps_frame_height = gofUVG->mapHeightGOF;
     asps.asps_geometry_3d_bit_depth_minus1 = paramUVG.geoBitDepthInput;
     const size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
     asps.asps_geometry_2d_bit_depth_minus1 = geometryNominal2dBitdepth - 1;
@@ -297,7 +297,7 @@ atlas_sequence_parameter_set atlas_context::create_atlas_sequence_parameter_set(
     asps.asps_normal_axis_limits_quantization_enabled_flag = true;
     asps.asps_normal_axis_max_delta_value_enabled_flag = true;
     asps.asps_patch_precedence_order_flag = false;
-    asps.asps_log2_patch_packing_block_size = static_cast<uint8_t>(std::log2(paramUVG.occupancyMapResolution));
+    asps.asps_log2_patch_packing_block_size = static_cast<uint8_t>(std::log2(paramUVG.occupancyMapDSResolution));
     asps.asps_patch_size_quantizer_present_flag = false;
     asps.asps_map_count_minus1 = paramUVG.doubleLayer ? 1 : 0;
     asps.asps_pixel_deinterleaving_enabled_flag = false;

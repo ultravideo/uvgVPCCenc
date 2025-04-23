@@ -67,23 +67,19 @@ class PatchPacking {
     static void frameInterPatchPacking(const std::vector<uvgvpcc_enc::Patch>& unionPatches, const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                                        std::span<uvgvpcc_enc::Patch>* matchedPatchList);
 
-    static void allocateDefaultOccupancyMap(const std::shared_ptr<uvgvpcc_enc::Frame>& frame);
+    static void allocateDefaultOccupancyMap(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t mapHeight);
     static void gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof);
 
    private:
-    
 
-    static bool findPatchLocation(const size_t& occupancyMapHeight, const size_t& occupancyMapWidth,
-                                  size_t& maxPatchHeightInOccBlk, const std::vector<uint8_t>& occupancyMap,
-                                  uvgvpcc_enc::Patch& patch);
-    static bool checkLocation(const size_t& occupancyMapHeight, const size_t& occupancyMapWidth,
-                              const std::vector<uint8_t>& occupancyMap, const size_t& posOMu, const size_t& posOMv,
-                              const size_t& patchWidth, const size_t& patchHeight, size_t& maxPatchHeightInOccBlk,
-                              uvgvpcc_enc::Patch& patch);
+    static bool findPatchLocation(const size_t& mapHeight, size_t& maxPatchHeight,
+                                  uvgvpcc_enc::Patch& patch, const std::vector<uint8_t>& frameOccupancyMap);
+    static bool checkLocation(const size_t& mapHeight, const size_t& posOMu, const size_t& posOMv,
+                              const size_t& patchWidth, const size_t& patchHeight, size_t& maxPatchHeight,
+                              uvgvpcc_enc::Patch& patch, const std::vector<uint8_t>& frameOccupancyMap);
 
     static bool checkFitPatch(const size_t& patchPosX, const size_t& patchPosY, const size_t& patchWidth,
-                              const size_t& patchHeight, const size_t& occupancyMapWidth, const size_t& occupancyMapHeight,
-                              const std::vector<uint8_t>& occupancyMap);
+                              const size_t& patchHeight, const size_t& mapHeight, const std::vector<uint8_t>& frameOccupancyMap);
 
     static void patchMatchingBetweenTwoFrames(const std::shared_ptr<uvgvpcc_enc::Frame>& currentFrame,
                                               const std::shared_ptr<uvgvpcc_enc::Frame>& previousFrame);

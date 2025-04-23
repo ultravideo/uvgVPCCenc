@@ -36,6 +36,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
@@ -53,6 +54,45 @@
 
 using namespace uvgvpcc_enc;
 
+
+namespace {
+
+void occupancyMapDownscaling(uvgvpcc_enc::Frame& frame) {
+
+    const size_t occBlockSize = p_->occupancyMapDSResolution;
+    const size_t mapWidth = p_->mapWidth;
+    const size_t mapHeight = frame.mapHeight;
+    const size_t mapWidthDS = mapWidth / occBlockSize;
+    const size_t mapHeightDS = mapHeight / occBlockSize;
+
+    frame.occupancyMapDS.assign(mapWidthDS*mapHeightDS + ((mapWidthDS*mapHeightDS)<<1U),0U);
+
+    assert(mapWidth % occBlockSize == 0);
+    assert(mapHeight % occBlockSize == 0);
+
+    for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
+        const size_t yBase = yDS * occBlockSize * mapWidth;
+        for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
+            const size_t xBase = xDS * occBlockSize;
+            uint8_t sum = 0U;
+
+            for (size_t j = 0; j < occBlockSize; ++j) {
+                const size_t rowOffset = yBase + j * mapWidth;
+                for (size_t i = 0; i < occBlockSize; ++i) {
+                    sum |= frame.occupancyMap[rowOffset + xBase + i];
+                }
+            }
+
+            frame.occupancyMapDS[xDS + yDS * mapWidthDS] = sum==0U ? 0U : 1U;
+        }
+    }
+}
+
+} // Anonymous namespace
+
+
+
+
 void MapGenerationBaseLine::initializeStaticParameters() {}
 
 void MapGenerationBaseLine::writePatch(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, uvgvpcc_enc::Frame& frame) {
@@ -60,7 +100,7 @@ void MapGenerationBaseLine::writePatch(const uvgvpcc_enc::Patch& patch, const si
         for (size_t u = 0; u < patch.widthInPixel_; ++u) {
             size_t const patchPos = u + v * patch.widthInPixel_;
             size_t const mapPos =
-                patch.omPosX_ * p_->occupancyMapResolution + u + (patch.omPosY_ * p_->occupancyMapResolution + v) * p_->mapWidth;
+                patch.omDSPosX_ * p_->occupancyMapDSResolution + u + (patch.omDSPosY_ * p_->occupancyMapDSResolution + v) * p_->mapWidth;
             if (patch.depthL1_[patchPos] != g_infiniteDepth) {
                 frame.geometryMapL1[mapPos] = patch.depthL1_[patchPos];
                 frame.attributeMapL1[mapPos] = frame.pointsAttribute[patch.depthPCidxL1_[patchPos]][0];
@@ -84,7 +124,7 @@ void MapGenerationBaseLine::writePatchAxisSwap(const uvgvpcc_enc::Patch& patch, 
         for (size_t v = 0; v < patch.heightInPixel_; ++v) {
             size_t const patchPos = u + v * patch.widthInPixel_;
             size_t const mapPos =
-                patch.omPosX_ * p_->occupancyMapResolution + v + (patch.omPosY_ * p_->occupancyMapResolution + u) * p_->mapWidth;
+                patch.omDSPosX_ * p_->occupancyMapDSResolution + v + (patch.omDSPosY_ * p_->occupancyMapDSResolution + u) * p_->mapWidth;
 
             if (patch.depthL1_[patchPos] != g_infiniteDepth) {
                 frame.geometryMapL1[mapPos] = patch.depthL1_[patchPos];
@@ -122,13 +162,16 @@ void MapGenerationBaseLine::allocateMaps(uvgvpcc_enc::Frame& frame, const size_t
     // empty/not used by the decoder/do not cary any usefull information.
 
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
-    const size_t imageSizeOM = p_->mapWidth / p_->occupancyMapResolution * gofMapsHeight / p_->occupancyMapResolution;
 
-    // The occupancy map already exist and might alreday has the correct size.
-    const size_t occMapSize = imageSizeOM + (imageSizeOM >> 1U);
-    if (frame.occupancyMap.size() != occMapSize) {
-        frame.occupancyMap.resize(occMapSize, 0);  // TODO(lf): use an offset, as it is possible in the norm V-PCC I guess
+    // The occupancy map already exist and might already has the correct size.
+
+
+    // TODO(lf): is it necessary ? Yes if resizing due to bigger occupancy map (larger than minimumHeight parameter)
+    // assert(frame.occupancyMap.size() == imageSize);
+    if (frame.occupancyMap.size() != imageSize) {
+        frame.occupancyMap.resize(imageSize,0);
     }
+
 
     frame.geometryMapL1.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
     frame.attributeMapL1.resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
@@ -307,7 +350,7 @@ void MapGenerationBaseLine::updateSums(uvgvpcc_enc::Frame& frame, const size_t b
 void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& frame, const size_t blockSize, const size_t imageSize,
                                                         const size_t uom, const size_t vom, const size_t pixelBlockCount,
                                                         size_t missingPixelCount, std::vector<size_t>& iterations) {
-    // lf : knowing that we should not used a occupancyMapResolution (precision?) higher than 4 (probably 1(no downscalling) or 2), the
+    // lf : knowing that we should not used a occupancyMapDSResolution (precision?) higher than 4 (probably 1(no downscalling) or 2), the
     // current algorithm seems overkill. Simple use of lookup table can do it I think.
 
     // lf : WARNING : what happen if the true value of the geometry is the uint8 max value ?
@@ -316,7 +359,7 @@ void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& fram
     // direction (up to down, down to top, left to right, right to left). The 'values' for each passe will just be the one before. And
     // the count will be incremented if there is a value before. lf : the same optimization can be used using the same iteration
     // scheme. (stop propagation in a line or column after reaching one missing pixel) lf : for each pixel of the focused block
-    // (uBlk,vBlk), if it is an empty pixel (no value in the occupancyMap  (lf OPT : check in the geometry map instead (seems to be
+    // (uBlk,vBlk), if it is an empty pixel (no value in the occupancyMapDS  (lf OPT : check in the geometry map instead (seems to be
     // done like this in this RW function)), do nothing. lf : if it is a filled pixel, add the value of this pixel in its empty
     // neighboring pixels in the "value" array, which has the size of a block. Increase by one the count value of all neighbor pixel.
 
@@ -382,10 +425,10 @@ void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& fram
 }
 
 void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight) {
-    const size_t blockSize = p_->occupancyMapResolution;
-    const size_t occupancyMapWidthBlk =
+    const size_t blockSize = p_->occupancyMapDSResolution;
+    const size_t occupancyMapDSWidthBlk =
         p_->mapWidth / blockSize;  // TODO(lf): this should be a frame param (yes for the height, and a static param for the width)
-    const size_t occupancyMapHeightBlk = gofMapsHeight / blockSize;  // what is the difference with occupancyImage.getHeight() ??
+    const size_t occupancyMapDSHeightBlk = gofMapsHeight / blockSize;  // what is the difference with occupancyImage.getHeight() ??
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
     const size_t pixelBlockCount = blockSize * blockSize;  // lf nb of pixel per block from the frameOM POV
 
@@ -393,14 +436,14 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
     // non-empty.) A CTU is 64x64. If a CTU is empty, we can skip it (that is, keep the uniform gray background). TODO(lf): make this ctu check
 
     // iterate over each block of the occupancy map
-    for (size_t vBlk = 0; vBlk < occupancyMapHeightBlk; ++vBlk) {
+    for (size_t vBlk = 0; vBlk < occupancyMapDSHeightBlk; ++vBlk) {
         const size_t vom = vBlk * blockSize;
-        for (size_t uBlk = 0; uBlk < occupancyMapWidthBlk; ++uBlk) {
+        for (size_t uBlk = 0; uBlk < occupancyMapDSWidthBlk; ++uBlk) {
             const size_t uom = uBlk * blockSize;
 
             // empty block -> copy the value of previous block (one of the TMC2 solution) or do nothing (let the uniform value set during map
             // allocation)
-            if (frame.occupancyMap[uBlk + vBlk * occupancyMapWidthBlk] == 0U) {
+            if (frame.occupancyMapDS[uBlk + vBlk * occupancyMapDSWidthBlk] == 0U) {
                 if (p_->mapGenerationFillEmptyBlock) {
                     fillBackgroundEmptyBlock(frame, blockSize, imageSize, uBlk, vBlk, uom, vom);
                 }
@@ -440,17 +483,19 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
 }
 
 void MapGenerationBaseLine::generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
-    allocateMaps(*frame, frame->mapsHeight);
+    allocateMaps(*frame, frame->mapHeight);
+
+    occupancyMapDownscaling(*frame);
 
     // Geometry and attribute map generation //
-    mapsGeneration(*frame, frame->mapsHeight);
-
+    mapsGeneration(*frame, frame->mapHeight);
+    
     // Background filling //
-    fillBackgroundImages(*frame, frame->mapsHeight);
+    fillBackgroundImages(*frame, frame->mapHeight);
 
-    RGB444toYUV420(frame->attributeMapL1, p_->mapWidth, frame->mapsHeight);
+    RGB444toYUV420(frame->attributeMapL1, p_->mapWidth, frame->mapHeight);
     if (p_->doubleLayer) {
-        RGB444toYUV420(frame->attributeMapL2, p_->mapWidth, frame->mapsHeight);
+        RGB444toYUV420(frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
     }
 
     if (p_->exportIntermediateMaps /*|| p_->useEncoderCommand*/) {
@@ -460,9 +505,8 @@ void MapGenerationBaseLine::generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame
 
 void MapGenerationBaseLine::writeFrameMapsYUV(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     
-    
     // Occupancy maps
-    std::streamsize streamSize = static_cast<std::streamsize>(frame->occupancyMap.size());
+    std::streamsize streamSize = static_cast<std::streamsize>(static_cast<double>(frame->occupancyMap.size())*1.5);
 
     const std::shared_ptr<uvgvpcc_enc::GOF> gof = frame->gof.lock();
     const std::string occupancyBitstreamFileName = gof->baseNameOccupancy + "_f" + std::to_string(frame->frameNumber) + ".yuv";
@@ -472,14 +516,35 @@ void MapGenerationBaseLine::writeFrameMapsYUV(std::shared_ptr<uvgvpcc_enc::Frame
     }
     
     // Convert Y0-Y1 green map into a more human friendly black and gray map
-    std::vector<uint8_t> occupancyMapRecolored(frame->occupancyMap.size(),128);
-    for (size_t i = 0; i < static_cast<size_t>(static_cast<double>(frame->occupancyMap.size())/1.5); ++i) {
+    std::vector<uint8_t> occupancyMapRecolored(static_cast<size_t>(static_cast<double>(frame->occupancyMap.size())*1.5),128);
+    for (size_t i = 0; i < frame->occupancyMap.size(); ++i) {
         occupancyMapRecolored[i] = 164 * frame->occupancyMap[i];
     }
     
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : lf Accepted for I/O operations
     yuvFile.write(reinterpret_cast<const char*>(occupancyMapRecolored.data()), streamSize);
     yuvFile.close();
+
+    // Occupancy maps DS
+    streamSize = static_cast<std::streamsize>(frame->occupancyMapDS.size());
+    const std::string occupancyBitstreamFileNameDS = gof->baseNameOccupancyDS + "_f" + std::to_string(frame->frameNumber) + ".yuv";
+    yuvFile = std::ofstream(occupancyBitstreamFileNameDS, std::ios::binary);
+    
+    if (!yuvFile.is_open()) {
+        throw std::runtime_error("Unable to open file: " + occupancyBitstreamFileNameDS);
+    }
+    
+    // Convert Y0-Y1 green map into a more human friendly black and gray map
+    std::vector<uint8_t> occupancyMapRecoloredDS(frame->occupancyMapDS.size(),128);
+    for (size_t i = 0; i < static_cast<size_t>(static_cast<double>(frame->occupancyMapDS.size())/1.5); ++i) {
+        occupancyMapRecoloredDS[i] = 164 * frame->occupancyMapDS[i];
+    }
+    
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : lf Accepted for I/O operations
+    yuvFile.write(reinterpret_cast<const char*>(occupancyMapRecoloredDS.data()), streamSize);
+    yuvFile.close();
+
+
 
     // Geometry maps
     streamSize = static_cast<std::streamsize>(frame->geometryMapL1.size());
@@ -520,17 +585,17 @@ void MapGenerationBaseLine::initGOFMapGeneration(std::shared_ptr<uvgvpcc_enc::GO
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-        gof->occupancyMapHeight = std::max(gof->occupancyMapHeight, frame->occupancyMapHeight);
+        gof->mapHeightDSGOF = std::max(gof->mapHeightDSGOF, frame->mapHeightDS);
     }
 
-    gof->occupancyMapHeight = roundUp(gof->occupancyMapHeight, static_cast<size_t>(8));
+    gof->mapHeightDSGOF = roundUp(gof->mapHeightDSGOF, static_cast<size_t>(8));
 
-    gof->mapsHeight = gof->occupancyMapHeight * p_->occupancyMapResolution;
+    gof->mapHeightGOF = gof->mapHeightDSGOF * p_->occupancyMapDSResolution;
 
     // Complete GOF file names
     gof->completeFileBaseNames(p_);
 
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-        frame->mapsHeight = gof->mapsHeight;
+        frame->mapHeight = gof->mapHeightGOF;
     }
 }
