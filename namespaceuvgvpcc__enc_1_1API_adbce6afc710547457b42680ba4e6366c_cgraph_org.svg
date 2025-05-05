@@ -21,7 +21,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classPatchPacking.html#a7b59eebd2875644c44ebb4295d86d314" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="559,-1090 398,-1090 398,-1060 559,-1060 559,-1090"/>
 <text text-anchor="start" x="406" y="-1078" font-family="Helvetica,sans-Serif" font-size="10.00">PatchPacking::allocateDefault</text>
 <text text-anchor="middle" x="478.5" y="-1067" font-family="Helvetica,sans-Serif" font-size="10.00">OccupancyMap</text>

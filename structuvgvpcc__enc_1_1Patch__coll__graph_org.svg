@@ -25,16 +25,16 @@
 <text text-anchor="start" x="4.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="18" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">bitangentAxis_</text>
 <text text-anchor="start" x="4.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="18" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">projectionMode_</text>
+<text text-anchor="start" x="18" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">posU_</text>
 <text text-anchor="start" x="4.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="18" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">posU_</text>
+<text text-anchor="start" x="18" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">posV_</text>
 <text text-anchor="start" x="4.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="18" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">posV_</text>
+<text text-anchor="start" x="18" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">posD_</text>
 <text text-anchor="start" x="4.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="18" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">posD_</text>
+<text text-anchor="start" x="18" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">projectionMode_</text>
 <text text-anchor="start" x="4.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="18" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">sizeD_</text>
-<text text-anchor="start" x="18" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 20 more...</text>
+<text text-anchor="start" x="18" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 18 more...</text>
 <text text-anchor="start" x="4.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="18" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">setAxis()</text>
 <text text-anchor="start" x="4.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

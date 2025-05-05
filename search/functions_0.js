@@ -11,7 +11,7 @@ var searchData=
   ['addpoint_8',['addpoint',['../classnanoflann_1_1KNNResultSet.html#a52a808b3fb2889ebc100354be2558703',1,'nanoflann::KNNResultSet::addPoint()'],['../classnanoflann_1_1RKNNResultSet.html#a4305602186ab8585e24b0d56185053c5',1,'nanoflann::RKNNResultSet::addPoint()'],['../classnanoflann_1_1RadiusResultSet.html#afd71ccbde9e8cfaac24d8fccb416fa3c',1,'nanoflann::RadiusResultSet::addPoint()']]],
   ['addpoints_9',['addPoints',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#ab056d39ec787e1888561c0d30ca67e4d',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],
   ['allocate_10',['allocate',['../classnanoflann_1_1PooledAllocator.html#a96148cc236b63b0416cd4cfb9fb57325',1,'nanoflann::PooledAllocator']]],
-  ['allocatedefaultoccupancymap_11',['allocateDefaultOccupancyMap',['../classPatchPacking.html#a7b59eebd2875644c44ebb4295d86d314',1,'PatchPacking']]],
+  ['allocatedefaultoccupancymap_11',['allocateDefaultOccupancyMap',['../classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54',1,'PatchPacking']]],
   ['applypreset_12',['applyPreset',['../namespaceuvgvpcc__enc.html#a32c76f976a12d83e4002ec04551c3fbc',1,'uvgvpcc_enc']]],
   ['assign_13',['assign',['../group__nanoflann__grp.html#ga8331979a31fb32a57092bbf62ff3357c',1,'nanoflann::assign(Container &amp;c, const size_t nElements, const T &amp;value)'],['../namespacenanoflann.html#ga8331979a31fb32a57092bbf62ff3357c',1,'nanoflann::assign(Container &amp;c, const size_t nElements, const T &amp;value)']]],
   ['atlas_5fcontext_14',['atlas_context',['../classatlas__context.html#a5a9f9cf848a601636ef6440c5cbb404c',1,'atlas_context']]]

@@ -56,7 +56,7 @@ var searchData=
   ['ai_5fattribute_5ftype_5fid_53',['ai_attribute_type_id',['../structattribute__information.html#ac6c4ff4207379c23e814b81870088afb',1,'attribute_information']]],
   ['ai_5fauxiliary_5fattribute_5fcodec_5fid_54',['ai_auxiliary_attribute_codec_id',['../structattribute__information.html#ac2869c63bdacda7feb726ea84a75ea33',1,'attribute_information']]],
   ['allocate_55',['allocate',['../classnanoflann_1_1PooledAllocator.html#a96148cc236b63b0416cd4cfb9fb57325',1,'nanoflann::PooledAllocator']]],
-  ['allocatedefaultoccupancymap_56',['allocateDefaultOccupancyMap',['../classPatchPacking.html#a7b59eebd2875644c44ebb4295d86d314',1,'PatchPacking']]],
+  ['allocatedefaultoccupancymap_56',['allocateDefaultOccupancyMap',['../classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54',1,'PatchPacking']]],
   ['allocation_57',['Memory allocation',['../group__memalloc__grp.html',1,'']]],
   ['and_20adaptors_58',['KD-tree classes and adaptors',['../group__kdtrees__grp.html',1,'']]],
   ['and_20fast_20parser_20for_20ply_20files_59',['miniply - A simple and fast parser for PLY files',['../namespaceminiply.html#autotoc_md12',1,'']]],

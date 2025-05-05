@@ -33,7 +33,7 @@ var searchData=
   ['convert_5flist_5fto_5ffixed_5fsize_30',['convert_list_to_fixed_size',['../structminiply_1_1PLYElement.html#afdec5ca2ff81fb7675fa89504e84f7ac',1,'miniply::PLYElement']]],
   ['coord_5ft_31',['coord_t',['../structPointCloud.html#a9d9aaed400f9ed7b834adf494c0ce940',1,'PointCloud']]],
   ['count_32',['count',['../structminiply_1_1PLYElement.html#af26529ce5f5c83c9632526469bf0607f',1,'miniply::PLYElement']]],
-  ['counttype_33',['counttype',['../structminiply_1_1PLYProperty.html#a6b2ddaeefe926cb63ed9f3d223143531',1,'miniply::PLYProperty::countType'],['../classnanoflann_1_1RKNNResultSet.html#ab564e85cdd52a721a148d104169cd5fc',1,'nanoflann::RKNNResultSet::CountType'],['../classnanoflann_1_1KNNResultSet.html#a188956b73759bb8fa91929b513407eba',1,'nanoflann::KNNResultSet::CountType']]],
+  ['counttype_33',['counttype',['../classnanoflann_1_1RKNNResultSet.html#ab564e85cdd52a721a148d104169cd5fc',1,'nanoflann::RKNNResultSet::CountType'],['../classnanoflann_1_1KNNResultSet.html#a188956b73759bb8fa91929b513407eba',1,'nanoflann::KNNResultSet::CountType'],['../structminiply_1_1PLYProperty.html#a6b2ddaeefe926cb63ed9f3d223143531',1,'miniply::PLYProperty::countType']]],
   ['createconnectedcomponents_34',['createConnectedComponents',['../classPatchSegmentation.html#a42c82263428478e3544e38c4615b1501',1,'PatchSegmentation']]],
   ['createv3cgofbitstream_35',['createV3CGOFBitstream',['../classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee',1,'BitstreamGeneration']]],
   ['cur_5fbit_36',['cur_bit',['../structbitstream__t.html#a6c4185d6fe6fecf4686b928f771a309f',1,'bitstream_t']]],

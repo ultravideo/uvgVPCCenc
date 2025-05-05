@@ -1,6 +1,6 @@
 <map id="uvgvpcc_enc::API::encodeFrame" name="uvgvpcc_enc::API::encodeFrame">
 <area shape="rect" id="Node000001" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="5,629,196,669"/>
-<area shape="rect" id="Node000002" href="$classPatchPacking.html#a7b59eebd2875644c44ebb4295d86d314" title=" " alt="" coords="536,585,751,625"/>
+<area shape="rect" id="Node000002" href="$classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54" title=" " alt="" coords="536,585,751,625"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="196,641,470,621,522,616,522,622,471,627,196,647"/>
 <area shape="rect" id="Node000003" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="549,301,738,341"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,628,160,549,198,503,242,463,313,420,389,385,465,359,534,340,536,345,467,364,391,390,316,425,246,467,202,507,165,552,115,631"/>
