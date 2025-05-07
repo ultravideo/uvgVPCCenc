@@ -47,6 +47,7 @@
 
 namespace uvgvpcc_enc {
 
+void (Job::*Job::executePtr)() const = &Job::executeNoTimer;
 std::string jobStateToStr(threadqueue_job_state s) {
     const std::map<threadqueue_job_state, std::string> stateStr{
         {threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED, "threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED"},
@@ -80,7 +81,16 @@ void Job::addDependency(const std::shared_ptr<Job>& dependency) {
 
 bool Job::isReady() const { return dependencies_.load() == 0; }
 
-void Job::execute() const { func_(); }
+void Job::executeNoTimer() const { 
+    func_();
+}
+
+void Job::executeTimer() const { 
+    double jobTimer = global_timer.elapsed();    
+    func_();
+    jobTimer = global_timer.elapsed() - jobTimer;
+    Logger::log(LogLevel::PROFILING, "TIMER JOB: " + getName(),std::to_string(jobTimer) + " ms\n");
+}
 
 void Job::wait() {
     std::unique_lock lock(mtx_);
@@ -174,7 +184,7 @@ void ThreadQueue::workerThread() {
         lockQ.unlock();
 
         job->execute();
-
+        
         lockQ.lock();
         lockJ.lock();
         assert(job->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_RUNNING);

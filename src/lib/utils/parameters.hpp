@@ -60,6 +60,7 @@ struct Parameters {
     // ___ Debug parameters ___ //
     bool exportIntermediateMaps = false;
     bool exportIntermediatePointClouds = false;
+    bool timerLog = false;
 
     // ___ Activate or not some features ___ //
     bool lowDelayBitstream = false;

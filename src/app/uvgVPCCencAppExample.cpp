@@ -146,6 +146,7 @@ void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
 /// @brief Application thread reading the input .ply files.
 /// @param args 
 void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
+    double inputReadTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
     const cli::opts_t& appParameters = *args->opts;
     size_t frameId = 0;
     const size_t frameLimit = appParameters.frames * appParameters.loop_input;
@@ -187,6 +188,10 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
             args->retval = RETVAL_RUNNING;
         }
         filled_input_slots.release();
+    }
+    if (uvgvpcc_enc::p_->timerLog) {
+        inputReadTimerTotal = uvgvpcc_enc::global_timer.elapsed() - inputReadTimerTotal;
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::PROFILING, "TIMER INPUT READ TOTAL",std::to_string(inputReadTimerTotal) + " ms\n");
     }
 }
 
@@ -265,6 +270,7 @@ void setParameters(const std::string& parametersCommand) {
 /// @param argv Application command line
 /// @return 
 int main(const int argc, const char* const argv[]) {
+    double encodingTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
 
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION", "uvgVPCCenc application starts.\n");
 
@@ -358,5 +364,9 @@ int main(const int argc, const char* const argv[]) {
     inputTh.join();
     uvgvpcc_enc::API::stopEncoder();
 
+    if (uvgvpcc_enc::p_->timerLog) {
+        encodingTimerTotal = uvgvpcc_enc::global_timer.elapsed() - encodingTimerTotal;
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::PROFILING, "TIMER ENCODING TOTAL",std::to_string(encodingTimerTotal) + " ms\n");
+    }    
     return EXIT_SUCCESS;
 }

@@ -102,6 +102,7 @@ ThreadHandler g_threadHandler;
 
 void initializeStaticParameters() {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "API", "Initialize static parameters.\n");
+    Job::setExecutionMethod(p_->timerLog);
     MapGenerationBaseLine::initializeStaticParameters();
     MapEncoding::initializeStaticParameters();
 }
@@ -114,6 +115,10 @@ void initializeStaticFunctionPointers() {
 
 void verifyConfig() {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "VERIFY CONFIG", "Verify the parameter configuration.\n");
+    if (p_->timerLog && Logger::getLogLevel() < LogLevel::PROFILING) {
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::WARNING, "VERIFY CONFIG",
+            "The parameter 'timerLog' has been set to 'True' but the current 'logLevel' (" + p_->logLevel + ") does not display profiling information. Consider switching to at least logLevel=PROFILING.\n");        
+    }
 
     if ( !( (p_->occupancyEncoderName=="Kvazaar" && p_->geometryEncoderName=="Kvazaar" && p_->attributeEncoderName=="Kvazaar"))) {
         std::cerr << p_->occupancyEncoderName << " " << p_->geometryEncoderName << " " << p_->attributeEncoderName << std::endl;

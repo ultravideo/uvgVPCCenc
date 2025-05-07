@@ -162,6 +162,7 @@ void initializeParameterMap(Parameters& param) {
         // ___ Debug parameters ___ //
         {"exportIntermediateMaps", {BOOL, "", &param.exportIntermediateMaps}},
         {"exportIntermediatePointClouds", {BOOL, "", &param.exportIntermediatePointClouds}},
+        {"timerLog", {BOOL, "", &param.timerLog}},
 
         // ___ Activate or not some features ___ //
         {"lowDelayBitstream", {BOOL, "", &param.lowDelayBitstream}},

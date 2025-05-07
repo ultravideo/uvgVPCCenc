@@ -88,7 +88,12 @@ class Job : public std::enable_shared_from_this<Job> {
           dependencies_(0),
           priority(priority),
           completed_(false) {}
-    void execute() const;
+    static void setExecutionMethod(bool useTimer) {
+        executePtr = useTimer ? &Job::executeTimer : &Job::executeNoTimer;
+    }             
+    void executeTimer() const;
+    void executeNoTimer() const;
+    void execute() {(this->*executePtr)();}    
     void addDependency(const std::shared_ptr<Job>& dependency);
     bool isReady() const;
     void wait();
@@ -108,6 +113,7 @@ class Job : public std::enable_shared_from_this<Job> {
    private:
     std::condition_variable cv_;
     std::atomic<bool> completed_;
+    static void (Job::*executePtr)() const;
 };
 
 class ThreadQueue {
