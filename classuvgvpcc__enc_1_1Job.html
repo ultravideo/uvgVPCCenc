@@ -77,6 +77,7 @@ $(function() {
   <div class="summary">
 <a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classuvgvpcc__enc_1_1Job-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">uvgvpcc_enc::Job Class Reference</div></div>
@@ -87,12 +88,12 @@ $(function() {
 <div class="dynheader">
 Inheritance diagram for uvgvpcc_enc::Job:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job__inherit__graph.svg" width="188" height="484"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job__inherit__graph.svg" width="188" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Collaboration diagram for uvgvpcc_enc::Job:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job__coll__graph.svg" width="188" height="484"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job__coll__graph.svg" width="188" height="544"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
@@ -105,8 +106,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9e0be9b5b1ecfd0bdabece5e73d6f790" id="r_a9e0be9b5b1ecfd0bdabece5e73d6f790"><td class="memTemplParams" colspan="2">template&lt;typename Func , typename... Args&gt; </td></tr>
 <tr class="memitem:a9e0be9b5b1ecfd0bdabece5e73d6f790"><td class="memTemplItemLeft" align="right" valign="top">&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#a9e0be9b5b1ecfd0bdabece5e73d6f790">Job</a> (std::string name, size_t <a class="el" href="classuvgvpcc__enc_1_1Job.html#a086d2ff568f5c83bde368fe1e9492bd4">priority</a>, Func &amp;&amp;func, Args &amp;&amp;... args)</td></tr>
 <tr class="separator:a9e0be9b5b1ecfd0bdabece5e73d6f790"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a958d9038c7a459bd99c7542719ea0b60" id="r_a958d9038c7a459bd99c7542719ea0b60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#a958d9038c7a459bd99c7542719ea0b60">execute</a> () const</td></tr>
-<tr class="separator:a958d9038c7a459bd99c7542719ea0b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03ce044f441a0ceceb61cb04a6ace0d7" id="r_a03ce044f441a0ceceb61cb04a6ace0d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#a03ce044f441a0ceceb61cb04a6ace0d7">executeTimer</a> () const</td></tr>
+<tr class="separator:a03ce044f441a0ceceb61cb04a6ace0d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03a6d90c801275c5bb513432b0d11c8e" id="r_a03a6d90c801275c5bb513432b0d11c8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#a03a6d90c801275c5bb513432b0d11c8e">executeNoTimer</a> () const</td></tr>
+<tr class="separator:a03a6d90c801275c5bb513432b0d11c8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8262f9d72626cd20c465de9f73a69df" id="r_ad8262f9d72626cd20c465de9f73a69df"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#ad8262f9d72626cd20c465de9f73a69df">execute</a> ()</td></tr>
+<tr class="separator:ad8262f9d72626cd20c465de9f73a69df"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aecc91720b57ae9c2555798b7d26e12b6" id="r_aecc91720b57ae9c2555798b7d26e12b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#aecc91720b57ae9c2555798b7d26e12b6">addDependency</a> (const std::shared_ptr&lt; <a class="el" href="classuvgvpcc__enc_1_1Job.html">Job</a> &gt; &amp;dependency)</td></tr>
 <tr class="separator:aecc91720b57ae9c2555798b7d26e12b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ade8a62c59bb996fc4ea57eece7d03b0d" id="r_ade8a62c59bb996fc4ea57eece7d03b0d"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#ade8a62c59bb996fc4ea57eece7d03b0d">isReady</a> () const</td></tr>
@@ -121,6 +126,11 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a7cf6270621942304954b39e19f3ed147"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95cbeb9307704a85be0d4421d1b0518d" id="r_a95cbeb9307704a85be0d4421d1b0518d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#a95cbeb9307704a85be0d4421d1b0518d">setState</a> (<a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785">threadqueue_job_state</a> state)</td></tr>
 <tr class="separator:a95cbeb9307704a85be0d4421d1b0518d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a65d2dc7c2f4d9d5731281e150ebe1e1f" id="r_a65d2dc7c2f4d9d5731281e150ebe1e1f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html#a65d2dc7c2f4d9d5731281e150ebe1e1f">setExecutionMethod</a> (bool useTimer)</td></tr>
+<tr class="separator:a65d2dc7c2f4d9d5731281e150ebe1e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -246,20 +256,77 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="a958d9038c7a459bd99c7542719ea0b60" name="a958d9038c7a459bd99c7542719ea0b60"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a958d9038c7a459bd99c7542719ea0b60">&#9670;&#160;</a></span>execute()</h2>
+<a id="ad8262f9d72626cd20c465de9f73a69df" name="ad8262f9d72626cd20c465de9f73a69df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8262f9d72626cd20c465de9f73a69df">&#9670;&#160;</a></span>execute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void uvgvpcc_enc::Job::execute </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a03a6d90c801275c5bb513432b0d11c8e" name="a03a6d90c801275c5bb513432b0d11c8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03a6d90c801275c5bb513432b0d11c8e">&#9670;&#160;</a></span>executeNoTimer()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">void uvgvpcc_enc::Job::execute </td>
+          <td class="memname">void uvgvpcc_enc::Job::executeNoTimer </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
         </tr>
       </table>
 </div><div class="memdoc">
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job_a03a6d90c801275c5bb513432b0d11c8e_icgraph.svg" width="478" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="a03ce044f441a0ceceb61cb04a6ace0d7" name="a03ce044f441a0ceceb61cb04a6ace0d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a03ce044f441a0ceceb61cb04a6ace0d7">&#9670;&#160;</a></span>executeTimer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void uvgvpcc_enc::Job::executeTimer </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job_a03ce044f441a0ceceb61cb04a6ace0d7_cgraph.svg" width="662" height="94"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job_a03ce044f441a0ceceb61cb04a6ace0d7_icgraph.svg" width="478" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -288,7 +355,7 @@ Here is the call graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job_a5f316185e7cead1e22db38fc064ae3ca_icgraph.svg" width="508" height="86"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job_a5f316185e7cead1e22db38fc064ae3ca_icgraph.svg" width="100%" height="413"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
@@ -332,6 +399,37 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+</div>
+</div>
+<a id="a65d2dc7c2f4d9d5731281e150ebe1e1f" name="a65d2dc7c2f4d9d5731281e150ebe1e1f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a65d2dc7c2f4d9d5731281e150ebe1e1f">&#9670;&#160;</a></span>setExecutionMethod()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static void uvgvpcc_enc::Job::setExecutionMethod </td>
+          <td>(</td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>useTimer</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classuvgvpcc__enc_1_1Job_a65d2dc7c2f4d9d5731281e150ebe1e1f_cgraph.svg" width="100%" height="404"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
 
 </div>
 </div>
