@@ -16,10 +16,12 @@ var searchData=
   ['oi_5foccupancy_5fmsb_5falign_5fflag_13',['oi_occupancy_MSB_align_flag',['../structoccupancy__information.html#a8532447a15ca9dc533c733f24330dad8',1,'occupancy_information']]],
   ['omdsposx_5f_14',['omDSPosX_',['../structuvgvpcc__enc_1_1Patch.html#ad31760292d785834efce63812b78ff26',1,'uvgvpcc_enc::Patch']]],
   ['omdsposy_5f_15',['omDSPosY_',['../structuvgvpcc__enc_1_1Patch.html#a6b8d2d755f063e242ee75aa5b20aa2a1',1,'uvgvpcc_enc::Patch']]],
-  ['optarg_16',['optarg',['../getopt_8c.html#adb50a0eab9fed92fc3bfc7dfa4f2c410',1,'optarg:&#160;getopt.c'],['../getopt_8h.html#adb50a0eab9fed92fc3bfc7dfa4f2c410',1,'optarg:&#160;getopt.c']]],
-  ['opterr_17',['opterr',['../getopt_8c.html#ae30f05ee1e2e5652f174a35c7875d25e',1,'opterr:&#160;getopt.c'],['../getopt_8h.html#ae30f05ee1e2e5652f174a35c7875d25e',1,'opterr:&#160;getopt.h']]],
-  ['optind_18',['optind',['../getopt_8c.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c'],['../getopt_8h.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c']]],
-  ['optopt_19',['optopt',['../getopt_8c.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.c'],['../getopt_8h.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.h']]],
-  ['optreset_20',['optreset',['../getopt_8c.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.c'],['../getopt_8h.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.h']]],
-  ['outputpath_21',['outputPath',['../structcli_1_1opts__t.html#a3717f025214afbd5667d2fc96cd7ae6c',1,'cli::opts_t']]]
+  ['omrefinementtreshold2_16',['omRefinementTreshold2',['../structuvgvpcc__enc_1_1Parameters.html#a52225f638b216b4adc831ef77f32de63',1,'uvgvpcc_enc::Parameters']]],
+  ['omrefinementtreshold4_17',['omRefinementTreshold4',['../structuvgvpcc__enc_1_1Parameters.html#a39f8c3295f70417325f71b74c9701d36',1,'uvgvpcc_enc::Parameters']]],
+  ['optarg_18',['optarg',['../getopt_8c.html#adb50a0eab9fed92fc3bfc7dfa4f2c410',1,'optarg:&#160;getopt.c'],['../getopt_8h.html#adb50a0eab9fed92fc3bfc7dfa4f2c410',1,'optarg:&#160;getopt.c']]],
+  ['opterr_19',['opterr',['../getopt_8c.html#ae30f05ee1e2e5652f174a35c7875d25e',1,'opterr:&#160;getopt.c'],['../getopt_8h.html#ae30f05ee1e2e5652f174a35c7875d25e',1,'opterr:&#160;getopt.h']]],
+  ['optind_20',['optind',['../getopt_8c.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c'],['../getopt_8h.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c']]],
+  ['optopt_21',['optopt',['../getopt_8c.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.c'],['../getopt_8h.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.h']]],
+  ['optreset_22',['optreset',['../getopt_8c.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.c'],['../getopt_8h.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.h']]],
+  ['outputpath_23',['outputPath',['../structcli_1_1opts__t.html#a3717f025214afbd5667d2fc96cd7ae6c',1,'cli::opts_t']]]
 ];

@@ -53,7 +53,7 @@ var searchData=
   ['patchpacking_2ehpp_50',['patchPacking.hpp',['../patchPacking_8hpp.html',1,'']]],
   ['patchpartition_51',['patchPartition',['../structuvgvpcc__enc_1_1Frame.html#a1e8a8c210835b30c4054a7b62d6eadc6',1,'uvgvpcc_enc::Frame']]],
   ['patchppi_5f_52',['patchPpi_',['../structuvgvpcc__enc_1_1Patch.html#adf2368e1dc884767b327c6801b1e76c9',1,'uvgvpcc_enc::Patch']]],
-  ['patchsegmentation_53',['patchsegmentation',['../classPatchSegmentation.html',1,'PatchSegmentation'],['../classPatchSegmentation.html#a819536989846a15453734058b91521ee',1,'PatchSegmentation::patchSegmentation(std::shared_ptr&lt; uvgvpcc_enc::Frame &gt; &amp;frame, const std::vector&lt; size_t &gt; &amp;pointsPPIs)'],['../classPatchSegmentation.html#a265442cb2f74ff346537b3d4b64d02a3',1,'PatchSegmentation::PatchSegmentation()']]],
+  ['patchsegmentation_53',['patchsegmentation',['../classPatchSegmentation.html',1,'PatchSegmentation'],['../classPatchSegmentation.html#a265442cb2f74ff346537b3d4b64d02a3',1,'PatchSegmentation::PatchSegmentation()'],['../classPatchSegmentation.html#a819536989846a15453734058b91521ee',1,'PatchSegmentation::patchSegmentation(std::shared_ptr&lt; uvgvpcc_enc::Frame &gt; &amp;frame, const std::vector&lt; size_t &gt; &amp;pointsPPIs)']]],
   ['patchsegmentation_2ecpp_54',['patchSegmentation.cpp',['../patchSegmentation_8cpp.html',1,'']]],
   ['patchsegmentation_2ehpp_55',['patchSegmentation.hpp',['../patchSegmentation_8hpp.html',1,'']]],
   ['patchsegmentationmaxpropagationdistance_56',['patchSegmentationMaxPropagationDistance',['../structuvgvpcc__enc_1_1Parameters.html#a9823fb6500244b1ce698afa2c08ca750',1,'uvgvpcc_enc::Parameters']]],
