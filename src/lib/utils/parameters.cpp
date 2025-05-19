@@ -231,6 +231,8 @@ void initializeParameterMap(Parameters& param) {
         {"occupancyEncodingNbThread", {UINT, "", &param.occupancyEncodingNbThread}},
         {"occupancyMapDSResolution", {UINT, "1,2,4,8", &param.occupancyMapDSResolution}},
         {"occupancyEncodingPreset", {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.occupancyEncodingPreset}},
+        {"omRefinementTreshold2", {UINT, "1,2,3,4", &param.omRefinementTreshold2}},
+        {"omRefinementTreshold4", {UINT, "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16", &param.omRefinementTreshold4}},
 
         // Geometry map
         {"geometryEncoderName", {STRING, "Kvazaar", &param.geometryEncoderName}},

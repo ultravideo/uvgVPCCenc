@@ -1,7 +1,7 @@
 test_name,md5_bitstream,md5_pc;
 ReadyForWinter_vox9_fast_RA_16-22-2,9a71f01e6977037cafa290556b726b64,;
-ReadyForWinter_vox9_slow_RA_32-42-4,479227f556dd955dd60d26394c9108ef,;
-ReadyForWinter_vox9_fast_AI_32-42-4,2fa5ae3344dbd7703e8eae60cd228672,;
+ReadyForWinter_vox9_slow_RA_32-42-4,fb0ab6a3792d79b3e3a2fd50bb594cac,;
+ReadyForWinter_vox9_fast_AI_32-42-4,b4bab650cd464b2326d0432d7f2eb042,;
 ReadyForWinter_vox9_slow_AI_16-22-2,73b01e11299f8b462b206afd7aaf7d34,;
 FlowerWave_vox10_fast_RA_32-42-4,70a9852d126a6a895a41e9fb02937d23,;
 Gymnast_vox10_slow_RA_16-22-2,8df2dd1215184875557f114d28659513,;

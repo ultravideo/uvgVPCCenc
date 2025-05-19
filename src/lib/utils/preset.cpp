@@ -73,6 +73,10 @@ Preset preset_vox9_fast = {
     {"mapWidth","608"},
     {"minimumMapHeight","608"},
 
+    // ___ Occupancy map downscaling ___ //
+    {"omRefinementTreshold2","1"},
+    {"omRefinementTreshold4","2"}, // TODO(lf): This does not correlate with the CTC (and TMC2). Deeper profiling might be necessary.
+
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","16"},
     {"occupancyEncodingPreset","ultrafast"}, // (Always lossless) Negligeable impact on both performance and bitrate (Kvazaar)
@@ -105,6 +109,10 @@ Preset preset_vox9_slow = {
     // ___ Patch packing ___ //
     {"mapWidth","608"},
     {"minimumMapHeight","608"},
+
+    // ___ Occupancy map downscaling ___ //
+    {"omRefinementTreshold2","1"},
+    {"omRefinementTreshold4","2"}, // TODO(lf): This does not correlate with the CTC (and TMC2). Deeper profiling might be necessary.
 
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","8"},
@@ -140,6 +148,10 @@ Preset preset_vox10_fast = {
     {"mapWidth","1024"},
     {"minimumMapHeight","1024"},
 
+    // ___ Occupancy map downscaling ___ //
+    {"omRefinementTreshold2","1"},
+    {"omRefinementTreshold4","1"}, // TODO(lf): This does not correlate with the CTC (and TMC2). Deeper profiling might be necessary.
+    
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","16"},
     {"occupancyEncodingPreset","ultrafast"},
@@ -173,6 +185,10 @@ Preset preset_vox10_slow = {
     {"mapWidth","1024"},
     {"minimumMapHeight","1024"},
 
+    // ___ Occupancy map downscaling ___ //
+    {"omRefinementTreshold2","1"},
+    {"omRefinementTreshold4","1"}, // TODO(lf): This does not correlate with the CTC (and TMC2). Deeper profiling might be necessary.
+    
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","8"},
     {"occupancyEncodingPreset","veryslow"},
@@ -206,6 +222,10 @@ Preset preset_vox11_fast = {
     {"mapWidth","2048"},
     {"minimumMapHeight","2048"},
 
+    // ___ Occupancy map downscaling ___ //
+    {"omRefinementTreshold2","1"},
+    {"omRefinementTreshold4","1"}, // TODO(lf): This does not correlate with the CTC (and TMC2). Deeper profiling might be necessary.
+    
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","16"},
     {"occupancyEncodingPreset","ultrafast"},
@@ -239,6 +259,10 @@ Preset preset_vox11_slow = {
     {"mapWidth","2048"},
     {"minimumMapHeight","2048"},
 
+    // ___ Occupancy map downscaling ___ //
+    {"omRefinementTreshold2","1"},
+    {"omRefinementTreshold4","1"}, // TODO(lf): This does not correlate with the CTC (and TMC2). Deeper profiling might be necessary.
+    
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding","8"},
     {"occupancyEncodingPreset","veryslow"},

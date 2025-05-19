@@ -56,37 +56,58 @@ using namespace uvgvpcc_enc;
 
 
 namespace {
+    
+    // lf: Notice that the current implementation of the occupancy map refinement does not remove the involved points from their patch.
+    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) //
+    void occupancyMapDownscaling(uvgvpcc_enc::Frame& frame) {
 
-void occupancyMapDownscaling(uvgvpcc_enc::Frame& frame) {
+        const size_t occBlockSize = p_->occupancyMapDSResolution;
+        const size_t mapWidth = p_->mapWidth;
+        const size_t mapHeight = frame.mapHeight;
+        const size_t mapWidthDS = mapWidth / occBlockSize;
+        const size_t mapHeightDS = mapHeight / occBlockSize;
+        
+        const uint8_t* occMap = frame.occupancyMap.data();
+        uint8_t* occMapDS = frame.occupancyMapDS.data();
+        
+        if (occBlockSize == 2) {
+            const size_t omRefinementTreshold = p_->omRefinementTreshold2;
+            for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
+                const size_t yOffset = yDS * 2 * mapWidth;
+                for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
+                    const size_t xOffset = xDS * 2;
+                    const uint8_t* blockPtr = occMap + yOffset + xOffset;
+                    
+                    const uint32_t sum =
+                        blockPtr[0] + blockPtr[1] +
+                        blockPtr[mapWidth] + blockPtr[mapWidth + 1];
 
-    const size_t occBlockSize = p_->occupancyMapDSResolution;
-    const size_t mapWidth = p_->mapWidth;
-    const size_t mapHeight = frame.mapHeight;
-    const size_t mapWidthDS = mapWidth / occBlockSize;
-    const size_t mapHeightDS = mapHeight / occBlockSize;
-
-    frame.occupancyMapDS.assign(mapWidthDS*mapHeightDS + ((mapWidthDS*mapHeightDS)<<1U),0U);
-
-    assert(mapWidth % occBlockSize == 0);
-    assert(mapHeight % occBlockSize == 0);
-
-    for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
-        const size_t yBase = yDS * occBlockSize * mapWidth;
-        for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
-            const size_t xBase = xDS * occBlockSize;
-            uint8_t sum = 0U;
-
-            for (size_t j = 0; j < occBlockSize; ++j) {
-                const size_t rowOffset = yBase + j * mapWidth;
-                for (size_t i = 0; i < occBlockSize; ++i) {
-                    sum |= frame.occupancyMap[rowOffset + xBase + i];
+                    occMapDS[yDS * mapWidthDS + xDS] = (sum < omRefinementTreshold) ? 0U : 1U;
                 }
             }
+        } else if (occBlockSize == 4) {
+            const size_t omRefinementTreshold = p_->omRefinementTreshold4;
+            for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
+                const size_t yOffset = yDS * 4 * mapWidth;
+                for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
+                    const size_t xOffset = xDS * 4;
+                    const uint8_t* blockPtr = occMap + yOffset + xOffset;
+                    
+                    const uint32_t sum =
+                        blockPtr[0] + blockPtr[1] + blockPtr[2] + blockPtr[3] +
+                        blockPtr[mapWidth] + blockPtr[mapWidth + 1] + blockPtr[mapWidth + 2] + blockPtr[mapWidth + 3] +
+                        blockPtr[2 * mapWidth] + blockPtr[2 * mapWidth + 1] + blockPtr[2 * mapWidth + 2] + blockPtr[2 * mapWidth + 3] +
+                        blockPtr[3 * mapWidth] + blockPtr[3 * mapWidth + 1] + blockPtr[3 * mapWidth + 2] + blockPtr[3 * mapWidth + 3];
 
-            frame.occupancyMapDS[xDS + yDS * mapWidthDS] = sum==0U ? 0U : 1U;
+                    occMapDS[yDS * mapWidthDS + xDS] = (sum < omRefinementTreshold) ? 0U : 1U;
+                }
+            }
+        } else {
+            assert(false && "Unsupported block size for occupancy map downscaling");
         }
     }
-}
+    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+
 
 } // Anonymous namespace
 
@@ -171,6 +192,9 @@ void MapGenerationBaseLine::allocateMaps(uvgvpcc_enc::Frame& frame, const size_t
     if (frame.occupancyMap.size() != imageSize) {
         frame.occupancyMap.resize(imageSize,0);
     }
+
+    const size_t imageSizeDS = imageSize / (p_->occupancyMapDSResolution*p_->occupancyMapDSResolution);
+    frame.occupancyMapDS.resize(imageSizeDS + (imageSizeDS >> 1U), 0U);    
 
 
     frame.geometryMapL1.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
@@ -350,7 +374,7 @@ void MapGenerationBaseLine::updateSums(uvgvpcc_enc::Frame& frame, const size_t b
 void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& frame, const size_t blockSize, const size_t imageSize,
                                                         const size_t uom, const size_t vom, const size_t pixelBlockCount,
                                                         size_t missingPixelCount, std::vector<size_t>& iterations) {
-    // lf : knowing that we should not used a occupancyMapDSResolution (precision?) higher than 4 (probably 1(no downscalling) or 2), the
+    // lf : knowing that we should not used a occupancyMapDSResolution (precision?) higher than 4 (probably 1(no downscaling) or 2), the
     // current algorithm seems overkill. Simple use of lookup table can do it I think.
 
     // lf : WARNING : what happen if the true value of the geometry is the uint8 max value ?
@@ -475,7 +499,7 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
                 continue;
             }
 
-            // one or more pixel need a value. Those pixel will appear in the decoded point cloud. They result from the downscalling of the
+            // one or more pixel need a value. Those pixel will appear in the decoded point cloud. They result from the downscaling of the
             // occupancy map. -> Compute average value from neigboring pixels
             fillBackgroundNonEmptyBlock(frame, blockSize, imageSize, uom, vom, pixelBlockCount, missingPixelCount, iterations);
         }
@@ -484,7 +508,7 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
 
 void MapGenerationBaseLine::generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     allocateMaps(*frame, frame->mapHeight);
-
+    
     occupancyMapDownscaling(*frame);
 
     // Geometry and attribute map generation //

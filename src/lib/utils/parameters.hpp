@@ -146,6 +146,8 @@ struct Parameters {
     size_t occupancyEncodingNbThread = 0; // 0 by default means that this variable will have for value during execution the actual number of detected threads
     size_t occupancyMapDSResolution; // 'Rate' or 'qp' for the occupancy map
     std::string occupancyEncodingPreset;
+    size_t omRefinementTreshold2;
+    size_t omRefinementTreshold4;
 
     // Geometry map
     std::string geometryEncoderName = "Kvazaar";
