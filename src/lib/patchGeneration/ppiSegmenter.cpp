@@ -38,9 +38,10 @@
 #include <cstddef>
 #include <iterator>
 #include <string>
-#include <unordered_map>
 #include <cstdint>
 #include <vector>
+
+#include "robin_hood.h"
 
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
@@ -221,8 +222,9 @@ inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, cons
     }
 }
 
+
 void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& inputPointsGeometry,
-                                            std::vector<bool>& occFlagArray, std::unordered_map<size_t, size_t>& voxelIdxMap,
+                                            std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
                                             std::vector<size_t>& filledVoxels,
                                             std::vector<std::vector<size_t>>& pointListInVoxels) {
     const size_t voxelizationShift =
@@ -266,9 +268,9 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vecto
 // TODO(lf): tackle the cognitive complexity
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
 void PPISegmenter::fillNeighborAndAdjacentLists(
-    std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, std::unordered_map<size_t, size_t>& voxelIdxMap,
+    std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
     std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
-    std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightListOptimPaper,
+    std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
     std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs) {
     const typeGeometryInput gridMaxAxisValue = (1U << p_->geoBitDepthRefineSegmentation) - 1;
     // TODO(lf): verify this above minus 1 is correct and that it is done everywhere it is needed
@@ -340,10 +342,11 @@ void PPISegmenter::fillNeighborAndAdjacentLists(
             }
         }
 
-        voxWeightListOptimPaper[v_idx] =
+        voxWeightList[v_idx] =
             p_->refineSegmentationLambda / static_cast<double>(num_nn_points);  // NOLINT(clang-analyzer-core.DivideZero)
     }
 }
+
 
 /*
 == Refine segmentation doc ==
@@ -377,25 +380,28 @@ in a voxel. The former is usually isolated points, and the latter indicates the 
 // TODO(lf): in the whole refine segmentation, be consistent between talking about grid cell or voxel
 // TODO(lf): use two flags, compute one time the flag for S or M instead of checking it like the other classification
 // TODO(lf): the refine segmentation voxelization (voxel dim etc..) should depend on geometry bit, not on the max range
-
 void PPISegmenter::refineSegmentation(std::vector<size_t>& pointsPPIs, const size_t& frameId) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION",
                              "Refine segmentation of frame " + std::to_string(frameId) + "\n");
     // One boolean for each voxel of the grid, indicating if a voxel is filled or not //
     const size_t gridMaxAxisValue = (1U << p_->geoBitDepthRefineSegmentation);
     std::vector<bool> occFlagArray(gridMaxAxisValue * gridMaxAxisValue * gridMaxAxisValue, false);
-    std::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
+    
+    // std::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
+    robin_hood::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
+    
     std::vector<size_t> filledVoxels;                     // list of location1D
     std::vector<std::vector<size_t>> pointListInVoxels;   // for each voxel, the list of the index of the points inside
+    
     voxelizationWithBitArray(pointsGeometry_, occFlagArray, voxelIdxMap, filledVoxels, pointListInVoxels);
 
     const size_t voxelCount = filledVoxels.size();
-    std::vector<VoxelAttribute> voxAttributeListOptimPaper(voxelCount, VoxelAttribute(p_->projectionPlaneCount));
+    std::vector<VoxelAttribute> voxAttributeList(voxelCount, VoxelAttribute(p_->projectionPlaneCount));
     std::vector<std::vector<size_t>> ADJ_List(voxelCount);   // large    // This is voxNeighborsList
     std::vector<std::vector<size_t>> IDEV_List(voxelCount);  // small    // This is voxAdjacentsList
-    std::vector<double> voxWeightListOptimPaper(voxelCount);
+    std::vector<double> voxWeightList(voxelCount);
     fillNeighborAndAdjacentLists(filledVoxels, occFlagArray, voxelIdxMap, ADJ_List, IDEV_List, pointListInVoxels,
-                                          voxWeightListOptimPaper, voxAttributeListOptimPaper, pointsPPIs);
+                                          voxWeightList, voxAttributeList, pointsPPIs);
 
     // TODO(lf): find a way to break the refine segmentation iteration before reaching the number of iteration parameter (if number of updated
     // voxel lower than something for example)
@@ -405,33 +411,33 @@ void PPISegmenter::refineSegmentation(std::vector<size_t>& pointsPPIs, const siz
     for (size_t iter = 0; iter < p_->refineSegmentationIterationCount; ++iter) {
         for (size_t voxelIndex = 0; voxelIndex < voxelCount; ++voxelIndex) {
             // TODO(lf): should we use a stack of voxel index instead of a for loop with a lot of if(true) ?
-            const VoxClass& voxClass = voxAttributeListOptimPaper[voxelIndex].voxClass_;
+            const VoxClass& voxClass = voxAttributeList[voxelIndex].voxClass_;
 
             if (voxClass == VoxClass::NO_EDGE) {
                 continue;  // This voxel has been marked as NE-V before the current iteration //
             }
 
             std::vector<size_t> voxExtendedScore(p_->projectionPlaneCount, 0);
-            computeExtendedScore(voxExtendedScore, ADJ_List[voxelIndex], voxAttributeListOptimPaper);
-            updateAdjacentVoxelsClass(voxAttributeListOptimPaper, voxExtendedScore, IDEV_List[voxelIndex]);
-            if (checkNEV(voxClass, voxAttributeListOptimPaper[voxelIndex].voxPPI_, voxExtendedScore)) {
+            computeExtendedScore(voxExtendedScore, ADJ_List[voxelIndex], voxAttributeList);
+            updateAdjacentVoxelsClass(voxAttributeList, voxExtendedScore, IDEV_List[voxelIndex]);
+            if (checkNEV(voxClass, voxAttributeList[voxelIndex].voxPPI_, voxExtendedScore)) {
                 continue;  // The current iteration found that this voxel is NE-V //
             }
 
             // The voxel is not NE-V, so it is D-EV or IDE-V and its points PPI can be refined //
-            refinePointsPPIs(pointsPPIs, pointListInVoxels[voxelIndex], voxWeightListOptimPaper[voxelIndex], voxExtendedScore);
-            voxAttributeListOptimPaper[voxelIndex].updateFlag_ = true;
+            refinePointsPPIs(pointsPPIs, pointListInVoxels[voxelIndex], voxWeightList[voxelIndex], voxExtendedScore);
+            voxAttributeList[voxelIndex].updateFlag_ = true;
         }
 
         // Update voxel classification and scores if points PPI inside have changed during the iteration //
         for (size_t voxelIndex = 0; voxelIndex < voxelCount; ++voxelIndex) {
             // TODO(lf): it might be faster to use a stack of index instead of using a flag
-            if (!voxAttributeListOptimPaper[voxelIndex].updateFlag_) {
+            if (!voxAttributeList[voxelIndex].updateFlag_) {
                 continue;
             }
-            voxAttributeListOptimPaper[voxelIndex].updateFlag_ = false;
-            std::fill(voxAttributeListOptimPaper[voxelIndex].voxScore_.begin(), voxAttributeListOptimPaper[voxelIndex].voxScore_.end(), 0);
-            updateVoxelAttribute(voxAttributeListOptimPaper[voxelIndex], pointListInVoxels[voxelIndex], pointsPPIs);
+            voxAttributeList[voxelIndex].updateFlag_ = false;
+            std::fill(voxAttributeList[voxelIndex].voxScore_.begin(), voxAttributeList[voxelIndex].voxScore_.end(), 0);
+            updateVoxelAttribute(voxAttributeList[voxelIndex], pointListInVoxels[voxelIndex], pointsPPIs);
         }
     }
 

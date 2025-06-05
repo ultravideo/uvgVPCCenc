@@ -35,8 +35,8 @@
 #pragma once
 
 #include <cstdint>
-#include <unordered_map>
 #include <vector>
+#include "patchGeneration/robin_hood.h"
 #include "utils/utils.hpp"
 
 using namespace uvgvpcc_enc;
@@ -68,20 +68,19 @@ class PPISegmenter {
     PPISegmenter(const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                  const std::vector<Vector3<double>>& pointsNormals);
 
-
     void initialSegmentation(std::vector<size_t>& pointsPPIs, const size_t& frameId);
     void refineSegmentation(std::vector<size_t>& pointsPPIs, const size_t& frameId);
 
    private:
     static void voxelizationWithBitArray(const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,
-                                         std::vector<bool>& occFlagArray, std::unordered_map<size_t, size_t>& voxelIdxMap,
-                                         std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);
+                                         std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
+                                         std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);                                         
 
     static void fillNeighborAndAdjacentLists(
-        std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, std::unordered_map<size_t, size_t>& voxelIdxMap,
+        std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
         std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
-        std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightListOptimPaper,
-        std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs);
+        std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
+        std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs);        
 
     static void computeExtendedScore(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
                                                const std::vector<VoxelAttribute>& voxAttributeList);

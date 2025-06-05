@@ -69,7 +69,7 @@ void PatchGeneration::computePointsNNList(const KdTree& kdTree, std::vector<std:
 // lf : This applyVoxelsDataToPoints function is done in the other direction in TMC2 -> Iterating over the input points, computing the related
 // voxel coords and finding the voxel PPI through a map(voxelCoord, voxelPPI)
 namespace {
-void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::vector<size_t>& pointsPPIs,
+inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::vector<size_t>& pointsPPIs,
                              const std::vector<std::vector<size_t>>& voxelIdToPointsId) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION", "Apply voxel data to points.\n");
     for (size_t voxelIndex = 0; voxelIndex < voxelIdToPointsId.size(); ++voxelIndex) {

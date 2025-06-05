@@ -217,9 +217,8 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
 
     // Iterate over all patches of the frame //
     for (auto& patch : patchList) {
-        bool locationFound = false;
         for (;;) {
-            locationFound = findPatchLocation(mapHeightTemp,maxPatchHeight, patch,frame->occupancyMap);
+            const bool locationFound = findPatchLocation(mapHeightTemp,maxPatchHeight, patch,frame->occupancyMap);
             if (locationFound) {
                 break;
             }
@@ -231,11 +230,21 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
         // Update the occupancy map by adding the current patch at its found location //
         if (!patch.axisSwap_) {
             // Line by line, copy the 'patch DS occupancy map' into the 'frame DS occupancy map' at the previously found patch location //
-            for(size_t patchY=0; patchY<patch.heightInPixel_; ++patchY) {
-                for(size_t patchX=0; patchX<patch.widthInPixel_; ++patchX) {
-                    frame->occupancyMap[patch.omDSPosX_*p_->occupancyMapDSResolution + patchX + (patchY+patch.omDSPosY_*p_->occupancyMapDSResolution) *p_->mapWidth ] = patch.patchOccupancyMap_[patchX + patchY * patch.widthInPixel_];
-                }
+            for (size_t patchY = 0; patchY < patch.heightInPixel_; ++patchY) {
+                const size_t srcOffset = patchY * patch.widthInPixel_;
+                const size_t dstOffset = (patch.omDSPosY_ * p_->occupancyMapDSResolution + patchY) * p_->mapWidth 
+                                + patch.omDSPosX_ * p_->occupancyMapDSResolution;
+
+                auto srcIt = patch.patchOccupancyMap_.begin();
+                auto dstIt = frame->occupancyMap.begin();
+                std::copy(
+                    srcIt + static_cast<ptrdiff_t>(srcOffset),
+                    srcIt + static_cast<ptrdiff_t>(srcOffset + patch.widthInPixel_),
+                    dstIt + static_cast<ptrdiff_t>(dstOffset)
+                );
+
             }
+
         } else {
             // As the patch axis are swaped, bulk copy (line by line) is not possible
             // The patch occupancy is read in a simple order (line by line)
@@ -245,10 +254,12 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
                     frame->occupancyMap[patch.omDSPosX_*p_->occupancyMapDSResolution + patchY + (patchX+patch.omDSPosY_*p_->occupancyMapDSResolution) *p_->mapWidth ] = patch.patchOccupancyMap_[patchX + patchY * patch.widthInPixel_];
                 }
             }
-
-
         }
     }
+
+
+
+
 
     frame->mapHeight = std::max(frame->mapHeight, maxPatchHeight);
     frame->mapHeightDS = frame->mapHeight / p_->occupancyMapDSResolution;

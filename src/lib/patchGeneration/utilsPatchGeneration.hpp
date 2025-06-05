@@ -36,9 +36,11 @@
 
 #include "utils/utils.hpp"
 #include "uvgvpcc/log.hpp"
+#include <cstdint>
 #include <fstream>
 #include <vector>
 #include <unordered_map>
+#include "robin_hood.h"
 
 using namespace uvgvpcc_enc;
 
@@ -167,6 +169,10 @@ struct vector3Hash {
 };
 
 
+
+
+
+
 // The voxelization is done so to have those three vectors sharing the same order (that is sharing the same voxel index) :
 // -> A list of voxel (vector of coordinates)
 // -> A list of list of points (vector of vector of point index). This associate a voxel with the points inside it.
@@ -206,68 +212,45 @@ struct vector3Hash {
 // Notice that in the refined segmentation, the inputPointsGeometry can be the voxelizedPointsGeometry. Indeed, when the voxelization is
 // activated, the refined segmentation is applying a second voxelization step. The created voxelized point cloud is then the result of two
 // voxelizations.
-inline void voxelization(const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,
-                  std::vector<Vector3<typeGeometryInput>>& voxelizedPointsGeometry,
-                  std::vector<std::vector<size_t>>& voxelIdToPointsId, const size_t inputBitResolution,
-                  const size_t outputBitResolution) {
+inline void voxelization(
+    const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,
+    std::vector<Vector3<typeGeometryInput>>& voxelizedPointsGeometry,
+    std::vector<std::vector<size_t>>& voxelIdToPointsId,
+    const size_t inputBitResolution,
+    const size_t outputBitResolution) 
+{
     Logger::log(
         LogLevel::TRACE, "PATCH GENERATION",
         "Voxelization from " + std::to_string(inputBitResolution) + " to " + std::to_string(outputBitResolution) + " bits of resolution.\n");
 
-    std::unordered_map<Vector3<typeGeometryInput>, size_t, vector3Hash<typeGeometryInput>>
-        voxelCoordToVoxelIndex;
+    const size_t voxelizationShift = inputBitResolution - outputBitResolution;
+    const typeGeometryInput shift = static_cast<typeGeometryInput>(voxelizationShift);
 
-    // Maximum number of voxel is : (1 << outputBitResolution)^3 (aka number of cell in the grid)
-    // approximateVoxelCount is : (1 << outputBitResolution)^2 = (1 << outputBitResolution x 2)
-    // TODO(lf) : check if it is more clever to divide the inputPointsGeometry.size() by the bit resolution difference
-    const size_t approximateVoxelCount = 1U << (outputBitResolution * 2U);  // Rough approximation
+    const size_t approximateVoxelCount = 1U << (outputBitResolution * 2U);
     voxelizedPointsGeometry.reserve(approximateVoxelCount);
     voxelIdToPointsId.reserve(approximateVoxelCount);
+
+    robin_hood::unordered_map<Vector3<typeGeometryInput>, size_t, vector3Hash<typeGeometryInput>> voxelCoordToVoxelIndex;
     voxelCoordToVoxelIndex.reserve(approximateVoxelCount);
 
-    // Maximum number of points in one voxel : (inputBitResolution - outputBitResolution)^3
-    // approximatePointsCountInOneVoxel :  (inputBitResolution - outputBitResolution)^2
-    const size_t approximatePointsCountInOneVoxel =
-        (inputBitResolution - outputBitResolution) * (inputBitResolution - outputBitResolution);
-    const size_t voxelizationShift = inputBitResolution - outputBitResolution;
+    const size_t inputSize = inputPointsGeometry.size();
+    for (size_t inputPointIndex = 0; inputPointIndex < inputSize; ++inputPointIndex) {
+        const Vector3<typeGeometryInput> & inputPoint = inputPointsGeometry[inputPointIndex];
 
-    // Iteration over all input points //
-    for (size_t inputPointIndex = 0; inputPointIndex < inputPointsGeometry.size(); ++inputPointIndex) {
-        const Vector3<typeGeometryInput>& inputPoint = inputPointsGeometry[inputPointIndex];
-
-        // TODO(lf): Discuss it together. The +halfVoxelSize seems natural (is done in TMC2). However, it is repsonsible for a "bug" in
-        // ready_for_winter_9 (frame number 5), where the bottom of the shoes is at the very top of the bounding box in the decoded point
-        // cloud (congruence)
-        const Vector3<typeGeometryInput> voxCoord{
-            static_cast<typeGeometryInput>(inputPoint[0] >> voxelizationShift),
-            static_cast<typeGeometryInput>(inputPoint[1] >> voxelizationShift),
-            static_cast<typeGeometryInput>(inputPoint[2] >> voxelizationShift)
+        Vector3<typeGeometryInput> voxCoord{
+            static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[0]) >> shift),
+            static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[1]) >> shift),
+            static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[2]) >> shift)
         };
 
-        // Check if the voxel corresponding to the current input point was already created.
-        auto mapItem = voxelCoordToVoxelIndex.find(voxCoord);
-        if (mapItem == voxelCoordToVoxelIndex.end()) {
-            // The current point belongs to a voxel that has not been created yet //
-
-            // The voxel index corresponds to its index in the list of voxel. That is, to its index in 'voxelizedPointsGeometry'. This
-            // corresponds to the size of 'voxelizedPointsGeometry' before to add the voxel. Indeed and for example, the 4th voxel has an
-            // index of 3. Notice that voxelIndex = voxelizedPointsGeometry.size() = voxelIdToPointsId.size() = voxelCoordToVoxelIndex.size()
-            const size_t voxelIndex = voxelizedPointsGeometry.size();
-
-            // Add an item to the map 'voxelCoordToVoxelIndex', that associate the voxel coordinates to its voxel index.
-            // Get a pointer to this new item.
-            mapItem = voxelCoordToVoxelIndex.emplace(voxCoord, voxelIndex).first;
-
-            // Add the voxel to the voxel list
-            voxelizedPointsGeometry.push_back(voxCoord);
-
-            // Create a new empty input point index list at the corresponding voxel index (that is, at the end of the ('voxelIdToPointsId')
+        size_t voxelIndex = voxelizedPointsGeometry.size();
+        auto [it, inserted] = voxelCoordToVoxelIndex.try_emplace(voxCoord, voxelIndex);
+        if (inserted) {
+            voxelizedPointsGeometry.emplace_back(voxCoord);
             voxelIdToPointsId.emplace_back();
-            voxelIdToPointsId.back().reserve(approximatePointsCountInOneVoxel);
+            voxelIdToPointsId.back().reserve(16);
         }
 
-        // Associate the current point with the voxel it belongs to //
-        // mapItem->second => voxel index
-        voxelIdToPointsId[mapItem->second].push_back(inputPointIndex);
+        voxelIdToPointsId[it->second].push_back(inputPointIndex);
     }
 }

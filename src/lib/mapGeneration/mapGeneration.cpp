@@ -54,128 +54,149 @@
 
 using namespace uvgvpcc_enc;
 
+void MapGenerationBaseLine::initializeStaticParameters() {}
+
 
 namespace {
     
     // lf: Notice that the current implementation of the occupancy map refinement does not remove the involved points from their patch.
-    // NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic) //
-    void occupancyMapDownscaling(uvgvpcc_enc::Frame& frame) {
-
-        const size_t occBlockSize = p_->occupancyMapDSResolution;
+    template <uint8_t occBlkSize>
+    void occupancyMapDownscaling(const size_t& mapHeight, std::vector<uint8_t>& occupancyMap, std::vector<uint8_t>& occupancyMapDS) {
+    
         const size_t mapWidth = p_->mapWidth;
-        const size_t mapHeight = frame.mapHeight;
-        const size_t mapWidthDS = mapWidth / occBlockSize;
-        const size_t mapHeightDS = mapHeight / occBlockSize;
         
-        const uint8_t* occMap = frame.occupancyMap.data();
-        uint8_t* occMapDS = frame.occupancyMapDS.data();
-        
-        if (occBlockSize == 2) {
-            const size_t omRefinementTreshold = p_->omRefinementTreshold2;
+        uint8_t* occMap = occupancyMap.data();
+        uint8_t* occMapDS = occupancyMapDS.data();
+        if constexpr (occBlkSize == 2) {
+            const size_t mapWidthDS = mapWidth >> 1U;
+            const size_t mapHeightDS = mapHeight >> 1U;
             for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
-                const size_t yOffset = yDS * 2 * mapWidth;
+                const size_t yOffset = (yDS * mapWidth) << 1U;
                 for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
-                    const size_t xOffset = xDS * 2;
-                    const uint8_t* blockPtr = occMap + yOffset + xOffset;
+                    const size_t xOffset = xDS << 1U;
+                    uint8_t* blockPtr = occMap + yOffset + xOffset;
                     
-                    const uint32_t sum =
+                    const uint8_t sum =
                         blockPtr[0] + blockPtr[1] +
                         blockPtr[mapWidth] + blockPtr[mapWidth + 1];
 
-                    occMapDS[yDS * mapWidthDS + xDS] = (sum < omRefinementTreshold) ? 0U : 1U;
+                    if(sum >= p_->omRefinementTreshold2) {
+                        occMapDS[yDS * mapWidthDS + xDS] = 1U;
+                    } else {
+                        occMapDS[yDS * mapWidthDS + xDS] = 0U;
+                        // Update the occupancy map (lf: usefull for BBPE attribute background filling)
+                        std::fill_n(blockPtr, 2, 0U);
+                        std::fill_n(blockPtr + mapWidth, 2, 0U);
+                    }
                 }
             }
-        } else if (occBlockSize == 4) {
-            const size_t omRefinementTreshold = p_->omRefinementTreshold4;
+        } else if constexpr (occBlkSize == 4) {
+            const size_t mapWidthDS = mapWidth >> 2U;
+            const size_t mapHeightDS = mapHeight >> 2U;        
             for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
-                const size_t yOffset = yDS * 4 * mapWidth;
+                const size_t yOffset = (yDS * mapWidth) << 2U;
                 for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
-                    const size_t xOffset = xDS * 4;
-                    const uint8_t* blockPtr = occMap + yOffset + xOffset;
+                    const size_t xOffset = xDS << 2U;
+                    uint8_t* blockPtr = occMap + yOffset + xOffset;
                     
-                    const uint32_t sum =
-                        blockPtr[0] + blockPtr[1] + blockPtr[2] + blockPtr[3] +
-                        blockPtr[mapWidth] + blockPtr[mapWidth + 1] + blockPtr[mapWidth + 2] + blockPtr[mapWidth + 3] +
-                        blockPtr[2 * mapWidth] + blockPtr[2 * mapWidth + 1] + blockPtr[2 * mapWidth + 2] + blockPtr[2 * mapWidth + 3] +
-                        blockPtr[3 * mapWidth] + blockPtr[3 * mapWidth + 1] + blockPtr[3 * mapWidth + 2] + blockPtr[3 * mapWidth + 3];
+                    const uint8_t sum =
+                    blockPtr[0] + blockPtr[1] + blockPtr[2] + blockPtr[3] +
+                    blockPtr[mapWidth] + blockPtr[mapWidth + 1] + blockPtr[mapWidth + 2] + blockPtr[mapWidth + 3] +
+                    blockPtr[2 * mapWidth] + blockPtr[2 * mapWidth + 1] + blockPtr[2 * mapWidth + 2] + blockPtr[2 * mapWidth + 3] +
+                    blockPtr[3 * mapWidth] + blockPtr[3 * mapWidth + 1] + blockPtr[3 * mapWidth + 2] + blockPtr[3 * mapWidth + 3];
 
-                    occMapDS[yDS * mapWidthDS + xDS] = (sum < omRefinementTreshold) ? 0U : 1U;
+                    if(sum >= p_->omRefinementTreshold4) {
+                        occMapDS[yDS * mapWidthDS + xDS] = 1U;
+                    } else {
+                        occMapDS[yDS * mapWidthDS + xDS] = 0U;
+                        // Update the occupancy map (lf: usefull for BBPE attribute background filling)
+                        std::fill_n(blockPtr, 4, 0U);
+                        std::fill_n(blockPtr + 1 * mapWidth, 4, 0U);
+                        std::fill_n(blockPtr + 2 * mapWidth, 4, 0U);
+                        std::fill_n(blockPtr + 3 * mapWidth, 4, 0U);
+                    }
                 }
             }
         } else {
             assert(false && "Unsupported block size for occupancy map downscaling");
         }
     }
-    // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
 
+
+
+template <bool doubleLayer, bool axisSwap>
+void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, uvgvpcc_enc::Frame& frame) {
+    const size_t patchWidth = patch.widthInPixel_;
+    const size_t patchHeight = patch.heightInPixel_;
+    const size_t omX = patch.omDSPosX_ * p_->occupancyMapDSResolution;
+    const size_t omY = patch.omDSPosY_ * p_->occupancyMapDSResolution;
+    const size_t mapWidth = p_->mapWidth;
+    const size_t imageSize2 = 2 * imageSize;
+
+    const auto* depthL1 = patch.depthL1_.data();
+    const auto* depthPCidxL1 = patch.depthPCidxL1_.data();
+    const auto* depthL2 = patch.depthL2_.data();
+    const auto* depthPCidxL2 = patch.depthPCidxL2_.data();
+    const auto& attributes = frame.pointsAttribute;
+
+    auto* geomL1 = frame.geometryMapL1.data();
+    auto* attrL1 = frame.attributeMapL1.data();
+    auto* geomL2 = frame.geometryMapL2.data();
+    auto* attrL2 = frame.attributeMapL2.data();
+
+    for (size_t v = 0; v < patchHeight; ++v) {
+        const size_t vOffset = v * patchWidth;
+
+        for (size_t u = 0; u < patchWidth; ++u) {
+            const size_t patchPos = u + vOffset;
+            const auto depth = depthL1[patchPos];
+            if (depth == g_infiniteDepth) continue;
+
+            const size_t x = axisSwap ? v : u;
+            const size_t y = axisSwap ? u : v;
+            const size_t mapPos = omX + x + (omY + y) * mapWidth;
+
+            const auto& attrL1Val = attributes[depthPCidxL1[patchPos]];
+            geomL1[mapPos] = depth;
+            attrL1[mapPos] = attrL1Val[0];
+            attrL1[mapPos + imageSize] = attrL1Val[1];
+            attrL1[mapPos + imageSize2] = attrL1Val[2];
+
+            if constexpr (doubleLayer) {
+                const auto& attrL2Val = attributes[depthPCidxL2[patchPos]];
+                geomL2[mapPos] = depthL2[patchPos];
+                attrL2[mapPos] = attrL2Val[0];
+                attrL2[mapPos + imageSize] = attrL2Val[1];
+                attrL2[mapPos + imageSize2] = attrL2Val[2];
+            }
+        }
+    }
+}
 
 } // Anonymous namespace
 
-
-
-
-void MapGenerationBaseLine::initializeStaticParameters() {}
-
-void MapGenerationBaseLine::writePatch(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, uvgvpcc_enc::Frame& frame) {
-    for (size_t v = 0; v < patch.heightInPixel_; ++v) {
-        for (size_t u = 0; u < patch.widthInPixel_; ++u) {
-            size_t const patchPos = u + v * patch.widthInPixel_;
-            size_t const mapPos =
-                patch.omDSPosX_ * p_->occupancyMapDSResolution + u + (patch.omDSPosY_ * p_->occupancyMapDSResolution + v) * p_->mapWidth;
-            if (patch.depthL1_[patchPos] != g_infiniteDepth) {
-                frame.geometryMapL1[mapPos] = patch.depthL1_[patchPos];
-                frame.attributeMapL1[mapPos] = frame.pointsAttribute[patch.depthPCidxL1_[patchPos]][0];
-                frame.attributeMapL1[mapPos + imageSize] = frame.pointsAttribute[patch.depthPCidxL1_[patchPos]][1];
-                frame.attributeMapL1[mapPos + 2 * imageSize] = frame.pointsAttribute[patch.depthPCidxL1_[patchPos]][2];
-
-                // TODO(lf)create a const variable for the point and then access all three colors
-                if (p_->doubleLayer) {
-                    frame.geometryMapL2[mapPos] = patch.depthL2_[patchPos];
-                    frame.attributeMapL2[mapPos] = frame.pointsAttribute[patch.depthPCidxL2_[patchPos]][0];
-                    frame.attributeMapL2[mapPos + imageSize] = frame.pointsAttribute[patch.depthPCidxL2_[patchPos]][1];
-                    frame.attributeMapL2[mapPos + 2 * imageSize] = frame.pointsAttribute[patch.depthPCidxL2_[patchPos]][2];
-                }
-            }
-        }
-    }
-}
-
-void MapGenerationBaseLine::writePatchAxisSwap(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, uvgvpcc_enc::Frame& frame) {
-    for (size_t u = 0; u < patch.widthInPixel_; ++u) {
-        for (size_t v = 0; v < patch.heightInPixel_; ++v) {
-            size_t const patchPos = u + v * patch.widthInPixel_;
-            size_t const mapPos =
-                patch.omDSPosX_ * p_->occupancyMapDSResolution + v + (patch.omDSPosY_ * p_->occupancyMapDSResolution + u) * p_->mapWidth;
-
-            if (patch.depthL1_[patchPos] != g_infiniteDepth) {
-                frame.geometryMapL1[mapPos] = patch.depthL1_[patchPos];
-                frame.attributeMapL1[mapPos] = frame.pointsAttribute[patch.depthPCidxL1_[patchPos]][0];
-                frame.attributeMapL1[mapPos + imageSize] = frame.pointsAttribute[patch.depthPCidxL1_[patchPos]][1];
-                frame.attributeMapL1[mapPos + 2 * imageSize] = frame.pointsAttribute[patch.depthPCidxL1_[patchPos]][2];
-
-                if (p_->doubleLayer) {
-                    frame.geometryMapL2[mapPos] = patch.depthL2_[patchPos];
-                    frame.attributeMapL2[mapPos] = frame.pointsAttribute[patch.depthPCidxL2_[patchPos]][0];
-                    frame.attributeMapL2[mapPos + imageSize] = frame.pointsAttribute[patch.depthPCidxL2_[patchPos]][1];
-                    frame.attributeMapL2[mapPos + 2 * imageSize] = frame.pointsAttribute[patch.depthPCidxL2_[patchPos]][2];
-                }
-            }
-        }
-    }
-}
-
-// TODO(lf)create a const variable for the point and then access all three colors
-// TODO(lf): rename into writePatches
-void MapGenerationBaseLine::mapsGeneration(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight) {
+void MapGenerationBaseLine::writePatches(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight) {
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
-    for (const uvgvpcc_enc::Patch& patch : frame.patchList) {
-        if (!patch.axisSwap_) {
-            writePatch(patch, imageSize, frame);
-        } else {
-            writePatchAxisSwap(patch, imageSize, frame);
+
+    if(p_->doubleLayer) {
+        for (const uvgvpcc_enc::Patch& patch : frame.patchList) {
+            if (patch.axisSwap_) {
+                writePatchT<true, true>(patch, imageSize, frame);
+            } else {
+                writePatchT<true, false>(patch, imageSize, frame);
+            }
+        }        
+    } else {
+        for (const uvgvpcc_enc::Patch& patch : frame.patchList) {
+            if (patch.axisSwap_) {
+                writePatchT<false, true>(patch, imageSize, frame);
+            } else {
+                writePatchT<false, false>(patch, imageSize, frame);
+            }
         }
     }
 }
+
 
 void MapGenerationBaseLine::allocateMaps(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight) {
     // Notice that before this operation, the dimension of each frame occupancy map can be different. Thus, this OM resizing operation both
@@ -207,68 +228,84 @@ void MapGenerationBaseLine::allocateMaps(uvgvpcc_enc::Frame& frame, const size_t
     }
 }
 
-// TODO(lf): try with integer only
-void MapGenerationBaseLine::RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t& height) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "MapGenerationBaseLine", "RGB444toYUV420\n");
+namespace {
+
+
+// TODO(lf): Why an integer only implementation is so bad in term of quality degradation?
+void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t& height) {
+    Logger::log(LogLevel::TRACE, "MapGeneration", "RGB444toYUV420\n");
 
     const size_t imageSize = width * height;
     const size_t imageSizeUV = imageSize >> 2U;
-    std::vector<uint8_t> uv420(imageSizeUV * 2);
 
-    size_t idxU = 0;
+    const uint8_t* rChannel = img.data();
+    const uint8_t* gChannel = rChannel + imageSize;
+    const uint8_t* bChannel = gChannel + imageSize;
+
+    std::vector<uint8_t> yuv420(imageSize + imageSizeUV * 2);
+    uint8_t* yChannel = yuv420.data();
+    uint8_t* uChannel = yChannel + imageSize;
+    uint8_t* vChannel = uChannel + imageSizeUV;
+
+    constexpr float kYR = 0.2126F;
+    constexpr float kYG = 0.7152F;
+    constexpr float kYB = 0.0722F;
+
+    constexpr float kUR = -0.114572F;
+    constexpr float kUG = -0.385428F;
+    constexpr float kUB = 0.5F;
+
+    constexpr float kVR = 0.5F;
+    constexpr float kVG = -0.454153F;
+    constexpr float kVB = -0.045847F;
+
+    size_t idxUV = 0;
+
     for (size_t y = 0; y < height; y += 2) {
+        const size_t row1 = y * width;
+        const size_t row2 = row1 + width;
+
         for (size_t x = 0; x < width; x += 2) {
-            const size_t idxTL = x + y * width;
-            const size_t idxTR = idxTL + 1;
-            const size_t idxBL = idxTL + width;
-            const size_t idxBR = idxBL + 1;
+            const size_t i00 = row1 + x;
+            const size_t i01 = i00 + 1;
+            const size_t i10 = row2 + x;
+            const size_t i11 = i10 + 1;
 
-            float R = static_cast<float>(img[idxTL]);
-            float G = static_cast<float>(img[idxTL + imageSize]);
-            float B = static_cast<float>(img[idxTL + imageSize * 2]);
-            img[idxTL] = static_cast<uint8_t>((0.212600F * R + 0.715200F * G + 0.072200F * B));
+            const float r00 = static_cast<float>(rChannel[i00]);
+            const float g00 = static_cast<float>(gChannel[i00]);
+            const float b00 = static_cast<float>(bChannel[i00]);
 
-            float uvR = R;
-            float uvG = G;
-            float uvB = B;
+            const float r01 = static_cast<float>(rChannel[i01]);
+            const float g01 = static_cast<float>(gChannel[i01]);
+            const float b01 = static_cast<float>(bChannel[i01]);
 
-            R = static_cast<float>(img[idxTR]);
-            G = static_cast<float>(img[idxTR + imageSize]);
-            B = static_cast<float>(img[idxTR + imageSize * 2]);
-            img[idxTR] = static_cast<uint8_t>((0.212600F * R + 0.715200F * G + 0.072200F * B));
+            const float r10 = static_cast<float>(rChannel[i10]);
+            const float g10 = static_cast<float>(gChannel[i10]);
+            const float b10 = static_cast<float>(bChannel[i10]);
 
-            uvR += R;
-            uvG += G;
-            uvB += B;
+            const float r11 = static_cast<float>(rChannel[i11]);
+            const float g11 = static_cast<float>(gChannel[i11]);
+            const float b11 = static_cast<float>(bChannel[i11]);
 
-            R = static_cast<float>(img[idxBL]);
-            G = static_cast<float>(img[idxBL + imageSize]);
-            B = static_cast<float>(img[idxBL + imageSize * 2]);
-            img[idxBL] = static_cast<uint8_t>((0.212600F * R + 0.715200F * G + 0.072200F * B));
+            yChannel[i00] = static_cast<uint8_t>(kYR * r00 + kYG * g00 + kYB * b00);
+            yChannel[i01] = static_cast<uint8_t>(kYR * r01 + kYG * g01 + kYB * b01);
+            yChannel[i10] = static_cast<uint8_t>(kYR * r10 + kYG * g10 + kYB * b10);
+            yChannel[i11] = static_cast<uint8_t>(kYR * r11 + kYG * g11 + kYB * b11);
 
-            uvR += R;
-            uvG += G;
-            uvB += B;
+            const float avgR = 0.25F * (r00 + r01 + r10 + r11);
+            const float avgG = 0.25F * (g00 + g01 + g10 + g11);
+            const float avgB = 0.25F * (b00 + b01 + b10 + b11);
 
-            R = static_cast<float>(img[idxBR]);
-            G = static_cast<float>(img[idxBR + imageSize]);
-            B = static_cast<float>(img[idxBR + imageSize * 2]);
-            img[idxBR] = static_cast<uint8_t>((0.212600F * R + 0.715200F * G + 0.072200F * B));
-
-            uvR += R;
-            uvG += G;
-            uvB += B;
-
-            uv420[idxU] = static_cast<uint8_t>(-0.028643F * uvR - 0.096357F * uvG + 0.125F * uvB + 128.F);
-            uv420[idxU + imageSizeUV] = static_cast<uint8_t>(0.125F * uvR - 0.11353825F * uvG - 0.01146175F * uvB + 128.F);
-            ++idxU;
+            uChannel[idxUV] = static_cast<uint8_t>(kUR * avgR + kUG * avgG + kUB * avgB + 128.F);
+            vChannel[idxUV] = static_cast<uint8_t>(kVR * avgR + kVG * avgG + kVB * avgB + 128.F);
+            ++idxUV;
         }
     }
 
-    img.resize(imageSize + imageSizeUV * 2);
-    img.shrink_to_fit();  // TODO(lf): lf wonder if elegant or useful behaviour
-    std::copy(uv420.begin(), uv420.end(), &img[imageSize]);
+    img.swap(yuv420);
 }
+
+} // anonymous namespace
 
 
 // TODO(lf): use copy with relevant optimal memory copy to fill second layer. Tackle the cognitive complexity accordingly
@@ -508,12 +545,18 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
 
 void MapGenerationBaseLine::generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     allocateMaps(*frame, frame->mapHeight);
-    
-    occupancyMapDownscaling(*frame);
+
+    if(p_->occupancyMapDSResolution == 2) {
+        occupancyMapDownscaling<2>(frame->mapHeight,frame->occupancyMap,frame->occupancyMapDS);
+    } else if (p_->occupancyMapDSResolution == 4) {
+        occupancyMapDownscaling<4>(frame->mapHeight,frame->occupancyMap,frame->occupancyMapDS);
+    } else {
+        assert(false && "Unsupported block size for occupancy map downscaling");
+    }
 
     // Geometry and attribute map generation //
-    mapsGeneration(*frame, frame->mapHeight);
-    
+    writePatches(*frame, frame->mapHeight);
+
     // Background filling //
     fillBackgroundImages(*frame, frame->mapHeight);
 
@@ -623,3 +666,4 @@ void MapGenerationBaseLine::initGOFMapGeneration(std::shared_ptr<uvgvpcc_enc::GO
         frame->mapHeight = gof->mapHeightGOF;
     }
 }
+

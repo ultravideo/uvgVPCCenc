@@ -43,9 +43,9 @@
 #include <memory>
 #include <queue>
 #include <string>
-#include <unordered_map>
-#include <unordered_set>
 #include <vector>
+
+#include "robin_hood.h"
 
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
@@ -57,11 +57,10 @@ using namespace uvgvpcc_enc;
 
 PatchSegmentation::PatchSegmentation() = default;
 
-
 // TODO(lf): why the second layers resample point are not added in the resample ?
 // TODO(lf): the unordered set could be a map, the value would be the patchIndex of the key point.
 // TODO(lf): find a better function name
-void PatchSegmentation::resampledPointcloud(std::unordered_set<size_t>& resamplePointSet, uvgvpcc_enc::Patch& patch) {
+void PatchSegmentation::resampledPointcloud(robin_hood::unordered_set<size_t>& resamplePointSet, uvgvpcc_enc::Patch& patch) {
     patch.sizeD_ = 0;
     const int16_t projectionTypeIndication =
         static_cast<int16_t>(-2 * static_cast<int>(patch.projectionMode_) + 1);  // projection=0 -> 1, projection=1 -> -1
@@ -118,7 +117,7 @@ void PatchSegmentation::createConnectedComponents(std::vector<std::vector<size_t
                                                      const std::vector<size_t>& rawPoints,
                                                      //  const std::vector<std::vector<size_t>>& pointsNNList,
                                                      const std::vector<size_t>& pointsPPIs,
-                                                     std::unordered_map<size_t, size_t>& nnPropagationMapFlagTrue,
+                                                     robin_hood::unordered_map<size_t, size_t>& nnPropagationMapFlagTrue,
                                                      const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
     std::queue<size_t> fifo;
     for (const auto pointRawIndex : rawPoints) {
@@ -491,10 +490,10 @@ void PatchSegmentation::computeAdditionalPatchInfo(uvgvpcc_enc::Patch& patch) {
 // Warning : this is probably false, as some points are considerd as not raw but their distance is still saved in rawPointsDistance
 // TODO(lf): tackle the cognitive complexity
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void PatchSegmentation::refillRawPoints(const std::unordered_set<size_t>& resamplePointSet, std::vector<size_t>& rawPoints,
+void PatchSegmentation::refillRawPoints(const robin_hood::unordered_set<size_t>& resamplePointSet, std::vector<size_t>& rawPoints,
                                            const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                                            const size_t& pointCount, std::vector<bool>& flags,
-                                           std::unordered_map<size_t, size_t>& nnPropagationMapFlagTrue) {
+                                           robin_hood::unordered_map<size_t, size_t>& nnPropagationMapFlagTrue) {
     // TODO(lf): why do iterate over all input points ? Why not to have a list and remove the already "in-patch" points ? Might use flags ?
 
     std::fill(flags.begin(), flags.end(), false);
@@ -561,6 +560,7 @@ void PatchSegmentation::refillRawPoints(const std::unordered_set<size_t>& resamp
     }
 }
 
+
 // TODO(lf): orientation and patch segmentation are both doing propagation algorithm. Maybe the correct normal flipping can be done at patch
 // segmentation ? (the refine segmentation would be done on absolute normal orientation)
 void PatchSegmentation::patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs) {
@@ -579,7 +579,7 @@ void PatchSegmentation::patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& f
     std::vector<bool> flags(pointCount, true);
 
     // replace the resample point cloud kd tree
-    std::unordered_set<size_t> resamplePointSet;
+    robin_hood::unordered_set<size_t> resamplePointSet;
     resamplePointSet.reserve(pointCount);  // TODO(lf): by construction this reserve is obviously too big. Should we consider an heuristic on
                                            // the missing point ration ?
 
@@ -588,7 +588,7 @@ void PatchSegmentation::patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& f
     // Should contain only flag[point] true
     // TODO(lf): map from location1D -> ppi of the point
     // TODO(lf): remove the use of flags vector ?
-    std::unordered_map<size_t, size_t> nnPropagationMapFlagTrue;
+    robin_hood::unordered_map<size_t, size_t> nnPropagationMapFlagTrue;
 
     // static size_t frame->frameId = 0;
     nnPropagationMapFlagTrue.reserve(pointCount);
@@ -608,7 +608,7 @@ void PatchSegmentation::patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& f
 
         if (connectedComponents.empty()) {
             break;
-        }  // TODO(lf)MY COMMENT : hmmm, seems impossible in normal usages (but still happens with voxelization)
+        }  // TODO(lf)MY COMMENT : seems impossible in normal usages (but still happens with voxelization)
 
         for (auto& connectedComponent : connectedComponents) {
             const size_t patchIndex =
