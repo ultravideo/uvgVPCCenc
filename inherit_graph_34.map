@@ -1,3 +1,9 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="Node000000" href="$structnanoflann_1_1KDTreeBaseClass_1_1Interval.html" title=" " alt="" coords="5,5,272,60"/>
+<area shape="rect" id="Node000000" href="$classnanoflann_1_1KDTreeBaseClass.html" title=" " alt="" coords="5,84,272,139"/>
+<area shape="rect" id="Node000001" href="$classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html" title=" " alt="" coords="341,5,557,60"/>
+<area shape="poly" id="edge7_Node000000_Node000001" title=" " alt="" coords="260,78,340,57,342,63,261,83"/>
+<area shape="rect" id="Node000002" href="$classnanoflann_1_1KDTreeSingleIndexAdaptor.html" title=" " alt="" coords="320,84,579,139"/>
+<area shape="poly" id="edge8_Node000000_Node000002" title=" " alt="" coords="286,109,320,109,320,114,286,114"/>
+<area shape="rect" id="Node000003" href="$classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html" title=" " alt="" coords="324,163,575,217"/>
+<area shape="poly" id="edge9_Node000000_Node000003" title=" " alt="" coords="261,140,341,160,340,165,260,145"/>
 </map>

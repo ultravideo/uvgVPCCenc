@@ -8,11 +8,14 @@ var searchData=
   ['add_5fv3c_5fovd_5fsub_5',['add_v3c_ovd_sub',['../classv3c__gof.html#a418e29be967d58974050ead4ec90c227',1,'v3c_gof']]],
   ['add_5fv3c_5fvps_6',['add_v3c_vps',['../classv3c__gof.html#abe8c31a1393a898d71178cb79a687893',1,'v3c_gof']]],
   ['adddependency_7',['addDependency',['../classuvgvpcc__enc_1_1Job.html#aecc91720b57ae9c2555798b7d26e12b6',1,'uvgvpcc_enc::Job']]],
-  ['addpoint_8',['addpoint',['../classnanoflann_1_1KNNResultSet.html#a52a808b3fb2889ebc100354be2558703',1,'nanoflann::KNNResultSet::addPoint()'],['../classnanoflann_1_1RKNNResultSet.html#a4305602186ab8585e24b0d56185053c5',1,'nanoflann::RKNNResultSet::addPoint()'],['../classnanoflann_1_1RadiusResultSet.html#afd71ccbde9e8cfaac24d8fccb416fa3c',1,'nanoflann::RadiusResultSet::addPoint()']]],
-  ['addpoints_9',['addPoints',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#ab056d39ec787e1888561c0d30ca67e4d',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],
-  ['allocate_10',['allocate',['../classnanoflann_1_1PooledAllocator.html#a96148cc236b63b0416cd4cfb9fb57325',1,'nanoflann::PooledAllocator']]],
-  ['allocatedefaultoccupancymap_11',['allocateDefaultOccupancyMap',['../classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54',1,'PatchPacking']]],
-  ['applypreset_12',['applyPreset',['../namespaceuvgvpcc__enc.html#a32c76f976a12d83e4002ec04551c3fbc',1,'uvgvpcc_enc']]],
-  ['assign_13',['assign',['../group__nanoflann__grp.html#ga8331979a31fb32a57092bbf62ff3357c',1,'nanoflann::assign(Container &amp;c, const size_t nElements, const T &amp;value)'],['../namespacenanoflann.html#ga8331979a31fb32a57092bbf62ff3357c',1,'nanoflann::assign(Container &amp;c, const size_t nElements, const T &amp;value)']]],
-  ['atlas_5fcontext_14',['atlas_context',['../classatlas__context.html#a5a9f9cf848a601636ef6440c5cbb404c',1,'atlas_context']]]
+  ['addorfree_8',['addorfree',['../classrobin__hood_1_1detail_1_1BulkPoolAllocator.html#af4517bb6622d5f5ffb0cf610b692e984',1,'robin_hood::detail::BulkPoolAllocator::addOrFree()'],['../structrobin__hood_1_1detail_1_1NodeAllocator_3_01T_00_01MinSize_00_01MaxSize_00_01true_01_4.html#a94f40b02767432229af7f23bdb8224c3',1,'robin_hood::detail::NodeAllocator&lt; T, MinSize, MaxSize, true &gt;::addOrFree()']]],
+  ['addpoint_9',['addpoint',['../classnanoflann_1_1KNNResultSet.html#a52a808b3fb2889ebc100354be2558703',1,'nanoflann::KNNResultSet::addPoint()'],['../classnanoflann_1_1RadiusResultSet.html#afd71ccbde9e8cfaac24d8fccb416fa3c',1,'nanoflann::RadiusResultSet::addPoint()'],['../classnanoflann_1_1RKNNResultSet.html#a4305602186ab8585e24b0d56185053c5',1,'nanoflann::RKNNResultSet::addPoint()']]],
+  ['addpoints_10',['addPoints',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#ab056d39ec787e1888561c0d30ca67e4d',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],
+  ['allocate_11',['allocate',['../classnanoflann_1_1PooledAllocator.html#a96148cc236b63b0416cd4cfb9fb57325',1,'nanoflann::PooledAllocator::allocate()'],['../classrobin__hood_1_1detail_1_1BulkPoolAllocator.html#aed9702349941d04e83e5d9b845e68882',1,'robin_hood::detail::BulkPoolAllocator::allocate()']]],
+  ['allocatedefaultoccupancymap_12',['allocateDefaultOccupancyMap',['../classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54',1,'PatchPacking']]],
+  ['applypreset_13',['applyPreset',['../namespaceuvgvpcc__enc.html#a32c76f976a12d83e4002ec04551c3fbc',1,'uvgvpcc_enc']]],
+  ['assertnotnull_14',['assertNotNull',['../namespacerobin__hood_1_1detail.html#a35db35b5048a771902ffd157c439124f',1,'robin_hood::detail']]],
+  ['assign_15',['assign',['../group__nanoflann__grp.html#ga8331979a31fb32a57092bbf62ff3357c',1,'nanoflann::assign(Container &amp;c, const size_t nElements, const T &amp;value)'],['../namespacenanoflann.html#ga8331979a31fb32a57092bbf62ff3357c',1,'nanoflann::assign(Container &amp;c, const size_t nElements, const T &amp;value)']]],
+  ['at_16',['at',['../classrobin__hood_1_1detail_1_1Table.html#afb214db6f1196694807c182a1ae4d9ba',1,'robin_hood::detail::Table::at(key_type const &amp;key)'],['../classrobin__hood_1_1detail_1_1Table.html#a9c14fbb0c6a514e029538dac9c9b7274',1,'robin_hood::detail::Table::at(key_type const &amp;key) const']]],
+  ['atlas_5fcontext_17',['atlas_context',['../classatlas__context.html#a5a9f9cf848a601636ef6440c5cbb404c',1,'atlas_context']]]
 ];

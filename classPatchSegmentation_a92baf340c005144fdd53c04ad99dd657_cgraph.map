@@ -1,0 +1,9 @@
+<map id="PatchSegmentation::refillRawPoints" name="PatchSegmentation::refillRawPoints">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,161,77"/>
+<area shape="rect" id="Node000002" href="$classrobin__hood_1_1detail_1_1Table.html#a79fdf3ba7034cb3eb36bbda40ec2d3c7" title=" " alt="" coords="209,5,348,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,42,195,36,196,42,162,47"/>
+<area shape="rect" id="Node000004" href="$classrobin__hood_1_1detail_1_1Table.html#acfe6a7a850fd8f76f5751f854ad2fe86" title=" " alt="" coords="209,69,348,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="162,67,196,73,195,78,161,73"/>
+<area shape="rect" id="Node000003" href="$classrobin__hood_1_1detail_1_1Table.html#a98a73a7b295dc5cb50304068fbd811bd" title=" " alt="" coords="396,5,535,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="349,23,382,23,382,28,349,28"/>
+</map>
