@@ -42,30 +42,13 @@ enum ENCODER_TYPE {OCCUPANCY, GEOMETRY, ATTRIBUTE};
 // All 2D encoder should derived from this class. Notice that there is one 2D encoder for each map (occupancy, geometry and attribute). Static functions can't be overrided. For example, the handling of the function pointer is not done by the derived class, as it should always be the same whatever the 2D encoder used.
 class Abstract2DMapEncoder {
 public:
-    Abstract2DMapEncoder() = default;
+    Abstract2DMapEncoder(const ENCODER_TYPE& encoderType): encoderType_(encoderType) {};
     virtual ~Abstract2DMapEncoder() = default;
     
-    virtual void configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const ENCODER_TYPE& encoderType) = 0;
     virtual void encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) = 0;
 
 protected:
-    
-
-    // 2D encoders parameters (should be common with all 2D encoders)
-    
-    // Do no change between GOFs
-    ENCODER_TYPE encoderType_;
-    std::string encoderName_; // Use for debugging and log
-    bool lossLess_;
-    size_t nbThread_;
-    std::string preset_;
-    std::string format_;
-    std::string mode_;
-    size_t qp_;
-    
-    // Initialized for each GOF
-    size_t width_;
-    size_t height_;
+    const ENCODER_TYPE encoderType_;
 };
 
 inline void writeBitstreamToFile(const std::vector<uint8_t>& bitstream, const std::string& filename) {

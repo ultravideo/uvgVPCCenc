@@ -67,19 +67,19 @@ void MapEncoding::initializeStaticParameters() {
 void MapEncoding::initializeEncoderPointers() {
     
     if(p_->occupancyEncoderName == "Kvazaar") {
-        occupancyMapDSEncoder = std::make_unique<EncoderKvazaar>();
+        occupancyMapDSEncoder = std::make_unique<EncoderKvazaar>(OCCUPANCY);
     } else {
         assert(false);
     }
     
     if(p_->geometryEncoderName == "Kvazaar") {
-        geometryMapEncoder = std::make_unique<EncoderKvazaar>();
+        geometryMapEncoder = std::make_unique<EncoderKvazaar>(GEOMETRY);
     } else {
         assert(false);
     }
 
     if(p_->attributeEncoderName == "Kvazaar") {
-        attributeMapEncoder = std::make_unique<EncoderKvazaar>();
+        attributeMapEncoder = std::make_unique<EncoderKvazaar>(ATTRIBUTE);
     } else {
         assert(false);
     }        
@@ -89,13 +89,8 @@ void MapEncoding::initializeEncoderPointers() {
 void MapEncoding::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "MAP ENCODING", "Encode maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
-    occupancyMapDSEncoder->configureGOFEncoder(gof, OCCUPANCY);
     occupancyMapDSEncoder->encodeGOFMaps(gof);
-
-    geometryMapEncoder->configureGOFEncoder(gof, GEOMETRY);
     geometryMapEncoder->encodeGOFMaps(gof);
-
-    attributeMapEncoder->configureGOFEncoder(gof, ATTRIBUTE);
     attributeMapEncoder->encodeGOFMaps(gof);
     
 }

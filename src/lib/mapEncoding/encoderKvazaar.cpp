@@ -37,17 +37,16 @@
 
 #include <kvazaar.h>
 
+#include <cassert>
 #include <cstdarg>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
 #include <memory>
-#include <limits>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
-#include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "catchLibLog.hpp"
 
@@ -60,8 +59,152 @@ void EncoderKvazaar::initializeLogCallback() {
 
 namespace {
 
+void setMapList(std::shared_ptr<uvgvpcc_enc::GOF>& gof,std::vector<std::reference_wrapper<std::vector<uint8_t>>>& mapList, const ENCODER_TYPE& encoderType) {
+    mapList.reserve(gof->nbFrames);
+    if(encoderType == OCCUPANCY) {
+        for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
+            mapList.emplace_back(frame->occupancyMapDS);
+        }
+        // bitstream = &gof->bitstreamOccupancy;
+
+    } else if(encoderType == GEOMETRY) {
+        for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
+            mapList.emplace_back(frame->geometryMapL1);
+            if (p_->doubleLayer) {
+                mapList.emplace_back(frame->geometryMapL2);
+            }            
+        }     
+        // bitstream = &gof->bitstreamGeometry;
+
+    } else if(encoderType == ATTRIBUTE) {
+        for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
+            mapList.emplace_back(frame->attributeMapL1);
+            if (p_->doubleLayer) {
+                mapList.emplace_back(frame->attributeMapL2);
+            }    
+        }
+        // bitstream = &gof->bitstreamAttribute;
+    } else {
+        assert(false);
+    }
+}
+
+void setBitstream(std::shared_ptr<uvgvpcc_enc::GOF>& gof,std::vector<uint8_t>*& bitstream, const ENCODER_TYPE& encoderType) {
+    switch (encoderType) {
+        case OCCUPANCY: bitstream = &gof->bitstreamOccupancy; break;
+        case GEOMETRY:  bitstream = &gof->bitstreamGeometry; break;
+        case ATTRIBUTE: bitstream = &gof->bitstreamAttribute; break;
+        default:        assert(false);
+    }
+}
+
+void setKvazaarConfig(kvz_api* api, kvz_config* config, const size_t& width, const size_t& height, const ENCODER_TYPE& encoderType) {
+
+    // Basic config
+    api->config_parse(config, "enable-logging", "1"); // TODO(lf) what about performance ? It should depends on the log level
+    api->config_parse(config, "psnr", "0");
+    api->config_parse(config, "hash", "none");
+    api->config_parse(config, "width", std::to_string(width).c_str());
+    api->config_parse(config, "height", std::to_string(height).c_str());    
+
+    // Map-specific settings
+    switch (encoderType) {
+        case OCCUPANCY:
+            api->config_parse(config, "threads", std::to_string(p_->occupancyEncodingNbThread).c_str());        
+            api->config_parse(config, "preset", p_->occupancyEncodingPreset.c_str());
+            if(p_->occupancyEncodingIsLossless) {
+                api->config_parse(config, "lossless", "1");
+            } else {
+                throw std::runtime_error("Kvazaar encoder : uvgVPCCenc currently supports only lossless encoding for the occupancy map.\n");
+            }
+
+            if(p_->occupancyEncodingFormat == "YUV420") {
+                api->config_parse(config, "input-format", "P420");
+            } else {
+                throw std::runtime_error("Kvazaar encoder : uvgVPCCenc currently supports only YUV420 encoding for the occupancy map. The given faulty format is: '" + p_->occupancyEncodingFormat+"'.\n");
+            }
+
+            if(p_->occupancyEncodingMode == "AI") {
+                api->config_parse(config, "period", "1");
+                api->config_parse(config, "gop", "0");
+            } else if(p_->occupancyEncodingMode == "RA") {
+                api->config_parse(config, "period", std::to_string(p_->intraFramePeriod).c_str());
+                api->config_parse(config, "gop", std::to_string(p_->sizeGOP2DEncoding).c_str());
+            } else {
+                throw std::runtime_error("EncoderKvazaar: This occupancy map encoding mode is unknown : " + p_->occupancyEncodingMode + ". Only AI and RA are currently available.");
+            }
+            break;
+
+        case GEOMETRY:
+            api->config_parse(config, "threads", std::to_string(p_->geometryEncodingNbThread).c_str());                
+            api->config_parse(config, "preset", p_->geometryEncodingPreset.c_str());
+            api->config_parse(config, "qp", std::to_string(p_->geometryEncodingQp).c_str());
+            if(p_->geometryEncodingIsLossless) {
+                api->config_parse(config, "lossless", "1");
+            }
+            if(p_->occupancyEncodingFormat == "YUV420") {
+                api->config_parse(config, "input-format", "P420");
+            } else {
+                throw std::runtime_error("Kvazaar encoder : uvgVPCCenc currently supports only YUV420 encoding for the geometry map. The given faulty format is: '" + p_->occupancyEncodingFormat+"'.\n");
+            }
+            if(p_->geometryEncodingMode == "AI") {
+                if (p_->doubleLayer) {
+                    api->config_parse(config, "period", "2");
+                } else {
+                    api->config_parse(config, "period", "1");
+                }
+                api->config_parse(config, "gop", "0");
+            } else if(p_->geometryEncodingMode == "RA") {
+                api->config_parse(config, "period", std::to_string(p_->intraFramePeriod).c_str());
+                api->config_parse(config, "gop", std::to_string(p_->sizeGOP2DEncoding).c_str());
+            } else {
+                throw std::runtime_error("EncoderKvazaar: This geometry map encoding mode is unknown : " + p_->geometryEncodingMode + ". Only AI and RA are currently available.");
+            }
+            break;
+
+        case ATTRIBUTE:
+            api->config_parse(config, "threads", std::to_string(p_->attributeEncodingNbThread).c_str());                
+            api->config_parse(config, "preset", p_->attributeEncodingPreset.c_str());
+            api->config_parse(config, "qp", std::to_string(p_->attributeEncodingQp).c_str());
+            if(p_->attributeEncodingIsLossless) {
+                api->config_parse(config, "lossless", "1");
+            }
+            
+            if(p_->occupancyEncodingFormat == "YUV420") {
+                api->config_parse(config, "input-format", "P420");
+            } else {
+                throw std::runtime_error("Kvazaar encoder : uvgVPCCenc supports only YUV420 encoding for the attribute map. The given faulty format is: '" + p_->occupancyEncodingFormat+"'.\n");
+            }
+
+            if(p_->attributeEncodingMode == "AI") {
+                if (p_->doubleLayer) {
+                    api->config_parse(config, "period", "2");
+                } else {
+                    api->config_parse(config, "period", "1");
+                }
+                api->config_parse(config, "gop", "0");
+            } else if(p_->attributeEncodingMode == "RA") {
+                api->config_parse(config, "period", std::to_string(p_->intraFramePeriod).c_str());
+                api->config_parse(config, "gop", std::to_string(p_->sizeGOP2DEncoding).c_str());
+            } else {
+                throw std::runtime_error("EncoderKvazaar: This attribute map encoding mode is unknown : " + p_->attributeEncodingMode + ". Only AI and RA are currently available.");
+            }
+
+            // lf : advice from Joose
+            if (p_->attributeEncodingPreset == "veryslow") {
+                api->config_parse(config, "rd", "4");
+                api->config_parse(config, "full-intra-search", "1");
+                api->config_parse(config, "intra-chroma-search", "1");
+            }     
+            break;
+
+        default: assert(false);
+    }
+}
+
+
 void encodeVideoKvazaar(const std::vector<std::reference_wrapper<std::vector<uint8_t>>>& mapList, kvz_api* api, kvz_config* config,
-                        size_t width, size_t height, std::vector<uint8_t>& bitstream, const std::string& encoderName) {
+                        const size_t width, const size_t height, std::vector<uint8_t>& bitstream, const std::string& encoderName) {
     
     // TODO(lf): bitstream.reserve(...)
     kvz_encoder* cpu_enc = api->encoder_open(config);
@@ -102,7 +245,6 @@ void encodeVideoKvazaar(const std::vector<std::reference_wrapper<std::vector<uin
         api->chunk_free(chunks_out);  // finaly makes chunks_out = nullptr;
         ++frameCountOut;
     }
-    api->config_destroy(config);
     api->encoder_close(cpu_enc);
 }
 
@@ -110,157 +252,51 @@ void encodeVideoKvazaar(const std::vector<std::reference_wrapper<std::vector<uin
 
 
 void EncoderKvazaar::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
+
+    std::string encoderName; // For log and debug
+    switch (encoderType_) {
+        case OCCUPANCY: encoderName = "Kvazaar occupancy map encoder"; break;
+        case GEOMETRY:  encoderName = "Kvazaar geometry map encoder"; break;
+        case ATTRIBUTE: encoderName = "Kvazaar attribute map encoder"; break;
+        default: assert(false);
+    }
+
+    kvz_api* api = const_cast<kvz_api*>(kvz_api_get(8));  // NOLINT(cppcoreguidelines-pro-type-const-cast)
+    kvz_config* config = api->config_alloc();
     
-    std::vector<std::reference_wrapper<std::vector<uint8_t>>> mapList;
-    mapList.reserve(gof->nbFrames);
-    std::vector<uint8_t> *bitstream = nullptr;
-    if(encoderType_ == OCCUPANCY) {
-        for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-            mapList.emplace_back(frame->occupancyMapDS);
-        }
-        bitstream = &gof->bitstreamOccupancy;
-
-    } else if(encoderType_ == GEOMETRY) {
-        for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-            mapList.emplace_back(frame->geometryMapL1);
-            if (p_->doubleLayer) {
-                mapList.emplace_back(frame->geometryMapL2);
-            }            
-        }     
-        bitstream = &gof->bitstreamGeometry;
-
-    } else { // encoderType_ == ATTRIBUTE
-        for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-            mapList.emplace_back(frame->attributeMapL1);
-            if (p_->doubleLayer) {
-                mapList.emplace_back(frame->attributeMapL2);
-            }    
-        }
-        bitstream = &gof->bitstreamAttribute;
-        
-    }
-
-    encodeVideoKvazaar(mapList, api_, config_, width_, height_, *bitstream, encoderName_);
-
-    if (p_->exportIntermediateMaps) { // TODO(lf): export intermediate bitstream param should be added
-        if(encoderType_ == OCCUPANCY) {
-            writeBitstreamToFile(*bitstream, gof->baseNameOccupancyDS + ".hevc");
-        } else if(encoderType_ == GEOMETRY) {
-            writeBitstreamToFile(*bitstream, gof->baseNameGeometry + ".hevc");
-        } else { // encoderType_ == ATTRIBUTE
-            writeBitstreamToFile(*bitstream, gof->baseNameAttribute + ".hevc");
-        }                
-    }
-}
-
-void EncoderKvazaar::configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const ENCODER_TYPE& encoderType) {
-
-    encoderType_ = encoderType;
-    if(encoderType_ == OCCUPANCY) {
-        encoderName_ = "Kvazaar occupancy map encoder";
-        lossLess_ = p_->occupancyEncodingIsLossless;
-        nbThread_ = p_->occupancyEncodingNbThread;
-        preset_ = p_->occupancyEncodingPreset;
-        mode_ = p_->occupancyEncodingMode;
-        width_ = p_->mapWidth / p_->occupancyMapDSResolution;
-        format_ = p_->occupancyEncodingFormat;
-        height_ = gof->mapHeightDSGOF;
-        qp_ = std::numeric_limits<size_t>::max(); // lf : This value should not be used (Occupancy use lossless mode)
-    } else if(encoderType_ == GEOMETRY) {
-        encoderName_ = "Kvazaar geometry map encoder";
-        lossLess_ = p_->geometryEncodingIsLossless;
-        nbThread_ = p_->geometryEncodingNbThread;
-        preset_ = p_->geometryEncodingPreset;
-        mode_ = p_->geometryEncodingMode;
-        width_ = p_->mapWidth;
-        format_ = p_->geometryEncodingFormat;
-        height_ = gof->mapHeightGOF;       
-        qp_ = p_->geometryEncodingQp; 
-    } else if(encoderType_ == ATTRIBUTE) {
-        encoderName_ = "Kvazaar attribute map encoder";
-        lossLess_ = p_->attributeEncodingIsLossless;
-        nbThread_ = p_->attributeEncodingNbThread;
-        preset_ = p_->attributeEncodingPreset;
-        mode_ = p_->attributeEncodingMode;
-        width_ = p_->mapWidth;
-        format_ = p_->attributeEncodingFormat;
-        height_ = gof->mapHeightGOF;        
-        qp_ = p_->attributeEncodingQp; 
-    } else {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "MAP ENCODING",
-            "While configuring the GOF encoder, an unknown encoderType has been used : " + std::to_string(static_cast<int>(encoderType)) + "The type list is defined by the enum 'ENCODER_TYPE' in 'abstract2DMapEncoder.hpp'.\n");
-        throw std::runtime_error("");
-    }
-
-    if(format_ == "YUV420") {
-        format_ = "P420";
-    } else if(format_ == "YUV400") {
-        format_ = "P400";
-        if(encoderType == ATTRIBUTE) {
-            throw std::runtime_error("Kvazaar encoder : Attribute map need to be encoded with YUV420. The given faulty format is: '" + format_+"'.\n");
-        }
-    } else {
-        throw std::runtime_error("Kvazaar encoder : Only accepted format are YUV420 and YUV400. The given faulty format is: '" + format_+"'.\n");
-    }
-
-    api_ = const_cast<kvz_api*>(kvz_api_get(8));  // NOLINT(cppcoreguidelines-pro-type-const-cast)
-    config_ = api_->config_alloc();
-    if (config_ == nullptr) {
-        throw std::runtime_error(encoderName_ + ": Failed to allocate Kvazaar config.");
+    if (config == nullptr) {
+        throw std::runtime_error(encoderName + ": Failed to allocate Kvazaar config.");
     };
 
-    if(api_->config_init(config_)==0) {
-        throw std::runtime_error(encoderName_ + ": Failed to initialize Kvazaar config.");
+    if(api->config_init(config)==0) {
+        throw std::runtime_error(encoderName + ": Failed to initialize Kvazaar config.");
     }    
 
-    api_->config_parse(config_, "enable-logging", "1"); // TODO(lf) what about performance ? It should depends on the log level
-    api_->config_parse(config_, "psnr", "0");
-    api_->config_parse(config_, "hash", "none");
-    api_->config_parse(config_, "threads", std::to_string(nbThread_).c_str());
-    api_->config_parse(config_, "width", std::to_string(width_).c_str());
-    api_->config_parse(config_, "height", std::to_string(height_).c_str());
-    api_->config_parse(config_, "input-format", format_.c_str());
-    api_->config_parse(config_, "preset", preset_.c_str());
+    const size_t width = encoderType_ == OCCUPANCY ? p_->mapWidth / p_->occupancyMapDSResolution : p_->mapWidth;
+    const size_t height = encoderType_ == OCCUPANCY ? gof->mapHeightDSGOF : gof->mapHeightGOF;
+    setKvazaarConfig(api,config,width,height,encoderType_);
 
-    if(lossLess_) {
-        api_->config_parse(config_, "lossless", "1");
-    }
-
-    if(encoderType_ == OCCUPANCY) {
-        // TODO(lf): useless ?
-        api_->config_parse(config_, "period", "1");
-        return;
-    }
-
-    // Only for geometry and attribute maps //
-    api_->config_parse(config_, "qp", std::to_string(qp_).c_str());
-
-    if(mode_ == "AI") {
-        if (p_->doubleLayer) {
-            api_->config_parse(config_, "period", "2");
-        } else {
-            api_->config_parse(config_, "period", "1");
-        }
-        api_->config_parse(config_, "gop", "0");
-    } else if(mode_ == "RA") {
-        api_->config_parse(config_, "period", std::to_string(p_->intraFramePeriod).c_str());
-        api_->config_parse(config_, "gop", std::to_string(p_->sizeGOP2DEncoding).c_str());
-    } else {
-        throw std::runtime_error("EncoderKvazaar: This encoding mode is unknown : " + mode_ + ". Only AI and RA are currently available.");
-    }
+    std::vector<std::reference_wrapper<std::vector<uint8_t>>> mapList;
+    setMapList(gof,mapList,encoderType_);
     
-    // lf : advice from Joose
-    if(encoderType_ == ATTRIBUTE) {
-        if (preset_ == "veryslow") {
-            api_->config_parse(config_, "rd", "4");
-            api_->config_parse(config_, "full-intra-search", "1");
-            api_->config_parse(config_, "intra-chroma-search", "1");
+    std::vector<uint8_t> *bitstream = nullptr;
+    setBitstream(gof,bitstream,encoderType_);
+
+    encodeVideoKvazaar(mapList, api, config, width, height, *bitstream, encoderName);
+
+    api->config_destroy(config);
+
+    if (p_->exportIntermediateMaps) { // TODO(lf): export intermediate bitstream param should be added
+        std::string baseName;
+        switch (encoderType_) {
+            case OCCUPANCY: baseName = gof->baseNameOccupancyDS; break;
+            case GEOMETRY:  baseName = gof->baseNameGeometry; break;
+            case ATTRIBUTE: baseName = gof->baseNameAttribute; break;
+            default: assert(false);
         }
+        writeBitstreamToFile(*bitstream, baseName + ".hevc");
     }
-
 }
-
-
 
 
 

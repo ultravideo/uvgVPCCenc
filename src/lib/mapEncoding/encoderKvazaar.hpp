@@ -45,12 +45,9 @@ using namespace uvgvpcc_enc;
 
 class EncoderKvazaar : public Abstract2DMapEncoder {
 public:
+    EncoderKvazaar(const ENCODER_TYPE& encoderType) : Abstract2DMapEncoder(encoderType) {};
     static void initializeLogCallback();
-    void configureGOFEncoder(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const ENCODER_TYPE& encoderType) override;
     void encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) override;
-private:
-    kvz_api* api_;
-    kvz_config* config_;
 
 };
 
