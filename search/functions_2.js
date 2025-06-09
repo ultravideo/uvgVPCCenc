@@ -18,10 +18,9 @@ var searchData=
   ['computepatchboundingbox_15',['computePatchBoundingBox',['../classPatchSegmentation.html#aa3b3fcb12079a71ee833e203847d78a3',1,'PatchSegmentation']]],
   ['computepatchdepthl1_16',['computePatchDepthL1',['../classPatchSegmentation.html#a3cdab98e5e9f30842b38ea848c160aa2',1,'PatchSegmentation']]],
   ['computepatchdepthl2_17',['computePatchDepthL2',['../classPatchSegmentation.html#a006a62e16aa564064c4350dfd05e6cdc',1,'PatchSegmentation']]],
-  ['configuregofencoder_18',['configuregofencoder',['../classAbstract2DMapEncoder.html#aae1e538d2067487cc79ee77e9320173b',1,'Abstract2DMapEncoder::configureGOFEncoder()'],['../classEncoderKvazaar.html#ac620cd6ef1890ff79bae09f0ea8cf9c2',1,'EncoderKvazaar::configureGOFEncoder()']]],
-  ['contains_19',['contains',['../classrobin__hood_1_1detail_1_1Table.html#a79fdf3ba7034cb3eb36bbda40ec2d3c7',1,'robin_hood::detail::Table::contains(const key_type &amp;key) const'],['../classrobin__hood_1_1detail_1_1Table.html#ae12c24bd912129e2d4cda1a97f08df11',1,'robin_hood::detail::Table::contains(const OtherKey &amp;key) const']]],
-  ['convert_5flist_5fto_5ffixed_5fsize_20',['convert_list_to_fixed_size',['../structminiply_1_1PLYElement.html#afdec5ca2ff81fb7675fa89504e84f7ac',1,'miniply::PLYElement']]],
-  ['count_21',['count',['../classrobin__hood_1_1detail_1_1Table.html#a98a73a7b295dc5cb50304068fbd811bd',1,'robin_hood::detail::Table::count(const key_type &amp;key) const'],['../classrobin__hood_1_1detail_1_1Table.html#aeaf3a4298aaefb1639848f7e391d1d08',1,'robin_hood::detail::Table::count(const OtherKey &amp;key) const']]],
-  ['createconnectedcomponents_22',['createConnectedComponents',['../classPatchSegmentation.html#aa8784a26746eb86d546a53f5dab6c1f3',1,'PatchSegmentation']]],
-  ['createv3cgofbitstream_23',['createV3CGOFBitstream',['../classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee',1,'BitstreamGeneration']]]
+  ['contains_18',['contains',['../classrobin__hood_1_1detail_1_1Table.html#a79fdf3ba7034cb3eb36bbda40ec2d3c7',1,'robin_hood::detail::Table::contains(const key_type &amp;key) const'],['../classrobin__hood_1_1detail_1_1Table.html#ae12c24bd912129e2d4cda1a97f08df11',1,'robin_hood::detail::Table::contains(const OtherKey &amp;key) const']]],
+  ['convert_5flist_5fto_5ffixed_5fsize_19',['convert_list_to_fixed_size',['../structminiply_1_1PLYElement.html#afdec5ca2ff81fb7675fa89504e84f7ac',1,'miniply::PLYElement']]],
+  ['count_20',['count',['../classrobin__hood_1_1detail_1_1Table.html#a98a73a7b295dc5cb50304068fbd811bd',1,'robin_hood::detail::Table::count(const key_type &amp;key) const'],['../classrobin__hood_1_1detail_1_1Table.html#aeaf3a4298aaefb1639848f7e391d1d08',1,'robin_hood::detail::Table::count(const OtherKey &amp;key) const']]],
+  ['createconnectedcomponents_21',['createConnectedComponents',['../classPatchSegmentation.html#aa8784a26746eb86d546a53f5dab6c1f3',1,'PatchSegmentation']]],
+  ['createv3cgofbitstream_22',['createV3CGOFBitstream',['../classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee',1,'BitstreamGeneration']]]
 ];

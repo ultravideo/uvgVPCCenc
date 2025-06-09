@@ -49,6 +49,5 @@ var searchData=
   ['miniply_2eh_46',['miniply.h',['../miniply_8h.html',1,'']]],
   ['minlevel_47',['minLevel',['../structuvgvpcc__enc_1_1Parameters.html#a4f64f8f2a3ef17061d05e00ef8f2837a',1,'uvgvpcc_enc::Parameters']]],
   ['minpointcountpercc_48',['minPointCountPerCC',['../structuvgvpcc__enc_1_1Parameters.html#ab63ac0bb47863688d5820caad62f6871',1,'uvgvpcc_enc::Parameters']]],
-  ['mode_5f_49',['mode_',['../classAbstract2DMapEncoder.html#a603385c7fb9fe1ef814243e1a3bb9ec8',1,'Abstract2DMapEncoder']]],
-  ['mtx_5f_50',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
+  ['mtx_5f_49',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
 ];

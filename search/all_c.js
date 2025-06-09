@@ -29,8 +29,7 @@ var searchData=
   ['loglevel_26',['loglevel',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3',1,'uvgvpcc_enc::LogLevel'],['../structuvgvpcc__enc_1_1Parameters.html#a0c01000c8756e0d955e9d57da4f863a6',1,'uvgvpcc_enc::Parameters::logLevel']]],
   ['logleveldefaultvalue_27',['logLevelDefaultValue',['../namespaceuvgvpcc__enc.html#a4c574046ce45fc13445374e96bb99186',1,'uvgvpcc_enc']]],
   ['loop_5finput_28',['loop_input',['../structcli_1_1opts__t.html#a0aa15bc699116f58df3fd795d52d83f4',1,'cli::opts_t']]],
-  ['lossless_5f_29',['lossLess_',['../classAbstract2DMapEncoder.html#a8ee50a37c36128d3376953437692d545',1,'Abstract2DMapEncoder']]],
-  ['low_30',['low',['../structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#a75c5eb8ad6655399a320ab2347ba68e5',1,'nanoflann::KDTreeBaseClass::Interval']]],
-  ['lowdelaybitstream_31',['lowDelayBitstream',['../structuvgvpcc__enc_1_1Parameters.html#acc95ab30c9b3e6a51b9d1161793e5fc7',1,'uvgvpcc_enc::Parameters']]],
-  ['lr_32',['lr',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a7c36f0690925f1dd41d1e4ca30a00cc3',1,'nanoflann::KDTreeBaseClass::Node']]]
+  ['low_29',['low',['../structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#a75c5eb8ad6655399a320ab2347ba68e5',1,'nanoflann::KDTreeBaseClass::Interval']]],
+  ['lowdelaybitstream_30',['lowDelayBitstream',['../structuvgvpcc__enc_1_1Parameters.html#acc95ab30c9b3e6a51b9d1161793e5fc7',1,'uvgvpcc_enc::Parameters']]],
+  ['lr_31',['lr',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a7c36f0690925f1dd41d1e4ca30a00cc3',1,'nanoflann::KDTreeBaseClass::Node']]]
 ];

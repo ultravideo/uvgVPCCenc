@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['abstract2dmapencoder_0',['Abstract2DMapEncoder',['../classAbstract2DMapEncoder.html#a36c9d31f3ae8fb7e4ab4130e6cb9fb22',1,'Abstract2DMapEncoder']]],
+  ['abstract2dmapencoder_0',['Abstract2DMapEncoder',['../classAbstract2DMapEncoder.html#a55f038dffbefa775c7096c24529cc629',1,'Abstract2DMapEncoder']]],
   ['accum_5fdist_1',['accum_dist',['../structnanoflann_1_1L1__Adaptor.html#a45b31fbc91df4e17d8e2385faa36f59f',1,'nanoflann::L1_Adaptor::accum_dist()'],['../structnanoflann_1_1L2__Adaptor.html#a1240de71b18537570347efb44ab89afc',1,'nanoflann::L2_Adaptor::accum_dist()'],['../structnanoflann_1_1L2__Simple__Adaptor.html#a86df877037d46d45abd9829ab3f77e42',1,'nanoflann::L2_Simple_Adaptor::accum_dist()'],['../structnanoflann_1_1SO2__Adaptor.html#afe920fdd0792952fd02c965d99f618bb',1,'nanoflann::SO2_Adaptor::accum_dist()'],['../structnanoflann_1_1SO3__Adaptor.html#afaf6a90479934882a28fa292d1ef2b10',1,'nanoflann::SO3_Adaptor::accum_dist()']]],
   ['add_5fv3c_5fatlas_5fcontext_2',['add_v3c_atlas_context',['../classv3c__gof.html#a6a107d849bed5cacedc55fe98f0772c1',1,'v3c_gof']]],
   ['add_5fv3c_5favd_5fsub_3',['add_v3c_avd_sub',['../classv3c__gof.html#a263296629443aa4ac7dcf7f7e7884389',1,'v3c_gof']]],

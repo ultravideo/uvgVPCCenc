@@ -2,7 +2,7 @@ var searchData=
 [
   ['a_20simple_20and_20fast_20parser_20for_20ply_20files_0',['miniply - A simple and fast parser for PLY files',['../namespaceminiply.html#autotoc_md12',1,'']]],
   ['abs_5fdelta_5fafoc_5fst_1',['abs_delta_afoc_st',['../structref__list__struct.html#a761d94578afbb517621677938f0a0cd6',1,'ref_list_struct']]],
-  ['abstract2dmapencoder_2',['abstract2dmapencoder',['../classAbstract2DMapEncoder.html',1,'Abstract2DMapEncoder'],['../classAbstract2DMapEncoder.html#a36c9d31f3ae8fb7e4ab4130e6cb9fb22',1,'Abstract2DMapEncoder::Abstract2DMapEncoder()']]],
+  ['abstract2dmapencoder_2',['abstract2dmapencoder',['../classAbstract2DMapEncoder.html',1,'Abstract2DMapEncoder'],['../classAbstract2DMapEncoder.html#a55f038dffbefa775c7096c24529cc629',1,'Abstract2DMapEncoder::Abstract2DMapEncoder()']]],
   ['abstract2dmapencoder_2ehpp_3',['abstract2DMapEncoder.hpp',['../abstract2DMapEncoder_8hpp.html',1,'']]],
   ['accum_5fdist_4',['accum_dist',['../structnanoflann_1_1SO2__Adaptor.html#afe920fdd0792952fd02c965d99f618bb',1,'nanoflann::SO2_Adaptor::accum_dist()'],['../structnanoflann_1_1L1__Adaptor.html#a45b31fbc91df4e17d8e2385faa36f59f',1,'nanoflann::L1_Adaptor::accum_dist()'],['../structnanoflann_1_1L2__Adaptor.html#a1240de71b18537570347efb44ab89afc',1,'nanoflann::L2_Adaptor::accum_dist()'],['../structnanoflann_1_1L2__Simple__Adaptor.html#a86df877037d46d45abd9829ab3f77e42',1,'nanoflann::L2_Simple_Adaptor::accum_dist()'],['../structnanoflann_1_1SO3__Adaptor.html#afaf6a90479934882a28fa292d1ef2b10',1,'nanoflann::SO3_Adaptor::accum_dist()']]],
   ['adaptors_5',['KD-tree classes and adaptors',['../group__kdtrees__grp.html',1,'']]],

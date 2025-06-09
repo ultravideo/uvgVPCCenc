@@ -19,6 +19,5 @@ var searchData=
   ['minimummapheight_16',['minimumMapHeight',['../structuvgvpcc__enc_1_1Parameters.html#a95a27b332c0d4a95cdfb38d1e787c261',1,'uvgvpcc_enc::Parameters']]],
   ['minlevel_17',['minLevel',['../structuvgvpcc__enc_1_1Parameters.html#a4f64f8f2a3ef17061d05e00ef8f2837a',1,'uvgvpcc_enc::Parameters']]],
   ['minpointcountpercc_18',['minPointCountPerCC',['../structuvgvpcc__enc_1_1Parameters.html#ab63ac0bb47863688d5820caad62f6871',1,'uvgvpcc_enc::Parameters']]],
-  ['mode_5f_19',['mode_',['../classAbstract2DMapEncoder.html#a603385c7fb9fe1ef814243e1a3bb9ec8',1,'Abstract2DMapEncoder']]],
-  ['mtx_5f_20',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
+  ['mtx_5f_19',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
 ];
