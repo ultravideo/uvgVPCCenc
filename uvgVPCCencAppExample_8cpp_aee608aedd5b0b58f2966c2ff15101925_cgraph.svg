@@ -104,7 +104,7 @@ var sectionId = 'dynsection-1';
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
+<g id="a_Node000004"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
 <polygon fill="white" stroke="#666666" points="235,-430.5 92,-430.5 92,-400.5 235,-400.5 235,-430.5"/>
 <text text-anchor="start" x="100" y="-418.5" font-family="Helvetica,sans-Serif" font-size="10.00">uvgvpcc_enc::API::encode</text>
 <text text-anchor="middle" x="163.5" y="-407.5" font-family="Helvetica,sans-Serif" font-size="10.00">Frame</text>
@@ -279,7 +279,7 @@ var sectionId = 'dynsection-1';
 <!-- Node28 -->
 <g id="Node000028" class="node">
 <title>Node28</title>
-<g id="a_Node000028"><a xlink:href="namespaceMapEncoding.html#ae076249a61063d310ef6b2209fd17e8a" target="_top" xlink:title=" ">
+<g id="a_Node000028"><a xlink:href="namespaceMapEncoding.html#a0bc181915a9f3bb43115710ccda8ffcd" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="470.5,-767 300.5,-767 300.5,-748 470.5,-748 470.5,-767"/>
 <text text-anchor="middle" x="385.5" y="-755" font-family="Helvetica,sans-Serif" font-size="10.00">MapEncoding::encodeGOFMaps</text>
 </a>
@@ -316,7 +316,7 @@ var sectionId = 'dynsection-1';
 <!-- Node30 -->
 <g id="Node000030" class="node">
 <title>Node30</title>
-<g id="a_Node000030"><a xlink:href="classMapGenerationBaseLine.html#a53f5348d65c2eddbee92d2af79dec6b8" target="_top" xlink:title=" ">
+<g id="a_Node000030"><a xlink:href="classMapGenerationBaseLine.html#a7d9862ea5acff65b91f5a2bfad449030" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="453.5,-729.5 317.5,-729.5 317.5,-699.5 453.5,-699.5 453.5,-729.5"/>
 <text text-anchor="start" x="325.5" y="-717.5" font-family="Helvetica,sans-Serif" font-size="10.00">MapGenerationBaseLine</text>
 <text text-anchor="middle" x="385.5" y="-706.5" font-family="Helvetica,sans-Serif" font-size="10.00">::generateFrameMaps</text>
@@ -372,7 +372,7 @@ var sectionId = 'dynsection-1';
 <!-- Node66 -->
 <g id="Node000066" class="node">
 <title>Node66</title>
-<g id="a_Node000066"><a xlink:href="classMapGenerationBaseLine.html#adc42bd07d74e6dbf55751bcce806bfc2" target="_top" xlink:title=" ">
+<g id="a_Node000066"><a xlink:href="classMapGenerationBaseLine.html#a186ae71d7a2e66d0f3200b8c2b43f148" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="453.5,-365.5 317.5,-365.5 317.5,-335.5 453.5,-335.5 453.5,-365.5"/>
 <text text-anchor="start" x="325.5" y="-353.5" font-family="Helvetica,sans-Serif" font-size="10.00">MapGenerationBaseLine</text>
 <text text-anchor="middle" x="385.5" y="-342.5" font-family="Helvetica,sans-Serif" font-size="10.00">::initGOFMapGeneration</text>
@@ -785,7 +785,7 @@ var sectionId = 'dynsection-1';
 <!-- Node31 -->
 <g id="Node000031" class="node">
 <title>Node31</title>
-<g id="a_Node000031"><a xlink:href="classMapGenerationBaseLine.html#ad47dd40e9004ea0eccaf3853b47a0a31" target="_top" xlink:title=" ">
+<g id="a_Node000031"><a xlink:href="classMapGenerationBaseLine.html#a5314cb6e72422598cd4e4f07b779bbfa" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="682.5,-885.5 546.5,-885.5 546.5,-855.5 682.5,-855.5 682.5,-885.5"/>
 <text text-anchor="start" x="554.5" y="-873.5" font-family="Helvetica,sans-Serif" font-size="10.00">MapGenerationBaseLine</text>
 <text text-anchor="middle" x="614.5" y="-862.5" font-family="Helvetica,sans-Serif" font-size="10.00">::writeFrameMapsYUV</text>
@@ -869,7 +869,7 @@ var sectionId = 'dynsection-1';
 <!-- Node42 -->
 <g id="Node000042" class="node">
 <title>Node42</title>
-<g id="a_Node000042"><a xlink:href="classPatchSegmentation.html#a819536989846a15453734058b91521ee" target="_top" xlink:title=" ">
+<g id="a_Node000042"><a xlink:href="classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac" target="_top" xlink:title=" ">
 <polygon fill="#fff0f0" stroke="red" points="673,-590.5 556,-590.5 556,-560.5 673,-560.5 673,-590.5"/>
 <text text-anchor="start" x="564" y="-578.5" font-family="Helvetica,sans-Serif" font-size="10.00">PatchSegmentation::</text>
 <text text-anchor="middle" x="614.5" y="-567.5" font-family="Helvetica,sans-Serif" font-size="10.00">patchSegmentation</text>

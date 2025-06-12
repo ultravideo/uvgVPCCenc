@@ -2,7 +2,7 @@ var searchData=
 [
   ['init_0',['init',['../classnanoflann_1_1RKNNResultSet.html#a5ddef701a8d5f8801c181572e091b47a',1,'nanoflann::RKNNResultSet::init()'],['../classnanoflann_1_1RadiusResultSet.html#a27c5b218e8bf1badba91377f6a735207',1,'nanoflann::RadiusResultSet::init()'],['../classnanoflann_1_1KNNResultSet.html#a34d5e438b93c49aac9a915be0ab7cde9',1,'nanoflann::KNNResultSet::init()']]],
   ['init_5fvind_1',['init_vind',['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#aa1f14b5b6e7b0c09e09dae7e44c11200',1,'nanoflann::KDTreeSingleIndexAdaptor']]],
-  ['initgofmapgeneration_2',['initGOFMapGeneration',['../classMapGenerationBaseLine.html#adc42bd07d74e6dbf55751bcce806bfc2',1,'MapGenerationBaseLine']]],
+  ['initgofmapgeneration_2',['initGOFMapGeneration',['../classMapGenerationBaseLine.html#a186ae71d7a2e66d0f3200b8c2b43f148',1,'MapGenerationBaseLine']]],
   ['initialize_5fatlas_5fcontext_3',['initialize_atlas_context',['../classatlas__context.html#ab8ec1ad86f080f516412ed2ab4bd9004',1,'atlas_context']]],
   ['initializeencoder_4',['initializeEncoder',['../namespaceuvgvpcc__enc_1_1API.html#a3adde30edb633723ea38c3860bc86007',1,'uvgvpcc_enc::API']]],
   ['initializeencoderpointers_5',['initializeEncoderPointers',['../namespaceMapEncoding.html#ae2fd75da68f88eb71dfe916dc6919d96',1,'MapEncoding']]],

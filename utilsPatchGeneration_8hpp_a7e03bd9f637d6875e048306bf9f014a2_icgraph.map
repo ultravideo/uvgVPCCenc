@@ -6,13 +6,13 @@
 <area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="896,126,838,111,781,98,782,93,839,105,898,121"/>
 <area shape="rect" id="Node000007" href="$namespaceNormalOrientation.html#a5fadc067a7ed313e80ad559d11e7c67f" title=" " alt="" coords="639,120,789,160"/>
 <area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="873,143,789,143,789,137,873,137"/>
-<area shape="rect" id="Node000008" href="$classPatchSegmentation.html#a819536989846a15453734058b91521ee" title=" " alt="" coords="636,184,792,224"/>
+<area shape="rect" id="Node000008" href="$classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac" title=" " alt="" coords="636,184,792,224"/>
 <area shape="poly" id="edge9_Node000001_Node000008" title=" " alt="" coords="895,159,839,175,793,187,792,182,838,169,894,154"/>
 <area shape="rect" id="Node000009" href="$classPPISegmenter.html#a6d388df0893b2c0d43b730c7dd32f56f" title=" " alt="" coords="589,249,839,274"/>
 <area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="934,165,893,203,867,222,840,238,806,251,804,246,838,234,865,218,890,199,930,161"/>
 <area shape="rect" id="Node000003" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="347,120,541,160"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="620,49,590,60,528,90,476,122,474,118,526,86,588,55,618,44"/>
-<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,120,299,160"/>
+<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,120,299,160"/>
 <area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="333,143,299,143,299,137,333,137"/>
 <area shape="rect" id="Node000005" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,127,60,153"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,143,60,143,60,137,94,137"/>

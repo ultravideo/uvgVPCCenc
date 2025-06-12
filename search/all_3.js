@@ -24,7 +24,7 @@ var searchData=
   ['completefilebasenames_21',['completeFileBaseNames',['../structuvgvpcc__enc_1_1GOF.html#aaff1430efa0f031c9e58505ee7895e77',1,'uvgvpcc_enc::GOF']]],
   ['computeadditionalpatchinfo_22',['computeAdditionalPatchInfo',['../classPatchSegmentation.html#a5d31ba00ed822bdc118aba7b671d91fd',1,'PatchSegmentation']]],
   ['computeboundingbox_23',['computeboundingbox',['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#aebcbd6fdd264d1d85efa9567002d8ef1',1,'nanoflann::KDTreeSingleIndexAdaptor::computeBoundingBox()'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#a86871ad8d9480dfd13f7921899a35cfe',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::computeBoundingBox()']]],
-  ['computecovmat_24',['computeCovMat',['../namespaceNormalComputation.html#a41dd4c8e05dcf89f3c7951a00776616c',1,'NormalComputation']]],
+  ['computecovmat_24',['computeCovMat',['../namespaceNormalComputation.html#a023db1970e149a658bad91da7aef758f',1,'NormalComputation']]],
   ['computeinitialdistances_25',['computeInitialDistances',['../classnanoflann_1_1KDTreeBaseClass.html#a04f4a4f4d36571a943ef0098ff89cdf7',1,'nanoflann::KDTreeBaseClass']]],
   ['computeminmax_26',['computeMinMax',['../classnanoflann_1_1KDTreeBaseClass.html#a5042b5c322b3455cf6c50e296fdf5955',1,'nanoflann::KDTreeBaseClass']]],
   ['computenormal_27',['computeNormal',['../namespaceNormalComputation.html#a68400b431752d36119a550beaafd042e',1,'NormalComputation']]],

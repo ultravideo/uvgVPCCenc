@@ -40,7 +40,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classPatchSegmentation.html#a819536989846a15453734058b91521ee" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="555,-30 438,-30 438,0 555,0 555,-30"/>
 <text text-anchor="start" x="446" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">PatchSegmentation::</text>
 <text text-anchor="middle" x="496.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">patchSegmentation</text>
@@ -78,7 +78,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
+<g id="a_Node000005"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
 <polygon fill="white" stroke="#666666" points="220,-30 77,-30 77,0 220,0 220,-30"/>
 <text text-anchor="start" x="85" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">uvgvpcc_enc::API::encode</text>
 <text text-anchor="middle" x="148.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Frame</text>

@@ -1,6 +1,6 @@
 <map id="PatchPacking::frameIntraPatchPacking" name="PatchPacking::frameIntraPatchPacking">
 <area shape="rect" id="Node000001" title=" " alt="" coords="616,5,800,45"/>
-<area shape="rect" id="Node000002" href="$namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,5,299,45"/>
+<area shape="rect" id="Node000002" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,5,299,45"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="602,28,299,28,299,23,602,23"/>
 <area shape="rect" id="Node000004" href="$classPatchPacking.html#a3882407ca2aafda5290a6b52991124dd" title=" " alt="" coords="347,38,568,63"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="602,39,568,42,568,37,602,33"/>

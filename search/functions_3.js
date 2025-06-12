@@ -3,7 +3,7 @@ var searchData=
   ['dataset_5fget_0',['dataset_get',['../classnanoflann_1_1KDTreeBaseClass.html#ae324dc4d48301be5a7b5ff3072603883',1,'nanoflann::KDTreeBaseClass']]],
   ['deallocate_1',['deallocate',['../classrobin__hood_1_1detail_1_1BulkPoolAllocator.html#a41fb702a7bc3ee48662bf5bf84403e3e',1,'robin_hood::detail::BulkPoolAllocator']]],
   ['derived_2',['derived',['../structnanoflann_1_1KDTreeEigenMatrixAdaptor.html#aa6b20e10119a9f762bb0f9c9e8728d26',1,'nanoflann::KDTreeEigenMatrixAdaptor::derived() const'],['../structnanoflann_1_1KDTreeEigenMatrixAdaptor.html#aca75f1d93d017f3453023a22c2aeee48',1,'nanoflann::KDTreeEigenMatrixAdaptor::derived()'],['../structKDTreeVectorOfVectorsAdaptor.html#a744bc62c7c50c9e1ed175a3258bf97e9',1,'KDTreeVectorOfVectorsAdaptor::derived() const'],['../structKDTreeVectorOfVectorsAdaptor.html#ab94164615ed64d8264023449ef219fd2',1,'KDTreeVectorOfVectorsAdaptor::derived()']]],
-  ['diagonalize_3',['diagonalize',['../namespaceNormalComputation.html#abcc8a8dde80714795af1b5aed7a670a4',1,'NormalComputation']]],
+  ['diagonalize_3',['diagonalize',['../namespaceNormalComputation.html#a98c50cc726c4d2abcb8c2fc5a2a9e7a8',1,'NormalComputation']]],
   ['dividetree_4',['divideTree',['../classnanoflann_1_1KDTreeBaseClass.html#ac88bb3cfaa0ebfb28ba4da8d8500df4c',1,'nanoflann::KDTreeBaseClass']]],
   ['dividetreeconcurrent_5',['divideTreeConcurrent',['../classnanoflann_1_1KDTreeBaseClass.html#a08cdd77c7600f9ce8e6b78b98de50e91',1,'nanoflann::KDTreeBaseClass']]],
   ['dotproduct_6',['dotProduct',['../utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e',1,'utilsPatchGeneration.hpp']]],

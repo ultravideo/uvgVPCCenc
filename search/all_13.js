@@ -21,7 +21,7 @@ var searchData=
   ['setparameter_18',['setParameter',['../namespaceuvgvpcc__enc_1_1API.html#a4f96ae0ff4cd8de49d2174443e281cbe',1,'uvgvpcc_enc::API']]],
   ['setparametervalue_19',['setParameterValue',['../namespaceuvgvpcc__enc.html#a5f0085b986c3146442ec6cfc354a1e1f',1,'uvgvpcc_enc']]],
   ['setpatchppi_20',['setPatchPpi',['../structuvgvpcc__enc_1_1Patch.html#a3ecf8a9dc6427df10fb92d4220d3a50f',1,'uvgvpcc_enc::Patch']]],
-  ['setstate_21',['setState',['../classuvgvpcc__enc_1_1Job.html#a95cbeb9307704a85be0d4421d1b0518d',1,'uvgvpcc_enc::Job']]],
+  ['setstate_21',['setState',['../classuvgvpcc__enc_1_1Job.html#ac5813037829f42c3404be26bb6c91388',1,'uvgvpcc_enc::Job']]],
   ['shift_5f_22',['shift_',['../structFilter.html#a663c45c0919bc293c5075012625b2ebb',1,'Filter']]],
   ['short_23',['Short',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea30bb747c98bccdd11b3f89e644c4d0ad',1,'miniply']]],
   ['simple_20and_20fast_20parser_20for_20ply_20files_24',['miniply - A simple and fast parser for PLY files',['../namespaceminiply.html#autotoc_md12',1,'']]],

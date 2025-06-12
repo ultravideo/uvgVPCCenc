@@ -92,8 +92,8 @@ Public Member Functions</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:a819536989846a15453734058b91521ee" id="r_a819536989846a15453734058b91521ee"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPatchSegmentation.html#a819536989846a15453734058b91521ee">patchSegmentation</a> (std::shared_ptr&lt; <a class="el" href="structuvgvpcc__enc_1_1Frame.html">uvgvpcc_enc::Frame</a> &gt; &amp;frame, const std::vector&lt; size_t &gt; &amp;pointsPPIs)</td></tr>
-<tr class="separator:a819536989846a15453734058b91521ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9e1573c095e27775256945bfee089ac" id="r_ae9e1573c095e27775256945bfee089ac"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac">patchSegmentation</a> (const std::shared_ptr&lt; <a class="el" href="structuvgvpcc__enc_1_1Frame.html">uvgvpcc_enc::Frame</a> &gt; &amp;frame, const std::vector&lt; size_t &gt; &amp;pointsPPIs)</td></tr>
+<tr class="separator:ae9e1573c095e27775256945bfee089ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8784a26746eb86d546a53f5dab6c1f3" id="r_aa8784a26746eb86d546a53f5dab6c1f3"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPatchSegmentation.html#aa8784a26746eb86d546a53f5dab6c1f3">createConnectedComponents</a> (std::vector&lt; std::vector&lt; size_t &gt; &gt; &amp;connectedComponents, std::vector&lt; bool &gt; &amp;flags, const std::vector&lt; size_t &gt; &amp;rawPoints, const std::vector&lt; size_t &gt; &amp;pointsPPIs, <a class="el" href="namespacerobin__hood.html#a4a18aa3f4d6a9d2590779cd0d954dbb6">robin_hood::unordered_map</a>&lt; size_t, size_t &gt; &amp;nnPropagationMapFlagTrue, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry)</td></tr>
 <tr class="separator:aa8784a26746eb86d546a53f5dab6c1f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a997b96c5dffc5685b1fca9e72898403f" id="r_a997b96c5dffc5685b1fca9e72898403f"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classPatchSegmentation.html#a997b96c5dffc5685b1fca9e72898403f">patchSplitting</a> (std::vector&lt; size_t &gt; &amp;connectedComponent, <a class="el" href="structuvgvpcc__enc_1_1Patch.html">uvgvpcc_enc::Patch</a> &amp;patch, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry)</td></tr>
@@ -451,8 +451,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a819536989846a15453734058b91521ee" name="a819536989846a15453734058b91521ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a819536989846a15453734058b91521ee">&#9670;&#160;</a></span>patchSegmentation()</h2>
+<a id="ae9e1573c095e27775256945bfee089ac" name="ae9e1573c095e27775256945bfee089ac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae9e1573c095e27775256945bfee089ac">&#9670;&#160;</a></span>patchSegmentation()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -463,7 +463,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void PatchSegmentation::patchSegmentation </td>
           <td>(</td>
-          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="structuvgvpcc__enc_1_1Frame.html">uvgvpcc_enc::Frame</a> &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::shared_ptr&lt; <a class="el" href="structuvgvpcc__enc_1_1Frame.html">uvgvpcc_enc::Frame</a> &gt; &amp;&#160;</td>
           <td class="paramname"><em>frame</em>, </td>
         </tr>
         <tr>
@@ -487,12 +487,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classPatchSegmentation_a819536989846a15453734058b91521ee_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classPatchSegmentation_ae9e1573c095e27775256945bfee089ac_cgraph.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classPatchSegmentation_a819536989846a15453734058b91521ee_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="classPatchSegmentation_ae9e1573c095e27775256945bfee089ac_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>

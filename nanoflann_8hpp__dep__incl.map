@@ -1,14 +1,9 @@
 <map id="src/lib/patchGeneration/nanoflann.hpp" name="src/lib/patchGeneration/nanoflann.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="129,5,303,45"/>
-<area shape="rect" id="Node000002" href="$kdTree_8hpp.html" title=" " alt="" coords="129,93,303,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,59,219,93,213,93,213,59"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="104,5,277,45"/>
+<area shape="rect" id="Node000002" href="$kdTree_8hpp.html" title=" " alt="" coords="104,93,277,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="193,59,193,93,188,93,188,59"/>
 <area shape="rect" id="Node000003" href="$kdTree_8cpp.html" title=" " alt="" coords="5,181,179,221"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="179,143,121,183,118,179,176,139"/>
-<area shape="rect" id="Node000004" href="$patchGeneration_8cpp.html" title=" " alt="" coords="129,269,303,309"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="219,147,219,269,213,269,213,147"/>
-<area shape="rect" id="Node000005" href="$patchGeneration_8hpp.html" title=" " alt="" coords="253,181,427,221"/>
-<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="256,139,314,179,311,183,253,143"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="303,231,245,271,242,267,300,227"/>
-<area shape="rect" id="Node000006" href="$uvgvpcc_8cpp.html" title=" " alt="" coords="327,277,473,302"/>
-<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="363,231,394,275,390,278,359,234"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="160,144,116,183,112,179,157,140"/>
+<area shape="rect" id="Node000004" href="$patchGeneration_8cpp.html" title=" " alt="" coords="203,181,376,221"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="224,140,269,179,266,183,221,144"/>
 </map>

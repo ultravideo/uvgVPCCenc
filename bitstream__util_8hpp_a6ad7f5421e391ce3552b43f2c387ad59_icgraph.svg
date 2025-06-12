@@ -159,7 +159,7 @@ var sectionId = 'dynsection-14';
 <!-- Node6 -->
 <g id="Node000006" class="node">
 <title>Node6</title>
-<g id="a_Node000006"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
+<g id="a_Node000006"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
 <polygon fill="white" stroke="#666666" points="220,-54 77,-54 77,-24 220,-24 220,-54"/>
 <text text-anchor="start" x="85" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">uvgvpcc_enc::API::encode</text>
 <text text-anchor="middle" x="148.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">Frame</text>

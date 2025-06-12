@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="namespaceNormalComputation.html#a41dd4c8e05dcf89f3c7951a00776616c" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="namespaceNormalComputation.html#a023db1970e149a658bad91da7aef758f" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="280,-78 158,-78 158,-48 280,-48 280,-78"/>
 <text text-anchor="start" x="166" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">NormalComputation::</text>
 <text text-anchor="middle" x="219" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">computeCovMat</text>
@@ -50,7 +50,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="namespaceNormalComputation.html#abcc8a8dde80714795af1b5aed7a670a4" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="namespaceNormalComputation.html#a98c50cc726c4d2abcb8c2fc5a2a9e7a8" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="280,-30 158,-30 158,0 280,0 280,-30"/>
 <text text-anchor="start" x="166" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">NormalComputation::</text>
 <text text-anchor="middle" x="219" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">diagonalize</text>

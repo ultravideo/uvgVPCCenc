@@ -115,7 +115,7 @@
 <!-- Node5 -->
 <g id="Node000005" class="node">
 <title>Node5</title>
-<g id="a_Node000005"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#adbce6afc710547457b42680ba4e6366c" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
+<g id="a_Node000005"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
 <polygon fill="white" stroke="#666666" points="220,-332 77,-332 77,-302 220,-302 220,-332"/>
 <text text-anchor="start" x="85" y="-320" font-family="Helvetica,sans-Serif" font-size="10.00">uvgvpcc_enc::API::encode</text>
 <text text-anchor="middle" x="148.5" y="-309" font-family="Helvetica,sans-Serif" font-size="10.00">Frame</text>
