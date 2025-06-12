@@ -68,6 +68,11 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     auto atlas = std::make_unique<atlas_context>();
     atlas->initialize_atlas_context(gofUVG, paramUVG);
 
+    
+    for(auto& frame : gofUVG->frames) {
+        frame.reset(); // Release memory
+    }
+
     // --------------- Fetch video sub-bitstream data ---------------------------------------------
     // Occupancy map
     auto bitstream_ovd = std::make_unique<std::vector<uint8_t>>();
@@ -77,6 +82,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     // }
     *bitstream_ovd.get() = gofUVG->bitstreamOccupancy;
     byteStreamToSampleStream(*bitstream_ovd.get(), 4, ovd_nals, false);
+    std::vector<uint8_t>().swap(gofUVG->bitstreamOccupancy); // Release memory
 
     // Geometry map
     auto bitstream_gvd = std::make_unique<std::vector<uint8_t>>();
@@ -86,6 +92,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     // }
     *bitstream_gvd.get() = gofUVG->bitstreamGeometry;
     byteStreamToSampleStream(*bitstream_gvd.get(), 4, gvd_nals, false);
+    std::vector<uint8_t>().swap(gofUVG->bitstreamGeometry); // Release memory
 
     // Attribute map
     auto bitstream_avd = std::make_unique<std::vector<uint8_t>>();
@@ -95,6 +102,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     // }
     *bitstream_avd.get() = gofUVG->bitstreamAttribute;
     byteStreamToSampleStream(*bitstream_avd.get(), 4, avd_nals, false);
+    std::vector<uint8_t>().swap(gofUVG->bitstreamAttribute); // Release memory
 
     // --------------- Calculate V3C unit size precision -------------------------------------------
     size_t v3c_max_size = v3c_parameter_set.get()->get_vps_byte_len();
@@ -132,5 +140,6 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     } else {
         gof.write_v3c_chunk(output);
     }
+
     output->available_chunks.release();
 }

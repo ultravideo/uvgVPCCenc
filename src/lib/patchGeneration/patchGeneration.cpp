@@ -115,7 +115,7 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     PPISegmenter ppiSegmenter(voxelizedPointsGeometry, pointsNormal);
     ppiSegmenter.initialSegmentation(voxelsPPIs, frame->frameId);
     ppiSegmenter.refineSegmentation(voxelsPPIs, frame->frameId);
-
+    
     // "De-voxelization"
     std::vector<size_t> pointsPPIsBuffer;
     const std::vector<size_t>& pointsPPIs = useVoxelization ? pointsPPIsBuffer : voxelsPPIs;
@@ -134,4 +134,8 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     std::sort(frame->patchList.begin(), frame->patchList.end(), [](const uvgvpcc_enc::Patch& patchA, const uvgvpcc_enc::Patch& patchB) {
         return std::max(patchA.widthInPixel_, patchA.heightInPixel_) > std::max(patchB.widthInPixel_, patchB.heightInPixel_);
     });
+
+
+    std::vector<Vector3<typeGeometryInput>>().swap(frame->pointsGeometry); // Release memory
+
 }

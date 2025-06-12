@@ -40,6 +40,7 @@
 #include <cstdint>
 #include <iostream>
 #include <memory>
+#include <vector>
 
 #include "atlas_frame.hpp"
 #include "bitstream_common.hpp"
@@ -152,6 +153,10 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
         }
         atdu.patch_information_data_.push_back(pid);
     }
+
+
+    std::vector<uvgvpcc_enc::Patch>().swap(frameUVG->patchList); // Release memory 
+
     // Last patch is I_END patch
     patch_information_data end_patch;
     end_patch.patchMode = ATDU_PATCH_MODE_I_TILE::I_END;

@@ -362,7 +362,7 @@ int main(const int argc, const char* const argv[]) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION", "Encoded " + std::to_string(frameRead) + " frames.\n");
 
     inputTh.join();
-    uvgvpcc_enc::API::stopEncoder();
+    // uvgvpcc_enc::API::stopEncoder(); // lf: not usefull (call two times ThreadQueue::stop()) because of custom destructor for ThreadQueue
 
     if (uvgvpcc_enc::p_->timerLog) {
         encodingTimerTotal = uvgvpcc_enc::global_timer.elapsed() - encodingTimerTotal;
