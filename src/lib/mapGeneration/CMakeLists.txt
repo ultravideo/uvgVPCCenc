@@ -10,5 +10,5 @@ add_library(mapGenerationLibrary STATIC
 # Include directories for headers
 # target_include_directories(mapGenerationLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-# # Optionally, add additional configurations, dependencies, or options
+# Optionally, add additional configurations, dependencies, or options
 target_compile_options(mapGenerationLibrary PRIVATE -fPIC)

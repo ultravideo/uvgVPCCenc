@@ -49,28 +49,26 @@ struct Filter444to420 {
 class MapGenerationBaseLine {
    public:
     static void initializeStaticParameters();
-    static void initGOFMapGeneration(std::shared_ptr<uvgvpcc_enc::GOF>& gof);
-    static void generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame>& frame);
-    static void writeFrameMapsYUV(std::shared_ptr<uvgvpcc_enc::Frame>& frame);
+    static void initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>& gof);
+    static void generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame);
+    static void writeFrameMapsYUV(const std::shared_ptr<uvgvpcc_enc::Frame>& frame);
 
    private:
     
-    static Filter444to420 g_filter444to420_unique_;
+    static void writePatches(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight);
 
-    static void writePatches(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight);
+    static void fillBackgroundImages(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight);
 
-    static void fillBackgroundImages(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight);
-
-    static void fillBackgroundEmptyBlock(uvgvpcc_enc::Frame& frame, const size_t blockSize, const size_t imageSize,
+    static void fillBackgroundEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize, const size_t imageSize,
                                          const size_t uBlk, const size_t vBlk, const size_t uom, const size_t vom);
-    static void fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& frame, const size_t blockSize, const size_t imageSize,
+    static void fillBackgroundNonEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize, const size_t imageSize,
                                             const size_t uom, const size_t vom, const size_t pixelBlockCount,
                                             size_t missingPixelCount, std::vector<size_t>& iterations);
-    static void updateSums(uvgvpcc_enc::Frame& frame, const size_t blockLeft, const size_t blockTop, const size_t iBlk,
+    static void updateSums(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockLeft, const size_t blockTop, const size_t iBlk,
                            const size_t jBlk, const size_t imageSize, std::vector<size_t>& iterations,
                            const size_t blockSize, std::vector<size_t>& sumGeo, std::vector<size_t>& sumR,
                            std::vector<size_t>& sumG, std::vector<size_t>& sumB, std::vector<size_t>& count);
-    static void allocateMaps(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight);
+    static void allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight);
 
     static void downsampling(const std::vector<float>& chroma_in, std::vector<float>& chroma_out, const size_t widthIn,
                              const size_t heightIn);

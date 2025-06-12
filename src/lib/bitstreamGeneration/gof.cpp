@@ -46,7 +46,7 @@
 #include "video_sub_bitstream.hpp"
 #include <cstdint>
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays)
+// NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays)
 
 void v3c_gof::write_v3c_chunk(uvgvpcc_enc::API::v3c_unit_stream* out) {
     // --------------- Write V3C unit stream -----------------------------------------------------
@@ -322,4 +322,4 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
                              "New V3C LD chunk created, " + std::to_string(out->v3c_chunks.size()) + " chunk(s) in buffer. \n");
 }
 
-// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-pro-bounds-pointer-arithmetic,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays)
+// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays)

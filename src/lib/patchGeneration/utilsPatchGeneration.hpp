@@ -39,7 +39,6 @@
 #include <cstdint>
 #include <fstream>
 #include <vector>
-#include <unordered_map>
 #include "robin_hood.h"
 
 using namespace uvgvpcc_enc;

@@ -125,7 +125,7 @@ void verifyConfig() {
         throw std::runtime_error("A single 2D encoder is currently supported : 'Kvazaar'. Here are the values used : occupancy encoder: '" + p_->occupancyEncoderName + "',  geometry encoder: '" + p_->geometryEncoderName + "', attribute encoder: '" + p_->attributeEncoderName + "'. Moreover, you have to use the same 2D encoder for all maps (occupancy, geometry and attribute). This is due to the V3C parameter 'CodecGroupIdc' that operate at GOF level. (Notice that a modification in vps.cpp could solve this issue).");
     }
 
-    if (p_->gpaTresholdIoU < 0 && p_->gpaTresholdIoU > 1) {
+    if (p_->gpaTresholdIoU < 0 || p_->gpaTresholdIoU > 1) {
         throw std::runtime_error("The parameter 'gpaTresholdIoU' has been set to " + std::to_string(p_->gpaTresholdIoU) +
                                  ". This is not a valid value. The treshold should be a float between 0 and 1.");
     }
@@ -483,7 +483,7 @@ void API::setParameter(const std::string& parameterName,const std::string& param
 /// @brief Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this frame. This function also handles the GOF processing.
 /// @param frame uvgvpcc_enc::Frame
 /// @param output GOF bitstream
-void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
+void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     Logger::log(LogLevel::TRACE, "API", "Encoding frame " + std::to_string(frame->frameId) + "\n");
     if (frame == nullptr) {
         Logger::log(LogLevel::ERROR, "API", "The frame is null.\n");
@@ -546,9 +546,7 @@ void API::encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output) {
         g_threadHandler.queue->submitJob(patchPack);
     }
 
-    std::shared_ptr<uvgvpcc_enc::Job> mapGen;
-
-    mapGen = std::make_shared<Job>("Frame " + std::to_string(frame->frameId) + " MapGeneration::generateFrameMaps", 4,
+    auto mapGen = std::make_shared<Job>("Frame " + std::to_string(frame->frameId) + " MapGeneration::generateFrameMaps", 4,
                                     MapGenerationBaseLine::generateFrameMaps, frame);
 
     mapGen->addDependency(g_threadHandler.currentGOFInitMapGenJob);

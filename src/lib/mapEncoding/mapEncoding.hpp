@@ -37,5 +37,5 @@
 namespace MapEncoding {
 void initializeStaticParameters();
 void initializeEncoderPointers();
-void encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof);
+void encodeGOFMaps(const std::shared_ptr<uvgvpcc_enc::GOF>& gof);
 }; // namespace MapEncoding

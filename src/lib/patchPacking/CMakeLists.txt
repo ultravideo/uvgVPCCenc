@@ -10,5 +10,5 @@ add_library(patchPackingLibrary STATIC
 # Include directories for headers
 # target_include_directories(patchPackingLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-# # Optionally, add additional configurations, dependencies, or options
+# Optionally, add additional configurations, dependencies, or options
 target_compile_options(patchPackingLibrary PRIVATE -fPIC)

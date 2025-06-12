@@ -47,7 +47,7 @@ class EncoderKvazaar : public Abstract2DMapEncoder {
 public:
     EncoderKvazaar(const ENCODER_TYPE& encoderType) : Abstract2DMapEncoder(encoderType) {};
     static void initializeLogCallback();
-    void encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) override;
+    void encodeGOFMaps(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) override;
 
 };
 

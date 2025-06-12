@@ -563,7 +563,7 @@ void PatchSegmentation::refillRawPoints(const robin_hood::unordered_set<size_t>&
 
 // TODO(lf): orientation and patch segmentation are both doing propagation algorithm. Maybe the correct normal flipping can be done at patch
 // segmentation ? (the refine segmentation would be done on absolute normal orientation)
-void PatchSegmentation::patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs) {
+void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs) {
     const size_t pointCount = frame->pointsGeometry.size();
 
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION",

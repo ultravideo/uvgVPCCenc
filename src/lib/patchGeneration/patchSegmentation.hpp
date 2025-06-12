@@ -44,7 +44,7 @@ class PatchSegmentation {
    public:
     PatchSegmentation();
 
-    static void patchSegmentation(std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs);
+    static void patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs);
     
     static void createConnectedComponents(std::vector<std::vector<size_t>>& connectedComponents, std::vector<bool>& flags,
                                              const std::vector<size_t>& rawPoints, const std::vector<size_t>& pointsPPIs,

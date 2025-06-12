@@ -289,7 +289,7 @@ struct v3c_unit_stream {
 
 void initializeEncoder();
 void setParameter(const std::string& parameterName,const std::string& parameterValue);
-void encodeFrame(std::shared_ptr<Frame> frame, v3c_unit_stream* output);
+void encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output);
 void emptyFrameQueue();
 void stopEncoder();
 

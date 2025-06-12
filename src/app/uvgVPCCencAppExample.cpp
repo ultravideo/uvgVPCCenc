@@ -65,12 +65,12 @@ std::binary_semaphore filled_input_slots{0};
 
 struct input_handler_args {
     // Parameters passed from main thread to input thread.
-    const cli::opts_t* opts;
+    const cli::opts_t& opts;
 
     // Picture and thread status passed from input thread to main thread.
     std::shared_ptr<uvgvpcc_enc::Frame> frame_in;
     int retval;
-    input_handler_args(const cli::opts_t* opts, std::shared_ptr<uvgvpcc_enc::Frame> frame, int retval)
+    input_handler_args(const cli::opts_t& opts, std::shared_ptr<uvgvpcc_enc::Frame> frame, int retval)
         : opts(opts), frame_in(std::move(frame)), retval(retval) {}
 };
 
@@ -93,7 +93,7 @@ void create_bytes(uint64_t value, char* dst, size_t len) {
 
 /// @brief Simple wrapper for the miniply library for parsing a .ply file.
 /// @param frame 
-void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
+void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     // uvgVPCCenc currently support only geometry of type unsigned int
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "APPLICATION",
                              "Loading frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + "\n");
@@ -147,7 +147,7 @@ void loadFrameFromPlyFile(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
 /// @param args 
 void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     double inputReadTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
-    const cli::opts_t& appParameters = *args->opts;
+    const cli::opts_t& appParameters = args->opts;
     size_t frameId = 0;
     const size_t frameLimit = appParameters.frames * appParameters.loop_input;
     bool run = true;
@@ -315,7 +315,7 @@ int main(const int argc, const char* const argv[]) {
     }
 
     // Initialize the application input and output threads
-    const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(&appParameters, nullptr, RETVAL_RUNNING);
+    const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(appParameters, nullptr, RETVAL_RUNNING);
     std::thread inputTh(&inputReadThread, in_args);
     size_t frameRead = 0;
     std::shared_ptr<uvgvpcc_enc::Frame> currFrame = nullptr;

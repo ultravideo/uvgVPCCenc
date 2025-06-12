@@ -81,7 +81,7 @@ class Job : public std::enable_shared_from_this<Job> {
     using JobFunction = std::function<void()>;
     // Variadic template constructor
     template <typename Func, typename... Args>
-    Job(std::string name, size_t priority, Func&& func, Args&&... args)
+    Job(const std::string& name, const size_t& priority, Func&& func, Args&&... args)
         : name_(name),
           func_(std::bind(std::forward<Func>(func), std::forward<Args>(args)...)),
           state_(threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED),
@@ -100,7 +100,7 @@ class Job : public std::enable_shared_from_this<Job> {
     void complete();
     std::string getName() const { return name_; }
     threadqueue_job_state getState() const { return state_; }
-    void setState(threadqueue_job_state state) { state_ = state; }
+    void setState(const threadqueue_job_state& state) { state_ = state; }
 
     mutable std::mutex mtx_;
     std::vector<std::shared_ptr<Job>> reverseDependencies_;

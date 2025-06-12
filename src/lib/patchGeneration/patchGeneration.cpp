@@ -35,6 +35,7 @@
 #include "patchGeneration.hpp"
 
 #include <algorithm>
+#include <cassert>
 #include <cstddef>
 #include <memory>
 #include <string>
@@ -53,10 +54,13 @@
 using namespace uvgvpcc_enc;
 
 // TODO(lf): nearestNeighborCount should be static
-void PatchGeneration::computePointsNNList(const KdTree& kdTree, std::vector<std::vector<size_t>>& pointsNNList,
+void PatchGeneration::computePointsNNList(std::vector<std::vector<size_t>>& pointsNNList,
                                           const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                                           const size_t& nnCount) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION", "computePointsNNList.\n");
+    
+    KdTree const kdTree(p_->kdTreeMaxLeafSize, pointsGeometry);
+    
     // Iterate over all points and find their k Nearest Neighbors //
     // const size_t nearestNeighborCount = std::max(normalComputationKnnCount_, normalOrientationKnnCount_);
     pointsNNList.resize(pointsGeometry.size(), std::vector<size_t>(nnCount));
@@ -83,23 +87,23 @@ inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::
 void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> frame) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION",
                              "Generate patches for frame " + std::to_string(frame->frameId) + ".\n");
-
+    assert(p_->geoBitDepthInput >= p_->geoBitDepthVoxelized);
+    
     // Voxelization //
-    std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>> voxelizedPointsGeometry;
+    const bool useVoxelization = p_->geoBitDepthInput != p_->geoBitDepthVoxelized;                             
+    std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>> voxelizedGeometryBuffer;
     std::vector<std::vector<size_t>> voxelIdToPointsId;
+    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& voxelizedPointsGeometry = useVoxelization ? voxelizedGeometryBuffer : frame->pointsGeometry;
 
-    if (p_->geoBitDepthInput == p_->geoBitDepthVoxelized) {
-        voxelizedPointsGeometry = frame->pointsGeometry;  // deep copy
-    } else {
-        voxelization(frame->pointsGeometry, voxelizedPointsGeometry, voxelIdToPointsId, p_->geoBitDepthInput,
+    if (useVoxelization) {
+        voxelization(frame->pointsGeometry, voxelizedGeometryBuffer, voxelIdToPointsId, p_->geoBitDepthInput,
                             p_->geoBitDepthVoxelized);
     }
 
     // kdtree init and knn searches //
-    KdTree const kdTree(p_->kdTreeMaxLeafSize, voxelizedPointsGeometry);
     std::vector<std::vector<size_t>> pointsNNList;
-    computePointsNNList(kdTree, pointsNNList, voxelizedPointsGeometry,
-                        std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
+    computePointsNNList( pointsNNList, voxelizedPointsGeometry,
+        std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
 
     // Normal computation & orientation //
     std::vector<uvgvpcc_enc::Vector3<double>> pointsNormal(voxelizedPointsGeometry.size());
@@ -113,13 +117,14 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     ppiSegmenter.refineSegmentation(voxelsPPIs, frame->frameId);
 
     // "De-voxelization"
-    std::vector<size_t> pointsPPIs(frame->pointsGeometry.size());
-    if (p_->geoBitDepthInput == p_->geoBitDepthVoxelized) {
-        pointsPPIs = voxelsPPIs;
-    } else {
-        applyVoxelsDataToPoints(voxelsPPIs, pointsPPIs, voxelIdToPointsId);
+    std::vector<size_t> pointsPPIsBuffer;
+    const std::vector<size_t>& pointsPPIs = useVoxelization ? pointsPPIsBuffer : voxelsPPIs;
+    
+    if (useVoxelization) {
+        pointsPPIsBuffer.resize(frame->pointsGeometry.size());
+        applyVoxelsDataToPoints(voxelsPPIs, pointsPPIsBuffer, voxelIdToPointsId);
     }
-
+    
     // Patch segmentation //
     PatchSegmentation::patchSegmentation(frame, pointsPPIs);
 

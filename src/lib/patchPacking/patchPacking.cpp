@@ -425,15 +425,17 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
         // index.
         size_t matchedPatchIdx = lastPatchIdx;
         for (auto frame = gof->frames.rbegin(); frame != gof->frames.rend(); ++frame) {
-            auto* currentPatch = &(*frame)->patchList[matchedPatchIdx];
-            currentPatch->isLinkToAMegaPatch = true;
-            currentPatch->unionPatchReferenceIdx = unionPatchIdx;
-            unionPatch.widthInOccBlk_ = std::max(unionPatch.widthInOccBlk_, currentPatch->widthInOccBlk_);
-            unionPatch.heightInOccBlk_ = std::max(unionPatch.heightInOccBlk_, currentPatch->heightInOccBlk_);
+            auto& currentPatch = (*frame)->patchList[matchedPatchIdx];
+            currentPatch.isLinkToAMegaPatch = true;
+            currentPatch.unionPatchReferenceIdx = unionPatchIdx;
+            unionPatch.widthInOccBlk_ = std::max(unionPatch.widthInOccBlk_, currentPatch.widthInOccBlk_);
+            unionPatch.heightInOccBlk_ = std::max(unionPatch.heightInOccBlk_, currentPatch.heightInOccBlk_);
             unionPatch.widthInPixel_ = unionPatch.widthInOccBlk_ * p_->occupancyMapDSResolution;
             unionPatch.heightInPixel_ = unionPatch.heightInOccBlk_ * p_->occupancyMapDSResolution;
-            matchedPatchIdx = currentPatch->bestMatchIdx;
+            matchedPatchIdx = currentPatch.bestMatchIdx;
         }
+
+
 
         // Fill the patch occupancy map of the union patch //
         unionPatch.patchOccupancyMap_.resize(unionPatch.widthInPixel_ * unionPatch.heightInPixel_, 1);

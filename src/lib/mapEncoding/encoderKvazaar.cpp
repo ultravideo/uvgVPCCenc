@@ -41,6 +41,7 @@
 #include <cstdarg>
 #include <cstddef>
 #include <cstdint>
+#include <cstdlib>
 #include <functional>
 #include <memory>
 #include <stdexcept>
@@ -59,7 +60,7 @@ void EncoderKvazaar::initializeLogCallback() {
 
 namespace {
 
-void setMapList(std::shared_ptr<uvgvpcc_enc::GOF>& gof,std::vector<std::reference_wrapper<std::vector<uint8_t>>>& mapList, const ENCODER_TYPE& encoderType) {
+void setMapList(const std::shared_ptr<uvgvpcc_enc::GOF>& gof,std::vector<std::reference_wrapper<std::vector<uint8_t>>>& mapList, const ENCODER_TYPE& encoderType) {
     mapList.reserve(gof->nbFrames);
     if(encoderType == OCCUPANCY) {
         for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
@@ -89,12 +90,24 @@ void setMapList(std::shared_ptr<uvgvpcc_enc::GOF>& gof,std::vector<std::referenc
     }
 }
 
-void setBitstream(std::shared_ptr<uvgvpcc_enc::GOF>& gof,std::vector<uint8_t>*& bitstream, const ENCODER_TYPE& encoderType) {
+void setBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof,std::vector<uint8_t>& bitstream, const ENCODER_TYPE& encoderType) {
     switch (encoderType) {
-        case OCCUPANCY: bitstream = &gof->bitstreamOccupancy; break;
-        case GEOMETRY:  bitstream = &gof->bitstreamGeometry; break;
-        case ATTRIBUTE: bitstream = &gof->bitstreamAttribute; break;
+        case OCCUPANCY: bitstream = gof->bitstreamOccupancy; break;
+        case GEOMETRY:  bitstream = gof->bitstreamGeometry; break;
+        case ATTRIBUTE: bitstream = gof->bitstreamAttribute; break;
         default:        assert(false);
+    }
+}
+
+std::vector<uint8_t>& getBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof,const ENCODER_TYPE& encoderType) {
+    switch (encoderType) {
+        case OCCUPANCY: return gof->bitstreamOccupancy; break;
+        case GEOMETRY:  return gof->bitstreamGeometry; break;
+        case ATTRIBUTE: return gof->bitstreamAttribute; break;
+        default: 
+            assert(false);
+            static std::vector<uint8_t> dummy;
+            return dummy;
     }
 }
 
@@ -251,7 +264,7 @@ void encodeVideoKvazaar(const std::vector<std::reference_wrapper<std::vector<uin
 } // anonymous namespace
 
 
-void EncoderKvazaar::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
+void EncoderKvazaar::encodeGOFMaps(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
 
     std::string encoderName; // For log and debug
     switch (encoderType_) {
@@ -279,10 +292,9 @@ void EncoderKvazaar::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
     std::vector<std::reference_wrapper<std::vector<uint8_t>>> mapList;
     setMapList(gof,mapList,encoderType_);
     
-    std::vector<uint8_t> *bitstream = nullptr;
-    setBitstream(gof,bitstream,encoderType_);
+    std::vector<uint8_t>& bitstream = getBitstream(gof,encoderType_);
 
-    encodeVideoKvazaar(mapList, api, config, width, height, *bitstream, encoderName);
+    encodeVideoKvazaar(mapList, api, config, width, height, bitstream, encoderName);
 
     api->config_destroy(config);
 
@@ -294,8 +306,9 @@ void EncoderKvazaar::encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
             case ATTRIBUTE: baseName = gof->baseNameAttribute; break;
             default: assert(false);
         }
-        writeBitstreamToFile(*bitstream, baseName + ".hevc");
+        writeBitstreamToFile(bitstream, baseName + ".hevc");
     }
+
 }
 
 

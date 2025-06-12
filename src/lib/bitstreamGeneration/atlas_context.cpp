@@ -106,7 +106,7 @@ atlas_tile_header atlas_context::create_atlas_tile_header(size_t frameIndex, siz
     return ath;
 }
 
-atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_enc::Parameters& paramUVG, const uvgvpcc_enc::Frame& frameUVG,
+atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_enc::Frame>& frameUVG,
                                                                 atlas_tile_header& ath) const {
     (void)paramUVG;
 
@@ -117,9 +117,9 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
     const size_t levelOfDetailX = 1;  // lf addition, in TMC2 those are patch parameters. However, they are also global parameters.
     const size_t levelOfDetailY = 1;  // TODO(lf): check if those are really constant, and do not depends on other parameters
 
-    for (size_t patch_index = 0; patch_index < frameUVG.patchList.size(); ++patch_index) {
+    for (size_t patch_index = 0; patch_index < frameUVG->patchList.size(); ++patch_index) {
         // std::cout << "-- DEBUG: Creating atlas patch, index: " << patch_index << std::endl;
-        const uvgvpcc_enc::Patch& patchUVG = frameUVG.patchList[patch_index];
+        const uvgvpcc_enc::Patch& patchUVG = frameUVG->patchList[patch_index];
         const uint8_t patchMode = static_cast<uint8_t>(ATDU_PATCH_MODE_I_TILE::I_INTRA);
         patch_information_data pid;
         pid.patchMode = patchMode;
@@ -162,7 +162,7 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
 
 atlas_tile_layer_rbsp atlas_context::create_atlas_tile_layer_rbsp(size_t frameIndex, size_t tileIndex,
                                                                   const uvgvpcc_enc::Parameters& paramUVG,
-                                                                  const uvgvpcc_enc::Frame& frameUVG) {
+                                                                  const std::shared_ptr<uvgvpcc_enc::Frame>& frameUVG) {
     atlas_tile_layer_rbsp rbsp;
 
     // This should be enough for now
@@ -351,7 +351,7 @@ void atlas_context::initialize_atlas_context(const std::shared_ptr<uvgvpcc_enc::
     // Create create_atlas_tile_layer_rbsp for each atlas frame/NAL unit
     for (size_t frame_index = 0; frame_index < gofUVG->nbFrames; ++frame_index) {
         // std::cout << "DEBUG: Creating atlas RBSP, index: " << frame_index << std::endl;
-        auto& frameUVG = *(gofUVG->frames[frame_index]);
+        auto& frameUVG = gofUVG->frames[frame_index];
 
         const size_t tile_index = 0;  // Always 0, because we only have one tile per frame
         const atlas_tile_layer_rbsp rbsp = create_atlas_tile_layer_rbsp(frame_index, tile_index, paramUVG, frameUVG);

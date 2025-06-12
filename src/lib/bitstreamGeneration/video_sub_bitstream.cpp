@@ -41,7 +41,7 @@
 #include <string>
 #include <vector>
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+// NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory)
 
 namespace {
 
@@ -142,4 +142,4 @@ void find_nals(std::vector<uint8_t> &input_data, std::vector<nal_info> &nals) {
     }
 }
 
-// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory)

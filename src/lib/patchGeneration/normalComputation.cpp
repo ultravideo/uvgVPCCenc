@@ -75,43 +75,10 @@ void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vecto
     }
 }
 
-void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<size_t>& pointNn, const size_t nnCount) {
-    uvgvpcc_enc::Vector3<double> bary{static_cast<double>(point[0]), static_cast<double>(point[1]), static_cast<double>(point[2])};
-    for (size_t i = 1; i < nnCount; ++i) {  // The first point return by the KNN is the query point. It is the initial value of bary.
-        bary += pointsGeometry[pointNn[i]];
-    }
-    bary /= nnCount;
 
-    std::vector<uvgvpcc_enc::Vector3<double>> covMat(3);
-    computeCovMat(covMat, bary, nnCount, pointNn, pointsGeometry);
-
-    std::vector<uvgvpcc_enc::Vector3<double>> Q(3);
-    std::vector<uvgvpcc_enc::Vector3<double>> D(3);
-    diagonalize(covMat, Q, D);
-
-    D[0][0] = fabs(D[0][0]);
-    D[1][1] = fabs(D[1][1]);
-    D[2][2] = fabs(D[2][2]);
-
-    if (D[0][0] < D[1][1] && D[0][0] < D[2][2]) {
-        normal[0] = Q[0][0];
-        normal[1] = Q[1][0];
-        normal[2] = Q[2][0];
-    } else if (D[1][1] < D[2][2]) {
-        normal[0] = Q[0][1];
-        normal[1] = Q[1][1];
-        normal[2] = Q[2][1];
-    } else {
-        normal[0] = Q[0][2];
-        normal[1] = Q[1][2];
-        normal[2] = Q[2][2];
-    }
-}
-
-void computeCovMat(std::vector<uvgvpcc_enc::Vector3<double>>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const size_t nnCount,
+void computeCovMat(std::array<uvgvpcc_enc::Vector3<double>, 3>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const size_t nnCount,
                    const std::vector<size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
-    covMat = {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}};
+    
     uvgvpcc_enc::Vector3<double> pt;
     for (size_t i = 0; i < nnCount; ++i) {
         pt = pointsGeometry[nnIndices[i]] - bary;
@@ -137,14 +104,15 @@ void computeCovMat(std::vector<uvgvpcc_enc::Vector3<double>>& covMat, const uvgv
     covMat[2][1] = covMat[1][2];
 }
 
+
 // TMC2 implementation and comments //
 // Slightly modified version of http://www.melax.com/diag.html?attredirects=0
 // A must be a symmetric matrix.
 // returns Q and D such that
 // Diagonal matrix D = QT * A * Q;  and  A = Q*D*QT
 // NOLINTBEGIN(cppcoreguidelines-init-variables)
-void diagonalize(const std::vector<uvgvpcc_enc::Vector3<double>>& A, std::vector<uvgvpcc_enc::Vector3<double>>& Q,
-                 std::vector<uvgvpcc_enc::Vector3<double>>& D) {
+void diagonalize(const std::array<uvgvpcc_enc::Vector3<double>, 3>& A, std::array<uvgvpcc_enc::Vector3<double>, 3>& Q,
+                 std::array<uvgvpcc_enc::Vector3<double>, 3>& D) {
     const size_t maxsteps = p_->normalComputationMaxDiagonalStep;
     uvgvpcc_enc::Vector3<double> o;
     uvgvpcc_enc::Vector3<double> m;
@@ -237,5 +205,46 @@ void diagonalize(const std::vector<uvgvpcc_enc::Vector3<double>>& A, std::vector
     }
 }
 // NOLINTEND(cppcoreguidelines-init-variables)
+
+
+void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<size_t>& pointNn, const size_t nnCount) {
+    uvgvpcc_enc::Vector3<double> bary{static_cast<double>(point[0]), static_cast<double>(point[1]), static_cast<double>(point[2])};
+    for (size_t i = 1; i < nnCount; ++i) {  // The first point return by the KNN is the query point. It is the initial value of bary.
+        bary += pointsGeometry[pointNn[i]];
+    }
+    bary /= nnCount;
+
+    std::array<uvgvpcc_enc::Vector3<double>, 3> covMat = {
+        uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
+        uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
+        uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0)
+    };
+
+    computeCovMat(covMat, bary, nnCount, pointNn, pointsGeometry);
+
+    std::array<uvgvpcc_enc::Vector3<double>, 3> Q;
+    std::array<uvgvpcc_enc::Vector3<double>, 3> D;
+    diagonalize(covMat, Q, D);
+
+    D[0][0] = fabs(D[0][0]);
+    D[1][1] = fabs(D[1][1]);
+    D[2][2] = fabs(D[2][2]);
+
+    if (D[0][0] < D[1][1] && D[0][0] < D[2][2]) {
+        normal[0] = Q[0][0];
+        normal[1] = Q[1][0];
+        normal[2] = Q[2][0];
+    } else if (D[1][1] < D[2][2]) {
+        normal[0] = Q[0][1];
+        normal[1] = Q[1][1];
+        normal[2] = Q[2][1];
+    } else {
+        normal[0] = Q[0][2];
+        normal[1] = Q[1][2];
+        normal[2] = Q[2][2];
+    }
+}
+
 
 }  // namespace NormalComputation

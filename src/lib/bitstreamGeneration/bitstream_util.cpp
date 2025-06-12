@@ -39,7 +39,7 @@
 #include <cstring>
 #include <new>
 
-// NOLINTBEGIN(cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,hicpp-no-malloc,cppcoreguidelines-pro-bounds-pointer-arithmetic) //
+// NOLINTBEGIN(cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,hicpp-no-malloc) //
 // TODO(gg) : lf : Currently we manually handle most of the memory object in the bitstream generation. Consider reducing alloc use to minimum
 
 const std::array<uint32_t, 32> uvg_bit_set_mask = {
@@ -264,4 +264,4 @@ void uvg_bitstream_copy_bytes(bitstream_t *const stream, const uint8_t *bytes, u
 
 uint32_t uvg_bitstream_peek_last_byte(bitstream_t *const stream) { return stream->data; }
 
-// NOLINTEND(cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,hicpp-no-malloc,cppcoreguidelines-pro-bounds-pointer-arithmetic)
+// NOLINTEND(cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,hicpp-no-malloc)

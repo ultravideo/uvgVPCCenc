@@ -45,7 +45,7 @@ public:
     Abstract2DMapEncoder(const ENCODER_TYPE& encoderType): encoderType_(encoderType) {};
     virtual ~Abstract2DMapEncoder() = default;
     
-    virtual void encodeGOFMaps(std::shared_ptr<uvgvpcc_enc::GOF>& gof) = 0;
+    virtual void encodeGOFMaps(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) = 0;
 
 protected:
     const ENCODER_TYPE encoderType_;

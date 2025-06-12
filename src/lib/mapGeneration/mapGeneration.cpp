@@ -125,7 +125,7 @@ namespace {
 
 
 template <bool doubleLayer, bool axisSwap>
-void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, uvgvpcc_enc::Frame& frame) {
+void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize,const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     const size_t patchWidth = patch.widthInPixel_;
     const size_t patchHeight = patch.heightInPixel_;
     const size_t omX = patch.omDSPosX_ * p_->occupancyMapDSResolution;
@@ -137,12 +137,12 @@ void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, uvgvp
     const auto* depthPCidxL1 = patch.depthPCidxL1_.data();
     const auto* depthL2 = patch.depthL2_.data();
     const auto* depthPCidxL2 = patch.depthPCidxL2_.data();
-    const auto& attributes = frame.pointsAttribute;
+    const auto& attributes = frame->pointsAttribute;
 
-    auto* geomL1 = frame.geometryMapL1.data();
-    auto* attrL1 = frame.attributeMapL1.data();
-    auto* geomL2 = frame.geometryMapL2.data();
-    auto* attrL2 = frame.attributeMapL2.data();
+    auto* geomL1 = frame->geometryMapL1.data();
+    auto* attrL1 = frame->attributeMapL1.data();
+    auto* geomL2 = frame->geometryMapL2.data();
+    auto* attrL2 = frame->attributeMapL2.data();
 
     for (size_t v = 0; v < patchHeight; ++v) {
         const size_t vOffset = v * patchWidth;
@@ -175,11 +175,11 @@ void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, uvgvp
 
 } // Anonymous namespace
 
-void MapGenerationBaseLine::writePatches(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight) {
+void MapGenerationBaseLine::writePatches(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
 
     if(p_->doubleLayer) {
-        for (const uvgvpcc_enc::Patch& patch : frame.patchList) {
+        for (const uvgvpcc_enc::Patch& patch : frame->patchList) {
             if (patch.axisSwap_) {
                 writePatchT<true, true>(patch, imageSize, frame);
             } else {
@@ -187,7 +187,7 @@ void MapGenerationBaseLine::writePatches(uvgvpcc_enc::Frame& frame, const size_t
             }
         }        
     } else {
-        for (const uvgvpcc_enc::Patch& patch : frame.patchList) {
+        for (const uvgvpcc_enc::Patch& patch : frame->patchList) {
             if (patch.axisSwap_) {
                 writePatchT<false, true>(patch, imageSize, frame);
             } else {
@@ -198,7 +198,7 @@ void MapGenerationBaseLine::writePatches(uvgvpcc_enc::Frame& frame, const size_t
 }
 
 
-void MapGenerationBaseLine::allocateMaps(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight) {
+void MapGenerationBaseLine::allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
     // Notice that before this operation, the dimension of each frame occupancy map can be different. Thus, this OM resizing operation both
     // makes all GOF occupancy maps dimension uniform and convert them to YUV420. FYI, U and V images of the occupancy and geometry maps are
     // empty/not used by the decoder/do not cary any usefull information.
@@ -209,22 +209,22 @@ void MapGenerationBaseLine::allocateMaps(uvgvpcc_enc::Frame& frame, const size_t
 
 
     // TODO(lf): is it necessary ? Yes if resizing due to bigger occupancy map (larger than minimumHeight parameter)
-    // assert(frame.occupancyMap.size() == imageSize);
-    if (frame.occupancyMap.size() != imageSize) {
-        frame.occupancyMap.resize(imageSize,0);
+    // assert(frame->occupancyMap.size() == imageSize);
+    if (frame->occupancyMap.size() != imageSize) {
+        frame->occupancyMap.resize(imageSize,0);
     }
 
     const size_t imageSizeDS = imageSize / (p_->occupancyMapDSResolution*p_->occupancyMapDSResolution);
-    frame.occupancyMapDS.resize(imageSizeDS + (imageSizeDS >> 1U), 0U);    
+    frame->occupancyMapDS.resize(imageSizeDS + (imageSizeDS >> 1U), 0U);    
 
 
-    frame.geometryMapL1.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
-    frame.attributeMapL1.resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
+    frame->geometryMapL1.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
+    frame->attributeMapL1.resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
     // TODO(lf): what is the justification for the max value ?
 
     if (p_->doubleLayer) {
-        frame.geometryMapL2.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
-        frame.attributeMapL2.resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
+        frame->geometryMapL2.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
+        frame->attributeMapL2.resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
     }
 }
 
@@ -310,7 +310,7 @@ void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t
 
 // TODO(lf): use copy with relevant optimal memory copy to fill second layer. Tackle the cognitive complexity accordingly
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void MapGenerationBaseLine::fillBackgroundEmptyBlock(uvgvpcc_enc::Frame& frame, const size_t blockSize, const size_t imageSize,
+void MapGenerationBaseLine::fillBackgroundEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize, const size_t imageSize,
                                                      const size_t uBlk, const size_t vBlk, const size_t uom,
                                                      const size_t vom) {
     if (uBlk > 0) {
@@ -320,17 +320,17 @@ void MapGenerationBaseLine::fillBackgroundEmptyBlock(uvgvpcc_enc::Frame& frame, 
                 const size_t currentPos = uom + i + currentY * p_->mapWidth;
                 const size_t previousPos = uom + i - 1 + currentY * p_->mapWidth;  // pixel on left
 
-                frame.geometryMapL1[currentPos] = frame.geometryMapL1[previousPos];
+                frame->geometryMapL1[currentPos] = frame->geometryMapL1[previousPos];
 
-                frame.attributeMapL1[currentPos] = frame.attributeMapL1[previousPos];
-                frame.attributeMapL1[currentPos + imageSize] = frame.attributeMapL1[previousPos + imageSize];
-                frame.attributeMapL1[currentPos + 2 * imageSize] = frame.attributeMapL1[previousPos + 2 * imageSize];
+                frame->attributeMapL1[currentPos] = frame->attributeMapL1[previousPos];
+                frame->attributeMapL1[currentPos + imageSize] = frame->attributeMapL1[previousPos + imageSize];
+                frame->attributeMapL1[currentPos + 2 * imageSize] = frame->attributeMapL1[previousPos + 2 * imageSize];
 
                 if (p_->doubleLayer) {
-                    frame.geometryMapL2[currentPos] = frame.geometryMapL1[currentPos];
-                    frame.attributeMapL2[currentPos] = frame.attributeMapL1[currentPos];
-                    frame.attributeMapL2[currentPos + imageSize] = frame.attributeMapL1[currentPos + imageSize];
-                    frame.attributeMapL2[currentPos + 2 * imageSize] = frame.attributeMapL1[currentPos + 2 * imageSize];
+                    frame->geometryMapL2[currentPos] = frame->geometryMapL1[currentPos];
+                    frame->attributeMapL2[currentPos] = frame->attributeMapL1[currentPos];
+                    frame->attributeMapL2[currentPos + imageSize] = frame->attributeMapL1[currentPos + imageSize];
+                    frame->attributeMapL2[currentPos + 2 * imageSize] = frame->attributeMapL1[currentPos + 2 * imageSize];
                 }
             }
         }
@@ -342,16 +342,16 @@ void MapGenerationBaseLine::fillBackgroundEmptyBlock(uvgvpcc_enc::Frame& frame, 
                 const size_t currentPos = uom + i + currentY * p_->mapWidth;
                 const size_t previousPos = uom + i + previousY * p_->mapWidth;  // pixel on top
 
-                frame.geometryMapL1[currentPos] = frame.geometryMapL1[previousPos];
-                frame.attributeMapL1[currentPos] = frame.attributeMapL1[previousPos];
-                frame.attributeMapL1[currentPos + imageSize] = frame.attributeMapL1[previousPos + imageSize];
-                frame.attributeMapL1[currentPos + 2 * imageSize] = frame.attributeMapL1[previousPos + 2 * imageSize];
+                frame->geometryMapL1[currentPos] = frame->geometryMapL1[previousPos];
+                frame->attributeMapL1[currentPos] = frame->attributeMapL1[previousPos];
+                frame->attributeMapL1[currentPos + imageSize] = frame->attributeMapL1[previousPos + imageSize];
+                frame->attributeMapL1[currentPos + 2 * imageSize] = frame->attributeMapL1[previousPos + 2 * imageSize];
 
                 if (p_->doubleLayer) {
-                    frame.geometryMapL2[currentPos] = frame.geometryMapL1[currentPos];
-                    frame.attributeMapL2[currentPos] = frame.attributeMapL1[currentPos];
-                    frame.attributeMapL2[currentPos + imageSize] = frame.attributeMapL1[currentPos + imageSize];
-                    frame.attributeMapL2[currentPos + 2 * imageSize] = frame.attributeMapL1[currentPos + 2 * imageSize];
+                    frame->geometryMapL2[currentPos] = frame->geometryMapL1[currentPos];
+                    frame->attributeMapL2[currentPos] = frame->attributeMapL1[currentPos];
+                    frame->attributeMapL2[currentPos + imageSize] = frame->attributeMapL1[currentPos + imageSize];
+                    frame->attributeMapL2[currentPos + 2 * imageSize] = frame->attributeMapL1[currentPos + 2 * imageSize];
                 }
             }
         }
@@ -362,23 +362,23 @@ void MapGenerationBaseLine::fillBackgroundEmptyBlock(uvgvpcc_enc::Frame& frame, 
                 const size_t currentPos = uom + i + (vom + j) * p_->mapWidth;
                 const size_t fillingValue = 128;
 
-                frame.geometryMapL1[currentPos] = fillingValue;
-                frame.attributeMapL1[currentPos] = fillingValue;
-                frame.attributeMapL1[currentPos + imageSize] = fillingValue;
-                frame.attributeMapL1[currentPos + 2 * imageSize] = fillingValue;
+                frame->geometryMapL1[currentPos] = fillingValue;
+                frame->attributeMapL1[currentPos] = fillingValue;
+                frame->attributeMapL1[currentPos + imageSize] = fillingValue;
+                frame->attributeMapL1[currentPos + 2 * imageSize] = fillingValue;
 
                 if (p_->doubleLayer) {
-                    frame.geometryMapL2[currentPos] = fillingValue;
-                    frame.attributeMapL2[currentPos] = fillingValue;
-                    frame.attributeMapL2[currentPos + imageSize] = fillingValue;
-                    frame.attributeMapL2[currentPos + 2 * imageSize] = fillingValue;
+                    frame->geometryMapL2[currentPos] = fillingValue;
+                    frame->attributeMapL2[currentPos] = fillingValue;
+                    frame->attributeMapL2[currentPos + imageSize] = fillingValue;
+                    frame->attributeMapL2[currentPos + 2 * imageSize] = fillingValue;
                 }
             }
         }
     }
 }
 
-void MapGenerationBaseLine::updateSums(uvgvpcc_enc::Frame& frame, const size_t blockLeft, const size_t blockTop,
+void MapGenerationBaseLine::updateSums(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockLeft, const size_t blockTop,
                                        const size_t iBlk, const size_t jBlk, const size_t imageSize,
                                        std::vector<size_t>& iterations, const size_t blockSize, std::vector<size_t>& sumGeo,
                                        std::vector<size_t>& sumR, std::vector<size_t>& sumG, std::vector<size_t>& sumB,
@@ -398,17 +398,17 @@ void MapGenerationBaseLine::updateSums(uvgvpcc_enc::Frame& frame, const size_t b
         if (neighborX >= blockLeft && neighborX < static_cast<size_t>(blockLeft + blockSize) && neighborY >= blockTop &&
             neighborY < static_cast<size_t>(blockTop + blockSize) && iterations[currentPosBlk] == 0) {  // missingPoint => iteration==0
             // add current border pixel value in the current neighbor sumGeo values
-            sumGeo[currentPosBlk] += frame.geometryMapL1[currentPosOM];
+            sumGeo[currentPosBlk] += frame->geometryMapL1[currentPosOM];
 
-            sumR[currentPosBlk] += frame.attributeMapL1[currentPosOM];
-            sumG[currentPosBlk] += frame.attributeMapL1[currentPosOM + imageSize];
-            sumB[currentPosBlk] += frame.attributeMapL1[currentPosOM + 2 * imageSize];
+            sumR[currentPosBlk] += frame->attributeMapL1[currentPosOM];
+            sumG[currentPosBlk] += frame->attributeMapL1[currentPosOM + imageSize];
+            sumB[currentPosBlk] += frame->attributeMapL1[currentPosOM + 2 * imageSize];
             ++count[currentPosBlk];
         }
     }
 }
 
-void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& frame, const size_t blockSize, const size_t imageSize,
+void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize, const size_t imageSize,
                                                         const size_t uom, const size_t vom, const size_t pixelBlockCount,
                                                         size_t missingPixelCount, std::vector<size_t>& iterations) {
     // lf : knowing that we should not used a occupancyMapDSResolution (precision?) higher than 4 (probably 1(no downscaling) or 2), the
@@ -456,23 +456,23 @@ void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& fram
 
                     // lf : Like in TMC2, the average computation is biased. Not sure why... To create a gradient ?
 
-                    frame.geometryMapL1[currentPosOM] =
+                    frame->geometryMapL1[currentPosOM] =
                         static_cast<uint8_t>((sumGeo[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
 
                     // TODO(lf): in TMC2 both map are doing it separately. Here, as a temporary solution, we do it only on L1
 
-                    frame.attributeMapL1[currentPosOM] =
+                    frame->attributeMapL1[currentPosOM] =
                         static_cast<uint8_t>((sumR[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
-                    frame.attributeMapL1[currentPosOM + imageSize] =
+                    frame->attributeMapL1[currentPosOM + imageSize] =
                         static_cast<uint8_t>((sumG[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
-                    frame.attributeMapL1[currentPosOM + 2 * imageSize] =
+                    frame->attributeMapL1[currentPosOM + 2 * imageSize] =
                         static_cast<uint8_t>((sumB[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
 
                     if (p_->doubleLayer) {
-                        frame.geometryMapL2[currentPosOM] = frame.geometryMapL1[currentPosOM];
-                        frame.attributeMapL2[currentPosOM] = frame.attributeMapL1[currentPosOM];
-                        frame.attributeMapL2[currentPosOM + imageSize] = frame.attributeMapL1[currentPosOM + imageSize];
-                        frame.attributeMapL2[currentPosOM + 2 * imageSize] = frame.attributeMapL1[currentPosOM + 2 * imageSize];
+                        frame->geometryMapL2[currentPosOM] = frame->geometryMapL1[currentPosOM];
+                        frame->attributeMapL2[currentPosOM] = frame->attributeMapL1[currentPosOM];
+                        frame->attributeMapL2[currentPosOM + imageSize] = frame->attributeMapL1[currentPosOM + imageSize];
+                        frame->attributeMapL2[currentPosOM + 2 * imageSize] = frame->attributeMapL1[currentPosOM + 2 * imageSize];
                     }
 
                     iterations[pixelPos] = iteration + 1;  // lf considered as a border pixel at the next iteration
@@ -485,7 +485,7 @@ void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(uvgvpcc_enc::Frame& fram
     }
 }
 
-void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, const size_t& gofMapsHeight) {
+void MapGenerationBaseLine::fillBackgroundImages(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
     const size_t blockSize = p_->occupancyMapDSResolution;
     const size_t occupancyMapDSWidthBlk =
         p_->mapWidth / blockSize;  // TODO(lf): this should be a frame param (yes for the height, and a static param for the width)
@@ -504,7 +504,7 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
 
             // empty block -> copy the value of previous block (one of the TMC2 solution) or do nothing (let the uniform value set during map
             // allocation)
-            if (frame.occupancyMapDS[uBlk + vBlk * occupancyMapDSWidthBlk] == 0U) {
+            if (frame->occupancyMapDS[uBlk + vBlk * occupancyMapDSWidthBlk] == 0U) {
                 if (p_->mapGenerationFillEmptyBlock) {
                     fillBackgroundEmptyBlock(frame, blockSize, imageSize, uBlk, vBlk, uom, vom);
                 }
@@ -522,7 +522,7 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
                     // TODO(lf): u_int16_y should be a typedef for geometry map (different from geometry precision ?)
                     // TODO(lf): this is not a perfect detection. Indeed, what if all pixel in this block have really 128 as depth value ? lf :
                     // a safety has been added to avoid a deadlock in the filling block process
-                    if (frame.geometryMapL1[currentPosOM] == p_->mapGenerationBackgroundValueGeometry) {
+                    if (frame->geometryMapL1[currentPosOM] == p_->mapGenerationBackgroundValueGeometry) {
                         ++missingPixelCount;
                     } else {
                         iterations[i + j * blockSize] = 1;
@@ -543,8 +543,8 @@ void MapGenerationBaseLine::fillBackgroundImages(uvgvpcc_enc::Frame& frame, cons
     }
 }
 
-void MapGenerationBaseLine::generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
-    allocateMaps(*frame, frame->mapHeight);
+void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
+    allocateMaps(frame, frame->mapHeight);
 
     if(p_->occupancyMapDSResolution == 2) {
         occupancyMapDownscaling<2>(frame->mapHeight,frame->occupancyMap,frame->occupancyMapDS);
@@ -555,10 +555,12 @@ void MapGenerationBaseLine::generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame
     }
 
     // Geometry and attribute map generation //
-    writePatches(*frame, frame->mapHeight);
+    writePatches(frame, frame->mapHeight);
+
+
 
     // Background filling //
-    fillBackgroundImages(*frame, frame->mapHeight);
+    fillBackgroundImages(frame, frame->mapHeight);
 
     RGB444toYUV420(frame->attributeMapL1, p_->mapWidth, frame->mapHeight);
     if (p_->doubleLayer) {
@@ -570,12 +572,12 @@ void MapGenerationBaseLine::generateFrameMaps(std::shared_ptr<uvgvpcc_enc::Frame
     }
 }
 
-void MapGenerationBaseLine::writeFrameMapsYUV(std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
+void MapGenerationBaseLine::writeFrameMapsYUV(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     
     // Occupancy maps
     std::streamsize streamSize = static_cast<std::streamsize>(static_cast<double>(frame->occupancyMap.size())*1.5);
 
-    const std::shared_ptr<uvgvpcc_enc::GOF> gof = frame->gof.lock();
+    const std::shared_ptr<uvgvpcc_enc::GOF>& gof = frame->gof.lock();
     const std::string occupancyBitstreamFileName = gof->baseNameOccupancy + "_f" + std::to_string(frame->frameNumber) + ".yuv";
     std::ofstream yuvFile(occupancyBitstreamFileName, std::ios::binary);
     if (!yuvFile.is_open()) {
@@ -648,7 +650,7 @@ void MapGenerationBaseLine::writeFrameMapsYUV(std::shared_ptr<uvgvpcc_enc::Frame
 // TODO(lf): for L2, find a way to make a copy write only the changing value between both map (same comment for geometry)
 // TODO(lf): we first do YUV420 for all maps, but we might consider YUV400 for geometry and occupancy if Kvazaar can handle it and if the
 // decoder can handle it too. TODO(lf): allocate all the maps of the GOF in one memory allocation ?
-void MapGenerationBaseLine::initGOFMapGeneration(std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
+void MapGenerationBaseLine::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
     uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {

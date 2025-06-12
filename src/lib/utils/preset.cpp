@@ -279,7 +279,7 @@ void setPresetValues(const Preset& preset) {
 }
 
 // For voxel size 9, 10 and 11
-void applyPresetCommon(Parameters& param) {
+void applyPresetCommon(const Parameters& param) {
 
     Preset selectedPreset;
 
