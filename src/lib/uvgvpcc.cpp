@@ -124,6 +124,12 @@ void verifyConfig() {
         std::cerr << p_->occupancyEncoderName << " " << p_->geometryEncoderName << " " << p_->attributeEncoderName << std::endl;
         throw std::runtime_error("A single 2D encoder is currently supported : 'Kvazaar'. Here are the values used : occupancy encoder: '" + p_->occupancyEncoderName + "',  geometry encoder: '" + p_->geometryEncoderName + "', attribute encoder: '" + p_->attributeEncoderName + "'. Moreover, you have to use the same 2D encoder for all maps (occupancy, geometry and attribute). This is due to the V3C parameter 'CodecGroupIdc' that operate at GOF level. (Notice that a modification in vps.cpp could solve this issue).");
     }
+    
+    if (p_->sizeGOF > p_->maxConcurrentFrames) {
+        throw std::runtime_error("The parameter 'maxConcurrentFrames' (" + std::to_string(p_->maxConcurrentFrames) +
+                                 ") is lower than the parameter 'sizeGOF' (" +
+                                 std::to_string(p_->sizeGOF) + "). It will lead to a dealock. This is not a valid configuration. Set 'maxConcurrentFrames' to a value greater or equal to 'sizeGOF'.");
+    }
 
     if (p_->gpaTresholdIoU < 0 || p_->gpaTresholdIoU > 1) {
         throw std::runtime_error("The parameter 'gpaTresholdIoU' has been set to " + std::to_string(p_->gpaTresholdIoU) +
@@ -386,6 +392,10 @@ void parseUvgvpccParameters() {
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("nbThreadPCPart",detectedThreadNumber,false);
     }
+    if(p_->maxConcurrentFrames == 0) {
+        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","'maxConcurrentFrames' is set to 0. The maximum number of frame processed in parallel by uvgVPCC is then the four times GOF size: "+ std::to_string(4*p_->sizeGOF) + "\n");
+        setParameterValue("maxConcurrentFrames",std::to_string(4*p_->sizeGOF),false);
+    }
     if(p_->occupancyEncodingNbThread == 0) {
         uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'occupancyEncodingNbThread' is set to 0. The number of thread used for the occcupancy video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("occupancyEncodingNbThread",detectedThreadNumber,false);
@@ -484,6 +494,11 @@ void API::setParameter(const std::string& parameterName,const std::string& param
 /// @param frame uvgvpcc_enc::Frame
 /// @param output GOF bitstream
 void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
+    static std::shared_ptr<std::counting_semaphore<UINT16_MAX>> conccurentFrameSem = std::make_shared<std::counting_semaphore<UINT16_MAX>>(std::min(p_->maxConcurrentFrames, size_t(UINT16_MAX)));
+
+    conccurentFrameSem->acquire();
+    frame->conccurentFrameSem = conccurentFrameSem;
+
     Logger::log(LogLevel::TRACE, "API", "Encoding frame " + std::to_string(frame->frameId) + "\n");
     if (frame == nullptr) {
         Logger::log(LogLevel::ERROR, "API", "The frame is null.\n");

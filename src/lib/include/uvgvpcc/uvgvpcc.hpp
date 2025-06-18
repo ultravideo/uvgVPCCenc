@@ -167,11 +167,14 @@ struct Patch {
 
 struct GOF;
 
+
+
 // TODO(lf): Avid using both constant sized and dynamic sized memory member within the same struct.
 struct Frame {
     size_t frameId;      // aka relative index (0 if first encoded frame)
     size_t frameNumber;  // aka number from the input frame file name
     std::weak_ptr<GOF> gof;
+    std::shared_ptr<std::counting_semaphore<UINT16_MAX>> conccurentFrameSem;
 
     std::string pointCloudPath;
 
@@ -197,7 +200,11 @@ struct Frame {
 
     Frame(const size_t& frameId, const size_t& frameNumber, const std::string& pointCloudPath)
         : frameId(frameId), frameNumber(frameNumber), pointCloudPath(pointCloudPath), pointCount(0) {}
-
+    ~Frame(){
+        if (conccurentFrameSem) {
+            conccurentFrameSem->release();
+        }
+    };
     void printInfo() const;
 };
 

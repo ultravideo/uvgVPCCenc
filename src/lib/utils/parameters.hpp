@@ -52,6 +52,7 @@ struct Parameters {
     std::string presetName;
     size_t sizeGOF;
     size_t nbThreadPCPart = 0; // 0 means the actual number of detected threads
+    size_t maxConcurrentFrames = 0; // 0 means the actual value is set to 4 times sizeGOF
     bool doubleLayer = true;
     std::string logLevel = "INFO";
     bool errorsAreFatal = true;
