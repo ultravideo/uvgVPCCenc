@@ -556,7 +556,9 @@ void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc:
 
     // Geometry and attribute map generation //
     writePatches(frame, frame->mapHeight);
-    std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute); // Release memory
+    if(!p_->exportIntermediateMaps) {
+        std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute); // Release memory
+    }
     
     // Background filling //
     fillBackgroundImages(frame, frame->mapHeight);
@@ -568,6 +570,7 @@ void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc:
 
     if (p_->exportIntermediateMaps /*|| p_->useEncoderCommand*/) {
         writeFrameMapsYUV(frame);
+        std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute); // Release memory
     }
 }
 

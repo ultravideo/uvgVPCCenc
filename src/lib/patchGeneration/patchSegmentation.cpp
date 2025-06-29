@@ -713,9 +713,6 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         refillRawPoints(resamplePointSet, rawPoints, frame->pointsGeometry, pointCount, flags, nnPropagationMapFlagTrue);
     }
 
-    std::vector<size_t>().swap(frame->patchPartition); // Release memory 
-
-
     if (p_->exportIntermediatePointClouds) {
         const std::string plyFilePath =
             p_->intermediateFilesDir + "/patchSegmentation/PATCH-SEGMENTATION_f-" + uvgvpcc_enc::zeroPad(frame->frameId, 3) + ".ply";
@@ -728,4 +725,6 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         }
         exportPointCloud(plyFilePath, frame->pointsGeometry, attributes);
     }
+
+    std::vector<size_t>().swap(frame->patchPartition); // Release memory
 }
