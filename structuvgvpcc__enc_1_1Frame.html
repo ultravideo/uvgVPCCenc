@@ -86,13 +86,15 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for uvgvpcc_enc::Frame:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structuvgvpcc__enc_1_1Frame__coll__graph.svg" width="158" height="296"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structuvgvpcc__enc_1_1Frame__coll__graph.svg" width="180" height="316"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a37bd8af9c76c6a0015b3dd49064139a1" id="r_a37bd8af9c76c6a0015b3dd49064139a1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Frame.html#a37bd8af9c76c6a0015b3dd49064139a1">Frame</a> (const size_t &amp;<a class="el" href="structuvgvpcc__enc_1_1Frame.html#ac96833f5d38c9fcb28b95ee879772eb2">frameId</a>, const size_t &amp;<a class="el" href="structuvgvpcc__enc_1_1Frame.html#ab63d5f997f707a3826adfa283f4e01ad">frameNumber</a>, const std::string &amp;<a class="el" href="structuvgvpcc__enc_1_1Frame.html#a055799ae93cb04ef99a0f686b0730d05">pointCloudPath</a>)</td></tr>
 <tr class="separator:a37bd8af9c76c6a0015b3dd49064139a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a688f92c9876f0d35f403e02c88b56973" id="r_a688f92c9876f0d35f403e02c88b56973"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Frame.html#a688f92c9876f0d35f403e02c88b56973">~Frame</a> ()</td></tr>
+<tr class="separator:a688f92c9876f0d35f403e02c88b56973"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac0f6f9e48babc1ff4613b3d5d5c5f267" id="r_ac0f6f9e48babc1ff4613b3d5d5c5f267"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Frame.html#ac0f6f9e48babc1ff4613b3d5d5c5f267">printInfo</a> () const</td></tr>
 <tr class="separator:ac0f6f9e48babc1ff4613b3d5d5c5f267"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -104,6 +106,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:ab63d5f997f707a3826adfa283f4e01ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a258d44582988990827918e7a8c5917dd" id="r_a258d44582988990827918e7a8c5917dd"><td class="memItemLeft" align="right" valign="top">std::weak_ptr&lt; <a class="el" href="structuvgvpcc__enc_1_1GOF.html">GOF</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Frame.html#a258d44582988990827918e7a8c5917dd">gof</a></td></tr>
 <tr class="separator:a258d44582988990827918e7a8c5917dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aa047c4b42cc3fb7aa4a6a62b6f26c1" id="r_a4aa047c4b42cc3fb7aa4a6a62b6f26c1"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; std::counting_semaphore&lt; UINT16_MAX &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Frame.html#a4aa047c4b42cc3fb7aa4a6a62b6f26c1">conccurentFrameSem</a></td></tr>
+<tr class="separator:a4aa047c4b42cc3fb7aa4a6a62b6f26c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a055799ae93cb04ef99a0f686b0730d05" id="r_a055799ae93cb04ef99a0f686b0730d05"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Frame.html#a055799ae93cb04ef99a0f686b0730d05">pointCloudPath</a></td></tr>
 <tr class="separator:a055799ae93cb04ef99a0f686b0730d05"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a225c5f22f2f1a59993878f4594322159" id="r_a225c5f22f2f1a59993878f4594322159"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Frame.html#a225c5f22f2f1a59993878f4594322159">pointCount</a></td></tr>
@@ -176,6 +180,31 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a688f92c9876f0d35f403e02c88b56973" name="a688f92c9876f0d35f403e02c88b56973"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a688f92c9876f0d35f403e02c88b56973">&#9670;&#160;</a></span>~Frame()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">uvgvpcc_enc::Frame::~Frame </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ac0f6f9e48babc1ff4613b3d5d5c5f267" name="ac0f6f9e48babc1ff4613b3d5d5c5f267"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ac0f6f9e48babc1ff4613b3d5d5c5f267">&#9670;&#160;</a></span>printInfo()</h2>
@@ -222,6 +251,20 @@ Here is the call graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">std::vector&lt;uint8_t&gt; uvgvpcc_enc::Frame::attributeMapL2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4aa047c4b42cc3fb7aa4a6a62b6f26c1" name="a4aa047c4b42cc3fb7aa4a6a62b6f26c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4aa047c4b42cc3fb7aa4a6a62b6f26c1">&#9670;&#160;</a></span>conccurentFrameSem</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt;std::counting_semaphore&lt;UINT16_MAX&gt; &gt; uvgvpcc_enc::Frame::conccurentFrameSem</td>
         </tr>
       </table>
 </div><div class="memdoc">

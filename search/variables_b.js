@@ -13,11 +13,12 @@ var searchData=
   ['mapheightgof_10',['mapHeightGOF',['../structuvgvpcc__enc_1_1GOF.html#a127a025c32cd5428b7c603eab941aa42',1,'uvgvpcc_enc::GOF']]],
   ['mapwidth_11',['mapWidth',['../structuvgvpcc__enc_1_1Parameters.html#a1ee51965b65cff028bc26cb0d3c2e5a4',1,'uvgvpcc_enc::Parameters']]],
   ['maxalloweddist2rawpointsdetection_12',['maxAllowedDist2RawPointsDetection',['../structuvgvpcc__enc_1_1Parameters.html#a3a7ef865735c58df940d59276f487579',1,'uvgvpcc_enc::Parameters']]],
-  ['maxnncountpatchsegmentation_13',['maxNNCountPatchSegmentation',['../structuvgvpcc__enc_1_1Parameters.html#ab068ffc8fd6e52b65a7335171fa45cf4',1,'uvgvpcc_enc::Parameters']]],
-  ['maxpatchsize_14',['maxPatchSize',['../structuvgvpcc__enc_1_1Parameters.html#acf60d8e0c8e04d038d3449458df7429d',1,'uvgvpcc_enc::Parameters']]],
-  ['merge_5fpatch_5fdata_5funit_5f_15',['merge_patch_data_unit_',['../structpatch__information__data.html#a4fd18569308927cd34acc90d4128933b',1,'patch_information_data']]],
-  ['minimummapheight_16',['minimumMapHeight',['../structuvgvpcc__enc_1_1Parameters.html#a95a27b332c0d4a95cdfb38d1e787c261',1,'uvgvpcc_enc::Parameters']]],
-  ['minlevel_17',['minLevel',['../structuvgvpcc__enc_1_1Parameters.html#a4f64f8f2a3ef17061d05e00ef8f2837a',1,'uvgvpcc_enc::Parameters']]],
-  ['minpointcountpercc_18',['minPointCountPerCC',['../structuvgvpcc__enc_1_1Parameters.html#ab63ac0bb47863688d5820caad62f6871',1,'uvgvpcc_enc::Parameters']]],
-  ['mtx_5f_19',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
+  ['maxconcurrentframes_13',['maxConcurrentFrames',['../structuvgvpcc__enc_1_1Parameters.html#a4fea2039762a8bf6b96ca85eefab349e',1,'uvgvpcc_enc::Parameters']]],
+  ['maxnncountpatchsegmentation_14',['maxNNCountPatchSegmentation',['../structuvgvpcc__enc_1_1Parameters.html#ab068ffc8fd6e52b65a7335171fa45cf4',1,'uvgvpcc_enc::Parameters']]],
+  ['maxpatchsize_15',['maxPatchSize',['../structuvgvpcc__enc_1_1Parameters.html#acf60d8e0c8e04d038d3449458df7429d',1,'uvgvpcc_enc::Parameters']]],
+  ['merge_5fpatch_5fdata_5funit_5f_16',['merge_patch_data_unit_',['../structpatch__information__data.html#a4fd18569308927cd34acc90d4128933b',1,'patch_information_data']]],
+  ['minimummapheight_17',['minimumMapHeight',['../structuvgvpcc__enc_1_1Parameters.html#a95a27b332c0d4a95cdfb38d1e787c261',1,'uvgvpcc_enc::Parameters']]],
+  ['minlevel_18',['minLevel',['../structuvgvpcc__enc_1_1Parameters.html#a4f64f8f2a3ef17061d05e00ef8f2837a',1,'uvgvpcc_enc::Parameters']]],
+  ['minpointcountpercc_19',['minPointCountPerCC',['../structuvgvpcc__enc_1_1Parameters.html#ab63ac0bb47863688d5820caad62f6871',1,'uvgvpcc_enc::Parameters']]],
+  ['mtx_5f_20',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
 ];
