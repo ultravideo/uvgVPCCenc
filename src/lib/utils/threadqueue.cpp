@@ -165,15 +165,13 @@ void ThreadQueue::workerThread() {
             if (stop_) {
                 return;
             }
-            for (int i = 5; i >= 0; --i) {
+            for (int i = jobs_.size()-1; i >= 0; --i) {
                 if (!jobs_[i].empty()) {
                     job = jobs_[i].front();
                     jobs_[i].pop_front();
                     break;
                 }
             }
-            // job = jobs_.front();
-            // jobs_.pop_front();
             Logger::log(LogLevel::TRACE, "ThreadQueue", "Job " + job->getName() + " popped from the queue\n");
         }
         std::unique_lock lockJ(job->mtx_);
