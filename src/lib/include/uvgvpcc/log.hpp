@@ -39,6 +39,7 @@
 #include <iomanip>
 #include <iostream>
 #include <string>
+#include <mutex>
 
 #ifndef UVG_LOG_LEVEL
 #define UVG_LOG_LEVEL LogLevel::DEBUG
