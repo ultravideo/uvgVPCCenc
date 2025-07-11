@@ -197,14 +197,14 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             throw std::runtime_error("Input geometry precision is not manually set by the application and it is not detected from the file name. The geometry precision (the library parameter 'geoBitDepthInput', a.k.a voxel size) is a parameter needed by the encoder. It should be set in the application using function 'uvgvpcc_enc::API::setParameter()'.\n");
         }
         // else 
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION",
             "The input geometry precision is not manually set by the application but it is detected from file name: " + std::to_string(opts.inputGeoPrecision) + ".\n");
     
     }
 
     if (opts.frames == 0) {
         opts.frames = select_frame_count_auto(opts.inputPath);
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION",
                                  "Detected frame count from file name: " + std::to_string(opts.frames) + ".\n");
         if (opts.frames == 0) {
             throw std::runtime_error("Input error: Frame count is zero");
@@ -213,7 +213,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
 
     if (opts.startFrame == std::numeric_limits<size_t>::max()) {
         opts.startFrame = select_start_frame_auto(opts.inputPath);
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION",
                                  "Detected start frame from file name: " + std::to_string(opts.startFrame) + ".\n");
         if (opts.startFrame == std::numeric_limits<size_t>::max()) {
             throw std::runtime_error("Input error: Frame count is zero");

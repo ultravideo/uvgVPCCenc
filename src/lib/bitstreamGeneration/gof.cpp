@@ -132,7 +132,7 @@ void v3c_gof::write_v3c_chunk(uvgvpcc_enc::API::v3c_unit_stream* out) {
     out->io_mutex.lock();
     out->v3c_chunks.push(std::move(new_chunk));
     out->io_mutex.unlock();
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "BITSTREAM GENERATION",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("BITSTREAM GENERATION",
                              "New V3C chunk created, " + std::to_string(out->v3c_chunks.size()) + " chunk(s) in buffer. \n");
 }
 
@@ -318,7 +318,7 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
     out->io_mutex.lock();
     out->v3c_chunks.push(std::move(new_chunk));
     out->io_mutex.unlock();
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "BITSTREAM GENERATION",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("BITSTREAM GENERATION",
                              "New V3C LD chunk created, " + std::to_string(out->v3c_chunks.size()) + " chunk(s) in buffer. \n");
 }
 

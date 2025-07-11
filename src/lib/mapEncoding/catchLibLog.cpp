@@ -53,7 +53,7 @@
 int kvazaar_lib_log_callback(FILE*, const char* log_content, ...) {
     va_list args;
     va_start(args, log_content);
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "KVAZAAR", uvgvpcc_enc::Logger::vprintfStrToStdStr(log_content, args));
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("KVAZAAR", uvgvpcc_enc::Logger::vprintfStrToStdStr(log_content, args));
     va_end(args);
     return 0;
 }
@@ -61,7 +61,7 @@ int kvazaar_lib_log_callback(FILE*, const char* log_content, ...) {
 /*int uvg266_lib_log_callback(FILE*, const char* log_content, ...) {
     va_list args;
     va_start(args, log_content);
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "UVG266", uvgvpcc_enc::Logger::vprintfStrToStdStr(log_content, args));
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("UVG266", uvgvpcc_enc::Logger::vprintfStrToStdStr(log_content, args));
     va_end(args);
     return 0;
 }*/

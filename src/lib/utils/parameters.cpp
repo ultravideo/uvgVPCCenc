@@ -297,8 +297,8 @@ std::string suggestClosestString(const std::string& inputStr) {
 } // anonymous namespace
 
 void setParameterValue(const std::string& parameterName,const std::string& parameterValue, const bool& fromPreset) {
-    uvgvpcc_enc::Logger::log(
-            uvgvpcc_enc::LogLevel::DEBUG, "API","Set parameter value: " + parameterName + " -> " + parameterValue + "\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>(
+                "API","Set parameter value: " + parameterName + " -> " + parameterValue + "\n");
     
     if(!parameterMap.contains(parameterName)) {
         throw std::invalid_argument(std::string(fromPreset ? "[PRESET] " : "") + "The parameter '" + parameterName + "' is not a valid parameter name. Did you mean '" + suggestClosestString(parameterName) + "'? (c.f. parameterMap)");
@@ -331,7 +331,7 @@ void setParameterValue(const std::string& parameterName,const std::string& param
     if(fromPreset) {
         paramInfo.inPreset = true;
     } else if (paramInfo.inPreset) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The value assigned to parameter '" + parameterName +  "' overwrite the preset value.\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The value assigned to parameter '" + parameterName +  "' overwrite the preset value.\n");
     }
 
 }

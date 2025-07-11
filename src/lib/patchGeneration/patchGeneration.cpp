@@ -57,7 +57,7 @@ using namespace uvgvpcc_enc;
 void PatchGeneration::computePointsNNList(std::vector<std::vector<size_t>>& pointsNNList,
                                           const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                                           const size_t& nnCount) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION", "computePointsNNList.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION", "computePointsNNList.\n");
     
     KdTree const kdTree(p_->kdTreeMaxLeafSize, pointsGeometry);
     
@@ -75,7 +75,7 @@ void PatchGeneration::computePointsNNList(std::vector<std::vector<size_t>>& poin
 namespace {
 inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::vector<size_t>& pointsPPIs,
                              const std::vector<std::vector<size_t>>& voxelIdToPointsId) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION", "Apply voxel data to points.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION", "Apply voxel data to points.\n");
     for (size_t voxelIndex = 0; voxelIndex < voxelIdToPointsId.size(); ++voxelIndex) {
         for (size_t pointIndex = 0; pointIndex < voxelIdToPointsId[voxelIndex].size(); ++pointIndex) {
             pointsPPIs[voxelIdToPointsId[voxelIndex][pointIndex]] = voxelsPPIs[voxelIndex];
@@ -85,7 +85,7 @@ inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::
 }  // anonymous namespace
 
 void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> frame) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
                              "Generate patches for frame " + std::to_string(frame->frameId) + ".\n");
     assert(p_->geoBitDepthInput >= p_->geoBitDepthVoxelized);
     

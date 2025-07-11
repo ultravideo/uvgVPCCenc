@@ -78,12 +78,12 @@ void createDirectory(const std::string &path) {
     std::filesystem::path dirPath(path);
     if (!std::filesystem::exists(dirPath)) {
         if (std::filesystem::create_directory(dirPath)) {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "UTILS","Directory created: " + path + ".\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("UTILS","Directory created: " + path + ".\n");
         } else {
             throw std::runtime_error("Failed to create directory: " + path);
         }
     } else {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "UTILS","Directory already exists: " + path + ".\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("UTILS","Directory already exists: " + path + ".\n");
     }
 }  
 
@@ -101,22 +101,22 @@ struct ThreadHandler {
 ThreadHandler g_threadHandler;
 
 void initializeStaticParameters() {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "API", "Initialize static parameters.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize static parameters.\n");
     Job::setExecutionMethod(p_->timerLog);
     MapGenerationBaseLine::initializeStaticParameters();
     MapEncoding::initializeStaticParameters();
 }
 
 void initializeStaticFunctionPointers() {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "API", "Initialize static function pointers.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize static function pointers.\n");
     MapEncoding::initializeEncoderPointers();
 }
 
 
 void verifyConfig() {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "VERIFY CONFIG", "Verify the parameter configuration.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("VERIFY CONFIG", "Verify the parameter configuration.\n");
     if (p_->timerLog && Logger::getLogLevel() < LogLevel::PROFILING) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::WARNING, "VERIFY CONFIG",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("VERIFY CONFIG",
             "The parameter 'timerLog' has been set to 'True' but the current 'logLevel' (" + p_->logLevel + ") does not display profiling information. Consider switching to at least logLevel=PROFILING.\n");        
     }
 
@@ -137,13 +137,13 @@ void verifyConfig() {
     }
 
     if (p_->gpaTresholdIoU == 0.F) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::WARNING, "VERIFY CONFIG",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("VERIFY CONFIG",
                                  "The parameter 'gpaTresholdIoU' has been set to " + std::to_string(p_->gpaTresholdIoU) +
                                      ". This means that all patches will be matched.");
     }
 
     if (p_->gpaTresholdIoU == 1.F) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::WARNING, "VERIFY CONFIG",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("VERIFY CONFIG",
                                  "The parameter 'gpaTresholdIoU' has been set to " + std::to_string(p_->gpaTresholdIoU) +
                                      ". This means that no patches will be matched.");
     }
@@ -157,7 +157,7 @@ void verifyConfig() {
     }
 
     if ( (p_->geometryEncodingMode == "RA" || p_->attributeEncodingMode == "RA") && !p_->interPatchPacking) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::WARNING, "VERIFY CONFIG",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("VERIFY CONFIG",
                                  "You choose to encode the geometry or attribute maps using Random Acess mode. However, you didn't activate "
                                  "the inter patch packing. ('interPatchPacking=false')\n");
     }
@@ -217,7 +217,7 @@ void verifyConfig() {
     }
 
     if(p_->intraFramePeriod != 64) {
-                uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::WARNING, "VERIFY CONFIG",
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("VERIFY CONFIG",
                                  "It seems that you are modifying the parameter 'intraFramePeriod'. Currently, one Kvazaar instance is spawn for each uvgVPCCenc GOF. Thus, the intraFramePeriod parameter is indirectly constrained and will have no impact if set to a value higher than the GOF size.\n");
     }
 
@@ -235,17 +235,17 @@ void setInputGeoPrecision() {
     
     // geoBitDepthInput has been defined by the application
     setParameterValue("geoBitDepthInput",geoBitDepthInputIt->second,false);
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The geoBitDepthInput is set to '" + std::to_string(p_->geoBitDepthInput) + "'.\n");         
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The geoBitDepthInput is set to '" + std::to_string(p_->geoBitDepthInput) + "'.\n");         
 }
 
 void setPreset() {
     auto presetNameIt = apiInputParameters.find("presetName");
     if(presetNameIt != apiInputParameters.end()) { // presetName has been defined by the application
         setParameterValue("presetName",presetNameIt->second,false);
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The presetName is set to '" + p_->presetName + "'.\n");         
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The presetName is set to '" + p_->presetName + "'.\n");         
     } else { // presetName is not defined by the application. Use the default preset name.
         setParameterValue("presetName", "fast",false);
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The presetName is set by default to '" + p_->presetName + "'.\n");         
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The presetName is set by default to '" + p_->presetName + "'.\n");         
     }
     applyPreset(param);
 }
@@ -261,23 +261,23 @@ void setRate() {
                 setParameterValue("attributeEncodingQp", matches[2],false);
                 setParameterValue("occupancyMapDSResolution", matches[3],false);
             } catch (const std::invalid_argument& e) {
-                uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "LIBRARY", "A problem occured when assigning the values from the 'rate' parameter. Here is the full match: '" + matches[0].str() +"'\n");
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY", "A problem occured when assigning the values from the 'rate' parameter. Here is the full match: '" + matches[0].str() +"'\n");
                 throw;
             }
         } else {
             throw std::invalid_argument("The value assigned to the parameter 'rate' does not have a correct format. Here is the given value: '"+ rateIt->second +"'. The expected format is the following: '[geometryQP]-[attributeQP]-[occupancyResolution]' Here is a correct usage: 'rate=16-22-2'.");
         }
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The rate used is '" + rateIt->second + "'.\n");      
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The rate used is '" + rateIt->second + "'.\n");      
     } else { // The rate is not set by the application. Use the default rate which is rate=16-22-2 (R5)
         try {
             setParameterValue("geometryEncodingQp", "16",false);
             setParameterValue("attributeEncodingQp", "22",false);
             setParameterValue("occupancyMapDSResolution", "2" ,false  );     
         } catch (const std::invalid_argument& e) {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "API", "A problem occured when assigning the values from the 'rate' parameter.\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("API", "A problem occured when assigning the values from the 'rate' parameter.\n");
             throw;
         }
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API",
         "The rate is not defined in the library command line. The default rate used is '16-22-2'.\n");       
     }
 }
@@ -297,17 +297,17 @@ void setLogParameters() {
     auto logLevelIt = apiInputParameters.find("logLevel");
     if(logLevelIt != apiInputParameters.end()) { // logLevel has been defined by the application
         setParameterValue("logLevel",logLevelIt->second,false);
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The logLevel is set to '" + p_->logLevel + "'.\n");         
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The logLevel is set to '" + p_->logLevel + "'.\n");         
     } else { // logLevel default value
         setParameterValue("logLevel",LogLevelStr[static_cast<size_t>(logLevelDefaultValue)],false);
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The logLevel is set by default to '" + p_->logLevel + "'.\n");         
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The logLevel is set by default to '" + p_->logLevel + "'.\n");         
     }
     uvgvpcc_enc::Logger::setLogLevel(static_cast<LogLevel>(std::distance(std::begin(LogLevelStr), std::find(std::begin(LogLevelStr), std::end(LogLevelStr), p_->logLevel))));
 
     if(defaultErrorsAreFatalValue) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The parameter 'errorsAreFatal' is set by default to '" + std::string(p_->errorsAreFatal ? "True" : "False") + "'.\n");         
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The parameter 'errorsAreFatal' is set by default to '" + std::string(p_->errorsAreFatal ? "True" : "False") + "'.\n");         
     } else {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The parameter 'errorsAreFatal' is set to '" + std::string(p_->errorsAreFatal ? "True" : "False") + "'.\n");         
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The parameter 'errorsAreFatal' is set to '" + std::string(p_->errorsAreFatal ? "True" : "False") + "'.\n");         
     }
 
 }
@@ -328,10 +328,10 @@ void setMode() {
             setParameterValue("attributeEncodingMode", modeValue,false);
             setParameterValue("interPatchPacking", std::to_string(modeValue=="RA"),false);
         } catch (const std::invalid_argument& e) {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "LIBRARY", "A problem occured when assigning the values from the 'mode' parameter. Here is the mode value: '" + modeValue +"'\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY", "A problem occured when assigning the values from the 'mode' parameter. Here is the mode value: '" + modeValue +"'\n");
             throw;
         }
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","The encoding mode used is '" + modeValue + "'.\n");         
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","The encoding mode used is '" + modeValue + "'.\n");         
     } else {
         // The mode is not defined in the lib command. Use the default mode which is mode=RA
         modeValue = "RA";
@@ -341,10 +341,10 @@ void setMode() {
             setParameterValue("attributeEncodingMode", modeValue,false);
             setParameterValue("interPatchPacking", std::to_string(modeValue=="RA"),false );       
         } catch (const std::invalid_argument& e) {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "API", "A problem occured when assigning the values from the 'mode' parameter.\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("API", "A problem occured when assigning the values from the 'mode' parameter.\n");
             throw;
         }
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API",
         "The mode is not defined in the library command line. The default mode used is 'RA'.\n");        
     }
 }
@@ -389,23 +389,23 @@ void parseUvgvpccParameters() {
 
     const std::string detectedThreadNumber = std::to_string(std::thread::hardware_concurrency());
     if(p_->nbThreadPCPart == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("nbThreadPCPart",detectedThreadNumber,false);
     }
     if(p_->maxConcurrentFrames == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "API","'maxConcurrentFrames' is set to 0. The maximum number of frame processed in parallel by uvgVPCC is then the four times GOF size: "+ std::to_string(4*p_->sizeGOF) + "\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","'maxConcurrentFrames' is set to 0. The maximum number of frame processed in parallel by uvgVPCC is then the four times GOF size: "+ std::to_string(4*p_->sizeGOF) + "\n");
         setParameterValue("maxConcurrentFrames",std::to_string(4*p_->sizeGOF),false);
     }
     if(p_->occupancyEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'occupancyEncodingNbThread' is set to 0. The number of thread used for the occcupancy video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API","'occupancyEncodingNbThread' is set to 0. The number of thread used for the occcupancy video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("occupancyEncodingNbThread",detectedThreadNumber,false);
     }
     if(p_->geometryEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'geometryEncodingNbThread' is set to 0. The number of thread used for the geometry video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API","'geometryEncodingNbThread' is set to 0. The number of thread used for the geometry video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("geometryEncodingNbThread",detectedThreadNumber,false);
     }
     if(p_->attributeEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::DEBUG, "API","'attributeEncodingNbThread' is set to 0. The number of thread used for the attribute video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API","'attributeEncodingNbThread' is set to 0. The number of thread used for the attribute video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("attributeEncodingNbThread",detectedThreadNumber,false);
     }       
 
@@ -437,7 +437,7 @@ void parseUvgvpccParameters() {
 }
 
 static void initializeContext() {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "API", "Initialize context.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize context.\n");
     g_threadHandler.queue = std::make_shared<ThreadQueue>(p_->nbThreadPCPart);
     g_threadHandler.gofId = 0;
 }
@@ -448,7 +448,7 @@ const Parameters* p_ = &param;
 
 
 void Frame::printInfo() const {
-    Logger::log(LogLevel::DEBUG, "FRAME-INFO",
+    Logger::log<LogLevel::DEBUG>("FRAME-INFO",
                 "Frame " + std::to_string(frameId) + " :\n" + "\tPath: " + pointCloudPath + "\n" + "\tFrame Number: " +
                     std::to_string(frameNumber) + "\n" + "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
                     "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n" +
@@ -464,7 +464,7 @@ void Frame::printInfo() const {
 
 /// @brief Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given configuration is valid. Initialize static parameters and function pointers.
 void API::initializeEncoder() {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "API", "Initialize the encoder.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize the encoder.\n");
     uvgvpcc_enc::initializeParameterMap(param);
     parseUvgvpccParameters();
     if(errorInAPI && p_->errorsAreFatal) throw std::runtime_error("An error occured while handling application input parameters. If you want to not stop the execution of the program when an error is detected, set the parameter 'errorsAreFatal' to 'False'.");
@@ -480,11 +480,11 @@ void API::initializeEncoder() {
 /// @param parameterValue The value of the parameter written as a string.
 void API::setParameter(const std::string& parameterName,const std::string& parameterValue) {
     if(initializationDone) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "API","The API function 'setParameter' can't be called after the API function 'initializeEncoder'.\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("API","The API function 'setParameter' can't be called after the API function 'initializeEncoder'.\n");
         throw std::runtime_error("");
     }
     if(apiInputParameters.find(parameterName) != apiInputParameters.end()) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::ERROR, "API","The parameter '" + parameterName +  "' has already been set. The value used is: '" + apiInputParameters.at(parameterName) +"'.\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::ERROR>("API","The parameter '" + parameterName +  "' has already been set. The value used is: '" + apiInputParameters.at(parameterName) +"'.\n");
         errorInAPI = true;
     }
     apiInputParameters.emplace(parameterName,parameterValue);
@@ -499,9 +499,9 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     conccurentFrameSem->acquire();
     frame->conccurentFrameSem = conccurentFrameSem;
 
-    Logger::log(LogLevel::TRACE, "API", "Encoding frame " + std::to_string(frame->frameId) + "\n");
+    Logger::log<LogLevel::TRACE>("API", "Encoding frame " + std::to_string(frame->frameId) + "\n");
     if (frame == nullptr) {
-        Logger::log(LogLevel::ERROR, "API", "The frame is null.\n");
+        Logger::log<LogLevel::ERROR>("API", "The frame is null.\n");
         if(p_->errorsAreFatal) throw std::runtime_error("");    
     }
 

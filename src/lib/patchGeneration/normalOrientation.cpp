@@ -105,7 +105,7 @@ void addNeighbors(const std::vector<uvgvpcc_enc::Vector3<double>>& normals, cons
 void orientNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
                    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                    const std::vector<std::vector<size_t>>& pointsNNList) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
                              "Normal orientation of frame " + std::to_string(frame->frameId) + "\n");
 
     std::vector<bool> visited(pointsGeometry.size());

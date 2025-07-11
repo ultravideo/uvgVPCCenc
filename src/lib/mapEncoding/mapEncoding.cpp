@@ -87,7 +87,7 @@ void MapEncoding::initializeEncoderPointers() {
 }
 
 void MapEncoding::encodeGOFMaps(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "MAP ENCODING", "Encode maps of GOF " + std::to_string(gof->gofId) + ".\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("MAP ENCODING", "Encode maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
     occupancyMapDSEncoder->encodeGOFMaps(gof);
     geometryMapEncoder->encodeGOFMaps(gof);

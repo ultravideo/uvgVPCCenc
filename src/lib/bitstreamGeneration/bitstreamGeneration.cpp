@@ -55,7 +55,7 @@ using namespace uvgvpcc_enc;
 
 void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gofUVG, const uvgvpcc_enc::Parameters& paramUVG,
                                                 uvgvpcc_enc::API::v3c_unit_stream* output) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "BITSTREAM GENERATION",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("BITSTREAM GENERATION",
                              "GOF " + std::to_string(gofUVG->gofId) + " : Create V3C GOF bitstream using uvgVPCC.\n");
 
     v3c_gof gof(gofUVG->gofId);

@@ -233,7 +233,7 @@ namespace {
 
 // TODO(lf): Why an integer only implementation is so bad in term of quality degradation?
 void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t& height) {
-    Logger::log(LogLevel::TRACE, "MapGeneration", "RGB444toYUV420\n");
+    Logger::log<LogLevel::TRACE>("MapGeneration", "RGB444toYUV420\n");
 
     const size_t imageSize = width * height;
     const size_t imageSizeUV = imageSize >> 2U;
@@ -653,7 +653,7 @@ void MapGenerationBaseLine::writeFrameMapsYUV(const std::shared_ptr<uvgvpcc_enc:
 // TODO(lf): we first do YUV420 for all maps, but we might consider YUV400 for geometry and occupancy if Kvazaar can handle it and if the
 // decoder can handle it too. TODO(lf): allocate all the maps of the GOF in one memory allocation ?
 void MapGenerationBaseLine::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
         gof->mapHeightDSGOF = std::max(gof->mapHeightDSGOF, frame->mapHeightDS);

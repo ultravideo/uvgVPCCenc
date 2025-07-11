@@ -218,8 +218,7 @@ inline void voxelization(
     const size_t inputBitResolution,
     const size_t outputBitResolution) 
 {
-    Logger::log(
-        LogLevel::TRACE, "PATCH GENERATION",
+    Logger::log<LogLevel::TRACE>("PATCH GENERATION",
         "Voxelization from " + std::to_string(inputBitResolution) + " to " + std::to_string(outputBitResolution) + " bits of resolution.\n");
 
     const size_t voxelizationShift = inputBitResolution - outputBitResolution;

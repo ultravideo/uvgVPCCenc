@@ -297,8 +297,7 @@ void applyPresetCommon(const Parameters& param) {
             if(param.presetName == "slow") {selectedPreset = preset_vox11_slow;}
             break; 
         default:
-            Logger::log(
-                LogLevel::ERROR, "LIBRARY INTERFACE",
+            Logger::log<LogLevel::ERROR>("LIBRARY INTERFACE",
                 "In applyPresetCommon(), the geoBitDepthInput correspond to no preset: " + std::to_string(param.geoBitDepthInput) +
                     ".\n");
             throw std::runtime_error("uvgVPCC log of type ERROR");
@@ -331,8 +330,7 @@ void applyPreset(Parameters& param) {
             setParameterValue("geoBitDepthVoxelized", std::to_string(param.geoBitDepthInput), true);
             setParameterValue("geoBitDepthRefineSegmentation", std::to_string(param.geoBitDepthInput-1), true);
         }
-        Logger::log(
-            LogLevel::WARNING, "LIBRARY INTERFACE",
+        Logger::log<LogLevel::WARNING>("LIBRARY INTERFACE",
             "uvgVPCCenc can support most of the point cloud voxel sizes (or input bit depths). However, it is tested only for voxel 9, 10 and 11. Strange things may happened. The presets are tuned for those voxel sizes only.\n The current voxel size is: " + std::to_string(param.geoBitDepthInput) +  ". The preset used is based on the preset 'vox9" + param.presetName + "'. Parameters link to the input bitdepth are changed accordingly.\n");    
     }
 
@@ -357,8 +355,7 @@ void applyPreset(Parameters& param) {
         setParameterValue("mapWidth", scaledSize, true);
         setParameterValue("minimumMapHeight", scaledSize, true);
 
-        Logger::log(
-            LogLevel::WARNING, "LIBRARY INTERFACE",
+        Logger::log<LogLevel::WARNING>("LIBRARY INTERFACE",
             "uvgVPCCenc can support most of the point cloud voxel sizes (or input bit depths). However, it is tested only for voxel 9, 10 and 11. Strange things may happened. The presets are tuned for those voxel sizes only.\n The current voxel size is: " + std::to_string(param.geoBitDepthInput) +  ". The preset used is based on the preset 'vox11" + param.presetName + "'. Parameters link to the input bitdepth are changed accordingly.\n");    
     }
 }

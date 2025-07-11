@@ -229,7 +229,7 @@ void PatchSegmentation::patchSplitting(std::vector<size_t>& connectedComponent, 
     if(tempCC.empty()) {
         // TODO(lf): overall this cutting agorithm can create very weird and bad patches. Maybe it should be totally removed
         // If both corner does not have points, we currently do not check elsewhere.
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::ERROR, "PATCH SEGMENTATION",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::ERROR>("PATCH SEGMENTATION",
                                     "Possible infinite loop was reach. Context : A patch is bigger than the p_->maxPatchSize. So, it is split. However, the shape of the patch makes the current spliting algorithm not working. A way to solve this issue is to increase the maximum patch size parameter (p_->maxPatchSize)\n");        
     }
 
@@ -566,7 +566,7 @@ void PatchSegmentation::refillRawPoints(const robin_hood::unordered_set<size_t>&
 void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs) {
     const size_t pointCount = frame->pointsGeometry.size();
 
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH GENERATION",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
                              "Patch segmentation of frame " + std::to_string(frame->frameId) + "\n");
     frame->patchList.reserve(256);
     frame->patchPartition.resize(pointCount, g_infinitenumber);

@@ -61,20 +61,20 @@ std::string jobStateToStr(threadqueue_job_state s) {
 }
 
 void Job::addDependency(const std::shared_ptr<Job>& dependency) {
-    Logger::log(LogLevel::DEBUG, "JOB: " + getName(), "Adding " + dependency->getName() + " as dependency\n");
+    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "Adding " + dependency->getName() + " as dependency\n");
     dependency->mtx_.lock();
-    Logger::log(LogLevel::DEBUG, "JOB: " + getName(), "Dependency locked\n");
+    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "Dependency locked\n");
     if (dependency->completed_) {
         return;
     }
-    Logger::log(LogLevel::DEBUG, "JOB: " + getName(), dependency->getName() + " state: " + jobStateToStr(dependency->getState()) + "\n");
+    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), dependency->getName() + " state: " + jobStateToStr(dependency->getState()) + "\n");
     dependencies_++;
-    Logger::log(LogLevel::DEBUG, "JOB: " + getName(), "Dependencies: " + std::to_string(dependencies_) + "\n");
+    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "Dependencies: " + std::to_string(dependencies_) + "\n");
 
-    Logger::log(LogLevel::DEBUG, "JOB: " + getName(),
+    Logger::log<LogLevel::DEBUG>("JOB: " + getName(),
                 dependency->getName() + " Reverse dependencies: " + std::to_string(dependency->reverseDependencies_.size()) + "\n");
     dependency->reverseDependencies_.emplace_back(this->shared_from_this());
-    Logger::log(LogLevel::DEBUG, "JOB: " + getName(),
+    Logger::log<LogLevel::DEBUG>("JOB: " + getName(),
                 dependency->getName() + " Reverse dependencies: " + std::to_string(dependency->reverseDependencies_.size()) + "\n");
     dependency->mtx_.unlock();
 }
@@ -89,13 +89,13 @@ void Job::executeTimer() const {
     double jobTimer = global_timer.elapsed();    
     func_();
     jobTimer = global_timer.elapsed() - jobTimer;
-    Logger::log(LogLevel::PROFILING, "TIMER JOB: " + getName(),std::to_string(jobTimer) + " ms\n");
+    Logger::log<LogLevel::PROFILING>("TIMER JOB: " + getName(),std::to_string(jobTimer) + " ms\n");
 }
 
 void Job::wait() {
     std::unique_lock lock(mtx_);
     cv_.wait(lock, [this]() {
-        Logger::log(LogLevel::DEBUG, "JOB: " + getName(), "is it ready ? " + std::string(completed_.load() ? "yes" : "no") + ".\n");
+        Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "is it ready ? " + std::string(completed_.load() ? "yes" : "no") + ".\n");
         return completed_.load();
     });
 }
@@ -118,7 +118,7 @@ ThreadQueue::~ThreadQueue() { stop(); }
 void ThreadQueue::pushJob(const std::shared_ptr<Job>& job) {
     assert(job->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED ||
            job->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_WAITING);
-    Logger::log(LogLevel::TRACE, "ThreadQueue", "Job " + job->getName() + " pushed to the queue\n");
+    Logger::log<LogLevel::TRACE>("ThreadQueue", "Job " + job->getName() + " pushed to the queue\n");
     job->setState(threadqueue_job_state::THREADQUEUE_JOB_STATE_READY);
     jobs_[job->priority].push_back(job);
 }
@@ -172,12 +172,12 @@ void ThreadQueue::workerThread() {
                     break;
                 }
             }
-            Logger::log(LogLevel::TRACE, "ThreadQueue", "Job " + job->getName() + " popped from the queue\n");
+            Logger::log<LogLevel::TRACE>("ThreadQueue", "Job " + job->getName() + " popped from the queue\n");
         }
         std::unique_lock lockJ(job->mtx_);
         assert(job->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_READY);
         job->setState(threadqueue_job_state::THREADQUEUE_JOB_STATE_RUNNING);
-        Logger::log(LogLevel::DEBUG, "JOB: " + job->getName(), jobStateToStr(job->getState()) + "\n");
+        Logger::log<LogLevel::DEBUG>("JOB: " + job->getName(), jobStateToStr(job->getState()) + "\n");
         lockJ.unlock();
         lockQ.unlock();
 
@@ -187,7 +187,7 @@ void ThreadQueue::workerThread() {
         lockJ.lock();
         assert(job->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_RUNNING);
         job->setState(threadqueue_job_state::THREADQUEUE_JOB_STATE_DONE);
-        Logger::log(LogLevel::DEBUG, "JOB: " + job->getName(), jobStateToStr(job->getState()) + "\n");
+        Logger::log<LogLevel::DEBUG>("JOB: " + job->getName(), jobStateToStr(job->getState()) + "\n");
         job->complete();
         jobDone_.notify_all();
 
@@ -198,7 +198,7 @@ void ThreadQueue::workerThread() {
         // for (auto &dep : job->reverseDependencies_) {
         for (auto dep = job->reverseDependencies_.begin(); dep != job->reverseDependencies_.end();) {
             const std::lock_guard lockD((*dep)->mtx_);
-            Logger::log(LogLevel::DEBUG, "JOB: " + job->getName(), (*dep)->getName() + "remove dependency\n");
+            Logger::log<LogLevel::DEBUG>("JOB: " + job->getName(), (*dep)->getName() + "remove dependency\n");
             assert((*dep)->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_WAITING ||
                    (*dep)->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED);
             assert((*dep)->dependencies_ > 0);

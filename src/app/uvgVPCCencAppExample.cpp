@@ -95,7 +95,7 @@ void create_bytes(uint64_t value, char* dst, size_t len) {
 /// @param frame 
 void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     // uvgVPCCenc currently support only geometry of type unsigned int
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "APPLICATION",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
                              "Loading frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + "\n");
     miniply::PLYReader reader(frame->pointCloudPath.c_str());
     if (!reader.valid()) {
@@ -160,7 +160,7 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
             snprintf(pointCloudPath.data(), MAX_PATH_SIZE, appParameters.inputPath.c_str(),
                      appParameters.startFrame + (frameId % appParameters.frames));
         if (nbBytes < 0) {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "APPLICATION",
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Error occurred while formatting string storing the point cloud path.\n");
             args->retval = RETVAL_FAILURE;
         }
@@ -169,7 +169,7 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
         try {
             loadFrameFromPlyFile(frame);
         } catch (const std::runtime_error& e) {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "APPLICATION",
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Caught exception while loading frame " + std::to_string(frameId) + " from " + frame->pointCloudPath +
                                          ": " + std::string(e.what()) + "\n");
             args->retval = RETVAL_FAILURE;
@@ -191,7 +191,7 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     }
     if (uvgvpcc_enc::p_->timerLog) {
         inputReadTimerTotal = uvgvpcc_enc::global_timer.elapsed() - inputReadTimerTotal;
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::PROFILING, "TIMER INPUT READ TOTAL",std::to_string(inputReadTimerTotal) + " ms\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::PROFILING>("TIMER INPUT READ TOTAL",std::to_string(inputReadTimerTotal) + " ms\n");
     }
 }
 
@@ -211,7 +211,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         chunks->io_mutex.lock();
         const uvgvpcc_enc::API::v3c_chunk& chunk = chunks->v3c_chunks.front();
         if (chunk.data == nullptr && chunk.len == 0) {
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "APPLICATION", "All chunks written to file.\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "All chunks written to file.\n");
             file.close();
             break;
         }
@@ -230,7 +230,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
             }
         }
 
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "APPLICATION",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
                                  "Wrote V3C chunk to file, size " + std::to_string(chunk.len) + " bytes.\n");
 
         chunks->v3c_chunks.pop();
@@ -272,7 +272,7 @@ void setParameters(const std::string& parametersCommand) {
 int main(const int argc, const char* const argv[]) {
     double encodingTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
 
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION", "uvgVPCCenc application starts.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "uvgVPCCenc application starts.\n");
 
 
     // Parse application parameters //
@@ -281,9 +281,9 @@ int main(const int argc, const char* const argv[]) {
     try {
         exitOnParse = cli::opts_parse(appParameters, argc, std::span<const char* const>(argv, argc));
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "APPLICATION",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                  "An exception was caught during the parsing of the application parameters.\n");
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "APPLICATION", e.what() + std::string("\n"));
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION", e.what() + std::string("\n"));
         cli::print_usage();
         return EXIT_FAILURE;
     }
@@ -301,15 +301,15 @@ int main(const int argc, const char* const argv[]) {
         uvgvpcc_enc::API::setParameter("geometryEncodingNbThread",std::to_string(appParameters.threads));
         uvgvpcc_enc::API::setParameter("attributeEncodingNbThread",std::to_string(appParameters.threads));
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "LIBRARY","An exception was caught when setting parameters in the application.\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY","An exception was caught when setting parameters in the application.\n");
         return EXIT_FAILURE;
     }
     
     try {
         uvgvpcc_enc::API::initializeEncoder();
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "LIBRARY","An exception was caught during the initialization of the encoder.\n");
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "LIBRARY", e.what() + std::string("\n"));
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY","An exception was caught during the initialization of the encoder.\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY", e.what() + std::string("\n"));
         cli::print_usage();
         return EXIT_FAILURE;
     }
@@ -342,7 +342,7 @@ int main(const int argc, const char* const argv[]) {
             uvgvpcc_enc::API::encodeFrame(currFrame, &output);
         } catch (const std::runtime_error& e) {
             // Only one try and catch block. All exceptions thrown by the library are catched here.
-            uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::FATAL, "APPLICATION",
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Caught exception using uvgvpcc_enc library: " + std::string(e.what()) + " failed after processing\n");
             return EXIT_FAILURE;
         }
@@ -359,14 +359,14 @@ int main(const int argc, const char* const argv[]) {
 
     file_writer_thread.join();
 
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::INFO, "APPLICATION", "Encoded " + std::to_string(frameRead) + " frames.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Encoded " + std::to_string(frameRead) + " frames.\n");
 
     inputTh.join();
     // uvgvpcc_enc::API::stopEncoder(); // lf: not usefull (call two times ThreadQueue::stop()) because of custom destructor for ThreadQueue
 
     if (uvgvpcc_enc::p_->timerLog) {
         encodingTimerTotal = uvgvpcc_enc::global_timer.elapsed() - encodingTimerTotal;
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::PROFILING, "TIMER ENCODING TOTAL",std::to_string(encodingTimerTotal) + " ms\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::PROFILING>("TIMER ENCODING TOTAL",std::to_string(encodingTimerTotal) + " ms\n");
     }    
     return EXIT_SUCCESS;
 }

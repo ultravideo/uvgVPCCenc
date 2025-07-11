@@ -203,7 +203,7 @@ void PatchPacking::allocateDefaultOccupancyMap(const std::shared_ptr<uvgvpcc_enc
 // Patch placement and indirect occupancy map generation //
 void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::span<uvgvpcc_enc::Patch>* patchListSpan) {
     if (!p_->interPatchPacking) {
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH PACKING",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH PACKING",
                                  "Intra pack patches of frame " + std::to_string(frame->frameId) + ".\n");
     }
 
@@ -269,7 +269,7 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
 // Patch placement and indirect occupancy map generation using union patch information for the matched patch //
 void PatchPacking::frameInterPatchPacking(const std::vector<uvgvpcc_enc::Patch>& unionPatches,
                                           const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::span<uvgvpcc_enc::Patch>* matchedPatchList) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "GLOBAL PATCH PACKING",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("GLOBAL PATCH PACKING",
                              "Inter patch packing of the matched patches of frame " + std::to_string(frame->frameId) + ".\n");
 
     // Iterate over all patches of the frame that are matched with a union match //
@@ -374,7 +374,7 @@ void PatchPacking::patchMatchingBetweenTwoFrames(const std::shared_ptr<uvgvpcc_e
 }
 
 void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH PACKING",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH PACKING",
                              "Inter pack patches of GOF " + std::to_string(gof->gofId) + ".\n");
 
     auto& firstFrame = gof->frames[0];
@@ -383,7 +383,7 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
         // Basic intra packing method
         std::span<uvgvpcc_enc::Patch> patchList(firstFrame->patchList);
         allocateDefaultOccupancyMap(firstFrame,p_->minimumMapHeight);
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH PACKING",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH PACKING",
                                  "Intra pack patches of frame " + std::to_string(firstFrame->frameId) +
                                      " as it is the only frame within the GOF " + std::to_string(gof->gofId) + ".\n");
         frameIntraPatchPacking(firstFrame, &patchList);
@@ -453,7 +453,7 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
 
     std::span<uvgvpcc_enc::Patch> unionPatchList(unionPatches);
     allocateDefaultOccupancyMap(firstFrame,p_->minimumMapHeight);
-    uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH PACKING",
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH PACKING",
                              "Intra pack patches of the union patches of GOF " + std::to_string(gof->gofId) + ".\n");
     frameIntraPatchPacking(firstFrame, &unionPatchList);
 
@@ -518,7 +518,7 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
                                                         frame->patchList.end());
         frameInterPatchPacking(unionPatches, frame, &matchedPatches);
 
-        uvgvpcc_enc::Logger::log(uvgvpcc_enc::LogLevel::TRACE, "PATCH PACKING",
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH PACKING",
                                  "Intra pack patches of the non-matched patches of frame " + std::to_string(frame->frameId) + ".\n");
         frameIntraPatchPacking(frame, &nonMatchedPatches);
     }
