@@ -1,13 +1,9 @@
 <map id="NormalOrientation::orientNormals" name="NormalOrientation::orientNormals">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,73,156,113"/>
-<area shape="rect" id="Node000002" href="$utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e" title=" " alt="" coords="251,5,343,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="125,70,203,39,237,29,239,34,205,45,127,75"/>
-<area shape="rect" id="Node000003" href="$utilsPatchGeneration_8hpp.html#a7e03bd9f637d6875e048306bf9f014a2" title=" " alt="" coords="230,55,365,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="156,81,216,74,217,79,157,87"/>
-<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="204,104,391,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="157,98,191,102,190,107,156,104"/>
-<area shape="rect" id="Node000006" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="215,153,380,179"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="131,110,205,138,234,147,232,152,203,143,129,115"/>
-<area shape="rect" id="Node000005" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="439,97,597,137"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="391,114,425,114,425,119,391,119"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,47,156,87"/>
+<area shape="rect" id="Node000002" href="$utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e" title=" " alt="" coords="241,5,333,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="156,47,227,30,228,35,157,52"/>
+<area shape="rect" id="Node000003" href="$utilsPatchGeneration_8hpp.html#a7e03bd9f637d6875e048306bf9f014a2" title=" " alt="" coords="219,55,354,80"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,65,205,65,205,70,157,70"/>
+<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="204,104,369,129"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="157,83,220,98,219,103,156,88"/>
 </map>

@@ -23,5 +23,6 @@ var searchData=
   ['optind_20',['optind',['../getopt_8c.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c'],['../getopt_8h.html#ad5e1c16213bbee2d5e8cc363309f418c',1,'optind:&#160;getopt.c']]],
   ['optopt_21',['optopt',['../getopt_8c.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.c'],['../getopt_8h.html#a475b8db98445da73e5f62a1ef6324b95',1,'optopt:&#160;getopt.h']]],
   ['optreset_22',['optreset',['../getopt_8c.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.c'],['../getopt_8h.html#a62231492adf03e02ff80d0bfb3b3ebd6',1,'optreset:&#160;getopt.h']]],
-  ['outputpath_23',['outputPath',['../structcli_1_1opts__t.html#a3717f025214afbd5667d2fc96cd7ae6c',1,'cli::opts_t']]]
+  ['outputdefaultvalue_23',['outputDefaultValue',['../namespaceuvgvpcc__enc.html#ad624be4ca9fa92882740c0089ae956e4',1,'uvgvpcc_enc']]],
+  ['outputpath_24',['outputPath',['../structcli_1_1opts__t.html#a3717f025214afbd5667d2fc96cd7ae6c',1,'cli::opts_t']]]
 ];

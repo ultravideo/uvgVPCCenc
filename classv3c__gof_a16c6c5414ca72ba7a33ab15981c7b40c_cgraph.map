@@ -1,26 +1,22 @@
 <map id="v3c_gof::write_v3c_ld_chunk" name="v3c_gof::write_v3c_ld_chunk">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,165,148,205"/>
-<area shape="rect" id="Node000002" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="196,15,383,41"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,164,135,115,164,88,195,64,234,44,237,48,197,69,167,92,139,119,96,167"/>
-<area shape="rect" id="Node000004" href="$bitstream__util_8cpp.html#ac69c20ee312c7d90392e8a6b3b06341a" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="446,69,601,109"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="100,163,143,133,195,108,255,93,318,84,432,81,432,86,318,90,256,98,197,113,145,138,103,167"/>
-<area shape="rect" id="Node000006" href="$bitstream__util_8cpp.html#a3bdf77ac9496bba79a46c840a4042550" title=" " alt="" coords="204,123,375,149"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="148,166,220,149,221,154,149,171"/>
-<area shape="rect" id="Node000008" href="$bitstream__util_8cpp.html#a6ad7f5421e391ce3552b43f2c387ad59" title=" " alt="" coords="217,173,361,198"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="149,183,204,183,204,188,149,188"/>
-<area shape="rect" id="Node000009" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="217,222,361,247"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="149,199,221,216,220,221,148,204"/>
-<area shape="rect" id="Node000011" href="$bitstream__util_8cpp.html#ad3c9546517d2a78df0a17d9cd426ac17" title=" " alt="" coords="214,272,365,312"/>
-<area shape="poly" id="edge11_Node000001_Node000011" title=" " alt="" coords="107,203,149,231,197,258,213,264,210,269,195,262,146,235,104,208"/>
-<area shape="rect" id="Node000012" href="$bitstream__util_8cpp.html#aa11755e3025221790473c013345959ab" title=" " alt="" coords="217,337,361,362"/>
-<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="92,204,134,263,163,295,197,322,211,329,209,334,195,326,160,299,130,266,88,207"/>
-<area shape="rect" id="Node000003" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="444,5,603,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="383,24,430,24,430,29,383,30"/>
-<area shape="rect" id="Node000005" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="664,137,819,177"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="589,107,664,131,663,136,587,112"/>
-<area shape="rect" id="Node000007" href="$bitstream__util_8cpp.html#a9f9ae794155176e68c744fa3f2ed57cd" title=" " alt="" coords="449,133,598,173"/>
-<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="375,140,435,144,435,149,375,145"/>
-<area shape="rect" id="Node000010" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="431,205,616,230"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="362,227,417,223,417,228,362,232"/>
-<area shape="poly" id="edge10_Node000010_Node000005" title=" " alt="" coords="570,202,654,178,656,184,571,207"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,131,148,171"/>
+<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#ac69c20ee312c7d90392e8a6b3b06341a" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="430,5,585,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="93,128,136,86,164,65,195,48,250,31,308,20,364,16,416,16,416,21,365,21,309,26,252,36,197,53,167,69,139,90,97,132"/>
+<area shape="rect" id="Node000004" href="$bitstream__util_8cpp.html#a3bdf77ac9496bba79a46c840a4042550" title=" " alt="" coords="196,63,367,89"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="120,128,195,97,217,90,219,95,197,103,122,133"/>
+<area shape="rect" id="Node000006" href="$bitstream__util_8cpp.html#a6ad7f5421e391ce3552b43f2c387ad59" title=" " alt="" coords="209,113,353,138"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="148,139,195,133,196,139,148,145"/>
+<area shape="rect" id="Node000007" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="209,162,353,187"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="148,156,196,162,195,167,148,162"/>
+<area shape="rect" id="Node000009" href="$bitstream__util_8cpp.html#ad3c9546517d2a78df0a17d9cd426ac17" title=" " alt="" coords="206,212,357,252"/>
+<area shape="poly" id="edge9_Node000001_Node000009" title=" " alt="" coords="126,168,197,198,215,205,213,210,195,202,124,173"/>
+<area shape="rect" id="Node000010" href="$bitstream__util_8cpp.html#aa11755e3025221790473c013345959ab" title=" " alt="" coords="209,277,353,302"/>
+<area shape="poly" id="edge10_Node000001_Node000010" title=" " alt="" coords="96,169,139,216,167,240,197,262,213,269,210,274,195,266,163,245,135,220,92,173"/>
+<area shape="rect" id="Node000003" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="648,80,803,120"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="567,43,654,73,653,78,565,48"/>
+<area shape="rect" id="Node000005" href="$bitstream__util_8cpp.html#a9f9ae794155176e68c744fa3f2ed57cd" title=" " alt="" coords="433,69,582,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="367,78,419,81,419,87,367,84"/>
+<area shape="rect" id="Node000008" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="415,147,600,173"/>
+<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="354,167,401,164,401,170,354,173"/>
+<area shape="poly" id="edge8_Node000008_Node000003" title=" " alt="" coords="554,145,638,121,640,126,555,150"/>
 </map>

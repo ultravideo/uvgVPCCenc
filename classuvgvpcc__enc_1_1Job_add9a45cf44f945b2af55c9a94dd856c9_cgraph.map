@@ -1,9 +1,5 @@
 <map id="uvgvpcc_enc::Job::wait" name="uvgvpcc_enc::Job::wait">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,176,56"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,176,31"/>
 <area shape="rect" id="Node000002" href="$classuvgvpcc__enc_1_1Job.html#a5f316185e7cead1e22db38fc064ae3ca" title=" " alt="" coords="224,5,427,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,31,210,28,211,33,177,37"/>
-<area shape="rect" id="Node000003" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="232,55,419,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="177,49,219,54,218,59,176,55"/>
-<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="475,47,633,87"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="419,65,461,65,461,70,419,70"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="176,15,210,15,210,21,176,21"/>
 </map>

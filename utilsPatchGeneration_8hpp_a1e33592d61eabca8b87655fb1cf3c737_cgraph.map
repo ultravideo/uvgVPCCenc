@@ -1,12 +1,8 @@
 <map id="voxelization" name="voxelization">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,94,107,119"/>
-<area shape="rect" id="Node000002" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="155,13,341,38"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="75,92,111,70,154,48,178,39,180,44,156,53,113,74,78,96"/>
-<area shape="rect" id="Node000004" href="$classrobin__hood_1_1detail_1_1Table.html#a6c2d436df6800ac290cc26da5961a331" title=" " alt="" coords="179,87,317,127"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="107,104,165,104,165,109,107,109"/>
-<area shape="rect" id="Node000005" href="$classrobin__hood_1_1detail_1_1Table.html#a1d9deb34fedb87863788360123c53973" title=" " alt="" coords="171,151,325,191"/>
-<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="96,117,175,144,173,149,94,122"/>
-<area shape="rect" id="Node000003" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="389,5,548,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="342,23,376,23,376,28,342,28"/>
-<area shape="poly" id="edge4_Node000004_Node000004" title=" " alt="" coords="212,87,210,77,215,68,228,62,248,60,271,63,283,70,280,75,269,68,248,65,230,67,219,72,215,78,217,86"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,69,107,94"/>
+<area shape="rect" id="Node000002" href="$classrobin__hood_1_1detail_1_1Table.html#a6c2d436df6800ac290cc26da5961a331" title=" " alt="" coords="162,29,301,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,70,148,62,149,67,107,75"/>
+<area shape="rect" id="Node000003" href="$classrobin__hood_1_1detail_1_1Table.html#a1d9deb34fedb87863788360123c53973" title=" " alt="" coords="155,93,308,133"/>
+<area shape="poly" id="edge3_Node000001_Node000003" title=" " alt="" coords="107,88,141,94,140,99,106,93"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="198,30,196,20,202,11,213,5,231,3,252,6,263,13,260,17,250,11,231,8,215,10,205,15,202,21,203,28"/>
 </map>

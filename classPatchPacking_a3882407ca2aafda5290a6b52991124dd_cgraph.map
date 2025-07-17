@@ -1,15 +1,9 @@
 <map id="PatchPacking::gofPatchPacking" name="PatchPacking::gofPatchPacking">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,106,227,131"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,77,227,102"/>
 <area shape="rect" id="Node000002" href="$classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54" title=" " alt="" coords="275,5,489,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="147,103,274,55,298,47,300,52,276,60,149,108"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,74,284,46,286,51,171,79"/>
 <area shape="rect" id="Node000003" href="$classPatchPacking.html#a1f7d7e56508922503b11cbe49d4d21ba" title=" " alt="" coords="290,69,474,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="226,104,276,98,277,104,227,109"/>
-<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#af125e72496c52fe57a8aafaadc445ac2" title=" " alt="" coords="537,134,724,159"/>
-<area shape="poly" id="edge7_Node000001_Node000004" title=" " alt="" coords="227,122,524,138,523,144,227,127"/>
-<area shape="rect" id="Node000006" href="$classPatchPacking.html#ae18c38bf6f8d8681f7bc4020eb8146c3" title=" " alt="" coords="290,184,474,224"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="158,129,307,177,305,182,156,134"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="470,107,562,128,561,134,469,112"/>
-<area shape="rect" id="Node000005" href="$classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507" title=" " alt="" coords="772,127,931,167"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="724,144,758,144,758,149,724,149"/>
-<area shape="poly" id="edge6_Node000006_Node000004" title=" " alt="" coords="469,181,561,160,562,165,470,187"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,87,276,87,276,92,227,92"/>
+<area shape="rect" id="Node000004" href="$classPatchPacking.html#ae18c38bf6f8d8681f7bc4020eb8146c3" title=" " alt="" coords="290,133,474,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,100,286,128,284,133,169,105"/>
 </map>
