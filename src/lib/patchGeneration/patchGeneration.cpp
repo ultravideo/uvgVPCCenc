@@ -126,7 +126,7 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     }
     
     // Patch segmentation //
-    PatchSegmentation::patchSegmentation(frame, pointsPPIs);
+    PatchSegmentation::patchSegmentation(frame, pointsPPIs); 
 
     // Sort patches //
     // Sort patches from the biggest to the smallest // // TODO(lf): might be better to use area ?
@@ -135,7 +135,7 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
         return std::max(patchA.widthInPixel_, patchA.heightInPixel_) > std::max(patchB.widthInPixel_, patchB.heightInPixel_);
     });
 
-
     std::vector<Vector3<typeGeometryInput>>().swap(frame->pointsGeometry); // Release memory
+    //TODO(lf): try using noexcept to improve performance
 
 }

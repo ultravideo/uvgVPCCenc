@@ -193,8 +193,6 @@ void initializeParameterMap(Parameters& param) {
         // ___ Patch generation ___ //   (patch segmentation)
         {"maxAllowedDist2RawPointsDetection", {UINT, "", &param.maxAllowedDist2RawPointsDetection}},
         {"minPointCountPerCC", {UINT, "", &param.minPointCountPerCC}},
-        {"maxPatchSize", {UINT, "", &param.maxPatchSize}},
-        {"maxNNCountPatchSegmentation", {UINT, "", &param.maxNNCountPatchSegmentation}},
         {"patchSegmentationMaxPropagationDistance", {UINT, "", &param.patchSegmentationMaxPropagationDistance}},
         {"enablePatchSplitting", {BOOL, "", &param.enablePatchSplitting}},
         {"minLevel", {UINT, "", &param.minLevel}},

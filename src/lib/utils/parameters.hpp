@@ -100,8 +100,6 @@ struct Parameters {
     // ___ Patch generation ___ //   (patch segmentation)
     size_t maxAllowedDist2RawPointsDetection = 5; // TODO(lf): add verification to avoid segfault because index out of bound
     size_t minPointCountPerCC;
-    size_t maxPatchSize;               // TODO(lf): debug when maxPatchSize = 200
-    size_t maxNNCountPatchSegmentation = 5;  // TODO(lf)check max all NN
     size_t patchSegmentationMaxPropagationDistance = 3;  
         // lf : for reworked function only. If the value is 4, the euclidian distance is 16.  // TODO(lf): the default value should be 2 I
             // guess // Nop, it should be 1 // TODO(lf): make sure to use <= instead of < in the for loop so to avoid this confusion.
@@ -114,6 +112,7 @@ struct Parameters {
     size_t quantizerSizeX = static_cast<size_t>(1) << log2QuantizerSizeX; // TODO(lf): investigate
     size_t quantizerSizeY = static_cast<size_t>(1) << log2QuantizerSizeY;
     size_t surfaceThickness = 4;
+    size_t distanceFiltering = 32; // tmp_a in TMC2 // TODO(lf) check impact on quality
 
 
     // ___ Patch packing ___ //

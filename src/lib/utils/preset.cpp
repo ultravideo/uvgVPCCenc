@@ -67,8 +67,7 @@ Preset preset_vox9_fast = {
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC","16"},   // TODO(lf)-PRESET: subjective quality and performance only 
-    {"maxPatchSize","608"},    // TODO(lf)-PRESET: subjective quality and performance only
-
+    
     // ___ Patch packing ___ //
     {"mapWidth","608"},
     {"minimumMapHeight","608"},
@@ -104,8 +103,7 @@ Preset preset_vox9_slow = {
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC","5"}, // TODO(lf)-PRESET: fixed
-    {"maxPatchSize","608"},
-
+    
     // ___ Patch packing ___ //
     {"mapWidth","608"},
     {"minimumMapHeight","608"},
@@ -142,8 +140,7 @@ Preset preset_vox10_fast = {
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC","16"},
-    {"maxPatchSize","1024"},
-
+    
     // ___ Patch packing ___ //
     {"mapWidth","1024"},
     {"minimumMapHeight","1024"},
@@ -179,8 +176,7 @@ Preset preset_vox10_slow = {
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC","5"},
-    {"maxPatchSize","1024"},
-
+    
     // ___ Patch packing ___ //
     {"mapWidth","1024"},
     {"minimumMapHeight","1024"},
@@ -216,8 +212,7 @@ Preset preset_vox11_fast = {
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC","16"},
-    {"maxPatchSize","2048"},
-
+    
     // ___ Patch packing ___ //
     {"mapWidth","2048"},
     {"minimumMapHeight","2048"},
@@ -253,8 +248,7 @@ Preset preset_vox11_slow = {
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC","16"},
-    {"maxPatchSize","2048"},
-
+    
     // ___ Patch packing ___ //
     {"mapWidth","2048"},
     {"minimumMapHeight","2048"},
@@ -351,8 +345,7 @@ void applyPreset(Parameters& param) {
         // Adjust the size of the max size of the patch and maps dimension
         const std::string scaledSize = std::to_string((1 + param.geoBitDepthInput - 11) * 2048);
 
-        setParameterValue("maxPatchSize", scaledSize, true);
-        setParameterValue("mapWidth", scaledSize, true);
+                setParameterValue("mapWidth", scaledSize, true);
         setParameterValue("minimumMapHeight", scaledSize, true);
 
         Logger::log<LogLevel::WARNING>("LIBRARY INTERFACE",

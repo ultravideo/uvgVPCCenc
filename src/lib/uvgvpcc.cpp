@@ -170,12 +170,6 @@ void verifyConfig() {
         throw std::runtime_error("The occupancy maps should not be encoded in lossy mode. (At least, this is a very dangerous things to try.)");
     }
 
-    if (p_->maxPatchSize > p_->mapWidth && p_->maxPatchSize > p_->minimumMapHeight) {
-        throw std::runtime_error("The maxPatchSize (" + std::to_string(p_->maxPatchSize) + ") is higher than the mapWidth (" +
-                                 std::to_string(p_->mapWidth) + ") and higher than the minimum image height (" +
-                                 std::to_string(p_->minimumMapHeight) + ")");
-    }
-
     if (roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution) != p_->minimumMapHeight ||
         roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8) != p_->minimumMapHeight / p_->occupancyMapDSResolution) {
         throw std::runtime_error(
@@ -452,8 +446,7 @@ void Frame::printInfo() const {
                 "Frame " + std::to_string(frameId) + " :\n" + "\tPath: " + pointCloudPath + "\n" + "\tFrame Number: " +
                     std::to_string(frameNumber) + "\n" + "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
                     "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n" +
-                    "\tpatchList size: " + std::to_string(patchList.size()) + "\n" + "\tpatchPartition size: " +
-                    std::to_string(patchPartition.size()) + "\n" + "\toccupancyMapDS size: " + std::to_string(occupancyMapDS.size()) + "\n" +
+                    "\tpatchList size: " + std::to_string(patchList.size()) + "\n" + "\toccupancyMapDS size: " + std::to_string(occupancyMapDS.size()) + "\n" +
                     "\tgeometryMapL1 size: " + std::to_string(geometryMapL1.size()) + "\n" + "\tgeometryMapL2 size: " +
                     std::to_string(geometryMapL2.size()) + "\n" + "\tattributeMapL1 size: " + std::to_string(attributeMapL1.size()) + "\n" +
                     "\tattributeMapL2 size: " + std::to_string(attributeMapL2.size()) + "\n");

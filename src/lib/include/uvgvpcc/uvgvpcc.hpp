@@ -68,7 +68,7 @@ struct Patch {
     
     bool projectionMode_;  // 0: related to the min depth value; 1: related to the max value
 
-    size_t sizeD_;  // size for depth (TODO(lf): is it the real patch thickness or the maximum possible thickness?)
+    size_t sizeD_;  // while posD_ is the minimum 'depth', sizeD_ store the maximum depth. TODO(lf): check if it is usefull
 
     std::vector<uint8_t> patchOccupancyMap_;  // patch occupancy map (boolean vector)
     
@@ -114,7 +114,7 @@ struct Patch {
         projectionMode_ = projectionMode;  // TODO(lf): projection mode optimization per patch
     }
 
-    void setPatchPpi(size_t patchPpi) {
+    inline void setPatchPpiAndAxis(size_t patchPpi) {
         patchPpi_ = patchPpi;
         // now set the other variables according to the viewId
         switch (patchPpi_) {
@@ -183,7 +183,6 @@ struct Frame {
     std::vector<Vector3<uint8_t>> pointsAttribute;
 
     std::vector<Patch> patchList;
-    std::vector<size_t> patchPartition;  // Associate a point index to the index of its patch
 
     size_t mapHeight = 0;              // TODO(lf): Will be a gof parameter ?
     size_t mapHeightDS = 0;
