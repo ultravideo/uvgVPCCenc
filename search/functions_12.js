@@ -14,7 +14,7 @@ var searchData=
   ['setoutputstream_11',['setOutputStream',['../classuvgvpcc__enc_1_1Logger.html#a98763524c785d75831536ff224bbe5f0',1,'uvgvpcc_enc::Logger']]],
   ['setparameter_12',['setParameter',['../namespaceuvgvpcc__enc_1_1API.html#a4f96ae0ff4cd8de49d2174443e281cbe',1,'uvgvpcc_enc::API']]],
   ['setparametervalue_13',['setParameterValue',['../namespaceuvgvpcc__enc.html#a5f0085b986c3146442ec6cfc354a1e1f',1,'uvgvpcc_enc']]],
-  ['setpatchppi_14',['setPatchPpi',['../structuvgvpcc__enc_1_1Patch.html#a3ecf8a9dc6427df10fb92d4220d3a50f',1,'uvgvpcc_enc::Patch']]],
+  ['setpatchppiandaxis_14',['setPatchPpiAndAxis',['../structuvgvpcc__enc_1_1Patch.html#a39a5ea3f10e0624427e20b7f2d41a009',1,'uvgvpcc_enc::Patch']]],
   ['setstate_15',['setState',['../classuvgvpcc__enc_1_1Job.html#ac5813037829f42c3404be26bb6c91388',1,'uvgvpcc_enc::Job']]],
   ['size_16',['size',['../classnanoflann_1_1RadiusResultSet.html#ab5a0a9dd5259c59a88d21dd04c384dbe',1,'nanoflann::RadiusResultSet::size()'],['../classrobin__hood_1_1detail_1_1Table.html#aa181b46b39e30eed42fa5efa3938909b',1,'robin_hood::detail::Table::size()'],['../classrobin__hood_1_1ROBIN__HOOD__STD_1_1integer__sequence.html#a4f572a3962468eef733ccf9369da1bc9',1,'robin_hood::ROBIN_HOOD_STD::integer_sequence::size()'],['../classnanoflann_1_1KDTreeBaseClass.html#a87c4cdfb51bc80b902d7b56683b93e91',1,'nanoflann::KDTreeBaseClass::size()'],['../classnanoflann_1_1RKNNResultSet.html#a3a42608d697e7a19f34a69c562181d57',1,'nanoflann::RKNNResultSet::size()'],['../classnanoflann_1_1KNNResultSet.html#a58add38e4df731807f32c41b008bd1e2',1,'nanoflann::KNNResultSet::size()']]],
   ['so2_5fadaptor_17',['SO2_Adaptor',['../structnanoflann_1_1SO2__Adaptor.html#add1e35acd54e8b210c7fd2ca47c8cfd7',1,'nanoflann::SO2_Adaptor']]],

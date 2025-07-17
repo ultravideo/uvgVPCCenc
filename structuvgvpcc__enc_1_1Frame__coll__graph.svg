@@ -43,8 +43,8 @@
 <text text-anchor="start" x="4.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">patchList</text>
 <text text-anchor="start" x="4.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">patchPartition</text>
-<text text-anchor="start" x="17.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 8 more...</text>
+<text text-anchor="start" x="17.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">mapHeight</text>
+<text text-anchor="start" x="17.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 7 more...</text>
 <text text-anchor="start" x="4.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Frame()</text>
 <text text-anchor="start" x="4.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

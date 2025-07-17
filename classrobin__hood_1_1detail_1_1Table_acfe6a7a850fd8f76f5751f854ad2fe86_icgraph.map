@@ -1,27 +1,13 @@
 <map id="robin_hood::detail::Table::emplace" name="robin_hood::detail::Table::emplace">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1001,229,1140,269"/>
-<area shape="rect" id="Node000002" href="$classrobin__hood_1_1detail_1_1Table.html#aa9d4385d4c3ad755d42f15a176a68992" title=" " alt="" coords="793,5,953,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1055,218,1039,181,1016,139,987,97,952,59,934,48,937,43,955,55,991,93,1020,136,1043,179,1060,215"/>
-<area shape="rect" id="Node000003" href="$classrobin__hood_1_1detail_1_1Table.html#ab993cd79ffa799d8ffefad33e7bace45" title=" " alt="" coords="804,69,943,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="1045,220,1005,171,979,146,952,124,931,112,934,107,955,119,983,142,1009,167,1049,216"/>
-<area shape="rect" id="Node000004" href="$classrobin__hood_1_1detail_1_1Table.html#ac7f06f67121fa86a94656c7d2e471094" title=" " alt="" coords="804,133,943,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="1022,225,952,188,926,176,928,171,954,183,1025,220"/>
-<area shape="rect" id="Node000005" href="$classrobin__hood_1_1detail_1_1Table.html#a3b7ad90d32597a6e0325bacbcbe5db44" title=" " alt="" coords="804,197,943,237"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="987,239,943,231,943,226,988,233"/>
-<area shape="rect" id="Node000006" href="$classrobin__hood_1_1detail_1_1Table.html#a3c84b5028bce0670d516d6d68de928b3" title=" " alt="" coords="804,261,943,301"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="988,265,943,273,943,267,987,260"/>
-<area shape="rect" id="Node000007" href="$classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac" title=" " alt="" coords="589,376,745,416"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1027,279,954,316,862,346,745,379,744,373,861,341,952,311,1024,274"/>
-<area shape="rect" id="Node000011" href="$classPatchSegmentation.html#a92baf340c005144fdd53c04ad99dd657" title=" " alt="" coords="795,376,951,416"/>
-<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="1044,281,1003,321,955,360,923,378,920,374,952,355,1000,317,1040,278"/>
-<area shape="rect" id="Node000012" href="$classPatchSegmentation.html#a712463e82395b7797ee915f932e23157" title=" " alt="" coords="794,440,953,480"/>
-<area shape="poly" id="edge12_Node000001_Node000012" title=" " alt="" coords="1058,283,1018,356,989,395,955,430,937,442,934,438,952,426,985,392,1014,353,1053,280"/>
-<area shape="rect" id="Node000008" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="347,376,541,416"/>
-<area shape="poly" id="edge7_Node000007_Node000008" title=" " alt="" coords="575,399,541,399,541,393,575,393"/>
-<area shape="rect" id="Node000009" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,376,299,416"/>
-<area shape="poly" id="edge8_Node000008_Node000009" title=" " alt="" coords="333,399,299,399,299,393,333,393"/>
-<area shape="rect" id="Node000010" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,383,60,409"/>
-<area shape="poly" id="edge9_Node000009_Node000010" title=" " alt="" coords="94,399,60,399,60,393,94,393"/>
-<area shape="poly" id="edge11_Node000011_Node000007" title=" " alt="" coords="782,399,746,399,746,393,782,393"/>
-<area shape="poly" id="edge13_Node000012_Node000007" title=" " alt="" coords="795,438,731,419,733,413,796,433"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="213,133,352,173"/>
+<area shape="rect" id="Node000002" href="$classrobin__hood_1_1detail_1_1Table.html#aa9d4385d4c3ad755d42f15a176a68992" title=" " alt="" coords="5,5,165,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,126,210,92,164,60,141,48,144,43,167,55,213,88,253,122"/>
+<area shape="rect" id="Node000003" href="$classrobin__hood_1_1detail_1_1Table.html#ab993cd79ffa799d8ffefad33e7bace45" title=" " alt="" coords="16,69,155,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="207,132,147,112,148,107,208,127"/>
+<area shape="rect" id="Node000004" href="$classrobin__hood_1_1detail_1_1Table.html#ac7f06f67121fa86a94656c7d2e471094" title=" " alt="" coords="16,133,155,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="200,156,155,156,155,151,200,151"/>
+<area shape="rect" id="Node000005" href="$classrobin__hood_1_1detail_1_1Table.html#a3b7ad90d32597a6e0325bacbcbe5db44" title=" " alt="" coords="16,197,155,237"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="208,180,148,200,147,195,207,175"/>
+<area shape="rect" id="Node000006" href="$classrobin__hood_1_1detail_1_1Table.html#a3c84b5028bce0670d516d6d68de928b3" title=" " alt="" coords="16,261,155,301"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="253,185,213,219,167,252,144,264,141,259,164,247,210,215,249,181"/>
 </map>

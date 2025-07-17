@@ -6,30 +6,30 @@
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="32,867,38,795,52,689,74,583,88,542,106,513,109,510,113,513,110,516,93,544,79,585,57,689,44,795,37,867"/>
 <area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="128,527,319,567"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="39,866,202,577,206,580,44,868"/>
-<area shape="rect" id="Node000065" href="$namespaceuvgvpcc__enc_1_1API.html#a3adde30edb633723ea38c3860bc86007" title="Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given conf..." alt="" coords="124,860,323,900"/>
-<area shape="poly" id="edge57_Node000001_Node000065" title=" " alt="" coords="60,877,110,877,110,883,60,883"/>
-<area shape="rect" id="Node000067" href="$namespacecli.html#a2d93061cde230144d832875cd3e999b6" title="Parse command line options." alt="" coords="165,925,281,950"/>
-<area shape="poly" id="edge59_Node000001_Node000067" title=" " alt="" coords="61,890,109,909,153,921,151,927,107,915,59,895"/>
-<area shape="rect" id="Node000072" href="$namespacecli.html#aef6d49e975008a8484ff5046a66c1051" title="Print the default usage of the application." alt="" coords="163,974,284,999"/>
-<area shape="poly" id="edge64_Node000001_Node000072" title=" " alt="" coords="44,891,70,926,89,944,109,959,151,975,149,980,107,964,85,948,66,929,40,894"/>
-<area shape="rect" id="Node000073" href="$namespaceuvgvpcc__enc_1_1API.html#a4f96ae0ff4cd8de49d2174443e281cbe" title="The only way to modify the exposed uvgVPCCenc parameters is by calling this function." alt="" coords="108,1023,339,1049"/>
-<area shape="poly" id="edge65_Node000001_Node000073" title=" " alt="" coords="40,892,63,949,83,981,110,1009,120,1015,117,1020,106,1013,79,985,58,951,35,894"/>
+<area shape="rect" id="Node000049" href="$namespaceuvgvpcc__enc_1_1API.html#a3adde30edb633723ea38c3860bc86007" title="Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given conf..." alt="" coords="124,860,323,900"/>
+<area shape="poly" id="edge55_Node000001_Node000049" title=" " alt="" coords="60,877,110,877,110,883,60,883"/>
+<area shape="rect" id="Node000051" href="$namespacecli.html#a2d93061cde230144d832875cd3e999b6" title="Parse command line options." alt="" coords="165,925,281,950"/>
+<area shape="poly" id="edge57_Node000001_Node000051" title=" " alt="" coords="61,890,109,909,153,921,151,927,107,915,59,895"/>
+<area shape="rect" id="Node000056" href="$namespacecli.html#aef6d49e975008a8484ff5046a66c1051" title="Print the default usage of the application." alt="" coords="163,974,284,999"/>
+<area shape="poly" id="edge62_Node000001_Node000056" title=" " alt="" coords="44,891,70,926,89,944,109,959,151,975,149,980,107,964,85,948,66,929,40,894"/>
+<area shape="rect" id="Node000057" href="$namespaceuvgvpcc__enc_1_1API.html#a4f96ae0ff4cd8de49d2174443e281cbe" title="The only way to modify the exposed uvgVPCCenc parameters is by calling this function." alt="" coords="108,1023,339,1049"/>
+<area shape="poly" id="edge63_Node000001_Node000057" title=" " alt="" coords="40,892,63,949,83,981,110,1009,120,1015,117,1020,106,1013,79,985,58,951,35,894"/>
 <area shape="rect" id="Node000005" href="$classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54" title=" " alt="" coords="717,463,932,503"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="318,528,386,519,552,501,703,488,704,494,552,506,387,524,319,534"/>
 <area shape="rect" id="Node000006" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="425,811,614,851"/>
 <area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="248,565,489,799,486,803,244,569"/>
-<area shape="rect" id="Node000026" href="$namespaceMapEncoding.html#a0bc181915a9f3bb43115710ccda8ffcd" title=" " alt="" coords="406,153,633,178"/>
-<area shape="poly" id="edge27_Node000004_Node000026" title=" " alt="" coords="317,528,337,513,352,493,362,473,370,433,367,392,358,352,350,311,348,270,357,229,368,209,385,189,393,182,396,186,389,193,373,212,362,231,353,271,355,310,364,351,372,391,375,433,367,475,356,496,341,517,321,532"/>
+<area shape="rect" id="Node000026" href="$namespaceMapEncoding.html#a0bc181915a9f3bb43115710ccda8ffcd" title=" " alt="" coords="406,149,633,174"/>
+<area shape="poly" id="edge27_Node000004_Node000026" title=" " alt="" coords="317,528,337,513,352,493,362,472,370,432,367,391,358,350,350,308,347,267,357,226,368,205,385,185,393,178,396,182,389,189,373,208,362,228,353,268,355,308,364,349,372,390,376,432,367,474,356,495,341,517,321,532"/>
 <area shape="rect" id="Node000027" href="$classPatchPacking.html#ae18c38bf6f8d8681f7bc4020eb8146c3" title=" " alt="" coords="733,591,917,631"/>
 <area shape="poly" id="edge28_Node000004_Node000027" title=" " alt="" coords="319,559,387,568,719,600,719,605,386,573,318,564"/>
-<area shape="rect" id="Node000028" href="$classMapGenerationBaseLine.html#a7d9862ea5acff65b91f5a2bfad449030" title=" " alt="" coords="429,203,610,243"/>
-<area shape="poly" id="edge29_Node000004_Node000028" title=" " alt="" coords="317,528,337,513,358,481,366,449,365,417,359,385,354,352,354,319,362,286,385,253,414,232,417,237,389,257,367,288,359,319,360,351,365,384,370,417,371,450,363,483,341,516,320,532"/>
-<area shape="rect" id="Node000030" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="422,267,617,307"/>
-<area shape="poly" id="edge31_Node000004_Node000030" title=" " alt="" coords="317,526,337,513,350,499,357,485,363,456,368,426,374,409,385,392,426,347,471,312,475,317,430,351,389,395,379,412,373,427,369,457,362,487,354,502,340,517,320,530"/>
-<area shape="rect" id="Node000062" href="$classPatchPacking.html#a3882407ca2aafda5290a6b52991124dd" title=" " alt="" coords="409,534,630,559"/>
-<area shape="poly" id="edge51_Node000004_Node000062" title=" " alt="" coords="319,544,395,544,395,549,319,549"/>
-<area shape="rect" id="Node000064" href="$classMapGenerationBaseLine.html#a186ae71d7a2e66d0f3200b8c2b43f148" title=" " alt="" coords="429,405,610,445"/>
-<area shape="poly" id="edge55_Node000004_Node000064" title=" " alt="" coords="312,524,337,512,352,502,361,491,370,480,385,468,429,448,431,452,388,473,374,484,365,495,355,506,340,517,314,529"/>
+<area shape="rect" id="Node000028" href="$classMapGenerationBaseLine.html#a7d9862ea5acff65b91f5a2bfad449030" title=" " alt="" coords="429,199,610,239"/>
+<area shape="poly" id="edge29_Node000004_Node000028" title=" " alt="" coords="317,528,337,513,358,480,366,448,365,416,359,383,354,349,353,316,362,282,385,249,414,228,417,233,389,253,367,284,359,316,359,349,365,382,370,415,371,449,363,483,341,516,320,532"/>
+<area shape="rect" id="Node000030" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="422,263,617,303"/>
+<area shape="poly" id="edge31_Node000004_Node000030" title=" " alt="" coords="317,526,337,513,350,499,357,485,363,457,368,426,384,392,427,345,473,309,476,313,431,349,389,395,373,427,369,458,362,487,354,502,340,517,320,530"/>
+<area shape="rect" id="Node000045" href="$classPatchPacking.html#a3882407ca2aafda5290a6b52991124dd" title=" " alt="" coords="409,534,630,559"/>
+<area shape="poly" id="edge49_Node000004_Node000045" title=" " alt="" coords="319,544,395,544,395,549,319,549"/>
+<area shape="rect" id="Node000047" href="$classMapGenerationBaseLine.html#a186ae71d7a2e66d0f3200b8c2b43f148" title=" " alt="" coords="429,405,610,445"/>
+<area shape="poly" id="edge53_Node000004_Node000047" title=" " alt="" coords="312,524,337,512,352,502,361,491,370,480,385,468,429,448,431,452,388,473,374,484,365,495,355,506,340,517,314,529"/>
 <area shape="rect" id="Node000007" href="$classv3c__gof.html#a6a107d849bed5cacedc55fe98f0772c1" title=" " alt="" coords="738,655,911,695"/>
 <area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="542,808,610,757,653,729,699,704,723,695,725,699,701,709,656,733,613,761,546,813"/>
 <area shape="rect" id="Node000008" href="$classv3c__gof.html#a263296629443aa4ac7dcf7f7e7884389" title=" " alt="" coords="727,719,922,745"/>
@@ -68,50 +68,48 @@
 <area shape="rect" id="Node000025" href="$bitstream__util_8cpp.html#ad3c9546517d2a78df0a17d9cd426ac17" title=" " alt="" coords="1007,1251,1158,1291"/>
 <area shape="poly" id="edge25_Node000024_Node000025" title=" " alt="" coords="898,1175,951,1195,966,1205,975,1216,999,1236,1010,1243,1008,1247,996,1241,972,1219,962,1209,948,1200,896,1180"/>
 <area shape="rect" id="Node000029" href="$classMapGenerationBaseLine.html#a5314cb6e72422598cd4e4f07b779bbfa" title=" " alt="" coords="734,5,915,45"/>
-<area shape="poly" id="edge30_Node000028_Node000029" title=" " alt="" coords="609,210,631,201,650,187,663,172,670,156,673,123,677,89,684,72,698,55,720,41,723,45,702,59,689,75,682,90,679,124,675,158,668,175,654,191,634,205,611,215"/>
+<area shape="poly" id="edge30_Node000028_Node000029" title=" " alt="" coords="609,206,631,197,650,183,663,168,670,153,673,121,677,88,685,71,698,55,720,41,723,45,702,59,689,74,682,89,679,122,675,155,667,171,654,187,634,201,611,211"/>
 <area shape="rect" id="Node000031" href="$namespaceNormalComputation.html#a46480ca405a1a36a28d865696ba485f0" title=" " alt="" coords="743,69,906,109"/>
-<area shape="poly" id="edge32_Node000030_Node000031" title=" " alt="" coords="616,273,634,264,650,253,663,237,670,221,673,188,677,153,684,136,698,119,729,100,732,105,702,123,689,139,682,155,679,188,675,223,668,240,654,257,637,269,618,277"/>
-<area shape="rect" id="Node000037" href="$classPPISegmenter.html#a96b9ea22784cdc373e67a724e3019475" title=" " alt="" coords="700,249,949,274"/>
-<area shape="poly" id="edge36_Node000030_Node000037" title=" " alt="" coords="617,276,686,270,686,275,617,281"/>
+<area shape="poly" id="edge32_Node000030_Node000031" title=" " alt="" coords="616,269,634,260,650,249,663,234,670,218,673,186,677,152,684,136,698,119,729,101,731,105,702,123,689,138,682,154,679,186,675,220,668,237,654,253,637,265,618,273"/>
+<area shape="rect" id="Node000037" href="$classPPISegmenter.html#a96b9ea22784cdc373e67a724e3019475" title=" " alt="" coords="700,183,949,209"/>
+<area shape="poly" id="edge36_Node000030_Node000037" title=" " alt="" coords="616,260,651,248,675,234,699,219,727,210,729,215,701,224,677,238,653,253,618,265"/>
 <area shape="rect" id="Node000039" href="$namespaceNormalOrientation.html#a5fadc067a7ed313e80ad559d11e7c67f" title=" " alt="" coords="749,348,900,388"/>
-<area shape="poly" id="edge40_Node000030_Node000039" title=" " alt="" coords="596,304,737,342,736,347,594,309"/>
-<area shape="rect" id="Node000040" href="$classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac" title=" " alt="" coords="747,184,903,224"/>
-<area shape="poly" id="edge44_Node000030_Node000040" title=" " alt="" coords="609,264,651,252,699,233,733,223,734,229,701,239,653,257,610,269"/>
-<area shape="rect" id="Node000059" href="$classPPISegmenter.html#a6d388df0893b2c0d43b730c7dd32f56f" title=" " alt="" coords="700,134,949,159"/>
-<area shape="poly" id="edge47_Node000030_Node000059" title=" " alt="" coords="616,271,650,253,667,233,673,212,680,190,698,170,709,163,712,168,702,174,685,193,678,214,671,236,654,257,618,275"/>
-<area shape="rect" id="Node000060" href="$utilsPatchGeneration_8hpp.html#a1e33592d61eabca8b87655fb1cf3c737" title=" " alt="" coords="774,298,875,323"/>
-<area shape="poly" id="edge50_Node000030_Node000060" title=" " alt="" coords="617,292,760,303,760,308,617,297"/>
+<area shape="poly" id="edge40_Node000030_Node000039" title=" " alt="" coords="589,300,701,332,737,342,735,347,699,337,588,305"/>
+<area shape="rect" id="Node000040" href="$classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac" title=" " alt="" coords="747,233,903,273"/>
+<area shape="poly" id="edge44_Node000030_Node000040" title=" " alt="" coords="617,271,733,259,733,265,617,276"/>
+<area shape="rect" id="Node000042" href="$classPPISegmenter.html#a6d388df0893b2c0d43b730c7dd32f56f" title=" " alt="" coords="700,134,949,159"/>
+<area shape="poly" id="edge45_Node000030_Node000042" title=" " alt="" coords="616,266,650,249,666,230,673,210,681,188,698,169,707,163,710,167,702,173,685,191,678,211,671,232,654,253,618,271"/>
+<area shape="rect" id="Node000043" href="$utilsPatchGeneration_8hpp.html#a1e33592d61eabca8b87655fb1cf3c737" title=" " alt="" coords="774,298,875,323"/>
+<area shape="poly" id="edge48_Node000030_Node000043" title=" " alt="" coords="617,289,760,302,760,307,617,294"/>
 <area shape="rect" id="Node000032" href="$namespaceNormalComputation.html#a68400b431752d36119a550beaafd042e" title=" " alt="" coords="1001,69,1164,109"/>
 <area shape="poly" id="edge33_Node000031_Node000032" title=" " alt="" coords="906,87,988,87,988,92,906,92"/>
-<area shape="rect" id="Node000035" href="$utilsPatchGeneration_8hpp.html#a7e03bd9f637d6875e048306bf9f014a2" title=" " alt="" coords="1015,217,1150,242"/>
-<area shape="poly" id="edge34_Node000031_Node000035" title=" " alt="" coords="907,98,930,107,951,119,969,140,976,162,983,182,999,202,1009,208,1006,213,996,206,978,185,971,163,964,143,948,123,928,111,906,103"/>
-<area shape="rect" id="Node000036" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="1000,167,1165,193"/>
-<area shape="poly" id="edge35_Node000031_Node000036" title=" " alt="" coords="907,106,950,119,1045,159,1043,164,948,124,905,111"/>
-<area shape="poly" id="edge38_Node000037_Node000035" title=" " alt="" coords="927,246,1001,237,1002,242,928,251"/>
-<area shape="poly" id="edge39_Node000037_Node000036" title=" " alt="" coords="909,246,948,234,972,218,996,202,1014,195,1016,199,999,206,975,223,950,238,911,251"/>
-<area shape="rect" id="Node000038" href="$utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e" title=" " alt="" coords="1037,323,1129,349"/>
-<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="903,272,950,283,1041,315,1039,320,949,288,902,277"/>
-<area shape="poly" id="edge42_Node000039_Node000035" title=" " alt="" coords="899,351,948,332,980,314,1010,292,1058,250,1061,254,1013,296,983,318,950,337,901,356"/>
-<area shape="poly" id="edge43_Node000039_Node000036" title=" " alt="" coords="899,357,925,348,948,333,960,317,967,302,971,269,975,236,982,219,995,202,1000,198,1004,202,999,206,986,221,980,237,976,270,972,303,965,320,951,337,928,352,901,362"/>
-<area shape="poly" id="edge41_Node000039_Node000038" title=" " alt="" coords="900,356,1023,341,1024,346,901,361"/>
-<area shape="poly" id="edge45_Node000040_Node000035" title=" " alt="" coords="903,209,1002,219,1001,224,903,214"/>
-<area shape="poly" id="edge46_Node000040_Node000036" title=" " alt="" coords="903,194,986,186,987,192,903,199"/>
-<area shape="poly" id="edge48_Node000059_Node000035" title=" " alt="" coords="911,157,950,170,975,185,999,202,1018,210,1016,215,996,206,972,190,948,174,909,162"/>
-<area shape="poly" id="edge49_Node000059_Node000036" title=" " alt="" coords="924,157,987,165,986,170,923,162"/>
-<area shape="poly" id="edge52_Node000062_Node000005" title=" " alt="" coords="580,531,715,503,716,508,581,537"/>
-<area shape="poly" id="edge54_Node000062_Node000027" title=" " alt="" coords="581,557,719,586,718,591,580,562"/>
-<area shape="rect" id="Node000063" href="$classPatchPacking.html#a1f7d7e56508922503b11cbe49d4d21ba" title=" " alt="" coords="733,527,917,567"/>
-<area shape="poly" id="edge53_Node000062_Node000063" title=" " alt="" coords="630,544,719,544,719,549,630,549"/>
-<area shape="rect" id="Node000043" href="$namespaceuvgvpcc__enc.html#a735c39eb14ded23670bac21df7dc8189" title=" " alt="" coords="740,413,909,438"/>
-<area shape="poly" id="edge56_Node000064_Node000043" title=" " alt="" coords="610,423,726,423,726,428,610,428"/>
-<area shape="rect" id="Node000066" href="$namespaceuvgvpcc__enc.html#a8eec80eff55cd4c2169744feac8f1209" title=" " alt="" coords="387,875,652,901"/>
-<area shape="poly" id="edge58_Node000065_Node000066" title=" " alt="" coords="323,880,373,881,373,887,323,885"/>
-<area shape="rect" id="Node000068" href="$getopt_8c.html#a670b3d6580b88001f22388938a15504d" title=" " alt="" coords="470,925,569,950"/>
-<area shape="poly" id="edge60_Node000067_Node000068" title=" " alt="" coords="282,935,456,935,456,940,282,940"/>
-<area shape="rect" id="Node000069" href="$namespacecli.html#aad9dd85363af7529cc26e1cf5def6450" title="Print the help message of the application." alt="" coords="464,974,575,999"/>
-<area shape="poly" id="edge61_Node000067_Node000069" title=" " alt="" coords="282,944,451,973,450,978,281,950"/>
-<area shape="rect" id="Node000070" href="$namespacecli.html#a168b4d6afdac8a3811a23b5d58ced3fa" title="Print the version of the uvgVPCCenc library." alt="" coords="454,1115,585,1141"/>
-<area shape="poly" id="edge62_Node000067_Node000070" title=" " alt="" coords="282,940,312,947,340,959,356,970,366,982,389,1009,495,1104,491,1108,385,1013,362,985,353,974,337,964,310,952,281,945"/>
-<area shape="rect" id="Node000071" href="$namespaceuvgvpcc__enc.html#a81d86f6ad45b7b1ae67d8d944d880022" title=" " alt="" coords="729,1209,920,1234"/>
-<area shape="poly" id="edge63_Node000070_Node000071" title=" " alt="" coords="551,1138,619,1166,701,1193,739,1203,738,1208,699,1199,617,1171,549,1143"/>
+<area shape="rect" id="Node000035" href="$utilsPatchGeneration_8hpp.html#a7e03bd9f637d6875e048306bf9f014a2" title=" " alt="" coords="1015,183,1150,209"/>
+<area shape="poly" id="edge34_Node000031_Node000035" title=" " alt="" coords="907,101,951,119,966,131,976,144,984,157,999,168,1014,176,1011,181,996,173,981,160,971,147,962,135,948,124,905,106"/>
+<area shape="rect" id="Node000036" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="1000,134,1165,159"/>
+<area shape="poly" id="edge35_Node000031_Node000036" title=" " alt="" coords="907,105,1012,128,1011,134,906,110"/>
+<area shape="poly" id="edge38_Node000037_Node000035" title=" " alt="" coords="950,193,1002,193,1002,199,950,199"/>
+<area shape="poly" id="edge39_Node000037_Node000036" title=" " alt="" coords="891,181,1002,159,1003,165,892,186"/>
+<area shape="rect" id="Node000038" href="$utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e" title=" " alt="" coords="1037,294,1129,319"/>
+<area shape="poly" id="edge37_Node000037_Node000038" title=" " alt="" coords="910,206,950,219,1009,250,1057,283,1054,288,1006,254,948,224,909,211"/>
+<area shape="poly" id="edge42_Node000039_Node000035" title=" " alt="" coords="900,353,948,332,963,321,973,309,995,280,1056,217,1060,221,999,283,977,312,967,324,951,337,902,358"/>
+<area shape="poly" id="edge43_Node000039_Node000036" title=" " alt="" coords="899,358,925,348,947,333,962,313,970,294,971,253,972,211,980,190,995,169,1000,165,1003,169,999,172,984,192,977,212,976,253,975,295,967,316,951,337,928,353,901,363"/>
+<area shape="poly" id="edge41_Node000039_Node000038" title=" " alt="" coords="900,348,1023,318,1024,323,901,353"/>
+<area shape="poly" id="edge46_Node000042_Node000035" title=" " alt="" coords="892,157,1003,178,1002,183,891,162"/>
+<area shape="poly" id="edge47_Node000042_Node000036" title=" " alt="" coords="950,144,986,144,986,149,950,149"/>
+<area shape="poly" id="edge50_Node000045_Node000005" title=" " alt="" coords="580,531,715,503,716,508,581,537"/>
+<area shape="poly" id="edge52_Node000045_Node000027" title=" " alt="" coords="581,557,719,586,718,591,580,562"/>
+<area shape="rect" id="Node000046" href="$classPatchPacking.html#a1f7d7e56508922503b11cbe49d4d21ba" title=" " alt="" coords="733,527,917,567"/>
+<area shape="poly" id="edge51_Node000045_Node000046" title=" " alt="" coords="630,544,719,544,719,549,630,549"/>
+<area shape="rect" id="Node000048" href="$namespaceuvgvpcc__enc.html#a735c39eb14ded23670bac21df7dc8189" title=" " alt="" coords="740,413,909,438"/>
+<area shape="poly" id="edge54_Node000047_Node000048" title=" " alt="" coords="610,423,726,423,726,428,610,428"/>
+<area shape="rect" id="Node000050" href="$namespaceuvgvpcc__enc.html#a8eec80eff55cd4c2169744feac8f1209" title=" " alt="" coords="387,875,652,901"/>
+<area shape="poly" id="edge56_Node000049_Node000050" title=" " alt="" coords="323,880,373,881,373,887,323,885"/>
+<area shape="rect" id="Node000052" href="$getopt_8c.html#a670b3d6580b88001f22388938a15504d" title=" " alt="" coords="470,925,569,950"/>
+<area shape="poly" id="edge58_Node000051_Node000052" title=" " alt="" coords="282,935,456,935,456,940,282,940"/>
+<area shape="rect" id="Node000053" href="$namespacecli.html#aad9dd85363af7529cc26e1cf5def6450" title="Print the help message of the application." alt="" coords="464,974,575,999"/>
+<area shape="poly" id="edge59_Node000051_Node000053" title=" " alt="" coords="282,944,451,973,450,978,281,950"/>
+<area shape="rect" id="Node000054" href="$namespacecli.html#a168b4d6afdac8a3811a23b5d58ced3fa" title="Print the version of the uvgVPCCenc library." alt="" coords="454,1115,585,1141"/>
+<area shape="poly" id="edge60_Node000051_Node000054" title=" " alt="" coords="282,940,312,947,340,959,356,970,366,982,389,1009,495,1104,491,1108,385,1013,362,985,353,974,337,964,310,952,281,945"/>
+<area shape="rect" id="Node000055" href="$namespaceuvgvpcc__enc.html#a81d86f6ad45b7b1ae67d8d944d880022" title=" " alt="" coords="729,1209,920,1234"/>
+<area shape="poly" id="edge61_Node000054_Node000055" title=" " alt="" coords="551,1138,619,1166,701,1193,739,1203,738,1208,699,1199,617,1171,549,1143"/>
 </map>

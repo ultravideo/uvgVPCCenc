@@ -1,50 +1,6 @@
 <map id="PatchSegmentation::patchSegmentation" name="PatchSegmentation::patchSegmentation">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,392,161,432"/>
-<area shape="rect" id="Node000002" href="$classPatchSegmentation.html#a5d31ba00ed822bdc118aba7b671d91fd" title=" " alt="" coords="214,5,419,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="83,391,92,328,111,241,127,193,148,146,175,102,207,62,222,50,225,54,211,66,179,105,153,148,132,195,117,242,97,329,89,392"/>
-<area shape="rect" id="Node000003" href="$classPatchSegmentation.html#aa3b3fcb12079a71ee833e203847d78a3" title=" " alt="" coords="472,83,672,123"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="83,391,90,333,110,253,126,211,147,171,174,135,208,106,240,88,275,75,312,68,349,64,423,67,488,77,487,82,422,72,350,69,313,73,277,80,243,93,211,110,178,139,151,174,131,213,115,255,96,334,88,392"/>
-<area shape="rect" id="Node000005" href="$classPatchSegmentation.html#a3cdab98e5e9f30842b38ea848c160aa2" title=" " alt="" coords="488,147,656,187"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="89,391,105,353,129,307,164,259,185,238,208,220,255,202,323,188,474,170,474,175,324,193,257,207,211,225,188,242,168,263,134,309,109,356,94,393"/>
-<area shape="rect" id="Node000006" href="$classPatchSegmentation.html#a006a62e16aa564064c4350dfd05e6cdc" title=" " alt="" coords="233,235,401,275"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="98,390,143,337,174,309,208,284,220,278,222,283,211,289,177,313,147,341,102,393"/>
-<area shape="rect" id="Node000007" href="$classPatchSegmentation.html#aa8784a26746eb86d546a53f5dab6c1f3" title=" " alt="" coords="209,299,424,339"/>
-<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="120,389,208,348,229,341,231,346,210,353,123,394"/>
-<area shape="rect" id="Node000012" href="$classrobin__hood_1_1detail_1_1Table.html#acfe6a7a850fd8f76f5751f854ad2fe86" title=" " alt="" coords="503,427,641,467"/>
-<area shape="poly" id="edge13_Node000001_Node000012" title=" " alt="" coords="162,415,489,438,489,444,161,420"/>
-<area shape="rect" id="Node000013" href="$utilsPatchGeneration_8hpp.html#a7e03bd9f637d6875e048306bf9f014a2" title=" " alt="" coords="249,542,384,567"/>
-<area shape="poly" id="edge14_Node000001_Node000013" title=" " alt="" coords="102,431,148,480,178,505,211,527,237,538,234,543,208,532,174,510,144,483,99,434"/>
-<area shape="rect" id="Node000014" href="$classPatchSegmentation.html#a273639e3bb44b17761c34223b1f7269d" title=" " alt="" coords="239,592,395,632"/>
-<area shape="poly" id="edge15_Node000001_Node000014" title=" " alt="" coords="97,431,140,502,172,542,211,577,227,586,225,591,208,581,168,546,135,505,92,434"/>
-<area shape="rect" id="Node000015" href="$classPatchSegmentation.html#a997b96c5dffc5685b1fca9e72898403f" title=" " alt="" coords="239,120,395,160"/>
-<area shape="poly" id="edge16_Node000001_Node000015" title=" " alt="" coords="88,391,102,347,126,290,161,230,183,201,208,177,225,164,228,169,211,181,187,205,166,232,131,292,107,349,93,393"/>
-<area shape="rect" id="Node000016" href="$classPatchSegmentation.html#a92baf340c005144fdd53c04ad99dd657" title=" " alt="" coords="239,363,395,403"/>
-<area shape="poly" id="edge18_Node000001_Node000016" title=" " alt="" coords="161,400,225,392,225,397,162,405"/>
-<area shape="rect" id="Node000017" href="$classPatchSegmentation.html#a712463e82395b7797ee915f932e23157" title=" " alt="" coords="237,477,396,517"/>
-<area shape="poly" id="edge21_Node000001_Node000017" title=" " alt="" coords="139,430,210,456,248,470,246,475,208,461,137,435"/>
-<area shape="rect" id="Node000018" href="$classrobin__hood_1_1detail_1_1Table.html#a6c2d436df6800ac290cc26da5961a331" title=" " alt="" coords="247,680,386,720"/>
-<area shape="poly" id="edge23_Node000001_Node000018" title=" " alt="" coords="94,432,109,474,134,530,168,589,211,642,252,671,249,676,208,646,164,592,129,532,104,476,89,433"/>
-<area shape="rect" id="Node000019" href="$structuvgvpcc__enc_1_1Patch.html#a3ecf8a9dc6427df10fb92d4220d3a50f" title=" " alt="" coords="242,744,391,784"/>
-<area shape="poly" id="edge25_Node000001_Node000019" title=" " alt="" coords="89,432,98,490,119,571,134,614,155,656,180,696,211,730,231,743,228,748,208,734,176,699,150,659,130,616,113,572,93,491,84,433"/>
-<area shape="rect" id="Node000021" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="234,809,399,834"/>
-<area shape="poly" id="edge27_Node000001_Node000021" title=" " alt="" coords="87,432,92,501,109,599,125,652,146,704,175,752,211,794,223,803,220,807,208,798,170,755,141,707,120,654,104,601,87,502,82,432"/>
-<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc.html#a735c39eb14ded23670bac21df7dc8189" title=" " alt="" coords="720,122,889,147"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="673,114,707,119,706,124,672,119"/>
-<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="656,152,706,146,707,151,657,158"/>
-<area shape="rect" id="Node000008" href="$classrobin__hood_1_1detail_1_1Table.html#afb214db6f1196694807c182a1ae4d9ba" title=" " alt="" coords="503,211,641,251"/>
-<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="390,296,423,284,471,260,490,253,492,258,473,265,425,289,391,301"/>
-<area shape="rect" id="Node000009" href="$classrobin__hood_1_1detail_1_1Table.html#a79fdf3ba7034cb3eb36bbda40ec2d3c7" title=" " alt="" coords="503,363,641,403"/>
-<area shape="poly" id="edge9_Node000007_Node000009" title=" " alt="" coords="398,336,490,359,488,365,397,341"/>
-<area shape="rect" id="Node000011" href="$classrobin__hood_1_1detail_1_1Table.html#a0539538ef39c9c19c00253a705890919" title=" " alt="" coords="503,299,641,339"/>
-<area shape="poly" id="edge11_Node000007_Node000011" title=" " alt="" coords="424,316,488,316,488,321,424,321"/>
-<area shape="rect" id="Node000010" href="$classrobin__hood_1_1detail_1_1Table.html#a98a73a7b295dc5cb50304068fbd811bd" title=" " alt="" coords="735,363,874,403"/>
-<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="642,380,722,380,722,385,642,385"/>
-<area shape="poly" id="edge12_Node000011_Node000011" title=" " alt="" coords="529,299,526,289,533,280,548,274,572,272,599,275,614,282,611,287,598,280,572,277,550,279,536,284,531,290,534,298"/>
-<area shape="poly" id="edge17_Node000015_Node000003" title=" " alt="" coords="394,126,458,117,459,122,395,131"/>
-<area shape="poly" id="edge19_Node000016_Node000009" title=" " alt="" coords="395,380,489,380,489,385,395,385"/>
-<area shape="poly" id="edge20_Node000016_Node000012" title=" " alt="" coords="395,400,490,423,489,429,394,405"/>
-<area shape="poly" id="edge22_Node000017_Node000012" title=" " alt="" coords="396,479,489,460,490,466,397,484"/>
-<area shape="poly" id="edge24_Node000018_Node000018" title=" " alt="" coords="273,680,271,670,278,661,293,655,317,653,344,656,358,663,356,668,342,661,317,659,294,661,281,665,276,671,278,679"/>
-<area shape="rect" id="Node000020" href="$structuvgvpcc__enc_1_1Patch.html#ad24dc23eb86f57f9cc5bdbb9f54e668a" title=" " alt="" coords="497,744,647,784"/>
-<area shape="poly" id="edge26_Node000019_Node000020" title=" " alt="" coords="391,761,484,761,484,767,391,767"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,29,161,69"/>
+<area shape="rect" id="Node000002" href="$classrobin__hood_1_1detail_1_1Table.html#a6c2d436df6800ac290cc26da5961a331" title=" " alt="" coords="209,29,348,69"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="161,47,195,47,195,52,161,52"/>
+<area shape="poly" id="edge2_Node000002_Node000002" title=" " alt="" coords="242,30,240,20,246,11,259,5,279,3,302,6,314,13,311,17,300,11,279,8,260,10,249,15,245,21,247,28"/>
 </map>

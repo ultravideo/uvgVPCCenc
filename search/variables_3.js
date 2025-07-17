@@ -12,8 +12,9 @@ var searchData=
   ['dim_5f_9',['dim_',['../classnanoflann_1_1KDTreeBaseClass.html#aadbe8c77146a8e5b4bcf0a09b9e7f0ca',1,'nanoflann::KDTreeBaseClass::dim_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#aeac3ba772379276594368815dc604a40',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::dim_']]],
   ['distance_5f_10',['distance_',['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#a1b32e282505a1c811b18277f6cd9ab2e',1,'nanoflann::KDTreeSingleIndexAdaptor::distance_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#af492fe57095790d8f24f6da96d5aa055',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::distance_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a3db73f40c0c5f598d19a7fdbf53b5197',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::distance_']]],
   ['distance_5fl2_5fsimple_11',['distance_L2_Simple',['../structnanoflann_1_1SO3__Adaptor.html#a1eda8692746d89e24e5ce0269ab2ac69',1,'nanoflann::SO3_Adaptor']]],
-  ['divfeat_12',['divfeat',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a4013d8322f7d7a12deaba47992d5c7de',1,'nanoflann::KDTreeBaseClass::Node']]],
-  ['divhigh_13',['divhigh',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a050d1d18ec3392e0dcd995f10f352f85',1,'nanoflann::KDTreeBaseClass::Node']]],
-  ['divlow_14',['divlow',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a36d85fcaa2e26e2b8882c9645fb774e0',1,'nanoflann::KDTreeBaseClass::Node']]],
-  ['doublelayer_15',['doubleLayer',['../structuvgvpcc__enc_1_1Parameters.html#aae636549f46cbf81f22c604e6fc84501',1,'uvgvpcc_enc::Parameters']]]
+  ['distancefiltering_12',['distanceFiltering',['../structuvgvpcc__enc_1_1Parameters.html#a1bff6f8ce346d684a1c98679cf2d999c',1,'uvgvpcc_enc::Parameters']]],
+  ['divfeat_13',['divfeat',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a4013d8322f7d7a12deaba47992d5c7de',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['divhigh_14',['divhigh',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a050d1d18ec3392e0dcd995f10f352f85',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['divlow_15',['divlow',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a36d85fcaa2e26e2b8882c9645fb774e0',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['doublelayer_16',['doubleLayer',['../structuvgvpcc__enc_1_1Parameters.html#aae636549f46cbf81f22c604e6fc84501',1,'uvgvpcc_enc::Parameters']]]
 ];
