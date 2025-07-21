@@ -78,49 +78,58 @@ $(function() {
 <p>The uvgVPCC encoder accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux. In version 1.0, the focus is on building a functional encoding pipeline using only essential tools and algorithms inspired by the TMC2 reference software. Prioritizing practical encoding, we’ve omitted lossless tools and those adding significant computational complexity such as geometry reconstruction. In the future we plan on developing innovative methods to reduce the massive complexity of the V-PCC encoding process.</p>
 <p>uvgVPCCenc serves as a research platform for new coding tool development and other encoder research activities as well as provides a high-quality and practical V-PCC encoder for the public to use.</p>
 <p>uvgVPCCenc is still under development. Speed and RD-quality will continue to improve.</p>
+<p>Join our Discord channel to contact us <a href="https://discord.gg/fZpub7BPUA"><img src="https://img.shields.io/discord/973260924288901140?style=plastic" alt="Discord" class="inline"/></a>.</p>
 <p><a href="https://ultravideo.fi/uvgvpccenc.html">https://ultravideo.fi/uvgvpccenc.html</a> for more information.</p>
 <h1><a class="anchor" id="autotoc_md0"></a>
 Table of Contents</h1>
 <ul>
-<li>Compiling and testing uvgVPCCenc</li>
-<li>Using uvgVPCCenc<ul>
-<li>Example</li>
-<li>Parameters</li>
+<li>Compiling and testing uvgVPCCenc<ul>
+<li>Dependencies</li>
+<li>Compilation</li>
+<li>Test</li>
 </ul>
 </li>
+<li>Using uvgVPCCenc<ul>
+<li>Example</li>
+<li>Application parameters</li>
+<li>uvgVPCCenc parameters</li>
 <li>Presets</li>
+</ul>
+</li>
+<li>Academic research</li>
 </ul>
 <h1><a class="anchor" id="autotoc_md1"></a>
 Compilation and testing</h1>
 <h2><a class="anchor" id="autotoc_md2"></a>
 Dependencies</h2>
-<p>To compile the library and the application, please install <code>CMake</code>, <code>Ninja</code> and <code>g++</code>. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install cmake ninja-build g++</div>
+<p>To compile the library and the application, please install <code>CMake</code> and <code>g++</code>. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install cmake g++</div>
 </div><!-- fragment --><p>To generate the documentation, <code>doxygen</code> and <code>graphviz</code> are required. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install doxygen graphviz</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
-Compile and test uvgVPCCenc</h2>
-<p>To compile and test the encoder, please use following commands: </p><div class="fragment"><div class="line">cmake --preset=CI</div>
-<div class="line">cmake --build --preset=CI</div>
-<div class="line">ctest --preset=CI</div>
-</div><!-- fragment --><p> By default, the build application is located in <code>_build/CI/src/app/</code>. Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.</p>
+Compile uvgVPCCenc</h2>
+<p>To compile the encoder, please use following commands: </p><div class="fragment"><div class="line">cmake --preset=Release</div>
+<div class="line">cmake --build --preset=Release</div>
+</div><!-- fragment --><p>By default, the build application is located in <code>_build/Release/src/app/</code>. Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.</p>
 <h2><a class="anchor" id="autotoc_md4"></a>
+Test uvgVPCCenc</h2>
+<p>To test the encoder, please use following commands: </p><div class="fragment"><div class="line">ctest --preset=Release                   </div>
+</div><!-- fragment --><p>This runs small tests and checks whether the resulting encoding behaves as expected by verifying the bitstream MD5.</p>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Compile documentation</h2>
 <p>To generate the doxygen documentation, please use the following: </p><div class="fragment"><div class="line">cmake --preset=docs</div>
 <div class="line">cmake --build --preset=docs</div>
 </div><!-- fragment --><p> The doxygen is then accessible under docs/html/index.html.</p>
-<h1><a class="anchor" id="autotoc_md5"></a>
+<h1><a class="anchor" id="autotoc_md6"></a>
 Using uvgVPCCenc</h1>
 <p>To demonstrate how to use the uvgVPCCenc library, a straightforward example application is provided in src/app, with its <a class="el" href="uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh...">main()</a> function located in <a href="src/app/uvgVPCCencAppExample.cpp">uvgVPCCencAppExample.cpp</a>.</p>
-<h2><a class="anchor" id="autotoc_md6"></a>
+<h2><a class="anchor" id="autotoc_md7"></a>
 Example:</h2>
 <div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 -o out.vpcc</div>
-</div><!-- fragment --><p>The mandatory parameters are input, output and the number of frames. The input path should use <code>%0xd</code> for frame numbering. Example sequences are available in the <a href="https://ultravideo.fi/UVG-VPC">UVG-VPC</a> dataset.</p>
+</div><!-- fragment --><p>The mandatory parameters are input, output and the number of frames. The input path should use <code>%0xd</code> for frame numbering. Example sequences are available in the <a href="https://ultravideo.fi/UVG-VPC">UVG-VPC</a> dataset. Example of an input sequence name: <code>ReadyForWinter_UVG_vox10_25_0_250_%04d.ply</code>.</p>
 <p>If the voxel size (aka voxel resolution or geometry precision) is not in the filename, the voxel size must be given: <code>--geo-precision=10</code>.</p>
 <p>If the start frame (the index of the first frame of the sequence) is not in the filename, the start frame must be given: <code>--start-frame=0</code>.</p>
 <p>uvgVPCCenc accepts .ply files, using positive integer for geometry.</p>
 <p>The application option <code>--uvgvpcc</code> accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command: </p><div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI</div>
-</div><!-- fragment --><p>Speed and compression quality can be selected with <code>--uvgvpcc presetName</code>, or by setting the uvgVPCCenc parameters manually.</p>
-<h1><a class="anchor" id="autotoc_md7"></a>
-Parameters</h1>
+</div><!-- fragment --><p>The list of uvgVPCCenc parameters that can be modified with the <code>--uvgvpcc</code> option is defined in the <code>parameterMap</code> initialized in <a href="src/lib/utils/parameters.cpp">parameters.cpp</a>.</p>
 <h2><a class="anchor" id="autotoc_md8"></a>
 Application parameters</h2>
 <div class="fragment"><div class="line">-i, --input &lt;file&gt;           Input filename (using %0Xd)</div>
@@ -141,11 +150,11 @@ uvgVPCCenc parameters</h2>
 <div class="line">rate                V-PCC rate, i.g. 16-22-2</div>
 <div class="line">mode                Encoding mode, i.g. AI or RA</div>
 <div class="line">logLevel            Level of logging, i.g. TRACE</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
-Presets</h1>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
+Presets</h2>
 <p>Six presets for Voxel 9, 10, and 11, labeled Fast and Slow, have been created to clarify the encoding pipeline parametrization of uvgVPCCenc. These presets were manually crafted starting from Kvazaar's own presets and refined through extensive tool space exploration using stochastic methods. While they are not exhaustive and do not address certain features, such as single- and double-layer options, they provide a practical reference for parameter adjustments. Notably, such presets are exclusive to uvgVPCCenc and do not exist for TMC2.</p>
 <h1><a class="anchor" id="autotoc_md11"></a>
-Papers</h1>
+Academic research</h1>
 <p>If you use uvgVPCCenc in your research, please cite the most appropriate papers in the following papers:</p>
 <div class="fragment"><div class="line">[1] L. Fréneau, G. Gautier, A. Mercat, and J. Vanne, “uvgVPCCenc: Practical open-source encoder for fast V-PCC compression,” Accepted to ACM Multimedia System, Stellenbosch, South Africa, Mar.—Apr. 2025.</div>
 <div class="line">[2] L. Fréneau, G. Gautier, H. Tampio, A. Mercat, and J. Vanne, “Real-Time Video-based Point Cloud Compression,” in Proc. IEEE Visual Comm. Image Proc., Tokyo, Japan, Dec. 2024.</div>
