@@ -29,10 +29,10 @@ https://ultravideo.fi/uvgvpccenc.html for more information.
 
 ## Compilation and testing
 ### Dependencies
-To compile the library and the application, please install ```CMake```,  ```Ninja``` and ```g++```.
+To compile the library and the application, please install ```CMake``` and ```g++```.
 On Debian/Ubuntu:
 ```
-sudo apt install cmake ninja-build g++
+sudo apt install cmake g++
 ```
 
 To generate the documentation, ```doxygen``` and ```graphviz``` are required.
@@ -54,9 +54,7 @@ Refer to "Using uvgVPCCenc" section to learn how to use the library, and attache
 ### Test uvgVPCCenc
 To test the encoder, please use following commands:
 ```
-cmake --preset=CI
-cmake --build --preset=CI
-ctest --preset=CI                   
+ctest --preset=Release                   
 ```
 
 This runs small tests and checks whether the resulting encoding behaves as expected by verifying the bitstream MD5.

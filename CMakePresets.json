@@ -9,7 +9,7 @@
      {
         "name":"base-config",
         "hidden":true,
-        "generator":"Ninja",
+        "generator":"Unix Makefiles",
         "binaryDir":"${sourceDir}/_build/${presetName}",
         "cacheVariables":{
            "BUILD_SHARED_LIBS":true,
@@ -27,6 +27,7 @@
          "cacheVariables": {
             "CMAKE_BUILD_TYPE": "Release",
             "ENABLE_TESTING": true,
+            "ENABLE_CI_TESTING":true,
             "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
          }
       },
@@ -116,6 +117,11 @@
         "name":"Debug",
         "inherits":"base-test",
         "configurePreset":"Debug"
+     },
+     {
+        "name":"Release",
+        "inherits":"base-test",
+        "configurePreset":"Release"
      },
      {
         "name":"RelWithDebInfo",

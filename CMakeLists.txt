@@ -8,7 +8,7 @@ set(uvgVPCCenc_DESCR "uvgVPCCenc is an open-source real-time V-PCC encoder libra
 set(uvgVPCCenc_URL "https://github.com/ultravideo/uvgVPCCenc")
 
 set(KVAZAAR_REPO_URL "https://github.com/ultravideo/kvazaar.git")
-set(KVAZAAR_REPO_TAGS "bb836ff1422f247b490230e9d429a2d6658cd1a1")
+set(KVAZAAR_REPO_TAGS "32fb3462eb97fdf07aeb41fbf0b311678419d659")
 
 set(KVAZAAR_EP_UPDATE_DISCONNECTED ON)
 set(PCCSUM_EP_UPDATE_DISCONNECTED ON)
