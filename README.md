@@ -9,15 +9,23 @@ uvgVPCCenc serves as a research platform for new coding tool development and oth
 
 uvgVPCCenc is still under development. Speed and RD-quality will continue to improve.
 
+Join our Discord channel to contact us [![Discord](https://img.shields.io/discord/973260924288901140?style=plastic)](https://discord.gg/fZpub7BPUA).
+
 https://ultravideo.fi/uvgvpccenc.html for more information.
+
 
 ## Table of Contents
 
 - [Compiling and testing uvgVPCCenc](#compilation-and-testing)
-- [Using uvgVPCCenc](#using-uvgVPCCenc)
+  - [Dependencies](#dependencies)
+  - [Compilation](#compile-uvgvpccenc)
+  - [Test](#test-uvgvpccenc)
+- [Using uvgVPCCenc](#using-uvgvpccenc)
   - [Example](#example)
-  - [Parameters](#parameters)
-- [Presets](#presets)
+  - [Application parameters](#application-parameters)
+  - [uvgVPCCenc parameters](#uvgvpccenc-parameters)
+  - [Presets](#presets)
+- [Academic research](#academic-research)
 
 ## Compilation and testing
 ### Dependencies
@@ -33,15 +41,25 @@ On Debian/Ubuntu:
 sudo apt install doxygen graphviz
 ```
 
-### Compile and test uvgVPCCenc
-To compile and test the encoder, please use following commands:
+### Compile uvgVPCCenc
+To compile the encoder, please use following commands:
+```
+cmake --preset=Release
+cmake --build --preset=Release
+```
+
+By default, the build application is located in ```_build/Release/src/app/```.
+Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.
+
+### Test uvgVPCCenc
+To test the encoder, please use following commands:
 ```
 cmake --preset=CI
 cmake --build --preset=CI
-ctest --preset=CI
+ctest --preset=CI                   
 ```
-By default, the build application is located in ```_build/CI/src/app/```.
-Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.
+
+This runs small tests and checks whether the resulting encoding behaves as expected by verifying the bitstream MD5.
 
 ### Compile documentation
 To generate the doxygen documentation, please use the following:
@@ -60,7 +78,7 @@ To demonstrate how to use the uvgVPCCenc library, a straightforward example appl
     uvgVPCCenc -i <path_to_ply> -n 10 -o out.vpcc
 ```
 
-The mandatory parameters are input, output and the number of frames. The input path should use ```%0xd``` for frame numbering. Example sequences are available in the [UVG-VPC](https://ultravideo.fi/UVG-VPC) dataset.
+The mandatory parameters are input, output and the number of frames. The input path should use ```%0xd``` for frame numbering. Example sequences are available in the [UVG-VPC](https://ultravideo.fi/UVG-VPC) dataset. Example of an input sequence name: ```ReadyForWinter_UVG_vox10_25_0_250_%04d.ply```.
 
 If the voxel size (aka voxel resolution or geometry precision) is not in the filename, the voxel size must be given: ```--geo-precision=10```.
 
@@ -73,9 +91,8 @@ The application option ```--uvgvpcc``` accept a string containing uvgVPCCenc par
     uvgVPCCenc -i <path_to_ply> -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI
 ```
 
-Speed and compression quality can be selected with ```--uvgvpcc presetName```, or by setting the uvgVPCCenc parameters manually.
+The list of uvgVPCCenc parameters that can be modified with the ```--uvgvpcc``` option is defined in the ```parameterMap``` initialized in [parameters.cpp](src/lib/utils/parameters.cpp).
 
-## Parameters
 
 ### Application parameters
 ```
@@ -105,12 +122,11 @@ Here are a selection of common uvgVPCCenc parameters:
     logLevel            Level of logging, i.g. TRACE
 ```
 
-## Presets
+### Presets
 
-Six presets for Voxel 9, 10, and 11, labeled Fast and Slow, have been created to clarify the encoding pipeline parametrization of uvgVPCCenc. These presets were manually crafted starting from Kvazaar's own presets and refined through extensive tool space exploration using stochastic methods. While they are not exhaustive and do not address certain features, such as single- and double-layer options, they provide a practical reference for parameter adjustments. Notably, such presets are exclusive to uvgVPCCenc and do not 
-exist for TMC2.
+Six presets for Voxel 9, 10, and 11, labeled Fast and Slow, have been created to clarify the encoding pipeline parametrization of uvgVPCCenc. These presets were manually crafted starting from Kvazaar's own presets and refined through extensive tool space exploration using stochastic methods. While they are not exhaustive and do not address certain features, such as single- and double-layer options, they provide a practical reference for parameter adjustments. Notably, such presets are exclusive to uvgVPCCenc and do not exist for TMC2.
 
-## Papers
+## Academic research
 
 If you use uvgVPCCenc in your research, please cite the most appropriate papers in the following papers:
 

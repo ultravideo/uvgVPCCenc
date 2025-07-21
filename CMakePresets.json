@@ -22,18 +22,27 @@
         }
      },
      {
+         "name": "Release",
+         "inherits": "base-config",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "Release",
+            "ENABLE_TESTING": true,
+            "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
+         }
+      },
+      {
+         "name":"RelWithDebInfo",
+         "inherits":"base-config",
+         "cacheVariables":{
+            "CMAKE_BUILD_TYPE":"RelWithDebInfo",
+            "ENABLE_TESTING":true
+         }
+      },
+     {
         "name":"Debug",
         "inherits":"base-config",
         "cacheVariables":{
            "CMAKE_BUILD_TYPE":"Debug"
-        }
-     },
-     {
-        "name":"RelWithDebInfo",
-        "inherits":"base-config",
-        "cacheVariables":{
-           "CMAKE_BUILD_TYPE":"RelWithDebInfo",
-           "ENABLE_TESTING":true
         }
      },
      {
@@ -45,35 +54,39 @@
         }
      },
      {
-      "name":"CI",
-      "inherits":"RelWithDebInfo",
-      "generator":"Unix Makefiles",
-      "cacheVariables":{
-         "CMAKE_BUILD_TYPE":"RelWithDebInfo",
-         "BUILD_SHARED_LIBS":false,
-         "ENABLE_TESTING":true,
-         "CHECK_PC_MD5": false,
-         "ENABLE_CI_TESTING":true,
-         "ENABLE_MY_TESTING":false
+         "name":"CI",
+         "inherits":"RelWithDebInfo",
+         "generator":"Unix Makefiles",
+         "cacheVariables":{
+            "CMAKE_BUILD_TYPE":"RelWithDebInfo",
+            "BUILD_SHARED_LIBS":false,
+            "ENABLE_TESTING":true,
+            "CHECK_PC_MD5": false,
+            "ENABLE_CI_TESTING":true,
+            "ENABLE_MY_TESTING":false
          }
       },
       {
-       "name":"docs",
-       "inherits":"CI",
-       "generator":"Unix Makefiles",
-       "cacheVariables":{
-          "CMAKE_BUILD_TYPE":"RelWithDebInfo"
-       }
+         "name":"docs",
+         "inherits":"CI",
+         "generator":"Unix Makefiles",
+         "cacheVariables":{
+            "CMAKE_BUILD_TYPE":"RelWithDebInfo"
+         }
       }
   ],
   "buildPresets":[
      {
+      "name": "Release",
+      "configurePreset": "Release"
+      },
+      {
+         "name":"RelWithDebInfo",
+         "configurePreset":"RelWithDebInfo"
+      },
+     {
         "name":"Debug",
         "configurePreset":"Debug"
-     },
-     {
-        "name":"RelWithDebInfo",
-        "configurePreset":"RelWithDebInfo"
      },
      {
         "name":"clang-tidy",

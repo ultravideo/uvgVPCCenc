@@ -212,6 +212,11 @@ static Counts& counts() {
 #    define ROBIN_HOOD_IS_TRIVIALLY_COPYABLE(...) std::is_trivially_copyable<__VA_ARGS__>::value
 #endif
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-builtins"
+#endif
+
 // helpers for C++ versions, see https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html
 #define ROBIN_HOOD_PRIVATE_DEFINITION_CXX() __cplusplus
 #define ROBIN_HOOD_PRIVATE_DEFINITION_CXX98() 199711L
@@ -2503,6 +2508,11 @@ private:
 };
 
 } // namespace detail
+
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 // map
 
