@@ -59,6 +59,7 @@
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "../utils/utils.hpp"
 
+#include <uvgv3crtp/version.h>
 
 namespace {
 
@@ -317,7 +318,7 @@ int main(const int argc, const char* const argv[]) {
     double encodingTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
 
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "uvgVPCCenc application starts.\n");
-
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
 
     // Parse application parameters //
     cli::opts_t appParameters;

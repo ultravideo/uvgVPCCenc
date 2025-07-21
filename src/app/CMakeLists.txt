@@ -1,5 +1,8 @@
 message(DEBUG "./src/app/cmake")
 
+# Take care of external dependencies (e.g. uvgV3CRTP)
+include(dependencies/FindDependencies.cmake)
+
 add_library(miniplyLibrary STATIC
     extras/miniply.cpp
 )
@@ -19,7 +22,7 @@ add_executable(uvgVPCCenc
 target_compile_options(miniplyLibrary PRIVATE -fPIC)
 target_compile_options(getoptLibrary PRIVATE -fPIC)
 
-target_link_libraries(uvgVPCCenc uvgvpccenc)
+target_link_libraries(uvgVPCCenc uvgvpccenc uvgv3crtp)
 
 # Define installation destinations
 install(TARGETS uvgVPCCenc DESTINATION bin)
