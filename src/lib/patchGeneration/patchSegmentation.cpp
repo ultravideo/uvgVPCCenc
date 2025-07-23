@@ -230,6 +230,8 @@ inline void setInitialPatchL1(Patch& patch, const ConnectedComponent& cc,
         const size_t vom = v / occRes;
         const size_t pom = vom * widthInOccBlk + uom;
 
+        assert(u<widthInPixel);
+        assert(p<patch.depthL1_.size());
         const typeGeometryInput patchD = patch.depthL1_[p];
 
         if constexpr (ProjectionMode) {
@@ -399,7 +401,8 @@ inline void createPatch(Patch& patch, const ConnectedComponent& cc,
                         std::vector<bool>& pointIsInAPatchNewPerf,
                         robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
                         robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
-    
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
+                            "Create patch for frame " + std::to_string(frame->frameId) + "\n"); 
     constexpr size_t normalAxis = getPatchNormalAxis<Ppi>();
     constexpr size_t tangentAxis = getPatchTangentAxis<Ppi>();
     constexpr size_t bitangentAxis = getPatchBitangentAxis<Ppi>();
@@ -454,6 +457,8 @@ template<bool FirstIteration>
 inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,std::vector<bool>& pointCanBeASeedNewPerf,const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const robin_hood::unordered_set<size_t>& resamplePointSetLocation1D,
     const std::vector<size_t>& pointsPPIs,std::array<robin_hood::unordered_map<size_t, size_t>,6>& mapList,std::vector<ConnectedComponent>& connectedComponents
 ) {
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
+                             "Create connected components for frame " + std::to_string(frame->frameId) + "\n");    
     for(size_t seedIndexNewPerf = 0; seedIndexNewPerf<pointIsInAPatchNewPerf.size(); ++seedIndexNewPerf) {
         if(pointIsInAPatchNewPerf[seedIndexNewPerf]) continue;
         if constexpr (!FirstIteration) {
@@ -477,6 +482,9 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,
 }
 
 void exportPointCloudPatchSeg(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
+                            "Export patch segmentation point cloud for frame " + std::to_string(frame->frameId) + "\n"); 
+    
     const std::string plyFilePath =
         p_->intermediateFilesDir + "/patchSegmentation/PATCH-SEGMENTATION_f-" + uvgvpcc_enc::zeroPad(frame->frameId, 3) + ".ply";
     

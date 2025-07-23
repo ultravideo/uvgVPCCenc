@@ -141,6 +141,34 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     reader.extract_properties(indicesPos.data(), 3, miniply::PLYPropertyType::UShort, frame->pointsGeometry.data());
     reader.extract_properties(indicesCol.data(), 3, miniply::PLYPropertyType::UChar, frame->pointsAttribute.data());
     frame->printInfo();
+
+
+    // Check if the point coordinates respect the voxel size
+    const size_t geoBitDepthInput = uvgvpcc_enc::p_->geoBitDepthInput;
+    const bool isCompliant = !std::any_of(frame->pointsGeometry.begin(), frame->pointsGeometry.end(),
+        [geoBitDepthInput](const auto& point) {
+            return (point[0] >> geoBitDepthInput) |
+            (point[1] >> geoBitDepthInput) |
+            (point[2] >> geoBitDepthInput);
+        });
+
+    if(!isCompliant) {
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::ERROR>("APPLICATION",
+        "Frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + " contains at least one point which does not respect the input voxel size (uvgvpcc_enc::p_->geoBitDepthInput = " + std::to_string(uvgvpcc_enc::p_->geoBitDepthInput) + "). Maximum value is 2^"+ std::to_string(uvgvpcc_enc::p_->geoBitDepthInput) + "-1. All faulty points will not be processed.\n");            
+        std::vector<uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>> pointsGeometryTmp;
+        std::vector<uvgvpcc_enc::Vector3<uint8_t>> pointsAttributeTmp;
+        pointsGeometryTmp.reserve(frame->pointsGeometry.size());
+        pointsAttributeTmp.reserve(frame->pointsGeometry.size());
+
+        for(size_t pointIndex = 0; pointIndex < frame->pointsGeometry.size(); ++pointIndex) {
+            const auto& point = frame->pointsGeometry[pointIndex];
+            if((point[0] >> geoBitDepthInput) | (point[1] >> geoBitDepthInput) | (point[2] >> geoBitDepthInput)) continue;
+            pointsGeometryTmp.emplace_back(point);
+            pointsAttributeTmp.emplace_back(frame->pointsAttribute[pointIndex]);
+        }
+        frame->pointsGeometry.swap(pointsGeometryTmp);
+        frame->pointsAttribute.swap(pointsAttributeTmp);
+    }
 }
 
 /// @brief Application thread reading the input .ply files.
