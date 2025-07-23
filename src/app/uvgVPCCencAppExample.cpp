@@ -31,6 +31,7 @@
  ****************************************************************************/
 
 #include <array>
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -60,8 +61,8 @@
 namespace {
 
 // Semaphores for synchronization.
-std::binary_semaphore available_input_slots{0};
-std::binary_semaphore filled_input_slots{0};
+std::binary_semaphore available_input_slot{0};
+std::binary_semaphore filled_input_slot{0};
 
 struct input_handler_args {
     // Parameters passed from main thread to input thread.
@@ -177,16 +178,26 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     double inputReadTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
     const cli::opts_t& appParameters = args->opts;
     size_t frameId = 0;
-    const size_t frameLimit = appParameters.frames * appParameters.loop_input;
     bool run = true;
+    const size_t totalNbFrames = appParameters.nbFrames * appParameters.nbLoops;
     // Producer thread that reads input frames.
     while (run) {
+
+        // Signal that all input frames has been load
+        if (appParameters.nbLoops != 0 && frameId == totalNbFrames) {
+            available_input_slot.acquire();
+            args->frame_in = nullptr;
+            args->retval = RETVAL_EOF;
+            filled_input_slot.release();
+            break;
+        }
+
         // Produce an item
         std::vector<char> pointCloudPath(MAX_PATH_SIZE);
         const int nbBytes =
             // NOLINTNEXTLINE(cppcoreguidelines-pro-type-vararg,hicpp-vararg)
             snprintf(pointCloudPath.data(), MAX_PATH_SIZE, appParameters.inputPath.c_str(),
-                     appParameters.startFrame + (frameId % appParameters.frames));
+                     appParameters.startFrame + (frameId % appParameters.nbFrames));
         if (nbBytes < 0) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Error occurred while formatting string storing the point cloud path.\n");
@@ -205,17 +216,14 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
         frameId++;
 
         // Signal that an item has been produced
-        available_input_slots.acquire();
+        available_input_slot.acquire();
         args->frame_in = frame;
-        if (frameLimit != 0 && frameId > frameLimit) {
-            args->retval = RETVAL_EOF;
-            run = false;
-        } else if (args->retval == RETVAL_FAILURE) {
+        if (args->retval == RETVAL_FAILURE) {
             run = false;
         } else {
             args->retval = RETVAL_RUNNING;
         }
-        filled_input_slots.release();
+        filled_input_slot.release();
     }
     if (uvgvpcc_enc::p_->timerLog) {
         inputReadTimerTotal = uvgvpcc_enc::global_timer.elapsed() - inputReadTimerTotal;
@@ -344,10 +352,10 @@ int main(const int argc, const char* const argv[]) {
 
     // Initialize the application input and output threads
     const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(appParameters, nullptr, RETVAL_RUNNING);
-    std::thread inputTh(&inputReadThread, in_args);
+    std::thread inputTh(&inputReadThread, in_args); // TODO(gg): in_args is read and modified by two threads at the same time
     size_t frameRead = 0;
     std::shared_ptr<uvgvpcc_enc::Frame> currFrame = nullptr;
-    available_input_slots.release();
+    available_input_slot.release();
 
     uvgvpcc_enc::API::v3c_unit_stream output;  // Each v3c chunk gets appended to the V3C unit stream as they are encoded
     std::thread file_writer_thread;
@@ -355,10 +363,10 @@ int main(const int argc, const char* const argv[]) {
     
     // Main loop of the application, feeding one frame to the encoder at each iteration
     for (;;) {
-        filled_input_slots.acquire();
+        filled_input_slot.acquire();
         currFrame = in_args->frame_in;
         in_args->frame_in = nullptr;
-        available_input_slots.release();
+        available_input_slot.release();
         if (in_args->retval == RETVAL_EOF) {
             break;
         }

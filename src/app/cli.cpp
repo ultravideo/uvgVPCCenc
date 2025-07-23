@@ -157,8 +157,8 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
                 throw std::runtime_error("Input error: Geometry precision is set to zero");
             }
         } else if (name == "frames") {
-            opts.frames = std::stoi(optarg);
-            if (opts.frames == 0) {
+            opts.nbFrames = std::stoi(optarg);
+            if (opts.nbFrames == 0) {
                 throw std::runtime_error("Input error: Frame count is zero");
             }
         } else if (name == "start-frame") {
@@ -171,7 +171,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         } else if (name == "uvgvpcc") {
             opts.uvgvpccParametersString = optarg;
         } else if (name == "loop-input") {
-            opts.loop_input = std::stoi(optarg);
+            opts.nbLoops = std::stoi(optarg);
         } else if (name == "version") {
             cli::print_version();
             return true;
@@ -202,11 +202,11 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
     
     }
 
-    if (opts.frames == 0) {
-        opts.frames = select_frame_count_auto(opts.inputPath);
+    if (opts.nbFrames == 0) {
+        opts.nbFrames = select_frame_count_auto(opts.inputPath);
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION",
-                                 "Detected frame count from file name: " + std::to_string(opts.frames) + ".\n");
-        if (opts.frames == 0) {
+                                 "Detected frame count from file name: " + std::to_string(opts.nbFrames) + ".\n");
+        if (opts.nbFrames == 0) {
             throw std::runtime_error("Input error: Frame count is zero");
         }
     }

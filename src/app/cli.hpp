@@ -48,7 +48,7 @@ struct opts_t {
     /** \brief Output filename */
     std::string outputPath{};
     /** \brief Number of frames to encode */
-    size_t frames{};
+    size_t nbFrames{};
     /** \brief Input geometry precision */
     size_t inputGeoPrecision = 0; 
     /** \brief Frame number to start the encoding */
@@ -62,7 +62,7 @@ struct opts_t {
     /** \brief Print version */
     bool version = false;
     /** \brief Whether to loop input */
-    size_t loop_input = 1;
+    size_t nbLoops = 1;
 };
 
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args);
