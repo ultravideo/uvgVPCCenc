@@ -50,31 +50,8 @@
 
 using namespace uvgvpcc_enc;
 
-namespace NormalComputation {
 
-void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
-                    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                    const std::vector<std::vector<size_t>>& pointsNNList) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                             "Compute normals of frame " + std::to_string(frame->frameId) + "\n");
-    assert(p_->normalComputationKnnCount <= pointsGeometry.size());
-
-    for (size_t pointIdx = 0; pointIdx < pointsGeometry.size(); ++pointIdx) {
-        computeNormal(normals[pointIdx], pointsGeometry, pointsGeometry[pointIdx], pointsNNList[pointIdx], p_->normalComputationKnnCount);
-    }
-
-    if (p_->exportIntermediatePointClouds) {
-        const std::string plyFilePath =
-            p_->intermediateFilesDir + "/normalComputation/NORMAL-COMPUTATION_f-" + uvgvpcc_enc::zeroPad(frame->frameNumber, 3) + ".ply";
-        if (p_->geoBitDepthVoxelized == p_->geoBitDepthInput) {
-            exportPointCloud(plyFilePath, pointsGeometry, frame->pointsAttribute, normals);
-        } else {
-            const std::vector<uvgvpcc_enc::Vector3<uint8_t>> attributes(pointsGeometry.size(), {128, 128, 128});
-            exportPointCloud(plyFilePath, pointsGeometry, attributes, normals);
-        }
-    }
-}
-
+namespace {
 
 void computeCovMat(std::array<uvgvpcc_enc::Vector3<double>, 3>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const size_t nnCount,
                    const std::vector<size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
@@ -243,6 +220,33 @@ void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvp
         normal[0] = Q[0][2];
         normal[1] = Q[1][2];
         normal[2] = Q[2][2];
+    }
+}
+
+} // Anonymous namespace
+
+namespace NormalComputation {
+
+void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
+                    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+                    const std::vector<std::vector<size_t>>& pointsNNList) {
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
+                             "Compute normals of frame " + std::to_string(frame->frameId) + "\n");
+    assert(p_->normalComputationKnnCount <= pointsGeometry.size());
+
+    for (size_t pointIdx = 0; pointIdx < pointsGeometry.size(); ++pointIdx) {
+        computeNormal(normals[pointIdx], pointsGeometry, pointsGeometry[pointIdx], pointsNNList[pointIdx], p_->normalComputationKnnCount);
+    }
+
+    if (p_->exportIntermediatePointClouds) {
+        const std::string plyFilePath =
+            p_->intermediateFilesDir + "/normalComputation/NORMAL-COMPUTATION_f-" + uvgvpcc_enc::zeroPad(frame->frameNumber, 3) + ".ply";
+        if (p_->geoBitDepthVoxelized == p_->geoBitDepthInput) {
+            exportPointCloud(plyFilePath, pointsGeometry, frame->pointsAttribute, normals);
+        } else {
+            const std::vector<uvgvpcc_enc::Vector3<uint8_t>> attributes(pointsGeometry.size(), {128, 128, 128});
+            exportPointCloud(plyFilePath, pointsGeometry, attributes, normals);
+        }
     }
 }
 

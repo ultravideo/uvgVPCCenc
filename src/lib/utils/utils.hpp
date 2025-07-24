@@ -43,9 +43,6 @@
 
 namespace uvgvpcc_enc {
 
-
-
-
 using typeGeometryInput = uint16_t;
 
 const typeGeometryInput g_infiniteDepth = (std::numeric_limits<typeGeometryInput>::max)();  // TODO(lf)be sure it is well sync with type geo

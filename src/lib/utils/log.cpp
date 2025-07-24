@@ -38,19 +38,19 @@
 // NOLINTNEXTLINE(hicpp-deprecated-headers)
 #include <stdio.h>  // Needed for vasprintf
 
-#include <array>
 #include <cstdarg>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
-#include <mutex>
 #include <regex>
 #include <sstream>
 #include <string>
 #include <stdexcept>
 
 namespace uvgvpcc_enc {
+
+namespace {
 
 // Define color codes using const char*
 constexpr const char* RED = "\x1B[31m";
@@ -75,17 +75,16 @@ constexpr const char* colorForLevel(LogLevel level) {
         default: return RST;
     }
 }
-LogLevel Logger::logLevel = logLevelDefaultValue;
-bool Logger::errorsAreFatal_ = errorsAreFatalDefaultValue;
-std::ostream* Logger::outputStream_ = outputDefaultValue;
-
-namespace {
 
 inline std::string getLogPrefix(const std::string& context, LogLevel level) {
     const std::string elapsedStr = global_timer.elapsed_str();
     return "[" + elapsedStr + "][" + LogLevelStr[static_cast<int>(level)] + "]\t[" + context + "] ";
 }
 }  // anonymous namespace
+
+LogLevel Logger::logLevel = logLevelDefaultValue;
+bool Logger::errorsAreFatal_ = errorsAreFatalDefaultValue;
+std::ostream* Logger::outputStream_ = outputDefaultValue;
 
 void Logger::setLogLevel(const LogLevel& level) { logLevel = level; }
 void Logger::setErrorsAreFatal(const bool& isFatal) { errorsAreFatal_ = isFatal; }

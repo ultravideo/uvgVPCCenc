@@ -45,7 +45,4 @@ void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vecto
                     const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                     const std::vector<std::vector<size_t>>& pointsNNList);
 
-void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<size_t>& pointNn, const size_t nnCount);
-
 }  // namespace NormalComputation

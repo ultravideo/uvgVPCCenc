@@ -42,6 +42,7 @@
 #include <mutex>
 #include <string>
 #include <utility>
+#include <cstddef>
 
 #include "uvgvpcc/log.hpp"
 
@@ -165,7 +166,7 @@ void ThreadQueue::workerThread() {
             if (stop_) {
                 return;
             }
-            for (int i = jobs_.size()-1; i >= 0; --i) {
+            for (size_t i = jobs_.size()-1; i >= 0; --i) {
                 if (!jobs_[i].empty()) {
                     job = jobs_[i].front();
                     jobs_[i].pop_front();

@@ -51,11 +51,13 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <algorithm>
 
 #include "cli.hpp"
 #include "extras/miniply.h"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
+#include "../utils/utils.hpp"
 
 
 namespace {
@@ -64,18 +66,19 @@ namespace {
 std::binary_semaphore available_input_slot{0};
 std::binary_semaphore filled_input_slot{0};
 
+enum class Retval : std::uint8_t {Running,Failure,Eof};
+
 struct input_handler_args {
     // Parameters passed from main thread to input thread.
     const cli::opts_t& opts;
 
     // Picture and thread status passed from input thread to main thread.
     std::shared_ptr<uvgvpcc_enc::Frame> frame_in;
-    int retval;
-    input_handler_args(const cli::opts_t& opts, std::shared_ptr<uvgvpcc_enc::Frame> frame, int retval)
+    Retval retval;
+    input_handler_args(const cli::opts_t& opts, std::shared_ptr<uvgvpcc_enc::Frame> frame, Retval retval)
         : opts(opts), frame_in(std::move(frame)), retval(retval) {}
 };
 
-enum : std::uint8_t { RETVAL_RUNNING, RETVAL_FAILURE, RETVAL_EOF };
 
 const size_t MAX_PATH_SIZE = 4096;
 const size_t FORCED_V3C_SIZE_PRECISION = 5;  // Should be enough to hold any V3C unit sizes
@@ -147,7 +150,7 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     // Check if the point coordinates respect the voxel size
     const size_t geoBitDepthInput = uvgvpcc_enc::p_->geoBitDepthInput;
     const bool isCompliant = !std::any_of(frame->pointsGeometry.begin(), frame->pointsGeometry.end(),
-        [geoBitDepthInput](const auto& point) {
+        [geoBitDepthInput](const uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>& point) {
             return (point[0] >> geoBitDepthInput) |
             (point[1] >> geoBitDepthInput) |
             (point[2] >> geoBitDepthInput);
@@ -187,7 +190,7 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
         if (appParameters.nbLoops != 0 && frameId == totalNbFrames) {
             available_input_slot.acquire();
             args->frame_in = nullptr;
-            args->retval = RETVAL_EOF;
+            args->retval = Retval::Eof;
             filled_input_slot.release();
             break;
         }
@@ -201,7 +204,7 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
         if (nbBytes < 0) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Error occurred while formatting string storing the point cloud path.\n");
-            args->retval = RETVAL_FAILURE;
+            args->retval = Retval::Failure;
         }
         auto frame = std::make_shared<uvgvpcc_enc::Frame>(frameId, appParameters.startFrame + frameId,
                                                           std::string(pointCloudPath.begin(), pointCloudPath.end()));
@@ -211,17 +214,17 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Caught exception while loading frame " + std::to_string(frameId) + " from " + frame->pointCloudPath +
                                          ": " + std::string(e.what()) + "\n");
-            args->retval = RETVAL_FAILURE;
+            args->retval = Retval::Failure;
         }
         frameId++;
 
         // Signal that an item has been produced
         available_input_slot.acquire();
         args->frame_in = frame;
-        if (args->retval == RETVAL_FAILURE) {
+        if (args->retval == Retval::Failure) {
             run = false;
         } else {
-            args->retval = RETVAL_RUNNING;
+            args->retval = Retval::Running;
         }
         filled_input_slot.release();
     }
@@ -351,7 +354,7 @@ int main(const int argc, const char* const argv[]) {
     }
 
     // Initialize the application input and output threads
-    const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(appParameters, nullptr, RETVAL_RUNNING);
+    const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(appParameters, nullptr, Retval::Running);
     std::thread inputTh(&inputReadThread, in_args); // TODO(gg): in_args is read and modified by two threads at the same time
     size_t frameRead = 0;
     std::shared_ptr<uvgvpcc_enc::Frame> currFrame = nullptr;
@@ -367,10 +370,10 @@ int main(const int argc, const char* const argv[]) {
         currFrame = in_args->frame_in;
         in_args->frame_in = nullptr;
         available_input_slot.release();
-        if (in_args->retval == RETVAL_EOF) {
+        if (in_args->retval == Retval::Eof) {
             break;
         }
-        if (in_args->retval == RETVAL_FAILURE) {
+        if (in_args->retval == Retval::Failure) {
             return EXIT_FAILURE;
         }
         try {
