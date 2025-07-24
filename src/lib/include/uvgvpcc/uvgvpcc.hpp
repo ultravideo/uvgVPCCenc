@@ -172,7 +172,7 @@ struct GOF;
 // TODO(lf): Avid using both constant sized and dynamic sized memory member within the same struct.
 struct Frame {
     size_t frameId;      // aka relative index (0 if first encoded frame)
-    size_t frameNumber;  // aka number from the input frame file name
+    size_t frameNumber;  // aka number from the input frame file name (TODO(lf): correct)
     std::weak_ptr<GOF> gof;
     std::shared_ptr<std::counting_semaphore<UINT16_MAX>> conccurentFrameSem;
 
@@ -217,59 +217,10 @@ struct GOF {
     size_t mapHeightGOF;
     size_t mapHeightDSGOF;
 
-    std::string baseNameOccupancy = "";
-    std::string baseNameOccupancyDS = "";
-    std::string baseNameGeometry = "";
-    std::string baseNameAttribute = "";
-
     std::vector<uint8_t> bitstreamOccupancy;
     std::vector<uint8_t> bitstreamGeometry;
     std::vector<uint8_t> bitstreamAttribute;
 
-    void completeFileBaseNames(const Parameters* param) {
-        const std::string gofIdStr = zeroPad(static_cast<int>(gofId), 3);
-        const std::string nbFramesStr = zeroPad(static_cast<int>(nbFrames), 3);
-        
-        const std::string widthStr = std::to_string(param->mapWidth);
-        const std::string heightStr = std::to_string(mapHeightGOF);
-        
-        const std::string widthOMStr = std::to_string(param->mapWidth / param->occupancyMapDSResolution);
-        const std::string heightOMStr = std::to_string(mapHeightGOF / param->occupancyMapDSResolution);
-
-
-        try {
-            baseNameOccupancy = param->basenameOccupancyFiles;
-            baseNameOccupancy.replace(baseNameOccupancy.find("{GOFID}"), 7, gofIdStr)
-                .replace(baseNameOccupancy.find("{FRAMECOUNT}"), 12, nbFramesStr)
-                .replace(baseNameOccupancy.find("{WIDTH}"), 7, widthStr)
-                .replace(baseNameOccupancy.find("{HEIGHT}"), 8, heightStr);
-
-            baseNameOccupancyDS = param->basenameOccupancyDSFiles;
-            baseNameOccupancyDS.replace(baseNameOccupancyDS.find("{GOFID}"), 7, gofIdStr)
-                .replace(baseNameOccupancyDS.find("{FRAMECOUNT}"), 12, nbFramesStr)
-                .replace(baseNameOccupancyDS.find("{WIDTH}"), 7, widthOMStr)
-                .replace(baseNameOccupancyDS.find("{HEIGHT}"), 8, heightOMStr); 
-
-            baseNameGeometry = param->basenameGeometryFiles;
-            baseNameGeometry.replace(baseNameGeometry.find("{GOFID}"), 7, gofIdStr)
-                .replace(baseNameGeometry.find("{FRAMECOUNT}"), 12, nbFramesStr)
-                .replace(baseNameGeometry.find("{WIDTH}"), 7, widthStr)
-                .replace(baseNameGeometry.find("{HEIGHT}"), 8, heightStr);
-
-            baseNameAttribute = param->basenameAttributeFiles;
-            baseNameAttribute.replace(baseNameAttribute.find("{GOFID}"), 7, gofIdStr)
-                .replace(baseNameAttribute.find("{FRAMECOUNT}"), 12, nbFramesStr)
-                .replace(baseNameAttribute.find("{WIDTH}"), 7, widthStr)
-                .replace(baseNameAttribute.find("{HEIGHT}"), 8, heightStr);
-        } catch (const std::exception& e) {
-            throw std::runtime_error(
-                "\n# Catch an exception while completing the file base names :\n# " + std::string(e.what()) +
-                "\n# basenameOccupancyBlank : " + param->basenameOccupancyFiles + "\n# basenameOccupancy      : " + baseNameOccupancy +
-                "\n# basenameOccupancyDSBlank : " + param->basenameOccupancyDSFiles + "\n# basenameOccupancy      : " + baseNameOccupancyDS +
-                "\n# basenameGeometryBlank  : " + param->basenameGeometryFiles + "\n# basenameGeometry       : " + baseNameGeometry +
-                "\n# basenameAttributeBlank : " + param->basenameAttributeFiles + "\n# basenameAttribute      : " + baseNameAttribute + "\n");
-        }
-    }
 };
 
 /// @brief API of the uvgVPCCenc library

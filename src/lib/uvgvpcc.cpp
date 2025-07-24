@@ -63,6 +63,7 @@
 #include "utils/preset.hpp"
 #include "uvgvpcc/log.hpp"
 #include "utils/parameters.hpp"
+#include "utils/fileExport.hpp"
 
 namespace uvgvpcc_enc {
 
@@ -219,6 +220,9 @@ void verifyConfig() {
         throw std::runtime_error("The intraFramePeriod (" + std::to_string(p_->intraFramePeriod) + ") needs to be a multiple of the GOP length ('sizeGOP2DEncoding'=" + std::to_string(p_->sizeGOP2DEncoding) + "). C.f. Kvazaar configuration.");        
     }
 
+    if (p_->exportIntermediateFiles && p_->intermediateFilesDir.empty()) {
+        throw std::runtime_error("Intermediate files need to be exported (exportIntermediateFiles=true) but no intermediate files directory has been set (intermediateFilesDir parameter is empty).");        
+    }
 }
 
 void setInputGeoPrecision() {
@@ -365,22 +369,6 @@ void parseUvgvpccParameters() {
         setParameterValue(paramPair.first,paramPair.second,false);
     }
 
-    // Set dynamic default values.
-    const std::string bodyPath = "-YUV420-GOF_{GOFID}-frameCount_{FRAMECOUNT}-{WIDTH}x{HEIGHT}";
-    if (p_->basenameOccupancyFiles.empty()) {
-        setParameterValue("basenameOccupancyFiles",p_->intermediateFilesDir + "/occupancyMaps/OCCUPANCY" + bodyPath,false);
-    }
-    if (p_->basenameOccupancyDSFiles.empty()) {
-        setParameterValue("basenameOccupancyDSFiles",p_->intermediateFilesDir + "/occupancyMapsDS/OCCUPANCY-DS" + bodyPath,false);
-    }    
-
-    if (p_->basenameGeometryFiles.empty()) {
-        setParameterValue("basenameGeometryFiles",p_->intermediateFilesDir + "/geometryMaps/GEOMETRY" + bodyPath,false);
-    }
-    if (p_->basenameAttributeFiles.empty()) {
-        setParameterValue("basenameAttributeFiles",p_->intermediateFilesDir + "/attributeMaps/ATTRIBUTE" + bodyPath,false);
-    }
-
     const std::string detectedThreadNumber = std::to_string(std::thread::hardware_concurrency());
     if(p_->nbThreadPCPart == 0) {
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API","'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud part of uvgVPCC is then the detected number of threads: "+detectedThreadNumber + "\n");
@@ -402,32 +390,6 @@ void parseUvgvpccParameters() {
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API","'attributeEncodingNbThread' is set to 0. The number of thread used for the attribute video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("attributeEncodingNbThread",detectedThreadNumber,false);
     }       
-
-    // Create sub-directory if necessary
-    if((p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) && p_->intermediateFilesDir.empty()) {
-        throw std::runtime_error("You choose to export intermediate files ('exportIntermediateMaps' or 'exportIntermediatePointClouds') but the parameter 'intermediateFilesDir' is empty.\n");
-    } 
-
-    if(p_->exportIntermediateMaps || p_->exportIntermediatePointClouds) {
-        createDirectory(p_->intermediateFilesDir);
-    }
-    // TODO(lf): redo the intermediary files exportation
-    if(p_->exportIntermediateMaps) {
-        createDirectory(p_->intermediateFilesDir + "/occupancyMaps");
-        createDirectory(p_->intermediateFilesDir + "/occupancyMapsDS");
-        createDirectory(p_->intermediateFilesDir + "/geometryMaps");
-        createDirectory(p_->intermediateFilesDir + "/attributeMaps");
-    }
-
-
-    if(p_->exportIntermediatePointClouds) {
-        createDirectory(p_->intermediateFilesDir + "/normalComputation");
-        createDirectory(p_->intermediateFilesDir + "/normalOrientation");
-        createDirectory(p_->intermediateFilesDir + "/initialSegmentation");
-        createDirectory(p_->intermediateFilesDir + "/refineSegmentation");
-        createDirectory(p_->intermediateFilesDir + "/patchSegmentation");
-    }    
-
 }
 
 static void initializeContext() {
@@ -465,6 +427,7 @@ void API::initializeEncoder() {
     initializeStaticParameters();
     initializeStaticFunctionPointers();
     initializeContext();
+    if(p_->exportIntermediateFiles) FileExport::cleanIntermediateFiles();
     initializationDone = true;
 }
 

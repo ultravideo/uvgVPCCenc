@@ -38,6 +38,7 @@
 #include <vector>
 #include "patchGeneration/robin_hood.h"
 #include "utils/utils.hpp"
+#include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -68,8 +69,8 @@ class PPISegmenter {
     PPISegmenter(const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                  const std::vector<Vector3<double>>& pointsNormals);
 
-    void initialSegmentation(std::vector<size_t>& pointsPPIs, const size_t& frameId);
-    void refineSegmentation(std::vector<size_t>& pointsPPIs, const size_t& frameId);
+    void initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId);
+    void refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId);
 
    private:
     static void voxelizationWithBitArray(const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,

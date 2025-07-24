@@ -50,6 +50,7 @@
 
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "catchLibLog.hpp"
+#include "utils/fileExport.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -298,17 +299,14 @@ void EncoderKvazaar::encodeGOFMaps(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
 
     api->config_destroy(config);
 
-    if (p_->exportIntermediateMaps) { // TODO(lf): export intermediate bitstream param should be added
-        std::string baseName;
+    if (p_->exportIntermediateFiles) {
         switch (encoderType_) {
-            case OCCUPANCY: baseName = gof->baseNameOccupancyDS; break;
-            case GEOMETRY:  baseName = gof->baseNameGeometry; break;
-            case ATTRIBUTE: baseName = gof->baseNameAttribute; break;
+            case OCCUPANCY: FileExport::exportOccupancyBitstream(gof, bitstream, ".hevc"); break;
+            case GEOMETRY:  FileExport::exportGeometryBitstream(gof, bitstream, ".hevc"); break;
+            case ATTRIBUTE: FileExport::exportAttributeBitstream(gof, bitstream, ".hevc"); break;
             default: assert(false);
         }
-        writeBitstreamToFile(bitstream, baseName + ".hevc");
     }
-
 }
 
 

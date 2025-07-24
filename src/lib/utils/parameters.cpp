@@ -161,8 +161,7 @@ void initializeParameterMap(Parameters& param) {
         {"errorsAreFatal", {BOOL, "", &param.errorsAreFatal}},
 
         // ___ Debug parameters ___ //
-        {"exportIntermediateMaps", {BOOL, "", &param.exportIntermediateMaps}},
-        {"exportIntermediatePointClouds", {BOOL, "", &param.exportIntermediatePointClouds}},
+        {"exportIntermediateFiles", {BOOL, "", &param.exportIntermediateFiles}},
         {"timerLog", {BOOL, "", &param.timerLog}},
 
         // ___ Activate or not some features ___ //
@@ -215,10 +214,6 @@ void initializeParameterMap(Parameters& param) {
         {"mapGenerationBackgroundValueGeometry", {UINT, "", &param.mapGenerationBackgroundValueGeometry}},
 
         // ___ 2D encoding parameters ___ //
-        {"basenameOccupancyFiles", {STRING, "", &param.basenameOccupancyFiles}},
-        {"basenameOccupancyDSFiles", {STRING, "", &param.basenameOccupancyDSFiles}},
-        {"basenameGeometryFiles", {STRING, "", &param.basenameGeometryFiles}},
-        {"basenameAttributeFiles", {STRING, "", &param.basenameAttributeFiles}},
         {"sizeGOP2DEncoding", {UINT, "8,16", &param.sizeGOP2DEncoding}},
         {"intraFramePeriod", {UINT, "", &param.intraFramePeriod}},
 

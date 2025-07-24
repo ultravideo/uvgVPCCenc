@@ -7,6 +7,7 @@ add_library(utilsLibrary STATIC
     threadqueue.cpp
     preset.cpp
     parameters.cpp
+    fileExport.cpp
 )
 
 add_library(logLibrary STATIC

@@ -34,7 +34,6 @@
 
 /// \file Abstract class defining the behaviour of any 2D encoder to be used within the uvgVPCCenc library. 
 
-#include <fstream>
 #include "uvgvpcc/uvgvpcc.hpp"
 
 enum ENCODER_TYPE {OCCUPANCY, GEOMETRY, ATTRIBUTE};
@@ -51,12 +50,3 @@ protected:
     const ENCODER_TYPE encoderType_;
 };
 
-inline void writeBitstreamToFile(const std::vector<uint8_t>& bitstream, const std::string& filename) {
-    
-    std::ofstream file(filename, std::ios::binary);
-    if (!file.is_open()) {
-        throw std::runtime_error("Failed to open file for writing bitstream: " + filename);
-    }
-    file.write(reinterpret_cast<const char*>(bitstream.data()), bitstream.size());
-    file.close();
-}

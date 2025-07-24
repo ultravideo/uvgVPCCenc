@@ -59,9 +59,8 @@ struct Parameters {
     std::string intermediateFilesDir;
 
     // ___ Debug parameters ___ //
-    bool exportIntermediateMaps = false;
-    bool exportIntermediatePointClouds = false;
-    bool timerLog = false;
+    bool exportIntermediateFiles = false;
+    bool timerLog = false; // TODO(lf): remove and activate it if loglevel is profiling
 
     // ___ Activate or not some features ___ //
     bool lowDelayBitstream = false;
@@ -131,10 +130,6 @@ struct Parameters {
 
 
     // ___ 2D encoding parameters ___ //
-    std::string basenameOccupancyFiles;
-    std::string basenameOccupancyDSFiles;
-    std::string basenameGeometryFiles;
-    std::string basenameAttributeFiles;
     size_t sizeGOP2DEncoding;
     size_t intraFramePeriod = 64; // TODO(lf): Not useful yet as a new 2D encoder is created for each GOF. (64 is default Kvazaar value. In uvgVPCCenc, the value is indirectly set by 8 or 16, depending on the size of the 2D encoding GOP)
 

@@ -41,16 +41,14 @@
 #include <cstddef>
 #include <cstdint>
 #include <cstring>
-#include <fstream>
-#include <iostream>
 #include <memory>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "utils/utils.hpp"
+#include "utils/fileExport.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -121,7 +119,6 @@ namespace {
             assert(false && "Unsupported block size for occupancy map downscaling");
         }
     }
-
 
 
 template <bool doubleLayer, bool axisSwap>
@@ -195,6 +192,10 @@ void MapGenerationBaseLine::writePatches(const std::shared_ptr<uvgvpcc_enc::Fram
             }
         }
     }
+    if(p_->exportIntermediateFiles) {
+        FileExport::exportImageAttribute(frame);
+        FileExport::exportImageGeometry(frame);
+    }
 }
 
 
@@ -205,17 +206,21 @@ void MapGenerationBaseLine::allocateMaps(const std::shared_ptr<uvgvpcc_enc::Fram
 
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
 
-    // The occupancy map already exist and might already has the correct size.
+    // The occupancy map already exist and might already have the correct size.
 
 
     // TODO(lf): is it necessary ? Yes if resizing due to bigger occupancy map (larger than minimumHeight parameter)
-    // assert(frame->occupancyMap.size() == imageSize);
+    // assert(frame->occupancyMap.size() <= imageSize); //TODO(lf) there is a bug here
     if (frame->occupancyMap.size() != imageSize) {
         frame->occupancyMap.resize(imageSize,0);
     }
 
+    if(p_->exportIntermediateFiles) {
+        FileExport::exportImageOccupancy(frame);
+    }
+
     const size_t imageSizeDS = imageSize / (p_->occupancyMapDSResolution*p_->occupancyMapDSResolution);
-    frame->occupancyMapDS.resize(imageSizeDS + (imageSizeDS >> 1U), 0U);    
+    frame->occupancyMapDS.resize(imageSizeDS + (imageSizeDS >> 1U), 0U);  // TODO(lf): should be done at the down scaling function
 
 
     frame->geometryMapL1.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
@@ -541,24 +546,30 @@ void MapGenerationBaseLine::fillBackgroundImages(const std::shared_ptr<uvgvpcc_e
             fillBackgroundNonEmptyBlock(frame, blockSize, imageSize, uom, vom, pixelBlockCount, missingPixelCount, iterations);
         }
     }
+    if(p_->exportIntermediateFiles) {
+        FileExport::exportImageAttributeBgFill(frame);
+        FileExport::exportImageGeometryBgFill(frame);
+    }
 }
 
 void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     allocateMaps(frame, frame->mapHeight);
 
+    // TODO(lf): occupancy map downscaling can be done after write patches (or in parallel) maybe
     if(p_->occupancyMapDSResolution == 2) {
         occupancyMapDownscaling<2>(frame->mapHeight,frame->occupancyMap,frame->occupancyMapDS);
     } else if (p_->occupancyMapDSResolution == 4) {
         occupancyMapDownscaling<4>(frame->mapHeight,frame->occupancyMap,frame->occupancyMapDS);
     } else {
-        assert(false && "Unsupported block size for occupancy map downscaling");
+        assert(false && "Unsupported downscaling factor for occupancy map.");
+    }
+    if(p_->exportIntermediateFiles) {
+        FileExport::exportImageOccupancyDS(frame);
     }
 
     // Geometry and attribute map generation //
     writePatches(frame, frame->mapHeight);
-    if(!p_->exportIntermediateMaps) {
-        std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute); // Release memory
-    }
+
     
     // Background filling //
     fillBackgroundImages(frame, frame->mapHeight);
@@ -568,85 +579,10 @@ void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc:
         RGB444toYUV420(frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
     }
 
-    if (p_->exportIntermediateMaps /*|| p_->useEncoderCommand*/) {
-        writeFrameMapsYUV(frame);
-        std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute); // Release memory
+    if(p_->exportIntermediateFiles) {
+        FileExport::exportImageAttributeYUV(frame);
     }
-}
-
-void MapGenerationBaseLine::writeFrameMapsYUV(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
-    
-    // Occupancy maps
-    std::streamsize streamSize = static_cast<std::streamsize>(static_cast<double>(frame->occupancyMap.size())*1.5);
-
-    const std::shared_ptr<uvgvpcc_enc::GOF>& gof = frame->gof.lock();
-    const std::string occupancyBitstreamFileName = gof->baseNameOccupancy + "_f" + std::to_string(frame->frameNumber) + ".yuv";
-    std::ofstream yuvFile(occupancyBitstreamFileName, std::ios::binary);
-    if (!yuvFile.is_open()) {
-        throw std::runtime_error("Unable to open file: " + gof->baseNameOccupancy + "_f" + std::to_string(frame->frameNumber) + ".yuv");
-    }
-    
-    // Convert Y0-Y1 green map into a more human friendly black and gray map
-    std::vector<uint8_t> occupancyMapRecolored(static_cast<size_t>(static_cast<double>(frame->occupancyMap.size())*1.5),128);
-    for (size_t i = 0; i < frame->occupancyMap.size(); ++i) {
-        occupancyMapRecolored[i] = 164 * frame->occupancyMap[i];
-    }
-    
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : lf Accepted for I/O operations
-    yuvFile.write(reinterpret_cast<const char*>(occupancyMapRecolored.data()), streamSize);
-    yuvFile.close();
-
-    // Occupancy maps DS
-    streamSize = static_cast<std::streamsize>(frame->occupancyMapDS.size());
-    const std::string occupancyBitstreamFileNameDS = gof->baseNameOccupancyDS + "_f" + std::to_string(frame->frameNumber) + ".yuv";
-    yuvFile = std::ofstream(occupancyBitstreamFileNameDS, std::ios::binary);
-    
-    if (!yuvFile.is_open()) {
-        throw std::runtime_error("Unable to open file: " + occupancyBitstreamFileNameDS);
-    }
-    
-    // Convert Y0-Y1 green map into a more human friendly black and gray map
-    std::vector<uint8_t> occupancyMapRecoloredDS(frame->occupancyMapDS.size(),128);
-    for (size_t i = 0; i < static_cast<size_t>(static_cast<double>(frame->occupancyMapDS.size())/1.5); ++i) {
-        occupancyMapRecoloredDS[i] = 164 * frame->occupancyMapDS[i];
-    }
-    
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : lf Accepted for I/O operations
-    yuvFile.write(reinterpret_cast<const char*>(occupancyMapRecoloredDS.data()), streamSize);
-    yuvFile.close();
-
-
-
-    // Geometry maps
-    streamSize = static_cast<std::streamsize>(frame->geometryMapL1.size());
-    const std::string geometryBitstreamFileName = gof->baseNameGeometry + "_f" + std::to_string(frame->frameNumber) + ".yuv";
-    yuvFile = std::ofstream(geometryBitstreamFileName, std::ios::binary);
-    if (!yuvFile.is_open()) {
-        throw std::runtime_error("Unable to open file: " + gof->baseNameGeometry + "_f" + std::to_string(frame->frameNumber) + ".yuv");
-    }
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : Accepted for I/O operations
-    yuvFile.write(reinterpret_cast<const char*>(frame->geometryMapL1.data()), streamSize);
-    if (p_->doubleLayer) {
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : Accepted for I/O operations
-        yuvFile.write(reinterpret_cast<const char*>(frame->geometryMapL2.data()), streamSize);
-    }
-    yuvFile.close();
-
-    // Attribute maps
-    streamSize = static_cast<std::streamsize>(frame->attributeMapL1.size());
-
-    const std::string attributeBitstreamFileName = gof->baseNameAttribute + "_f" + std::to_string(frame->frameNumber) + ".yuv";
-    yuvFile = std::ofstream(attributeBitstreamFileName, std::ios::binary);
-    if (!yuvFile.is_open()) {
-        throw std::runtime_error("Unable to open file: " + gof->baseNameAttribute + "_f" + std::to_string(frame->frameNumber) + ".yuv");
-    }
-    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : Accepted for I/O operations
-    yuvFile.write(reinterpret_cast<const char*>(frame->attributeMapL1.data()), streamSize);
-    if (p_->doubleLayer) {
-        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : Accepted for I/O operations
-        yuvFile.write(reinterpret_cast<const char*>(frame->attributeMapL2.data()), streamSize);
-    }
-    yuvFile.close();
+    std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute); // Release memory TODO(lf):can be done early
 }
 
 // TODO(lf): for L2, find a way to make a copy write only the changing value between both map (same comment for geometry)
@@ -662,9 +598,6 @@ void MapGenerationBaseLine::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_e
     gof->mapHeightDSGOF = roundUp(gof->mapHeightDSGOF, static_cast<size_t>(8));
 
     gof->mapHeightGOF = gof->mapHeightDSGOF * p_->occupancyMapDSResolution;
-
-    // Complete GOF file names
-    gof->completeFileBaseNames(p_);
 
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
         frame->mapHeight = gof->mapHeightGOF;

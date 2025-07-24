@@ -51,6 +51,7 @@
 #include "utils/utils.hpp"
 
 #include "utilsPatchGeneration.hpp"
+#include "utils/fileExport.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -481,48 +482,6 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,
     }
 }
 
-void exportPointCloudPatchSeg(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                            "Export patch segmentation point cloud for frame " + std::to_string(frame->frameId) + "\n"); 
-    
-    const std::string plyFilePath =
-        p_->intermediateFilesDir + "/patchSegmentation/PATCH-SEGMENTATION_f-" + uvgvpcc_enc::zeroPad(frame->frameId, 3) + ".ply";
-    
-    std::vector<uvgvpcc_enc::Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
-    std::vector<bool> pointColored(frame->pointsGeometry.size(),false);
-    for(const auto& patch : frame->patchList) {
-        const auto color = patchColors[patch.patchIndex_ % patchColors.size()];
-        for (size_t v = 0; v < patch.heightInPixel_; ++v) {
-            for (size_t u = 0; u < patch.widthInPixel_; ++u) {
-                const size_t pos = v * patch.widthInPixel_ + u;
-                const typeGeometryInput depth = patch.depthL1_[pos];
-                if (depth == g_infiniteDepth) {
-                    if(p_->doubleLayer) {
-                        assert( patch.depthL2_[pos] == g_infiniteDepth);
-                    }
-                    continue;
-                }
-                const size_t ptIndexL1 = patch.depthPCidxL1_[pos];
-                attributes[ptIndexL1] = color;
-                pointColored[ptIndexL1] = true;
-                
-                if(!p_->doubleLayer) continue;
-                const size_t ptIndexL2 = patch.depthPCidxL2_[pos];
-                if(ptIndexL1 == ptIndexL2) continue;
-                attributes[ptIndexL2] = color;
-                pointColored[ptIndexL2] = true;
-
-            }
-        }
-    }
-
-    for(int i = 0; i<frame->pointsGeometry.size(); ++i) {
-        if(pointColored[i]) continue;
-        attributes[i] = uvgvpcc_enc::Vector3<uint8_t>(255, 0, 0);
-    }
-    exportPointCloud(plyFilePath, frame->pointsGeometry, attributes);
-}
-
 } // Anonymous namespace
 
 void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs) {
@@ -578,8 +537,8 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         pointsPPIs,mapList,connectedComponents);
     }
 
-    if(p_->exportIntermediatePointClouds) {
-        exportPointCloudPatchSeg(frame);
-    }
+    if (p_->exportIntermediateFiles) {
+        FileExport::exportPointCloudPatchSegmentation(frame);
+    }     
 
 }

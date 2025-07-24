@@ -113,8 +113,8 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     // Projection Plane Index Segmentation //
     std::vector<size_t> voxelsPPIs(voxelizedPointsGeometry.size());
     PPISegmenter ppiSegmenter(voxelizedPointsGeometry, pointsNormal);
-    ppiSegmenter.initialSegmentation(voxelsPPIs, frame->frameId);
-    ppiSegmenter.refineSegmentation(voxelsPPIs, frame->frameId);
+    ppiSegmenter.initialSegmentation(frame,voxelsPPIs, frame->frameId);
+    ppiSegmenter.refineSegmentation(frame,voxelsPPIs, frame->frameId);
     
     // "De-voxelization"
     std::vector<size_t> pointsPPIsBuffer;

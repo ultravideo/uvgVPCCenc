@@ -41,12 +41,12 @@
 #include <queue>
 #include <string>
 #include <vector>
-#include <cstdint>
 
 #include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "utils/utils.hpp"
+#include "utils/fileExport.hpp"
 
 
 using namespace uvgvpcc_enc;
@@ -147,16 +147,9 @@ void orientNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector
         }
     }
 
-    if (p_->exportIntermediatePointClouds) {
-        const std::string plyFilePath =
-            p_->intermediateFilesDir + "/normalOrientation/NORMAL-ORIENTATION_f-" + uvgvpcc_enc::zeroPad(frame->frameNumber, 3) + ".ply";
-        if (p_->geoBitDepthVoxelized == p_->geoBitDepthInput) {
-            exportPointCloud(plyFilePath, pointsGeometry, frame->pointsAttribute, normals);
-        } else {
-            const std::vector<uvgvpcc_enc::Vector3<uint8_t>> attributes(pointsGeometry.size(), {128, 128, 128});
-            exportPointCloud(plyFilePath, pointsGeometry, attributes, normals);
-        }
-    }
+    if (p_->exportIntermediateFiles) {
+        FileExport::exportPointCloudNormalOrientation(frame,pointsGeometry,normals);
+    }    
 }
 
 }  // namespace NormalOrientation

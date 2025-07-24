@@ -38,8 +38,8 @@
 #include <cstddef>
 #include <iterator>
 #include <string>
-#include <cstdint>
 #include <vector>
+#include <memory>       
 
 #include "robin_hood.h"
 
@@ -48,6 +48,7 @@
 #include "utils/utils.hpp"
 
 #include "utilsPatchGeneration.hpp"
+#include "utils/fileExport.hpp"
 
 
 using namespace uvgvpcc_enc;
@@ -83,7 +84,7 @@ VoxelAttribute::VoxelAttribute(const size_t projectionPlaneCount_)
 
 // TODO(lf): check if the initial segmentation can be done inside the precomputation of the refineSegmentation
 // TODO(lf): use auto& : ... everywhere instead of for loop (and try avoiding using pointCount or size())
-void PPISegmenter::initialSegmentation(std::vector<size_t>& pointsPPIs, const size_t& frameId) {
+void PPISegmenter::initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
                              "Initial segmentation of frame " + std::to_string(frameId) + "\n");
     for (size_t ptIndex = 0; ptIndex < pointsPPIs.size(); ++ptIndex) {
@@ -101,15 +102,11 @@ void PPISegmenter::initialSegmentation(std::vector<size_t>& pointsPPIs, const si
         pointsPPIs[ptIndex] = ppi;
     }
 
-    if (p_->exportIntermediatePointClouds) {
-        const std::string plyFilePath =
-            p_->intermediateFilesDir + "/initialSegmentation/INITIAL-SEGMENTATION_f-" + uvgvpcc_enc::zeroPad(frameId, 3) + ".ply";
-        std::vector<uvgvpcc_enc::Vector3<uint8_t>> attributes(pointsGeometry_.size());
-        for (size_t pointIndex = 0; pointIndex < pointsGeometry_.size(); ++pointIndex) {
-            attributes[pointIndex] = ppiColors[pointsPPIs[pointIndex]];
-        }
-        exportPointCloud(plyFilePath, pointsGeometry_, attributes);
-    }
+    if (p_->exportIntermediateFiles) {
+        FileExport::exportPointCloudInitialSegmentation(frame,pointsGeometry_,pointsPPIs);
+    } 
+
+
 }
 
 // TODO(lf): the number of points in the voxel is usefull only for DE-V voxel no ? So why to set the value for all voxels ?
@@ -380,7 +377,7 @@ in a voxel. The former is usually isolated points, and the latter indicates the 
 // TODO(lf): in the whole refine segmentation, be consistent between talking about grid cell or voxel
 // TODO(lf): use two flags, compute one time the flag for S or M instead of checking it like the other classification
 // TODO(lf): the refine segmentation voxelization (voxel dim etc..) should depend on geometry bit, not on the max range
-void PPISegmenter::refineSegmentation(std::vector<size_t>& pointsPPIs, const size_t& frameId) {
+void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
                              "Refine segmentation of frame " + std::to_string(frameId) + "\n");
     // One boolean for each voxel of the grid, indicating if a voxel is filled or not //
@@ -441,13 +438,7 @@ void PPISegmenter::refineSegmentation(std::vector<size_t>& pointsPPIs, const siz
         }
     }
 
-    if (p_->exportIntermediatePointClouds) {
-        const std::string plyFilePath =
-            p_->intermediateFilesDir + "/refineSegmentation/REFINE-SEGMENTATION_f-" + uvgvpcc_enc::zeroPad(frameId, 3) + ".ply";
-        std::vector<uvgvpcc_enc::Vector3<uint8_t>> attributes(pointsGeometry_.size());
-        for (size_t pointIndex = 0; pointIndex < pointsGeometry_.size(); ++pointIndex) {
-            attributes[pointIndex] = ppiColors[pointsPPIs[pointIndex]];
-        }
-        exportPointCloud(plyFilePath, pointsGeometry_, attributes);
-    }
+    if (p_->exportIntermediateFiles) {
+        FileExport::exportPointCloudRefineSegmentation(frame,pointsGeometry_,pointsPPIs);
+    } 
 }
