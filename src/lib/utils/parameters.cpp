@@ -162,6 +162,7 @@ void initializeParameterMap(Parameters& param) {
 
         // ___ Debug parameters ___ //
         {"exportIntermediateFiles", {BOOL, "", &param.exportIntermediateFiles}},
+        {"intermediateFilesDirTimeStamp", {BOOL, "", &param.intermediateFilesDirTimeStamp}},
         {"timerLog", {BOOL, "", &param.timerLog}},
 
         // ___ Activate or not some features ___ //

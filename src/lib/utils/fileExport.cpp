@@ -86,9 +86,16 @@ void createDirs(const std::string& filePath) {
         return;
     }
 
-    // Create all missing directories
-    if(!std::filesystem::create_directories(dir)) {
-       throw std::runtime_error("Error : failed to create directories : " + dir.string() + " for the intermediate file : " + filePath); 
+    // Thread-safe missing directory creation
+    static std::mutex fs_mutex;
+    {
+    std::lock_guard<std::mutex> lock(fs_mutex);
+    std::error_code ec;
+    if (!std::filesystem::create_directories(dir,ec)) {
+        if(ec) {
+            throw std::runtime_error("Error: failed to create directories: " + dir.string() + " for the intermediate file: " + filePath + ". " + ec.message());
+        }
+    }
     }
 }
 
@@ -199,7 +206,7 @@ namespace FileExport {
 
     void cleanIntermediateFiles() {
         // Remove all files within the intermediate files directory if it exists but keep the subdirectory structure intact.
-        Logger::log<LogLevel::TRACE>("EXPORT FILE","Clean intermediate files directory.\n");
+        Logger::log<LogLevel::INFO>("EXPORT FILE","Clean intermediate files directory.\n");
 
         const std::filesystem::path root(p_->intermediateFilesDir);
         

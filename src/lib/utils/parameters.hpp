@@ -56,10 +56,11 @@ struct Parameters {
     bool doubleLayer = true;
     std::string logLevel = "INFO";
     bool errorsAreFatal = true;
-    std::string intermediateFilesDir;
-
+    
     // ___ Debug parameters ___ //
     bool exportIntermediateFiles = false;
+    bool intermediateFilesDirTimeStamp = true;
+    std::string intermediateFilesDir;
     bool timerLog = false; // TODO(lf): remove and activate it if loglevel is profiling
 
     // ___ Activate or not some features ___ //

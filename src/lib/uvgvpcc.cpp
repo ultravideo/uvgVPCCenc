@@ -389,7 +389,31 @@ void parseUvgvpccParameters() {
     if(p_->attributeEncodingNbThread == 0) {
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API","'attributeEncodingNbThread' is set to 0. The number of thread used for the attribute video 2D encoding is then the detected number of threads: "+detectedThreadNumber + "\n");
         setParameterValue("attributeEncodingNbThread",detectedThreadNumber,false);
-    }       
+    }
+
+    if(p_->exportIntermediateFiles && p_->intermediateFilesDirTimeStamp) {
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API","'intermediateFilesDirTimeStamp' is true, so a time stamp is added to the 'intermediateFilesDir' path.\n");
+        
+        std::time_t now = std::time(nullptr);
+        std::tm* localTime = std::localtime(&now);
+
+        std::ostringstream oss;
+        oss << std::setfill('0') << std::setw(2) << (localTime->tm_year % 100)
+            << std::setw(2) << (localTime->tm_mon + 1)
+            << std::setw(2) << localTime->tm_mday
+            << std::setw(2) << localTime->tm_hour
+            << std::setw(2) << localTime->tm_min
+            << std::setw(2) << localTime->tm_sec;
+
+        std::string dir = p_->intermediateFilesDir;
+        if (!dir.empty() && dir.back() == '/') {
+            dir.pop_back(); // Remove trailing slash
+        }
+
+        setParameterValue("intermediateFilesDir",dir + oss.str(),false);        
+    }
+
+
 }
 
 static void initializeContext() {
@@ -427,7 +451,7 @@ void API::initializeEncoder() {
     initializeStaticParameters();
     initializeStaticFunctionPointers();
     initializeContext();
-    if(p_->exportIntermediateFiles) FileExport::cleanIntermediateFiles();
+    if(p_->exportIntermediateFiles && !p_->intermediateFilesDirTimeStamp) FileExport::cleanIntermediateFiles();
     initializationDone = true;
 }
 
