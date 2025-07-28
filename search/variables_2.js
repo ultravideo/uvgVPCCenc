@@ -11,6 +11,5 @@ var searchData=
   ['currentgof2dencodingjob_8',['currentGOF2DEncodingJob',['../uvgvpcc_8cpp.html#ada352f98e2ac0802499b6bcf77f48036',1,'uvgvpcc.cpp']]],
   ['currentgofbitstreamgenjob_9',['currentGOFBitstreamGenJob',['../uvgvpcc_8cpp.html#a8b5f5d7ca4be4598333bcd99d228cf61',1,'uvgvpcc.cpp']]],
   ['currentgofinitmapgenjob_10',['currentGOFInitMapGenJob',['../uvgvpcc_8cpp.html#a59cfd031c3b360f735134deed64c5ce9',1,'uvgvpcc.cpp']]],
-  ['currentgofinterpackjob_11',['currentGOFInterPackJob',['../uvgvpcc_8cpp.html#a2d3af68a51b250eee4af77bd2c508faf',1,'uvgvpcc.cpp']]],
-  ['cyn_12',['CYN',['../namespaceuvgvpcc__enc.html#a6c6d930e34c3f87dcc8d830663682c39',1,'uvgvpcc_enc']]]
+  ['currentgofinterpackjob_11',['currentGOFInterPackJob',['../uvgvpcc_8cpp.html#a2d3af68a51b250eee4af77bd2c508faf',1,'uvgvpcc.cpp']]]
 ];

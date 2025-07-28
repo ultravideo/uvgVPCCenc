@@ -1,7 +1,7 @@
 var searchData=
 [
   ['uchar_0',['UChar',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeeaf97d5cb62f8cf5dbb26c17171dd5fe69',1,'miniply']]],
-  ['uint_1',['uint',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea0b1291eded63143ac04709711274785a',1,'miniply::UInt'],['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a3afaf2bea30a00cacf776a73055b8386',1,'uvgvpcc_enc::UINT']]],
+  ['uint_1',['uint',['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a3afaf2bea30a00cacf776a73055b8386',1,'uvgvpcc_enc::UINT'],['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea0b1291eded63143ac04709711274785a',1,'miniply::UInt']]],
   ['unaligned_5fload_2',['unaligned_load',['../namespacerobin__hood_1_1detail.html#a1fec4e0dc29e5012571013d9c515a5c3',1,'robin_hood::detail']]],
   ['unionpatchreferenceidx_3',['unionPatchReferenceIdx',['../structuvgvpcc__enc_1_1Patch.html#ac260789cd30f365db87905b240e39a12',1,'uvgvpcc_enc::Patch']]],
   ['unordered_5fflat_5fmap_4',['unordered_flat_map',['../namespacerobin__hood.html#a20afd1ea1998a2159eefa6cff3b03e8e',1,'robin_hood']]],

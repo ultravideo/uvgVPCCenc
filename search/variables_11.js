@@ -17,6 +17,6 @@ var searchData=
   ['state_5f_14',['state_',['../classuvgvpcc__enc_1_1Job.html#aec5917340ff9f7fd544a52be050dcb4b',1,'uvgvpcc_enc::Job']]],
   ['straf_5fentry_5fsign_5fflag_15',['straf_entry_sign_flag',['../structref__list__struct.html#a2766061b496323a38d1c8530de8bdbd6',1,'ref_list_struct']]],
   ['stride_16',['stride',['../structminiply_1_1PLYProperty.html#a0bacfdc11d7e06cf136eb443deccf439',1,'miniply::PLYProperty']]],
-  ['sub_17',['sub',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a89fe94bb152658284a1af6736f0adae5',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['sub_17',['sub',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a109a793e2ca6ed519dbb7208e97e5db4',1,'nanoflann::KDTreeBaseClass::Node']]],
   ['surfacethickness_18',['surfaceThickness',['../structuvgvpcc__enc_1_1Parameters.html#a3deed94ac0b0069bd65ed79731840fe8',1,'uvgvpcc_enc::Parameters']]]
 ];

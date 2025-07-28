@@ -53,7 +53,7 @@ var searchData=
   ['string_50',['STRING',['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791aba53b33a71ffee6d9ba768efb3a32b27',1,'uvgvpcc_enc']]],
   ['structs_51',['Parameter structs',['../group__param__grp.html',1,'']]],
   ['stuff_52',['Auxiliary metaprogramming stuff',['../group__nanoflann__metaprog__grp.html',1,'']]],
-  ['sub_53',['sub',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a89fe94bb152658284a1af6736f0adae5',1,'nanoflann::KDTreeBaseClass::Node']]],
+  ['sub_53',['sub',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a109a793e2ca6ed519dbb7208e97e5db4',1,'nanoflann::KDTreeBaseClass::Node']]],
   ['submitjob_54',['submitJob',['../classuvgvpcc__enc_1_1ThreadQueue.html#adfffef72b46616586bf08d4fc79418db',1,'uvgvpcc_enc::ThreadQueue']]],
   ['sum_5fof_5flist_5fcounts_55',['sum_of_list_counts',['../classminiply_1_1PLYReader.html#a8711740c8502ca48ff997df0d24e2b42',1,'miniply::PLYReader']]],
   ['surfacethickness_56',['surfaceThickness',['../structuvgvpcc__enc_1_1Parameters.html#a3deed94ac0b0069bd65ed79731840fe8',1,'uvgvpcc_enc::Parameters']]],

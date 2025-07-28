@@ -1,7 +1,0 @@
-<map id="PPISegmenter::refineSegmentation" name="PPISegmenter::refineSegmentation">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,255,56"/>
-<area shape="rect" id="Node000002" href="$utilsPatchGeneration_8hpp.html#a7e03bd9f637d6875e048306bf9f014a2" title=" " alt="" coords="318,5,453,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="254,28,304,23,305,29,255,34"/>
-<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="303,55,468,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,52,289,56,289,61,254,58"/>
-</map>

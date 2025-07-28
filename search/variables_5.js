@@ -6,6 +6,6 @@ var searchData=
   ['flags_3',['flags',['../structnanoflann_1_1KDTreeSingleIndexAdaptorParams.html#aba1bcb3df6045e89ba6015ac190ebc3f',1,'nanoflann::KDTreeSingleIndexAdaptorParams']]],
   ['frameid_4',['frameId',['../structuvgvpcc__enc_1_1Frame.html#ac96833f5d38c9fcb28b95ee879772eb2',1,'uvgvpcc_enc::Frame']]],
   ['framenumber_5',['frameNumber',['../structuvgvpcc__enc_1_1Frame.html#ab63d5f997f707a3826adfa283f4e01ad',1,'uvgvpcc_enc::Frame']]],
-  ['frames_6',['frames',['../structcli_1_1opts__t.html#a70808806850b0a30004da6749e059e0e',1,'cli::opts_t::frames'],['../structuvgvpcc__enc_1_1GOF.html#a0e3987c394546fd98271afba713dbb10',1,'uvgvpcc_enc::GOF::frames']]],
+  ['frames_6',['frames',['../structuvgvpcc__enc_1_1GOF.html#a0e3987c394546fd98271afba713dbb10',1,'uvgvpcc_enc::GOF']]],
   ['func_5f_7',['func_',['../classuvgvpcc__enc_1_1Job.html#aeb53baa433da479da919126a25b6806b',1,'uvgvpcc_enc::Job']]]
 ];

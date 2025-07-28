@@ -1,5 +1,13 @@
 <map id="EncoderKvazaar::encodeGOFMaps" name="EncoderKvazaar::encodeGOFMaps">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,251,31"/>
-<area shape="rect" id="Node000002" href="$abstract2DMapEncoder_8hpp.html#af47b9e73fba1d80dd578f0df1bc0f613" title=" " alt="" coords="299,5,455,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="251,15,285,15,285,21,251,21"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,77,251,102"/>
+<area shape="rect" id="Node000002" href="$namespaceFileExport.html#a1dd387de242c49e6c29330cef47cd738" title=" " alt="" coords="305,5,500,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="183,74,302,46,303,51,184,79"/>
+<area shape="rect" id="Node000004" href="$namespaceFileExport.html#a303ebe8ace06be8e35f50ac2ee1c2b18" title=" " alt="" coords="301,69,504,109"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="251,87,287,87,287,92,251,92"/>
+<area shape="rect" id="Node000005" href="$namespaceFileExport.html#a7f638e98ce327128e84bd34f78bf98bc" title=" " alt="" coords="299,133,507,173"/>
+<area shape="poly" id="edge5_Node000001_Node000005" title=" " alt="" coords="184,100,303,128,302,133,183,105"/>
+<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="555,77,720,102"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="477,43,577,70,576,76,476,48"/>
+<area shape="poly" id="edge4_Node000004_Node000003" title=" " alt="" coords="504,87,541,87,541,92,504,92"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="476,131,576,103,577,108,477,136"/>
 </map>

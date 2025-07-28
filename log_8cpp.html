@@ -75,21 +75,17 @@ $(function() {
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#namespaces">Namespaces</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#namespaces">Namespaces</a>  </div>
   <div class="headertitle"><div class="title">log.cpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="log_8hpp_source.html">uvgvpcc/log.hpp</a>&quot;</code><br />
 <code>#include &lt;stdio.h&gt;</code><br />
-<code>#include &lt;array&gt;</code><br />
 <code>#include &lt;cstdarg&gt;</code><br />
 <code>#include &lt;cstdio&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;ctime&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;mutex&gt;</code><br />
 <code>#include &lt;regex&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
@@ -104,32 +100,6 @@ Include dependency graph for log.cpp:</div>
 Namespaces</h2></td></tr>
 <tr class="memitem:namespaceuvgvpcc__enc" id="r_namespaceuvgvpcc__enc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html">uvgvpcc_enc</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
-Functions</h2></td></tr>
-<tr class="memitem:a19f373d3ca7d0ca2e5721c203efcd5f2" id="r_a19f373d3ca7d0ca2e5721c203efcd5f2"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a19f373d3ca7d0ca2e5721c203efcd5f2">uvgvpcc_enc::colorForLevel</a> (<a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3">LogLevel</a> level)</td></tr>
-<tr class="separator:a19f373d3ca7d0ca2e5721c203efcd5f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:ae44655d73caa3eb1883d8f44c12ac5f8" id="r_ae44655d73caa3eb1883d8f44c12ac5f8"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#ae44655d73caa3eb1883d8f44c12ac5f8">uvgvpcc_enc::RED</a> = &quot;\x1B[31m&quot;</td></tr>
-<tr class="separator:ae44655d73caa3eb1883d8f44c12ac5f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8303f1194222a9cce9a0e069776fdf79" id="r_a8303f1194222a9cce9a0e069776fdf79"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a8303f1194222a9cce9a0e069776fdf79">uvgvpcc_enc::YEL</a> = &quot;\x1B[33m&quot;</td></tr>
-<tr class="separator:a8303f1194222a9cce9a0e069776fdf79"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab77c52b4aaba8d20f2abfc0abd964afe" id="r_ab77c52b4aaba8d20f2abfc0abd964afe"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#ab77c52b4aaba8d20f2abfc0abd964afe">uvgvpcc_enc::BLU</a> = &quot;\x1B[34m&quot;</td></tr>
-<tr class="separator:ab77c52b4aaba8d20f2abfc0abd964afe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c6d930e34c3f87dcc8d830663682c39" id="r_a6c6d930e34c3f87dcc8d830663682c39"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a6c6d930e34c3f87dcc8d830663682c39">uvgvpcc_enc::CYN</a> = &quot;\x1B[36m&quot;</td></tr>
-<tr class="separator:a6c6d930e34c3f87dcc8d830663682c39"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab76cb880794afcd4ba0f2072c348fd92" id="r_ab76cb880794afcd4ba0f2072c348fd92"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#ab76cb880794afcd4ba0f2072c348fd92">uvgvpcc_enc::GRN</a> = &quot;\x1B[32m&quot;</td></tr>
-<tr class="separator:ab76cb880794afcd4ba0f2072c348fd92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a880a3c7c1a7adcb912d038619bd4e888" id="r_a880a3c7c1a7adcb912d038619bd4e888"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a880a3c7c1a7adcb912d038619bd4e888">uvgvpcc_enc::MAG</a> = &quot;\x1B[35m&quot;</td></tr>
-<tr class="separator:a880a3c7c1a7adcb912d038619bd4e888"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a46ca3605c7847ce961da262a38ef186f" id="r_a46ca3605c7847ce961da262a38ef186f"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a46ca3605c7847ce961da262a38ef186f">uvgvpcc_enc::BLD</a> = &quot;\x1B[1m&quot;</td></tr>
-<tr class="separator:a46ca3605c7847ce961da262a38ef186f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a331b14974cc0a3742a7d5df661bbba82" id="r_a331b14974cc0a3742a7d5df661bbba82"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a331b14974cc0a3742a7d5df661bbba82">uvgvpcc_enc::RST</a> = &quot;\x1B[0m&quot;</td></tr>
-<tr class="separator:a331b14974cc0a3742a7d5df661bbba82"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa405eb2aa51926630894eec6973beec6" id="r_aa405eb2aa51926630894eec6973beec6"><td class="memItemLeft" align="right" valign="top">constexpr const char *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#aa405eb2aa51926630894eec6973beec6">uvgvpcc_enc::REDANDBLD</a> = &quot;\x1B[31m\x1B[1m&quot;</td></tr>
-<tr class="separator:aa405eb2aa51926630894eec6973beec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

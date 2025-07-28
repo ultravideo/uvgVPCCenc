@@ -85,14 +85,13 @@ $(function() {
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cmath&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
-<code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
-<code>#include &quot;<a class="el" href="utilsPatchGeneration_8hpp_source.html">utilsPatchGeneration.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8hpp_source.html">uvgvpcc/log.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="uvgvpcc_8hpp_source.html">uvgvpcc/uvgvpcc.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils/utils.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="fileExport_8hpp_source.html">utils/fileExport.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for normalComputation.cpp:</div>
 <div class="dyncontent">
@@ -108,12 +107,6 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a46480ca405a1a36a28d865696ba485f0" id="r_a46480ca405a1a36a28d865696ba485f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a46480ca405a1a36a28d865696ba485f0">NormalComputation::computeNormals</a> (const std::shared_ptr&lt; <a class="el" href="structuvgvpcc__enc_1_1Frame.html">uvgvpcc_enc::Frame</a> &gt; &amp;frame, std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &gt; &amp;normals, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry, const std::vector&lt; std::vector&lt; size_t &gt; &gt; &amp;pointsNNList)</td></tr>
 <tr class="separator:a46480ca405a1a36a28d865696ba485f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a023db1970e149a658bad91da7aef758f" id="r_a023db1970e149a658bad91da7aef758f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a023db1970e149a658bad91da7aef758f">NormalComputation::computeCovMat</a> (std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;covMat, const <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &amp;bary, const size_t nnCount, const std::vector&lt; size_t &gt; &amp;nnIndices, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry)</td></tr>
-<tr class="separator:a023db1970e149a658bad91da7aef758f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98c50cc726c4d2abcb8c2fc5a2a9e7a8" id="r_a98c50cc726c4d2abcb8c2fc5a2a9e7a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a98c50cc726c4d2abcb8c2fc5a2a9e7a8">NormalComputation::diagonalize</a> (const std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;A, std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;Q, std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;D)</td></tr>
-<tr class="separator:a98c50cc726c4d2abcb8c2fc5a2a9e7a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68400b431752d36119a550beaafd042e" id="r_a68400b431752d36119a550beaafd042e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a68400b431752d36119a550beaafd042e">NormalComputation::computeNormal</a> (<a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &amp;normal, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry, const <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &amp;point, const std::vector&lt; size_t &gt; &amp;pointNn, const size_t nnCount)</td></tr>
-<tr class="separator:a68400b431752d36119a550beaafd042e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

@@ -57,6 +57,5 @@ var searchData=
   ['gof_2ehpp_54',['gof.hpp',['../gof_8hpp.html',1,'']]],
   ['gofid_55',['gofid',['../structuvgvpcc__enc_1_1GOF.html#ac3147a408b5241590235b7fb9bdde506',1,'uvgvpcc_enc::GOF::gofId'],['../uvgvpcc_8cpp.html#a965c4c92a7105f32cedcc11e0fb91c08',1,'gofId:&#160;uvgvpcc.cpp']]],
   ['gofpatchpacking_56',['gofPatchPacking',['../classPatchPacking.html#a3882407ca2aafda5290a6b52991124dd',1,'PatchPacking']]],
-  ['gpatresholdiou_57',['gpaTresholdIoU',['../structuvgvpcc__enc_1_1Parameters.html#aa414bdc9a165cb8937902e39ac5a325b',1,'uvgvpcc_enc::Parameters']]],
-  ['grn_58',['GRN',['../namespaceuvgvpcc__enc.html#ab76cb880794afcd4ba0f2072c348fd92',1,'uvgvpcc_enc']]]
+  ['gpatresholdiou_57',['gpaTresholdIoU',['../structuvgvpcc__enc_1_1Parameters.html#aa414bdc9a165cb8937902e39ac5a325b',1,'uvgvpcc_enc::Parameters']]]
 ];

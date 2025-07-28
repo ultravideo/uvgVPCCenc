@@ -18,5 +18,5 @@ var searchData=
   ['i_5ftile_15',['I_TILE',['../bitstream__common_8hpp.html#a4a9cd85739394d88730850cf15761faaaceec86684a8c24efb1e48645f1154ce0',1,'bitstream_common.hpp']]],
   ['indirect_5fedge_16',['INDIRECT_EDGE',['../ppiSegmenter_8hpp.html#a0d28d3ba3f42ec77cba289dae8c76f9aa65b769e144d69965fbc4623d218f5482',1,'ppiSegmenter.hpp']]],
   ['info_17',['INFO',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a551b723eafd6a31d444fcb2f5920fbd3',1,'uvgvpcc_enc']]],
-  ['int_18',['int',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea1686a6c336b71b36d77354cea19a8b52',1,'miniply::Int'],['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a431584040676fade50c17b5a2b7da0bd',1,'uvgvpcc_enc::INT']]]
+  ['int_18',['int',['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a431584040676fade50c17b5a2b7da0bd',1,'uvgvpcc_enc::INT'],['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea1686a6c336b71b36d77354cea19a8b52',1,'miniply::Int']]]
 ];

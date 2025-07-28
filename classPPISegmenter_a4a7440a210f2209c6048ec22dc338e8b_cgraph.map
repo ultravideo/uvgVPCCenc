@@ -1,0 +1,9 @@
+<map id="PPISegmenter::initialSegmentation" name="PPISegmenter::initialSegmentation">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,35,255,60"/>
+<area shape="rect" id="Node000002" href="$utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e" title=" " alt="" coords="360,5,452,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="249,32,346,22,347,27,250,37"/>
+<area shape="rect" id="Node000003" href="$namespaceFileExport.html#abfd9c58f0cd1e6b112ef97709d6a56fd" title=" " alt="" coords="303,55,509,95"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="255,57,290,61,289,66,255,63"/>
+<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="557,63,723,88"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="509,73,544,73,544,78,509,78"/>
+</map>

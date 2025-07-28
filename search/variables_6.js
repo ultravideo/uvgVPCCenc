@@ -24,6 +24,5 @@ var searchData=
   ['gi_5fgeometry_5fmsb_5falign_5fflag_21',['gi_geometry_MSB_align_flag',['../structgeometry__information.html#a2cef521e523759d6dce89557a38165a1',1,'geometry_information']]],
   ['gof_22',['gof',['../structuvgvpcc__enc_1_1Frame.html#a258d44582988990827918e7a8c5917dd',1,'uvgvpcc_enc::Frame']]],
   ['gofid_23',['gofid',['../structuvgvpcc__enc_1_1GOF.html#ac3147a408b5241590235b7fb9bdde506',1,'uvgvpcc_enc::GOF::gofId'],['../uvgvpcc_8cpp.html#a965c4c92a7105f32cedcc11e0fb91c08',1,'gofId:&#160;uvgvpcc.cpp']]],
-  ['gpatresholdiou_24',['gpaTresholdIoU',['../structuvgvpcc__enc_1_1Parameters.html#aa414bdc9a165cb8937902e39ac5a325b',1,'uvgvpcc_enc::Parameters']]],
-  ['grn_25',['GRN',['../namespaceuvgvpcc__enc.html#ab76cb880794afcd4ba0f2072c348fd92',1,'uvgvpcc_enc']]]
+  ['gpatresholdiou_24',['gpaTresholdIoU',['../structuvgvpcc__enc_1_1Parameters.html#aa414bdc9a165cb8937902e39ac5a325b',1,'uvgvpcc_enc::Parameters']]]
 ];

@@ -80,121 +80,8 @@ $(function() {
 Functions</h2></td></tr>
 <tr class="memitem:a46480ca405a1a36a28d865696ba485f0" id="r_a46480ca405a1a36a28d865696ba485f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a46480ca405a1a36a28d865696ba485f0">computeNormals</a> (const std::shared_ptr&lt; <a class="el" href="structuvgvpcc__enc_1_1Frame.html">uvgvpcc_enc::Frame</a> &gt; &amp;frame, std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &gt; &amp;normals, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry, const std::vector&lt; std::vector&lt; size_t &gt; &gt; &amp;pointsNNList)</td></tr>
 <tr class="separator:a46480ca405a1a36a28d865696ba485f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a023db1970e149a658bad91da7aef758f" id="r_a023db1970e149a658bad91da7aef758f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a023db1970e149a658bad91da7aef758f">computeCovMat</a> (std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;covMat, const <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &amp;bary, const size_t nnCount, const std::vector&lt; size_t &gt; &amp;nnIndices, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry)</td></tr>
-<tr class="separator:a023db1970e149a658bad91da7aef758f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98c50cc726c4d2abcb8c2fc5a2a9e7a8" id="r_a98c50cc726c4d2abcb8c2fc5a2a9e7a8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a98c50cc726c4d2abcb8c2fc5a2a9e7a8">diagonalize</a> (const std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;A, std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;Q, std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;D)</td></tr>
-<tr class="separator:a98c50cc726c4d2abcb8c2fc5a2a9e7a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a68400b431752d36119a550beaafd042e" id="r_a68400b431752d36119a550beaafd042e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceNormalComputation.html#a68400b431752d36119a550beaafd042e">computeNormal</a> (<a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &amp;normal, const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;pointsGeometry, const <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &amp;point, const std::vector&lt; size_t &gt; &amp;pointNn, const size_t nnCount)</td></tr>
-<tr class="separator:a68400b431752d36119a550beaafd042e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
-<a id="a023db1970e149a658bad91da7aef758f" name="a023db1970e149a658bad91da7aef758f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a023db1970e149a658bad91da7aef758f">&#9670;&#160;</a></span>computeCovMat()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NormalComputation::computeCovMat </td>
-          <td>(</td>
-          <td class="paramtype">std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>covMat</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>bary</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>nnCount</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; size_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>nnIndices</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>pointsGeometry</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespaceNormalComputation_a023db1970e149a658bad91da7aef758f_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
-<a id="a68400b431752d36119a550beaafd042e" name="a68400b431752d36119a550beaafd042e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a68400b431752d36119a550beaafd042e">&#9670;&#160;</a></span>computeNormal()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NormalComputation::computeNormal </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>normal</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>pointsGeometry</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &amp;&#160;</td>
-          <td class="paramname"><em>point</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::vector&lt; size_t &gt; &amp;&#160;</td>
-          <td class="paramname"><em>pointNn</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const size_t&#160;</td>
-          <td class="paramname"><em>nnCount</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the call graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceNormalComputation_a68400b431752d36119a550beaafd042e_cgraph.svg" width="384" height="115"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
-</div>
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespaceNormalComputation_a68400b431752d36119a550beaafd042e_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
 <a id="a46480ca405a1a36a28d865696ba485f0" name="a46480ca405a1a36a28d865696ba485f0"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a46480ca405a1a36a28d865696ba485f0">&#9670;&#160;</a></span>computeNormals()</h2>
 
@@ -235,51 +122,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceNormalComputation_a46480ca405a1a36a28d865696ba485f0_cgraph.svg" width="598" height="183"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="namespaceNormalComputation_a46480ca405a1a36a28d865696ba485f0_cgraph.svg" width="642" height="51"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespaceNormalComputation_a46480ca405a1a36a28d865696ba485f0_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
-</div>
-
-</div>
-</div>
-<a id="a98c50cc726c4d2abcb8c2fc5a2a9e7a8" name="a98c50cc726c4d2abcb8c2fc5a2a9e7a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98c50cc726c4d2abcb8c2fc5a2a9e7a8">&#9670;&#160;</a></span>diagonalize()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void NormalComputation::diagonalize </td>
-          <td>(</td>
-          <td class="paramtype">const std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>A</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>Q</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; double &gt;, 3 &gt; &amp;&#160;</td>
-          <td class="paramname"><em>D</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<div class="dynheader">
-Here is the caller graph for this function:</div>
-<div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="namespaceNormalComputation_a98c50cc726c4d2abcb8c2fc5a2a9e7a8_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
