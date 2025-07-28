@@ -177,12 +177,13 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
 
 /// @brief Application thread reading the input .ply files.
 /// @param args 
-void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
+void inputReadThread(std::shared_ptr<input_handler_args> args) {
     double inputReadTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
     const cli::opts_t& appParameters = args->opts;
     size_t frameId = 0;
     bool run = true;
     const size_t totalNbFrames = appParameters.nbFrames * appParameters.nbLoops;
+    Retval returnValue = Retval::Running;
     // Producer thread that reads input frames.
     while (run) {
 
@@ -204,7 +205,7 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
         if (nbBytes < 0) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Error occurred while formatting string storing the point cloud path.\n");
-            args->retval = Retval::Failure;
+            returnValue = Retval::Failure;
         }
         auto frame = std::make_shared<uvgvpcc_enc::Frame>(frameId, appParameters.startFrame + frameId,
                                                           std::string(pointCloudPath.begin(), pointCloudPath.end()));
@@ -214,19 +215,21 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
                                      "Caught exception while loading frame " + std::to_string(frameId) + " from " + frame->pointCloudPath +
                                          ": " + std::string(e.what()) + "\n");
-            args->retval = Retval::Failure;
+            returnValue = Retval::Failure;
         }
-        frameId++;
-
+        
         // Signal that an item has been produced
         available_input_slot.acquire();
         args->frame_in = frame;
-        if (args->retval == Retval::Failure) {
+        if (returnValue == Retval::Failure) {
+            args->retval = Retval::Failure;
             run = false;
         } else {
-            args->retval = Retval::Running;
+            assert(returnValue == Retval::Running && args->retval == Retval::Running);
         }
         filled_input_slot.release();
+        
+        frameId++;
     }
     if (uvgvpcc_enc::p_->timerLog) {
         inputReadTimerTotal = uvgvpcc_enc::global_timer.elapsed() - inputReadTimerTotal;
@@ -369,13 +372,14 @@ int main(const int argc, const char* const argv[]) {
         filled_input_slot.acquire();
         currFrame = in_args->frame_in;
         in_args->frame_in = nullptr;
-        available_input_slot.release();
         if (in_args->retval == Retval::Eof) {
             break;
         }
         if (in_args->retval == Retval::Failure) {
             return EXIT_FAILURE;
         }
+        available_input_slot.release();
+
         try {
             // Entry point of the uvgVPCCenc library
             uvgvpcc_enc::API::encodeFrame(currFrame, &output);
