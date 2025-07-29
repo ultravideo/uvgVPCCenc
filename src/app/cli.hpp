@@ -63,6 +63,10 @@ struct opts_t {
     bool version = false;
     /** \brief Whether to loop input */
     size_t nbLoops = 1;
+    /** \brief Destination address for rtp streams */
+    std::string dstAddress{};
+    /** \brief Destination port for rtp streams */
+    uint16_t dstPort = 0;
 };
 
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args);

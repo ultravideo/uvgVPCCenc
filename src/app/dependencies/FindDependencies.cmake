@@ -10,7 +10,7 @@ if(PkgConfig_FOUND)
 endif()
 
 # If we did not find uvgV3CRTP build it from source_group
-if(UVGRTP_FOUND)
+if(UVGV3CRTP_FOUND)
     message(STATUS "Found uvgV3CRTP")
 else()
     message(STATUS "uvgV3CRTP not found, building from source...")
@@ -18,7 +18,7 @@ else()
 	#include(FetchContent)
 	find_package(Git REQUIRED)
 	
-	option(GIT_SUBMODULE "Check submodules during build" ON)
+	option(GIT_SUBMODULE "Check submodules during build" OFF) #TODO: set to on when public git available
 	if(GIT_SUBMODULE)
 	    message(STATUS "Update submodule")
 		execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
