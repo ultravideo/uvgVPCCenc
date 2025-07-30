@@ -8,6 +8,7 @@ add_library(utilsLibrary STATIC
     preset.cpp
     parameters.cpp
     fileExport.cpp
+    jobManagement.cpp
 )
 
 add_library(logLibrary STATIC

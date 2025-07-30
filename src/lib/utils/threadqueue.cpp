@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -32,23 +32,21 @@
 
 /// \file Custom thread pool implementation based on the Kvazaar own implementation.
 
-#include "uvgvpcc/threadqueue.hpp"
+#include "threadqueue.hpp"
 
 #include <algorithm>
 #include <cassert>
+#include <cstddef>
 #include <deque>
 #include <map>
 #include <memory>
 #include <mutex>
 #include <string>
-#include <utility>
-#include <cstddef>
 
 #include "uvgvpcc/log.hpp"
 
 namespace uvgvpcc_enc {
 
-void (Job::*Job::executePtr)() const = &Job::executeNoTimer;
 std::string jobStateToStr(threadqueue_job_state s) {
     const std::map<threadqueue_job_state, std::string> stateStr{
         {threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED, "threadqueue_job_state::THREADQUEUE_JOB_STATE_PAUSED"},
@@ -62,41 +60,43 @@ std::string jobStateToStr(threadqueue_job_state s) {
 }
 
 void Job::addDependency(const std::shared_ptr<Job>& dependency) {
-    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "Adding " + dependency->getName() + " as dependency\n");
+    if (dependency == nullptr) {
+        Logger::log<LogLevel::WARNING>("JOB", getName() + "Dependency is null\n");
+        return;
+    }
+    Logger::log<LogLevel::DEBUG>("JOB", getName() + "Adding " + dependency->getName() + " as dependency\n");
     dependency->mtx_.lock();
-    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "Dependency locked\n");
+    Logger::log<LogLevel::DEBUG>("JOB", getName() + "Dependency locked\n");
     if (dependency->completed_) {
         return;
     }
-    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), dependency->getName() + " state: " + jobStateToStr(dependency->getState()) + "\n");
+    Logger::log<LogLevel::DEBUG>("JOB", getName() + dependency->getName() + " state: " + jobStateToStr(dependency->getState()) + "\n");
     dependencies_++;
-    Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "Dependencies: " + std::to_string(dependencies_) + "\n");
+    Logger::log<LogLevel::DEBUG>("JOB", getName() + "Dependencies: " + std::to_string(dependencies_) + "\n");
 
-    Logger::log<LogLevel::DEBUG>("JOB: " + getName(),
-                dependency->getName() + " Reverse dependencies: " + std::to_string(dependency->reverseDependencies_.size()) + "\n");
+    Logger::log<LogLevel::DEBUG>("JOB", getName() + dependency->getName() +
+                                            " Reverse dependencies: " + std::to_string(dependency->reverseDependencies_.size()) + "\n");
     dependency->reverseDependencies_.emplace_back(this->shared_from_this());
-    Logger::log<LogLevel::DEBUG>("JOB: " + getName(),
-                dependency->getName() + " Reverse dependencies: " + std::to_string(dependency->reverseDependencies_.size()) + "\n");
+    Logger::log<LogLevel::DEBUG>("JOB", getName() + dependency->getName() +
+                                            " Reverse dependencies: " + std::to_string(dependency->reverseDependencies_.size()) + "\n");
     dependency->mtx_.unlock();
 }
 
 bool Job::isReady() const { return dependencies_.load() == 0; }
 
-void Job::executeNoTimer() const { 
-    func_();
-}
-
-void Job::executeTimer() const { 
-    double jobTimer = global_timer.elapsed();    
+void Job::execute() const {
+    Logger::log<LogLevel::TRACE>("JOB", getName() + "Start job\n");
+    double jobTimer = global_timer.elapsed();
     func_();
     jobTimer = global_timer.elapsed() - jobTimer;
-    Logger::log<LogLevel::PROFILING>("TIMER JOB: " + getName(),std::to_string(jobTimer) + " ms\n");
+    Logger::log<LogLevel::TRACE>("JOB", getName() + "End job\n");
+    Logger::log<LogLevel::PROFILING>("JOB", getName() + std::to_string(jobTimer) + " ms\n");
 }
 
 void Job::wait() {
     std::unique_lock lock(mtx_);
     cv_.wait(lock, [this]() {
-        Logger::log<LogLevel::DEBUG>("JOB: " + getName(), "is it ready ? " + std::string(completed_.load() ? "yes" : "no") + ".\n");
+        Logger::log<LogLevel::DEBUG>("JOB", getName() + "is it ready ? " + std::string(completed_.load() ? "yes" : "no") + ".\n");
         return completed_.load();
     });
 }
@@ -108,7 +108,7 @@ void Job::complete() {
     cv_.notify_all();
 }
 
-ThreadQueue::ThreadQueue(int numThreads) : stop_(false) {
+void ThreadQueue::initThreadQueue(int numThreads) {
     for (int i = 0; i < numThreads; ++i) {
         threads_.emplace_back(&ThreadQueue::workerThread, this);
     }
@@ -166,13 +166,15 @@ void ThreadQueue::workerThread() {
             if (stop_) {
                 return;
             }
-            for (size_t i = jobs_.size()-1; i >= 0; --i) {
+            for (size_t i = jobs_.size() - 1; i >= 0; --i) {
                 if (!jobs_[i].empty()) {
                     job = jobs_[i].front();
                     jobs_[i].pop_front();
                     break;
                 }
             }
+            // job = jobs_.front();
+            // jobs_.pop_front();
             Logger::log<LogLevel::TRACE>("ThreadQueue", "Job " + job->getName() + " popped from the queue\n");
         }
         std::unique_lock lockJ(job->mtx_);
@@ -183,7 +185,7 @@ void ThreadQueue::workerThread() {
         lockQ.unlock();
 
         job->execute();
-        
+
         lockQ.lock();
         lockJ.lock();
         assert(job->getState() == threadqueue_job_state::THREADQUEUE_JOB_STATE_RUNNING);
