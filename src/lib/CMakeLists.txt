@@ -2,6 +2,8 @@ message(DEBUG "./src/lib/cmake")
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
+add_compile_definitions(UVG_LOG_LEVEL=LogLevel::${UVG_LOG_LEVEL})
+
 configure_file(version.cpp.in version.cpp)
 
 add_subdirectory(utils)

@@ -1,137 +1,141 @@
 {
-  "version":3,
-  "cmakeMinimumRequired":{
-     "major":3,
-     "minor":22,
-     "patch":0
-  },
-  "configurePresets":[
-     {
-        "name":"base-config",
-        "hidden":true,
-        "generator":"Unix Makefiles",
-        "binaryDir":"${sourceDir}/_build/${presetName}",
-        "cacheVariables":{
-           "BUILD_SHARED_LIBS":true,
-           "CMAKE_BUILD_TYPE":"RelWithDebInfo",
-           "CMAKE_EXPORT_COMPILE_COMMANDS":true,
-           "ENABLE_TESTING":false,
-           "CHECK_PC_MD5": false,
-           "ENABLE_CI_TESTING":false,
-           "ENABLE_MY_TESTING":false
-        }
-     },
-     {
+   "version": 3,
+   "cmakeMinimumRequired": {
+      "major": 3,
+      "minor": 25,
+      "patch": 0
+   },
+   "configurePresets": [
+      {
+         "name": "base-config",
+         "hidden": true,
+         "generator": "Unix Makefiles",
+         "binaryDir": "${sourceDir}/_build/${presetName}",
+         "cacheVariables": {
+            "UVG_LOG_LEVEL": "INFO",
+            "BUILD_SHARED_LIBS": true,
+            "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+            "CMAKE_EXPORT_COMPILE_COMMANDS": true,
+            "ENABLE_TESTING": false,
+            "CHECK_PC_MD5": false,
+            "ENABLE_CI_TESTING": false,
+            "ENABLE_MY_TESTING": false
+         }
+      },
+      {
          "name": "Release",
          "inherits": "base-config",
          "cacheVariables": {
+            "UVG_LOG_LEVEL": "INFO",
             "CMAKE_BUILD_TYPE": "Release",
             "ENABLE_TESTING": true,
-            "ENABLE_CI_TESTING":true,
+            "ENABLE_CI_TESTING": true,
             "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
          }
       },
       {
-         "name":"RelWithDebInfo",
-         "inherits":"base-config",
-         "cacheVariables":{
-            "CMAKE_BUILD_TYPE":"RelWithDebInfo",
-            "ENABLE_TESTING":true
-         }
-      },
-     {
-        "name":"Debug",
-        "inherits":"base-config",
-        "cacheVariables":{
-           "CMAKE_BUILD_TYPE":"Debug"
-        }
-     },
-     {
-        "name":"clang-tidy",
-        "inherits":"base-config",
-        "cacheVariables":{
-           "CMAKE_BUILD_TYPE":"RelWithDebInfo",
-           "USE_CLANG_TIDY":"ON"
-        }
-     },
-     {
-         "name":"CI",
-         "inherits":"RelWithDebInfo",
-         "generator":"Unix Makefiles",
-         "cacheVariables":{
-            "CMAKE_BUILD_TYPE":"RelWithDebInfo",
-            "BUILD_SHARED_LIBS":false,
-            "ENABLE_TESTING":true,
-            "CHECK_PC_MD5": false,
-            "ENABLE_CI_TESTING":true,
-            "ENABLE_MY_TESTING":false
+         "name": "RelWithDebInfo",
+         "inherits": "base-config",
+         "cacheVariables": {
+            "UVG_LOG_LEVEL": "DEBUG",
+            "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+            "ENABLE_TESTING": true
          }
       },
       {
-         "name":"docs",
-         "inherits":"CI",
-         "generator":"Unix Makefiles",
-         "cacheVariables":{
-            "CMAKE_BUILD_TYPE":"RelWithDebInfo"
+         "name": "Debug",
+         "inherits": "base-config",
+         "cacheVariables": {
+            "UVG_LOG_LEVEL": "DEBUG",
+            "CMAKE_BUILD_TYPE": "Debug"
+         }
+      },
+      {
+         "name": "clang-tidy",
+         "inherits": "base-config",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+            "USE_CLANG_TIDY": "ON"
+         }
+      },
+      {
+         "name": "CI",
+         "inherits": "RelWithDebInfo",
+         "generator": "Unix Makefiles",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "RelWithDebInfo",
+            "BUILD_SHARED_LIBS": false,
+            "ENABLE_TESTING": true,
+            "CHECK_PC_MD5": false,
+            "ENABLE_CI_TESTING": true,
+            "ENABLE_MY_TESTING": false
+         }
+      },
+      {
+         "name": "docs",
+         "inherits": "CI",
+         "generator": "Unix Makefiles",
+         "cacheVariables": {
+            "CMAKE_BUILD_TYPE": "RelWithDebInfo"
          }
       }
-  ],
-  "buildPresets":[
-     {
-      "name": "Release",
-      "configurePreset": "Release"
+   ],
+   "buildPresets": [
+      {
+         "name": "Release",
+         "configurePreset": "Release"
       },
       {
-         "name":"RelWithDebInfo",
-         "configurePreset":"RelWithDebInfo"
+         "name": "RelWithDebInfo",
+         "configurePreset": "RelWithDebInfo"
       },
-     {
-        "name":"Debug",
-        "configurePreset":"Debug"
-     },
-     {
-        "name":"clang-tidy",
-        "configurePreset":"clang-tidy"
-     },
-     {
-        "name":"CI",
-        "configurePreset":"CI"
-     },
-     {
-        "name":"docs",
-        "configurePreset":"docs",
-        "targets":[
-          "docs"
-        ]
-     }
-  ],
-  "testPresets":[
-     {
-        "name":"base-test",
-        "hidden":true,
-        "execution":{
-           "stopOnFailure":false
-        }
-     },
-     {
-        "name":"Debug",
-        "inherits":"base-test",
-        "configurePreset":"Debug"
-     },
-     {
-        "name":"Release",
-        "inherits":"base-test",
-        "configurePreset":"Release"
-     },
-     {
-        "name":"RelWithDebInfo",
-        "inherits":"base-test",
-        "configurePreset":"RelWithDebInfo"
-     },
-     {
-        "name":"CI",
-        "inherits":"RelWithDebInfo",
-        "configurePreset":"CI"
-     }
-  ]
+      {
+         "name": "Debug",
+         "configurePreset": "Debug"
+      },
+      {
+         "name": "clang-tidy",
+         "configurePreset": "clang-tidy"
+      },
+      {
+         "name": "CI",
+         "configurePreset": "CI"
+      },
+      {
+         "name": "docs",
+         "configurePreset": "docs",
+         "targets": [
+            "docs"
+         ]
+      }
+   ],
+   "testPresets": [
+      {
+         "name": "base-test",
+         "hidden": true,
+         "execution": {
+            "stopOnFailure": false
+         }
+      },
+      {
+         "name": "Debug",
+         "inherits": "base-test",
+         "configurePreset": "Debug"
+      },
+      {
+         "name": "Release",
+         "inherits": "base-test",
+         "configurePreset": "Release"
+      },
+      {
+         "name": "RelWithDebInfo",
+         "inherits": "base-test",
+         "configurePreset": "RelWithDebInfo"
+      },
+      {
+         "name": "CI",
+         "inherits": "RelWithDebInfo",
+         "configurePreset": "CI"
+      }
+   ]
 }

@@ -17,7 +17,6 @@ ExternalProject_Add(
     LOG_TEST ON
     LOG_MERGED_STDOUTERR ON
     LOG_OUTPUT_ON_FAILURE ON
-    VERBATIM
 )
 
 ExternalProject_Add(
@@ -37,7 +36,6 @@ ExternalProject_Add(
     LOG_TEST ON
     LOG_MERGED_STDOUTERR ON
     LOG_OUTPUT_ON_FAILURE ON
-    VERBATIM
 )
 endif()
 
