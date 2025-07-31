@@ -70,6 +70,8 @@ enum class Retval : std::uint8_t {Running,Failure,Eof};
 
 struct input_handler_args {
     // Parameters passed from main thread to input thread.
+    
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-const-or-ref-data-members)
     const cli::opts_t& opts;
 
     // Picture and thread status passed from input thread to main thread.
@@ -177,7 +179,7 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
 
 /// @brief Application thread reading the input .ply files.
 /// @param args 
-void inputReadThread(std::shared_ptr<input_handler_args> args) {
+void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     double inputReadTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
     const cli::opts_t& appParameters = args->opts;
     size_t frameId = 0;

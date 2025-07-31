@@ -34,9 +34,17 @@
 
 #include "threadqueue.hpp"
 #include "uvgvpcc/log.hpp"
+#include <functional>
+#include <cstddef> 
+#include <unordered_map> 
+#include <optional>
+#include <string>
+#include <memory>
+#include <cstdint>   
+
 
 namespace {
-std::shared_ptr<uvgvpcc_enc::Job> getJob_impl(const uvgvpcc_enc::jobKey key) {
+std::shared_ptr<uvgvpcc_enc::Job> getJob_impl(const uvgvpcc_enc::jobKey& key) {
     std::shared_ptr<uvgvpcc_enc::Job> job = nullptr;
 
     // Check if it's a frame job or GOF job
@@ -109,12 +117,12 @@ bool jobKey::operator==(const jobKey& other) const {
 
 // jobManager methods
 std::shared_ptr<Job> jobManager::getJob(size_t gofId, size_t frameId, const std::string& funcName) {
-    jobKey key(gofId, frameId, funcName);
+    const jobKey key(gofId, frameId, funcName);
     return getJob_impl(key);
 }
 
 std::shared_ptr<Job> jobManager::getJob(size_t gofId, const std::string& funcName) {
-    jobKey key(gofId, funcName);
+    const jobKey key(gofId, funcName);
     return getJob_impl(key);
 }
 
@@ -163,9 +171,9 @@ void jobManager::submitCurrentGOFJobs() {
 // Hash function implementation
 namespace std {
 size_t hash<uvgvpcc_enc::jobKey>::operator()(const uvgvpcc_enc::jobKey& key) const {
-    size_t h1 = std::hash<size_t>{}(key.getGofId());
-    size_t h2 = key.getFrameId().has_value() ? std::hash<size_t>{}(key.getFrameId().value()) : 0;
-    size_t h3 = std::hash<std::string>{}(key.getFuncName());
+    const size_t h1 = std::hash<size_t>{}(key.getGofId());
+    const size_t h2 = key.getFrameId().has_value() ? std::hash<size_t>{}(key.getFrameId().value()) : 0;
+    const size_t h3 = std::hash<std::string>{}(key.getFuncName());
     return h1 ^ (h2 << 1) ^ (h3 << 2);
 }
 }  // namespace std

@@ -50,6 +50,7 @@
 #include <ios>
 #include <system_error>
 #include <memory>
+#include <mutex>
 
 #include "fileExport.hpp"
 
@@ -89,7 +90,7 @@ void createDirs(const std::string& filePath) {
     // Thread-safe missing directory creation
     static std::mutex fs_mutex;
     {
-    std::lock_guard<std::mutex> lock(fs_mutex);
+    const std::lock_guard<std::mutex> lock(fs_mutex);
     std::error_code ec;
     if (!std::filesystem::create_directories(dir,ec)) {
         if(ec) {
@@ -164,6 +165,7 @@ void exportImage(const std::string& filePath, const std::vector<uint8_t>& image,
     }
 
     if(!imageL2.empty()) {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : lf Accepted for I/O operations
         yuvFile.write(reinterpret_cast<const char*>(imageL2.data()), streamSize);
         if (!yuvFile) {
             throw std::runtime_error("Error while writing L2 to file: " + filePath);
@@ -250,7 +252,7 @@ namespace FileExport {
         Logger::log<LogLevel::TRACE>("EXPORT FILE","Export intermediate point cloud after normal orientation for frame " + std::to_string(frame->frameId) + ".\n");
 
         const std::string outputPath =
-            p_->intermediateFilesDir + "/02-normalComputation/NORMAL-ORIENTATION_f" + zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthVoxelized) + ".ply";
+            p_->intermediateFilesDir + "/02-normalOrientation/NORMAL-ORIENTATION_f" + zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthVoxelized) + ".ply";
         if (p_->geoBitDepthVoxelized == p_->geoBitDepthInput) {
             // If no voxelization
             exportPointCloud(outputPath, frame->pointsGeometry, frame->pointsAttribute, normals);

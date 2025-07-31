@@ -84,6 +84,7 @@ inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::
 }
 }  // anonymous namespace
 
+// NOLINTNEXTLINE(performance-unnecessary-value-param) : lf Need copy for shared pointer
 void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> frame) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
                              "Generate patches for frame " + std::to_string(frame->frameId) + ".\n");
