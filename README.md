@@ -25,6 +25,7 @@ https://ultravideo.fi/uvgvpccenc.html for more information.
   - [Application parameters](#application-parameters)
   - [uvgVPCCenc parameters](#uvgvpccenc-parameters)
   - [Presets](#presets)
+  - [Version 1.1](#uvgvpccenc-version-11)
 - [Academic research](#academic-research)
 
 ## Compilation and testing
@@ -123,6 +124,52 @@ Here are a selection of common uvgVPCCenc parameters:
 ### Presets
 
 Six presets for Voxel 9, 10, and 11, labeled Fast and Slow, have been created to clarify the encoding pipeline parametrization of uvgVPCCenc. These presets were manually crafted starting from Kvazaar's own presets and refined through extensive tool space exploration using stochastic methods. While they are not exhaustive and do not address certain features, such as single- and double-layer options, they provide a practical reference for parameter adjustments. Notably, such presets are exclusive to uvgVPCCenc and do not exist for TMC2.
+
+## uvgVPCCenc Version 1.1
+
+Version 1.1 shows better performance with no quality degradation or change in compression ratio.
+
+Compared to 1.0, uvgVPCCenc 1.1 features a better implementation of the point cloud and map processing parts (with no impact on 2D encoding speed), resulting in a speed-up of up to 1.7× in Fast voxel 9. Memory management is also significantly improved: uvgVPCCenc 1.1 runs smoothly with a small and stable RAM footprint over time. New developer features and bug fixes are also included in this version. As shown in the results below, compression efficiency (in terms of quality and bitrate) is not affected when switching from 1.0 to 1.1.
+
+### Encoding speed comparison: Major performance boosts in non-video encoding tasks
+
+| Voxel Size | Preset | Mode | Version | Speedup | FPS  |
+|------------|--------|------|---------|---------|------|
+| Voxel 10   | slow   | RA   | V1.0    |    -    | 0.8  |
+|            |        |      | V1.1    | x1.1    | 0.9  |
+|            |        | AI   | V1.0    |    -    | 1.0  |
+|            |        |      | V1.1    | x1.14   | 1.2  |
+|            | fast   | RA   | V1.0    |    -    | 4.7  |
+|            |        |      | V1.1    | x1.70   | 7.9  |
+|            |        | AI   | V1.0    |    -    | 5.0  |
+|            |        |      | V1.1    | x1.81   | 9.1  |
+| Voxel 9    | slow   | RA   | V1.0    |    -    | 3.7  |
+|            |        |      | V1.1    | x1.09   | 4.0  |
+|            |        | AI   | V1.0    |    -    | 4.4  |
+|            |        |      | V1.1    | x1.13   | 4.9  |
+|            | fast   | RA   | V1.0    |    -    | 22.3 |
+|            |        |      | V1.1    | x1.63   | 36.3 |
+|            |        | AI   | V1.0    |    -    | 24.8 |
+|            |        |      | V1.1    | x1.75   | 43.4 |
+
+
+### Compression efficiency comparison: Negligible impact on quality and bitrate
+
+BD-BR PCQM for V1.1 using V1.0 as anchor (negative BD-BR shows better compression efficiency).
+
+| Voxel Size | Preset | Mode | BD-BR PCQM |
+|------------|--------|------|------------|
+| Voxel 10   | slow   | RA   | -1.09%     |
+|            |        | AI   |  0.06%     |
+|            | fast   | RA   | -0.89%     |
+|            |        | AI   |  0.01%     |
+| Voxel 9    | slow   | RA   | -3.33%     |
+|            |        | AI   | -0.27%     |
+|            | fast   | RA   | -2.30%     |
+|            |        | AI   |  0.12%     |
+|------------|--------|------|------------|
+| Total average              | -0.96%     |
+
 
 ## Academic research
 

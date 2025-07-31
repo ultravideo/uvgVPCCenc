@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.25)
 # Include CMake modules
 include(ExternalProject)
 
-set(uvgVPCCenc_VER 1.0.0)
+set(uvgVPCCenc_VER 1.1.0)
 set(uvgVPCCenc_DESCR "uvgVPCCenc is an open-source real-time V-PCC encoder library written in C++ from scratch.")
 set(uvgVPCCenc_URL "https://github.com/ultravideo/uvgVPCCenc")
 
