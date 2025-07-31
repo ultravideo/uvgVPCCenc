@@ -167,8 +167,7 @@ BD-BR PCQM for V1.1 using V1.0 as anchor (negative BD-BR shows better compressio
 |            |        | AI   | -0.27%     |
 |            | fast   | RA   | -2.30%     |
 |            |        | AI   |  0.12%     |
-|------------|--------|------|------------|
-| Total average              | -0.96%     |
+| | | **Total average**      | **-0.96%** |
 
 
 ## Academic research
