@@ -320,8 +320,9 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
 
     // ******** Send sample stream **********
     //
-
+    // TODO: Currently whole bitstream is stored, could also clear the sample stream at certain points
     while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
+                
         // Get chunks and add them to state for sending
         chunks->available_chunks.acquire();
         chunks->io_mutex.lock();
@@ -335,41 +336,56 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
         }
 
         // Add new data to state
-        const size_t len = chunk.len;
-        // state.append_to_sample_stream(chunk.data.get(), len)
+        size_t len = chunk.len;
+        std::ptrdiff_t ptr = 0;  // Keep track of ptr in the V3C unit stream
+        for (const uint64_t current_size : chunk.v3c_unit_sizes) {
+            // Add the V3C unit to existing sample stream
+            // NOLINTNEXTLINE(concurrency-mt-unsafe)
+            state.append_to_sample_stream(std::next(chunk.data.get(), ptr), static_cast<size_t>(current_size));
+            ptr += static_cast<std::ptrdiff_t>(current_size);
+        }
 
         chunks->v3c_chunks.pop();
         chunks->io_mutex.unlock();
 
+        // Prepare for sending data. Move back to previous sent gof
+        if (state.prev_gof() != uvgV3CRTP::ERROR_TYPE::OK) {
+            if (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::INVALID_IT) {
+                // prev_gof failed because we are at the first gof, just move to first gof
+                state.first_gof();
+                state.reset_error_flag();
+            } else {
+                break;
+            }
+        }
+
         // Send newly added data
         while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
-            // TODO: allow sending per unit
-            // if(state.is_cur_gof_full()) {
+            // Send gof if full
+            if(state.cur_gof_is_full()) {
+                uvgV3CRTP::send_gof(&state);
+                state.next_gof();
+            }
+            else
+            {
+            //TODO: track which unit has been sent
+            //    for (uint8_t id = 0; id < uvgV3CRTP::NUM_V3C_UNIT_TYPES; id++) {
+            //    if (!state.cur_gof_has_unit(uvgV3CRTP::V3C_UNIT_TYPE(id))) continue;
 
-            uvgV3CRTP::send_gof(&state);
-            state.next_gof();
+            //    // TODO: send side-channel info
 
+            //    uvgV3CRTP::send_unit(&state, uvgV3CRTP::V3C_UNIT_TYPE(id));
             //}
-            /*
-            * else {
-            * //TODO: track which unit has been sent
-                for (uint8_t id = 0; id < uvgV3CRTP::NUM_V3C_UNIT_TYPES; id++) {
-                if (!state.cur_gof_has_unit(uvgV3CRTP::V3C_UNIT_TYPE(id))) continue;
-
-                // TODO: send side-channel info
-
-                uvgV3CRTP::send_unit(&state, uvgV3CRTP::V3C_UNIT_TYPE(id));
+                state.next_gof();
+                break;
             }
-            break;
-            }
-            */
         }
 
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
                                                                "Sent V3C chunk of size " + std::to_string(len) + " bytes.\n");
 
         if (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::EOS) {
-            state.reset_error_flag(); //More chunks are added later so reset chunks
+            state.reset_error_flag(); //More chunks are added later so reset EOS
         }
     }
 
