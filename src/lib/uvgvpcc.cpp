@@ -443,7 +443,7 @@ void parseUvgvpccParameters() {
 
 static void initializeContext() {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize context.\n");
-    jobManager::initThreadQueue(p_->nbThreadPCPart);
+    JobManager::initThreadQueue(p_->nbThreadPCPart);
     g_threadHandler.gofId = 0;
 }
 
@@ -544,11 +544,11 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
         bsJob->addDependency(encodeGOF);
         if (g_threadHandler.currentGOF->gofId > 0) {
             bsJob->addDependency(
-                jobManager::getJob(g_threadHandler.currentGOF->gofId - 1, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
+                JobManager::getJob(g_threadHandler.currentGOF->gofId - 1, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
         }
     } else {
-        initGOFMG = jobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapGenerationBaseLine::initGOFMapGeneration));
-        encodeGOF = jobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapEncoding::encodeGOFMaps));
+        initGOFMG = JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapGenerationBaseLine::initGOFMapGeneration));
+        encodeGOF = JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapEncoding::encodeGOFMaps));
     }
 
     g_threadHandler.currentGOF->frames.push_back(frame);
@@ -557,7 +557,7 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     auto patchGen = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 0, PatchGeneration::generateFramePatches, frame);
 
     if (p_->interPatchPacking) {
-        jobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(PatchPacking::gofPatchPacking))->addDependency(patchGen);
+        JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(PatchPacking::gofPatchPacking))->addDependency(patchGen);
     } else {
         auto occAlloc = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 1, PatchPacking::allocateDefaultOccupancyMap, frame,
                              p_->minimumMapHeight);
@@ -573,9 +573,9 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     mapGen->addDependency(initGOFMG);
     encodeGOF->addDependency(mapGen);
 
-    jobManager::submitCurrentFrameJobs();
+    JobManager::submitCurrentFrameJobs();
     if (g_threadHandler.currentGOF->nbFrames == p_->sizeGOF) {
-        jobManager::submitCurrentGOFJobs();
+        JobManager::submitCurrentGOFJobs();
     }
 }
 
@@ -583,13 +583,13 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
 void API::emptyFrameQueue() {
     if (g_threadHandler.currentGOF != nullptr) {
         if (g_threadHandler.currentGOF->nbFrames < p_->sizeGOF) {
-            jobManager::submitCurrentGOFJobs();
+            JobManager::submitCurrentGOFJobs();
         }
-        jobManager::threadQueue.waitForJob(
-            jobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
+        JobManager::threadQueue->waitForJob(
+            JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
     }
 }
 
 /// @brief Insure a proper end of the encoder execution.
-void API::stopEncoder() { jobManager::threadQueue.stop(); }
+void API::stopEncoder() { JobManager::threadQueue->stop(); }
 }  // namespace uvgvpcc_enc

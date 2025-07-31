@@ -30,7 +30,7 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-// Template implementations for jobManager
+// Template implementations for JobManager
 
 namespace {
 template <typename Func, typename... Args>
@@ -41,12 +41,12 @@ std::shared_ptr<uvgvpcc_enc::Job> make_job_impl(const uvgvpcc_enc::jobKey key, s
 
     // Add job to appropriate map based on whether it has frameId
     if (key.getFrameId().has_value()) {
-        if (uvgvpcc_enc::jobManager::currentFrameJobMap) {
-            uvgvpcc_enc::jobManager::currentFrameJobMap->emplace(key, job);
+        if (uvgvpcc_enc::JobManager::currentFrameJobMap) {
+            uvgvpcc_enc::JobManager::currentFrameJobMap->emplace(key, job);
         }
     } else {
-        if (uvgvpcc_enc::jobManager::currentGOFJobMap) {
-            uvgvpcc_enc::jobManager::currentGOFJobMap->emplace(key, job);
+        if (uvgvpcc_enc::JobManager::currentGOFJobMap) {
+            uvgvpcc_enc::JobManager::currentGOFJobMap->emplace(key, job);
         }
     }
 
@@ -57,13 +57,13 @@ std::shared_ptr<uvgvpcc_enc::Job> make_job_impl(const uvgvpcc_enc::jobKey key, s
 namespace uvgvpcc_enc {
 
 template <typename Func, typename... Args>
-std::shared_ptr<Job> jobManager::make_job(const size_t& gofId, const size_t& frameId, std::size_t priority, std::string funcName, Func&& func,
+std::shared_ptr<Job> JobManager::make_job(const size_t& gofId, const size_t& frameId, std::size_t priority, std::string funcName, Func&& func,
                                           Args&&... args) {
     return make_job_impl(jobKey(gofId, frameId, std::move(funcName)), priority, std::forward<Func>(func), std::forward<Args>(args)...);
 }
 
 template <typename Func, typename... Args>
-std::shared_ptr<Job> jobManager::make_job(const size_t& gofId, std::size_t priority, std::string funcName, Func&& func, Args&&... args) {
+std::shared_ptr<Job> JobManager::make_job(const size_t& gofId, std::size_t priority, std::string funcName, Func&& func, Args&&... args) {
     return make_job_impl(jobKey(gofId, std::move(funcName)), priority, std::forward<Func>(func), std::forward<Args>(args)...);
 }
 

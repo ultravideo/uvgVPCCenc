@@ -32,16 +32,17 @@
 
 #include "jobManagement.hpp"
 
-#include "threadqueue.hpp"
-#include "uvgvpcc/log.hpp"
+#include <cstddef>
+#include <cstdint>
 #include <functional>
-#include <cstddef> 
-#include <unordered_map> 
+#include <memory>
 #include <optional>
 #include <string>
-#include <memory>
-#include <cstdint>   
+#include <unordered_map>
+#include <utility>
 
+#include "threadqueue.hpp"
+#include "uvgvpcc/log.hpp"
 
 namespace {
 std::shared_ptr<uvgvpcc_enc::Job> getJob_impl(const uvgvpcc_enc::jobKey& key) {
@@ -50,31 +51,31 @@ std::shared_ptr<uvgvpcc_enc::Job> getJob_impl(const uvgvpcc_enc::jobKey& key) {
     // Check if it's a frame job or GOF job
     if (key.getFrameId().has_value()) {
         // Check current frame jobs first
-        if (uvgvpcc_enc::jobManager::currentFrameJobMap) {
-            auto it = uvgvpcc_enc::jobManager::currentFrameJobMap->find(key);
-            if (it != uvgvpcc_enc::jobManager::currentFrameJobMap->end()) {
+        if (uvgvpcc_enc::JobManager::currentFrameJobMap) {
+            auto it = uvgvpcc_enc::JobManager::currentFrameJobMap->find(key);
+            if (it != uvgvpcc_enc::JobManager::currentFrameJobMap->end()) {
                 job = it->second;
             }
         }
         // Check previous frame jobs if not found
-        if (!job && uvgvpcc_enc::jobManager::previousFrameJobMap) {
-            auto it = uvgvpcc_enc::jobManager::previousFrameJobMap->find(key);
-            if (it != uvgvpcc_enc::jobManager::previousFrameJobMap->end()) {
+        if (!job && uvgvpcc_enc::JobManager::previousFrameJobMap) {
+            auto it = uvgvpcc_enc::JobManager::previousFrameJobMap->find(key);
+            if (it != uvgvpcc_enc::JobManager::previousFrameJobMap->end()) {
                 job = it->second;
             }
         }
     } else {
         // Check current GOF jobs first
-        if (uvgvpcc_enc::jobManager::currentGOFJobMap) {
-            auto it = uvgvpcc_enc::jobManager::currentGOFJobMap->find(key);
-            if (it != uvgvpcc_enc::jobManager::currentGOFJobMap->end()) {
+        if (uvgvpcc_enc::JobManager::currentGOFJobMap) {
+            auto it = uvgvpcc_enc::JobManager::currentGOFJobMap->find(key);
+            if (it != uvgvpcc_enc::JobManager::currentGOFJobMap->end()) {
                 job = it->second;
             }
         }
         // Check previous GOF jobs if not found
-        if (!job && uvgvpcc_enc::jobManager::previousGOFJobMap) {
-            auto it = uvgvpcc_enc::jobManager::previousGOFJobMap->find(key);
-            if (it != uvgvpcc_enc::jobManager::previousGOFJobMap->end()) {
+        if (!job && uvgvpcc_enc::JobManager::previousGOFJobMap) {
+            auto it = uvgvpcc_enc::JobManager::previousGOFJobMap->find(key);
+            if (it != uvgvpcc_enc::JobManager::previousGOFJobMap->end()) {
                 job = it->second;
             }
         }
@@ -90,6 +91,13 @@ std::shared_ptr<uvgvpcc_enc::Job> getJob_impl(const uvgvpcc_enc::jobKey& key) {
 }  // namespace
 
 namespace uvgvpcc_enc {
+
+// Static member definitions
+std::unique_ptr<ThreadQueue> JobManager::threadQueue = nullptr;
+std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> JobManager::previousGOFJobMap = nullptr;
+std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> JobManager::previousFrameJobMap = nullptr;
+std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> JobManager::currentGOFJobMap = nullptr;
+std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> JobManager::currentFrameJobMap = nullptr;
 
 // jobKey constructors
 jobKey::jobKey(const size_t& gofId, const size_t& frameId, const std::string& funcName)
@@ -115,55 +123,43 @@ bool jobKey::operator==(const jobKey& other) const {
     return gofId_ == other.gofId_ && frameId_ == other.frameId_ && funcName_ == other.funcName_;
 }
 
-// jobManager methods
-std::shared_ptr<Job> jobManager::getJob(size_t gofId, size_t frameId, const std::string& funcName) {
+// JobManager methods
+std::shared_ptr<Job> JobManager::getJob(size_t gofId, size_t frameId, const std::string& funcName) {
     const jobKey key(gofId, frameId, funcName);
     return getJob_impl(key);
 }
 
-std::shared_ptr<Job> jobManager::getJob(size_t gofId, const std::string& funcName) {
+std::shared_ptr<Job> JobManager::getJob(size_t gofId, const std::string& funcName) {
     const jobKey key(gofId, funcName);
     return getJob_impl(key);
 }
 
-// Static member definitions
-ThreadQueue jobManager::threadQueue;
-std::unordered_map<jobKey, std::shared_ptr<Job>>* jobManager::previousGOFJobMap = nullptr;
-std::unordered_map<jobKey, std::shared_ptr<Job>>* jobManager::previousFrameJobMap = nullptr;
-std::unordered_map<jobKey, std::shared_ptr<Job>>* jobManager::currentGOFJobMap = nullptr;
-std::unordered_map<jobKey, std::shared_ptr<Job>>* jobManager::currentFrameJobMap = nullptr;
-
-// jobManager method implementations
-void jobManager::initThreadQueue(uint16_t numThreads) {
-    threadQueue.initThreadQueue(numThreads);
-    currentGOFJobMap = new std::unordered_map<jobKey, std::shared_ptr<Job>>();
-    currentFrameJobMap = new std::unordered_map<jobKey, std::shared_ptr<Job>>();
+// JobManager method implementations
+void JobManager::initThreadQueue(uint16_t numThreads) {
+    threadQueue = std::make_unique<ThreadQueue>();
+    threadQueue->initThreadQueue(numThreads);
+    currentGOFJobMap = std::make_unique<std::unordered_map<jobKey, std::shared_ptr<Job>>>();
+    currentFrameJobMap = std::make_unique<std::unordered_map<jobKey, std::shared_ptr<Job>>>();
 }
 
-void jobManager::submitCurrentFrameJobs() {
+void JobManager::submitCurrentFrameJobs() {
     if (currentFrameJobMap) {
         for (const auto& jobPair : *currentFrameJobMap) {
-            threadQueue.submitJob(jobPair.second);
+            threadQueue->submitJob(jobPair.second);
         }
     }
-    if (previousFrameJobMap) {
-        delete previousFrameJobMap;
-    }
-    previousFrameJobMap = currentFrameJobMap;
-    currentFrameJobMap = new std::unordered_map<jobKey, std::shared_ptr<Job>>();
+    previousFrameJobMap = std::move(currentFrameJobMap);
+    currentFrameJobMap = std::make_unique<std::unordered_map<jobKey, std::shared_ptr<Job>>>();
 }
 
-void jobManager::submitCurrentGOFJobs() {
+void JobManager::submitCurrentGOFJobs() {
     if (currentGOFJobMap) {
         for (const auto& jobPair : *currentGOFJobMap) {
-            threadQueue.submitJob(jobPair.second);
+            threadQueue->submitJob(jobPair.second);
         }
     }
-    if (previousGOFJobMap) {
-        delete previousGOFJobMap;
-    }
-    previousGOFJobMap = currentGOFJobMap;
-    currentGOFJobMap = new std::unordered_map<jobKey, std::shared_ptr<Job>>();
+    previousGOFJobMap = std::move(currentGOFJobMap);
+    currentGOFJobMap = std::make_unique<std::unordered_map<jobKey, std::shared_ptr<Job>>>();
 }
 
 }  // namespace uvgvpcc_enc

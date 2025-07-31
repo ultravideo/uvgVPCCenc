@@ -40,9 +40,9 @@
 #include "uvgvpcc/log.hpp"
 
 #define JOBF(gofId, frameId, priority, func, ...) \
-    uvgvpcc_enc::jobManager::make_job(gofId, frameId, priority, std::string(#func), func, ##__VA_ARGS__)
+    uvgvpcc_enc::JobManager::make_job(gofId, frameId, priority, std::string(#func), func, ##__VA_ARGS__)
 
-#define JOBG(gofId, priority, func, ...) uvgvpcc_enc::jobManager::make_job(gofId, priority, std::string(#func), func, ##__VA_ARGS__)
+#define JOBG(gofId, priority, func, ...) uvgvpcc_enc::JobManager::make_job(gofId, priority, std::string(#func), func, ##__VA_ARGS__)
 
 #define TO_STRING(x) #x
 
@@ -77,12 +77,12 @@ struct hash<uvgvpcc_enc::jobKey> {
 
 namespace uvgvpcc_enc {
 
-struct jobManager {
-    static ThreadQueue threadQueue;
-    static std::unordered_map<jobKey, std::shared_ptr<Job>>* previousGOFJobMap;
-    static std::unordered_map<jobKey, std::shared_ptr<Job>>* previousFrameJobMap;
-    static std::unordered_map<jobKey, std::shared_ptr<Job>>* currentGOFJobMap;
-    static std::unordered_map<jobKey, std::shared_ptr<Job>>* currentFrameJobMap;
+struct JobManager {
+    static std::unique_ptr<ThreadQueue> threadQueue;
+    static std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> previousGOFJobMap;
+    static std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> previousFrameJobMap;
+    static std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> currentGOFJobMap;
+    static std::unique_ptr<std::unordered_map<jobKey, std::shared_ptr<Job>>> currentFrameJobMap;
 
     template <typename Func, typename... Args>
     static std::shared_ptr<Job> make_job(const size_t& gofId, const size_t& frameId, std::size_t priority, std::string funcName, Func&& func,
