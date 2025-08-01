@@ -51,7 +51,7 @@ namespace {
 
 // NOLINTNEXTLINE(cert-err58-cpp)
 const std::string short_options = "i:g:l:n:o:s:t:b:";
-const std::array<struct option, 10> long_options{{{"input", required_argument, nullptr, 'i'},
+const std::array<struct option, 12> long_options{{{"input", required_argument, nullptr, 'i'},
                                                   {"output", required_argument, nullptr, 'o'},
                                                   {"frames", required_argument, nullptr, 'n'},
                                                   {"start-frame", required_argument, nullptr, 's'},
@@ -60,7 +60,9 @@ const std::array<struct option, 10> long_options{{{"input", required_argument, n
                                                   {"uvgvpcc", required_argument, nullptr, 0},
                                                   {"loop-input", required_argument, nullptr, 'l'},
                                                   {"help", no_argument, nullptr, 0},
-                                                  {"version", no_argument, nullptr, 0}}};
+                                                  {"version", no_argument, nullptr, 0},
+                                                  {"dst-address", required_argument, nullptr, 0},
+                                                  {"dst-port", required_argument, nullptr, 0}}};
 
 /**
  * \brief Try to detect voxel size from file name automatically
@@ -178,6 +180,10 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         } else if (name == "help") {
             cli::print_help();
             return true;
+        } else if (name == "dst-address") {
+            opts.dstAddress = optarg;  // TODO: Check that the address is valid
+        } else if (name == "dst-port") {
+            opts.dstPort = static_cast<uint16_t>(std::stoi(optarg));
         }
     }
     // Check for extra arguments.
@@ -186,8 +192,13 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
     }
 
     // Check that the required files were defined
-    if (opts.inputPath.empty() || opts.outputPath.empty()) {
-        throw std::runtime_error("Input error: Input or output path is empty\n");
+    if (opts.inputPath.empty()) {
+        throw std::runtime_error("Input error: Input path is empty\n");
+    }
+
+    // Check that at least one output method is defined
+    if (opts.outputPath.empty() && opts.dstAddress.empty()) {
+        throw std::runtime_error("Input error: At least one output should be specified (e.g. 'output' or 'dst-address')\n");
     }
 
     if (opts.inputGeoPrecision == 0) {
@@ -250,7 +261,9 @@ void print_help(void) {
     std::cout << "      --uvgvpcc <params>       Encoder configuration parameters\n";
     std::cout << "      --help                   Show this help message\n";
     std::cout << "      --version                Show version information\n";
-    
+    std::cout << "      --dst-address <IP>       Destination IP address for an rtp stream\n";
+    std::cout << "      --dst-port <number>      Destination port for an rtp stream\n";
+
     std::cout << "\nDescription:\n";
     std::cout << "  This tool encodes point cloud video frames using the uvgVPCCenc codec\n";
     std::cout << "  with specified parameters.\n";

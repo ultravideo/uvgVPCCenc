@@ -259,6 +259,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         if (chunk.data == nullptr && chunk.len == 0) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "All chunks written to file.\n");
             file.close();
+            chunks->io_mutex.unlock();
             break;
         }
         if (chunk.data != nullptr) {
