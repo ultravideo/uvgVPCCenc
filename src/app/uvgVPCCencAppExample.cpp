@@ -365,6 +365,9 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
             if(state.cur_gof_is_full()) {
                 uvgV3CRTP::send_gof(&state);
                 state.next_gof();
+
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+                                                                       "Sent one gof " + std::to_string(len) + " bytes.\n");
             }
             else
             {
@@ -382,7 +385,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
         }
 
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
-                                                               "Sent V3C chunk of size " + std::to_string(len) + " bytes.\n");
+                                                               "Processed V3C chunk of size " + std::to_string(len) + " bytes.\n");
 
         if (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::EOS) {
             state.reset_error_flag(); //More chunks are added later so reset EOS
