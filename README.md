@@ -190,6 +190,8 @@ Version 1.1 shows better performance with negligible quality degradation or chan
 
 Compared to 1.0, uvgVPCCenc 1.1 features a better implementation of the point cloud and map processing parts (with no impact on 2D encoding speed), resulting in a speed-up of up to 1.7× in Fast voxel 9. Memory management is also significantly improved: uvgVPCCenc 1.1 runs smoothly with a small and stable RAM footprint over time. New developer features and bug fixes are also included in this version. As shown in the results below, compression efficiency (in terms of quality and bitrate) is not affected when switching from 1.0 to 1.1.
 
+The following results were obtained on the 12 sequences of the UVG-VPC dataset, each comprising 64 frames, using all 5 CTC bitrates. Experiments were run on an Intel i7-12700 CPU with 20 threads.
+
 ### Encoding speed comparison: Major performance boosts in non-video encoding tasks
 
 | Voxel Size | Preset | Mode | Version | Speedup | FPS  |
