@@ -13,6 +13,8 @@ Join our Discord channel to contact us [![Discord](https://img.shields.io/discor
 
 https://ultravideo.fi/uvgvpccenc.html for more information.
 
+---
+
 
 ## Table of Contents
 
@@ -25,6 +27,7 @@ https://ultravideo.fi/uvgvpccenc.html for more information.
   - [Application parameters](#application-parameters)
   - [uvgVPCCenc parameters](#uvgvpccenc-parameters)
   - [Presets](#presets)
+  - [Best practices for tuning uvgVPCCenc](#best-practices-for-tuning-uvgvpccenc)
   - [Version 1.1](#uvgvpccenc-version-11)
 - [Academic research](#academic-research)
 
@@ -72,6 +75,9 @@ The doxygen is then accessible under docs/html/index.html.
 
 To demonstrate how to use the uvgVPCCenc library, a straightforward example application is provided in src/app, with its main() function located in [uvgVPCCencAppExample.cpp](src/app/uvgVPCCencAppExample.cpp).
 
+
+
+
 ### Example:
 ```
     uvgVPCCenc -i <path_to_ply> -n 10 -o out.vpcc
@@ -92,6 +98,8 @@ The application option ```--uvgvpcc``` accept a string containing uvgVPCCenc par
 
 The list of uvgVPCCenc parameters that can be modified with the ```--uvgvpcc``` option is defined in the ```parameterMap``` initialized in [parameters.cpp](src/lib/utils/parameters.cpp).
 
+---
+
 
 ### Application parameters
 ```
@@ -106,6 +114,8 @@ The list of uvgVPCCenc parameters that can be modified with the ```--uvgvpcc``` 
         --help                   Show this help message
         --version                Show version information
 ```
+---
+
 
 ### uvgVPCCenc parameters
 
@@ -120,14 +130,63 @@ Here are a selection of common uvgVPCCenc parameters:
     mode                Encoding mode, i.g. AI or RA
     logLevel            Level of logging, i.g. TRACE
 ```
+---
+
 
 ### Presets
 
 Six presets for Voxel 9, 10, and 11, labeled Fast and Slow, have been created to clarify the encoding pipeline parametrization of uvgVPCCenc. These presets were manually crafted starting from Kvazaar's own presets and refined through extensive tool space exploration using stochastic methods. While they are not exhaustive and do not address certain features, such as single- and double-layer options, they provide a practical reference for parameter adjustments. Notably, such presets are exclusive to uvgVPCCenc and do not exist for TMC2.
 
+---
+
+### Best practices for tuning uvgVPCCenc
+
+Volumetric video compression involves a trade-off between speed, quality, and bitrate. `uvgVPCCenc` provides flexible parameters to match your needs. While `presetName=fast` and `presetName=slow` offer general presets, they are not always optimal. Below are tuning tips depending on your goal.
+
+
+#### Achieving High Encoding Quality
+
+For the best visual quality, at the expense of slower encoding and higher bitrate:
+
+- Set `presetName=slow`.
+- Use low QP values, e.g., `rate=16-22-2`.
+- For best quality with lossy encoding, use `rate=1-1-2`.
+
+- Enable lossless video encoding:
+  - `geometryEncodingIsLossless=true`
+  - `attributeEncodingIsLossless=true`
+
+Notice that full V-PCC lossless is not supported (some 3D points may still be lost due to 2D projection).
+
+
+#### Achieving High Encoding Speed (High FPS)
+
+If you want to maximize encoding speed and can trade off some compression efficiency:
+
+- Set `presetName=fast`.
+- Use high QP values, e.g., `rate=32-42-4` or up to `rate=51-51-4`.
+- Disable double layer: `doubleLayer=false`.
+- Lower internal geometry bit depth:
+  - `geoBitDepthVoxelized=8`
+  - `geoBitDepthRefineSegmentation=7`
+
+
+#### Achieving Low Bitrate
+
+To reduce the bitrate while keeping quality and speed acceptable:
+
+- Set `presetName=slow`.
+- Use higher QP values, e.g., `rate=32-42-4`.
+- Reduce the number of encoded points:
+  - Disable double layer: `doubleLayer=false`
+
+---
+
+
+
 ## uvgVPCCenc Version 1.1
 
-Version 1.1 shows better performance with no quality degradation or change in compression ratio.
+Version 1.1 shows better performance with negligible quality degradation or change in compression ratio.
 
 Compared to 1.0, uvgVPCCenc 1.1 features a better implementation of the point cloud and map processing parts (with no impact on 2D encoding speed), resulting in a speed-up of up to 1.7× in Fast voxel 9. Memory management is also significantly improved: uvgVPCCenc 1.1 runs smoothly with a small and stable RAM footprint over time. New developer features and bug fixes are also included in this version. As shown in the results below, compression efficiency (in terms of quality and bitrate) is not affected when switching from 1.0 to 1.1.
 
@@ -168,6 +227,9 @@ BD-BR PCQM for V1.1 using V1.0 as anchor (negative BD-BR shows better compressio
 |            | fast   | RA   | -2.30%     |
 |            |        | AI   |  0.12%     |
 | | | **Total average**      | **-0.96%** |
+
+
+
 
 
 ## Academic research
