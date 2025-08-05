@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -44,6 +44,7 @@
 #include "atlas_context.hpp"
 #include "bitstream_common.hpp"
 #include "gof.hpp"
+#include "utils/parameters.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "video_sub_bitstream.hpp"
@@ -55,8 +56,8 @@ using namespace uvgvpcc_enc;
 
 void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gofUVG, const uvgvpcc_enc::Parameters& paramUVG,
                                                 uvgvpcc_enc::API::v3c_unit_stream* output) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("BITSTREAM GENERATION",
-                             "GOF " + std::to_string(gofUVG->gofId) + " : Create V3C GOF bitstream using uvgVPCC.\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
+        "BITSTREAM GENERATION", "GOF " + std::to_string(gofUVG->gofId) + " : Create V3C GOF bitstream using uvgVPCC.\n");
 
     v3c_gof gof(gofUVG->gofId);
     gof.set_n_frames(gofUVG->nbFrames);
@@ -68,9 +69,8 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     auto atlas = std::make_unique<atlas_context>();
     atlas->initialize_atlas_context(gofUVG, paramUVG);
 
-    
-    for(auto& frame : gofUVG->frames) {
-        frame.reset(); // Release memory
+    for (auto& frame : gofUVG->frames) {
+        frame.reset();  // Release memory
     }
 
     // --------------- Fetch video sub-bitstream data ---------------------------------------------
@@ -82,7 +82,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     // }
     *bitstream_ovd.get() = gofUVG->bitstreamOccupancy;
     byteStreamToSampleStream(*bitstream_ovd.get(), 4, ovd_nals, false);
-    std::vector<uint8_t>().swap(gofUVG->bitstreamOccupancy); // Release memory
+    std::vector<uint8_t>().swap(gofUVG->bitstreamOccupancy);  // Release memory
 
     // Geometry map
     auto bitstream_gvd = std::make_unique<std::vector<uint8_t>>();
@@ -92,7 +92,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     // }
     *bitstream_gvd.get() = gofUVG->bitstreamGeometry;
     byteStreamToSampleStream(*bitstream_gvd.get(), 4, gvd_nals, false);
-    std::vector<uint8_t>().swap(gofUVG->bitstreamGeometry); // Release memory
+    std::vector<uint8_t>().swap(gofUVG->bitstreamGeometry);  // Release memory
 
     // Attribute map
     auto bitstream_avd = std::make_unique<std::vector<uint8_t>>();
@@ -102,7 +102,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     // }
     *bitstream_avd.get() = gofUVG->bitstreamAttribute;
     byteStreamToSampleStream(*bitstream_avd.get(), 4, avd_nals, false);
-    std::vector<uint8_t>().swap(gofUVG->bitstreamAttribute); // Release memory
+    std::vector<uint8_t>().swap(gofUVG->bitstreamAttribute);  // Release memory
 
     // --------------- Calculate V3C unit size precision -------------------------------------------
     size_t v3c_max_size = v3c_parameter_set.get()->get_vps_byte_len();

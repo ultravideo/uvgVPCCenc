@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -37,6 +37,7 @@
 #include "atlas_frame.hpp"
 #include "bitstream_common.hpp"
 #include "bitstream_util.hpp"
+#include "utils/parameters.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 /* Atlas context is used to hold the atlas data (inside V3C_AD unit) of a single GOF */
@@ -82,8 +83,8 @@ class atlas_context {
     atlas_frame_parameter_set create_atlas_frame_parameter_set();
     atlas_frame_tile_information create_atlas_frame_tile_information() const;
     atlas_tile_header create_atlas_tile_header(size_t frameIndex, size_t tileIndex, const uvgvpcc_enc::Parameters& paramUVG) const;
-    atlas_tile_data_unit create_atlas_tile_data_unit(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_enc::Frame>& frameUVG,
-                                                     atlas_tile_header& ath) const;
+    atlas_tile_data_unit create_atlas_tile_data_unit(const uvgvpcc_enc::Parameters& paramUVG,
+                                                     const std::shared_ptr<uvgvpcc_enc::Frame>& frameUVG, atlas_tile_header& ath) const;
     atlas_tile_layer_rbsp create_atlas_tile_layer_rbsp(size_t frameIndex, size_t tileIndex, const uvgvpcc_enc::Parameters& paramUVG,
                                                        const std::shared_ptr<uvgvpcc_enc::Frame>& frameUVG);
 

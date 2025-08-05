@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -42,19 +42,18 @@
 #include <string>
 #include <vector>
 
+#include "utils/fileExport.hpp"
+#include "utils/parameters.hpp"
+#include "utils/utils.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
-#include "utils/utils.hpp"
-#include "utils/fileExport.hpp"
 
 using namespace uvgvpcc_enc;
-
 
 namespace {
 
 void computeCovMat(std::array<uvgvpcc_enc::Vector3<double>, 3>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const size_t nnCount,
                    const std::vector<size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
-    
     uvgvpcc_enc::Vector3<double> pt;
     for (size_t i = 0; i < nnCount; ++i) {
         pt = pointsGeometry[nnIndices[i]] - bary;
@@ -79,7 +78,6 @@ void computeCovMat(std::array<uvgvpcc_enc::Vector3<double>, 3>& covMat, const uv
     covMat[2][0] = covMat[0][2];
     covMat[2][1] = covMat[1][2];
 }
-
 
 // TMC2 implementation and comments //
 // Slightly modified version of http://www.melax.com/diag.html?attredirects=0
@@ -182,7 +180,6 @@ void diagonalize(const std::array<uvgvpcc_enc::Vector3<double>, 3>& A, std::arra
 }
 // NOLINTEND(cppcoreguidelines-init-variables)
 
-
 void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                    const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<size_t>& pointNn, const size_t nnCount) {
     uvgvpcc_enc::Vector3<double> bary{static_cast<double>(point[0]), static_cast<double>(point[1]), static_cast<double>(point[2])};
@@ -191,11 +188,9 @@ void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvp
     }
     bary /= nnCount;
 
-    std::array<uvgvpcc_enc::Vector3<double>, 3> covMat = {
-        uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
-        uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
-        uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0)
-    };
+    std::array<uvgvpcc_enc::Vector3<double>, 3> covMat = {uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
+                                                          uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
+                                                          uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0)};
 
     computeCovMat(covMat, bary, nnCount, pointNn, pointsGeometry);
 
@@ -222,7 +217,7 @@ void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvp
     }
 }
 
-} // Anonymous namespace
+}  // Anonymous namespace
 
 namespace NormalComputation {
 
@@ -230,7 +225,7 @@ void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vecto
                     const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                     const std::vector<std::vector<size_t>>& pointsNNList) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                             "Compute normals of frame " + std::to_string(frame->frameId) + "\n");
+                                                           "Compute normals of frame " + std::to_string(frame->frameId) + "\n");
     assert(p_->normalComputationKnnCount <= pointsGeometry.size());
 
     for (size_t pointIdx = 0; pointIdx < pointsGeometry.size(); ++pointIdx) {
@@ -238,9 +233,8 @@ void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vecto
     }
 
     if (p_->exportIntermediateFiles) {
-        FileExport::exportPointCloudNormalComputation(frame,pointsGeometry,normals);
+        FileExport::exportPointCloudNormalComputation(frame, pointsGeometry, normals);
     }
 }
-
 
 }  // namespace NormalComputation

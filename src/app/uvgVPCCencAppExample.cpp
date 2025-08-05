@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -30,8 +30,10 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
+#include <algorithm>
 #include <array>
 #include <cassert>
+#include <csignal>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
@@ -39,26 +41,23 @@
 #include <exception>
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <iterator>
 #include <memory>
 #include <regex>
 #include <semaphore>
-#include <csignal>
 #include <span>
+#include <sstream>
 #include <stdexcept>
 #include <string>
 #include <thread>
 #include <utility>
 #include <vector>
-#include <algorithm>
 
+#include "../utils/utils.hpp"
 #include "cli.hpp"
 #include "extras/miniply.h"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
-#include "../utils/utils.hpp"
-
 
 namespace {
 
@@ -66,29 +65,29 @@ namespace {
 std::binary_semaphore available_input_slot{0};
 std::binary_semaphore filled_input_slot{0};
 
-enum class Retval : std::uint8_t {Running,Failure,Eof};
+enum class Retval : std::uint8_t { Running, Failure, Eof };
 
 struct input_handler_args {
     // Parameters passed from main thread to input thread.
-    
+
     // NOLINTNEXTLINE(cppcoreguidelines-avoid-const-or-ref-data-members)
     const cli::opts_t& opts;
 
     // Picture and thread status passed from input thread to main thread.
     std::shared_ptr<uvgvpcc_enc::Frame> frame_in;
+
     Retval retval;
     input_handler_args(const cli::opts_t& opts, std::shared_ptr<uvgvpcc_enc::Frame> frame, Retval retval)
         : opts(opts), frame_in(std::move(frame)), retval(retval) {}
 };
 
-
 const size_t MAX_PATH_SIZE = 4096;
 const size_t FORCED_V3C_SIZE_PRECISION = 5;  // Should be enough to hold any V3C unit sizes
 
 /// @brief This function is used to write a number (V3C unit size) to a field of size len.
-/// @param value 
-/// @param dst 
-/// @param len 
+/// @param value
+/// @param dst
+/// @param len
 void create_bytes(uint64_t value, char* dst, size_t len) {
     const uint64_t mask = 0xFF;
     for (size_t i = 0; i < len; ++i) {
@@ -98,11 +97,11 @@ void create_bytes(uint64_t value, char* dst, size_t len) {
 }
 
 /// @brief Simple wrapper for the miniply library for parsing a .ply file.
-/// @param frame 
-void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
+/// @param frame
+void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& geoBitDepthInput) {
     // uvgVPCCenc currently support only geometry of type unsigned int
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
-                             "Loading frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + "\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>(
+        "APPLICATION", "Loading frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + "\n");
     miniply::PLYReader reader(frame->pointCloudPath.c_str());
     if (!reader.valid()) {
         throw std::runtime_error("miniply : Failed to open " + frame->pointCloudPath);
@@ -148,27 +147,28 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     reader.extract_properties(indicesCol.data(), 3, miniply::PLYPropertyType::UChar, frame->pointsAttribute.data());
     frame->printInfo();
 
-
     // Check if the point coordinates respect the voxel size
-    const size_t geoBitDepthInput = uvgvpcc_enc::p_->geoBitDepthInput;
-    const bool isCompliant = !std::any_of(frame->pointsGeometry.begin(), frame->pointsGeometry.end(),
-        [geoBitDepthInput](const uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>& point) {
-            return (point[0] >> geoBitDepthInput) |
-            (point[1] >> geoBitDepthInput) |
-            (point[2] >> geoBitDepthInput);
-        });
+    const bool isCompliant =
+        !std::any_of(frame->pointsGeometry.begin(), frame->pointsGeometry.end(),
+                     [geoBitDepthInput](const uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>& point) {
+                         return (point[0] >> geoBitDepthInput) | (point[1] >> geoBitDepthInput) | (point[2] >> geoBitDepthInput);
+                     });
 
-    if(!isCompliant) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::ERROR>("APPLICATION",
-        "Frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + " contains at least one point which does not respect the input voxel size (uvgvpcc_enc::p_->geoBitDepthInput = " + std::to_string(uvgvpcc_enc::p_->geoBitDepthInput) + "). Maximum value is 2^"+ std::to_string(uvgvpcc_enc::p_->geoBitDepthInput) + "-1. All faulty points will not be processed.\n");            
+    if (!isCompliant) {
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::ERROR>(
+            "APPLICATION",
+            "Frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath +
+                " contains at least one point which does not respect the input voxel size (uvgvpcc_enc::p_->geoBitDepthInput = " +
+                std::to_string(geoBitDepthInput) + "). Maximum value is 2^" + std::to_string(geoBitDepthInput) +
+                "-1. All faulty points will not be processed.\n");
         std::vector<uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>> pointsGeometryTmp;
         std::vector<uvgvpcc_enc::Vector3<uint8_t>> pointsAttributeTmp;
         pointsGeometryTmp.reserve(frame->pointsGeometry.size());
         pointsAttributeTmp.reserve(frame->pointsGeometry.size());
 
-        for(size_t pointIndex = 0; pointIndex < frame->pointsGeometry.size(); ++pointIndex) {
+        for (size_t pointIndex = 0; pointIndex < frame->pointsGeometry.size(); ++pointIndex) {
             const auto& point = frame->pointsGeometry[pointIndex];
-            if((point[0] >> geoBitDepthInput) | (point[1] >> geoBitDepthInput) | (point[2] >> geoBitDepthInput)) continue;
+            if ((point[0] >> geoBitDepthInput) | (point[1] >> geoBitDepthInput) | (point[2] >> geoBitDepthInput)) continue;
             pointsGeometryTmp.emplace_back(point);
             pointsAttributeTmp.emplace_back(frame->pointsAttribute[pointIndex]);
         }
@@ -178,9 +178,8 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
 }
 
 /// @brief Application thread reading the input .ply files.
-/// @param args 
+/// @param args
 void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
-    double inputReadTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
     const cli::opts_t& appParameters = args->opts;
     size_t frameId = 0;
     bool run = true;
@@ -188,7 +187,6 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     Retval returnValue = Retval::Running;
     // Producer thread that reads input frames.
     while (run) {
-
         // Signal that all input frames has been load
         if (appParameters.nbLoops != 0 && frameId == totalNbFrames) {
             available_input_slot.acquire();
@@ -206,20 +204,20 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
                      appParameters.startFrame + (frameId % appParameters.nbFrames));
         if (nbBytes < 0) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
-                                     "Error occurred while formatting string storing the point cloud path.\n");
+                                                                   "Error occurred while formatting string storing the point cloud path.\n");
             returnValue = Retval::Failure;
         }
         auto frame = std::make_shared<uvgvpcc_enc::Frame>(frameId, appParameters.startFrame + frameId,
                                                           std::string(pointCloudPath.begin(), pointCloudPath.end()));
         try {
-            loadFrameFromPlyFile(frame);
+            loadFrameFromPlyFile(frame, args->opts.inputGeoPrecision);
         } catch (const std::runtime_error& e) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
-                                     "Caught exception while loading frame " + std::to_string(frameId) + " from " + frame->pointCloudPath +
-                                         ": " + std::string(e.what()) + "\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+                "APPLICATION", "Caught exception while loading frame " + std::to_string(frameId) + " from " + frame->pointCloudPath + ": " +
+                                   std::string(e.what()) + "\n");
             returnValue = Retval::Failure;
         }
-        
+
         // Signal that an item has been produced
         available_input_slot.acquire();
         args->frame_in = frame;
@@ -230,18 +228,14 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
             assert(returnValue == Retval::Running && args->retval == Retval::Running);
         }
         filled_input_slot.release();
-        
+
         frameId++;
-    }
-    if (uvgvpcc_enc::p_->timerLog) {
-        inputReadTimerTotal = uvgvpcc_enc::global_timer.elapsed() - inputReadTimerTotal;
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::PROFILING>("TIMER INPUT READ TOTAL",std::to_string(inputReadTimerTotal) + " ms\n");
     }
 }
 
 /// @brief Application thread writing the final output bitstream.
-/// @param chunks 
-/// @param output_path 
+/// @param chunks
+/// @param output_path
 void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& output_path) {
     std::ofstream file(output_path, std::ios::binary);
     if (!file.is_open()) {
@@ -275,7 +269,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         }
 
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
-                                 "Wrote V3C chunk to file, size " + std::to_string(chunk.len) + " bytes.\n");
+                                                               "Wrote V3C chunk to file, size " + std::to_string(chunk.len) + " bytes.\n");
 
         chunks->v3c_chunks.pop();
         chunks->io_mutex.unlock();
@@ -283,18 +277,20 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 }
 
 /// @brief Simple application wrapper taking a command string as input to set multiple encoder parameters.
-/// @param parametersCommand 
+/// @param parametersCommand
 void setParameters(const std::string& parametersCommand) {
     // Iterate over each substring separated by commas
     std::string segment;
     std::stringstream ss(parametersCommand);
     while (std::getline(ss, segment, ',')) {
-        if (segment.empty()) {continue;}  // Skip empty segments (e.g., trailing comma)
+        if (segment.empty()) {
+            continue;
+        }  // Skip empty segments (e.g., trailing comma)
 
         // Check if the segment matches the "parameterName=parameterValue" pair pattern
         std::smatch match;
         if (std::regex_match(segment, match, std::regex(R"((\w+)=([^,]*))"))) {
-            uvgvpcc_enc::API::setParameter(match[1],match[2]);
+            uvgvpcc_enc::API::setParameter(match[1], match[2]);
         } else {
             // If the regex does not match, the format is incorrect
             std::string errorMessage = "Invalid format detected here: '";
@@ -309,15 +305,13 @@ void setParameters(const std::string& parametersCommand) {
 
 }  // anonymous namespace
 
-/// @brief This example application offers a simple approach to working with the uvgVPCCenc library and highlights the essential setup steps required for its use.
-/// @param argc 
+/// @brief This example application offers a simple approach to working with the uvgVPCCenc library and highlights the essential setup steps
+/// required for its use.
+/// @param argc
 /// @param argv Application command line
-/// @return 
+/// @return
 int main(const int argc, const char* const argv[]) {
-    double encodingTimerTotal = uvgvpcc_enc::p_->timerLog ? uvgvpcc_enc::global_timer.elapsed() : 0.0;
-
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "uvgVPCCenc application starts.\n");
-
 
     // Parse application parameters //
     cli::opts_t appParameters;
@@ -326,12 +320,12 @@ int main(const int argc, const char* const argv[]) {
         exitOnParse = cli::opts_parse(appParameters, argc, std::span<const char* const>(argv, argc));
     } catch (const std::exception& e) {
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
-                                 "An exception was caught during the parsing of the application parameters.\n");
+                                                               "An exception was caught during the parsing of the application parameters.\n");
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION", e.what() + std::string("\n"));
         cli::print_usage();
         return EXIT_FAILURE;
     }
-    if(exitOnParse) {
+    if (exitOnParse) {
         // --version or --help //
         return EXIT_SUCCESS;
     }
@@ -339,20 +333,22 @@ int main(const int argc, const char* const argv[]) {
     // The only way for the application to change the encoder parameters is through the uvgvpcc_enc::API::setParameter(...) function. //
     try {
         setParameters(appParameters.uvgvpccParametersString);
-        uvgvpcc_enc::API::setParameter("geoBitDepthInput",std::to_string(appParameters.inputGeoPrecision));
-        uvgvpcc_enc::API::setParameter("nbThreadPCPart",std::to_string(appParameters.threads));
-        uvgvpcc_enc::API::setParameter("occupancyEncodingNbThread",std::to_string(appParameters.threads));
-        uvgvpcc_enc::API::setParameter("geometryEncodingNbThread",std::to_string(appParameters.threads));
-        uvgvpcc_enc::API::setParameter("attributeEncodingNbThread",std::to_string(appParameters.threads));
+        uvgvpcc_enc::API::setParameter("geoBitDepthInput", std::to_string(appParameters.inputGeoPrecision));
+        uvgvpcc_enc::API::setParameter("nbThreadPCPart", std::to_string(appParameters.threads));
+        uvgvpcc_enc::API::setParameter("occupancyEncodingNbThread", std::to_string(appParameters.threads));
+        uvgvpcc_enc::API::setParameter("geometryEncodingNbThread", std::to_string(appParameters.threads));
+        uvgvpcc_enc::API::setParameter("attributeEncodingNbThread", std::to_string(appParameters.threads));
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY","An exception was caught when setting parameters in the application.\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY",
+                                                               "An exception was caught when setting parameters in the application.\n");
         return EXIT_FAILURE;
     }
-    
+
     try {
         uvgvpcc_enc::API::initializeEncoder();
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY","An exception was caught during the initialization of the encoder.\n");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY",
+                                                               "An exception was caught during the initialization of the encoder.\n");
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY", e.what() + std::string("\n"));
         cli::print_usage();
         return EXIT_FAILURE;
@@ -360,7 +356,7 @@ int main(const int argc, const char* const argv[]) {
 
     // Initialize the application input and output threads
     const std::shared_ptr<input_handler_args> in_args = std::make_shared<input_handler_args>(appParameters, nullptr, Retval::Running);
-    std::thread inputTh(&inputReadThread, in_args); // TODO(gg): in_args is read and modified by two threads at the same time
+    std::thread inputTh(&inputReadThread, in_args);  // TODO(gg): in_args is read and modified by two threads at the same time
     size_t frameRead = 0;
     std::shared_ptr<uvgvpcc_enc::Frame> currFrame = nullptr;
     available_input_slot.release();
@@ -368,7 +364,7 @@ int main(const int argc, const char* const argv[]) {
     uvgvpcc_enc::API::v3c_unit_stream output;  // Each v3c chunk gets appended to the V3C unit stream as they are encoded
     std::thread file_writer_thread;
     file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
-    
+
     // Main loop of the application, feeding one frame to the encoder at each iteration
     for (;;) {
         filled_input_slot.acquire();
@@ -387,8 +383,8 @@ int main(const int argc, const char* const argv[]) {
             uvgvpcc_enc::API::encodeFrame(currFrame, &output);
         } catch (const std::runtime_error& e) {
             // Only one try and catch block. All exceptions thrown by the library are catched here.
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
-                                     "Caught exception using uvgvpcc_enc library: " + std::string(e.what()) + " failed after processing\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+                "APPLICATION", "Caught exception using uvgvpcc_enc library: " + std::string(e.what()) + " failed after processing\n");
             return EXIT_FAILURE;
         }
         frameRead++;
@@ -407,11 +403,5 @@ int main(const int argc, const char* const argv[]) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Encoded " + std::to_string(frameRead) + " frames.\n");
 
     inputTh.join();
-    // uvgvpcc_enc::API::stopEncoder(); // lf: not usefull (call two times ThreadQueue::stop()) because of custom destructor for ThreadQueue
-
-    if (uvgvpcc_enc::p_->timerLog) {
-        encodingTimerTotal = uvgvpcc_enc::global_timer.elapsed() - encodingTimerTotal;
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::PROFILING>("TIMER ENCODING TOTAL",std::to_string(encodingTimerTotal) + " ms\n");
-    }    
     return EXIT_SUCCESS;
 }

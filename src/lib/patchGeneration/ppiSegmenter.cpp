@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -37,22 +37,19 @@
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
+#include <memory>
 #include <string>
 #include <vector>
-#include <memory>       
 
 #include "robin_hood.h"
-
+#include "utils/fileExport.hpp"
+#include "utils/parameters.hpp"
+#include "utils/utils.hpp"
+#include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
-#include "utils/utils.hpp"
-
-#include "utilsPatchGeneration.hpp"
-#include "utils/fileExport.hpp"
-
 
 using namespace uvgvpcc_enc;
-
 
 PPISegmenter::PPISegmenter(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
                            const std::vector<uvgvpcc_enc::Vector3<double>>& pointsNormals)
@@ -76,17 +73,17 @@ PPISegmenter::PPISegmenter(const std::vector<uvgvpcc_enc::Vector3<typeGeometryIn
               ;
           }
           return geoRange;
-      }())
-      {}
+      }()) {}
 
 VoxelAttribute::VoxelAttribute(const size_t projectionPlaneCount_)
     : updateFlag_(false), voxClass_(VoxClass::NO_EDGE), voxPPI_(0), voxScore_(projectionPlaneCount_, 0) {}
 
 // TODO(lf): check if the initial segmentation can be done inside the precomputation of the refineSegmentation
 // TODO(lf): use auto& : ... everywhere instead of for loop (and try avoiding using pointCount or size())
-void PPISegmenter::initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId) {
+void PPISegmenter::initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
+                                       const size_t& frameId) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                             "Initial segmentation of frame " + std::to_string(frameId) + "\n");
+                                                           "Initial segmentation of frame " + std::to_string(frameId) + "\n");
     for (size_t ptIndex = 0; ptIndex < pointsPPIs.size(); ++ptIndex) {
         const uvgvpcc_enc::Vector3<double>& pointNormal = pointsNormals_[ptIndex];
 
@@ -103,17 +100,15 @@ void PPISegmenter::initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>
     }
 
     if (p_->exportIntermediateFiles) {
-        FileExport::exportPointCloudInitialSegmentation(frame,pointsGeometry_,pointsPPIs);
-    } 
-
-
+        FileExport::exportPointCloudInitialSegmentation(frame, pointsGeometry_, pointsPPIs);
+    }
 }
 
 // TODO(lf): the number of points in the voxel is usefull only for DE-V voxel no ? So why to set the value for all voxels ?
 // TODO(lf): use two flags, compute one time the flag for S or M instead of checking it like the other classification
 
 inline void PPISegmenter::updateVoxelAttribute(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
-                                                         const std::vector<size_t>& pointsPPIs) {
+                                               const std::vector<size_t>& pointsPPIs) {
     std::vector<size_t>& voxScore = voxAttribute.voxScore_;
 
     // Single Direct Edge Voxel : One point in the voxel //
@@ -144,7 +139,7 @@ inline void PPISegmenter::updateVoxelAttribute(VoxelAttribute& voxAttribute, con
 }
 
 void PPISegmenter::computeExtendedScore(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
-                                                  const std::vector<VoxelAttribute>& voxAttributeList) {
+                                        const std::vector<VoxelAttribute>& voxAttributeList) {
     std::fill(voxExtendedScore.begin(), voxExtendedScore.end(), 0);
     for (const auto& voxelIndex : ADJ_List) {
         for (size_t k = 0; k < p_->projectionPlaneCount; ++k) {
@@ -154,9 +149,8 @@ void PPISegmenter::computeExtendedScore(std::vector<size_t>& voxExtendedScore, c
 }
 
 // TODO(lf)warning : adjacent (old name) voxel contain the voxel itself!
-void PPISegmenter::updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAttributeList,
-                                                       const std::vector<size_t>& voxExtendedScore,
-                                                       const std::vector<size_t>& IDEV_List) {
+void PPISegmenter::updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& voxExtendedScore,
+                                             const std::vector<size_t>& IDEV_List) {
     // Common and effective way to find the index of the maximum element in a C++ container
     const auto& maxScoreSmooth = std::max_element(voxExtendedScore.begin(), voxExtendedScore.end());
     const size_t ppiOfScoreSmooth = std::distance(voxExtendedScore.begin(), maxScoreSmooth);
@@ -169,8 +163,7 @@ void PPISegmenter::updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAtt
     }
 }
 
-inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI,
-                                             const std::vector<size_t>& voxExtendedScore) {
+inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI, const std::vector<size_t>& voxExtendedScore) {
     // TODO(lf): why not to check if S_DIRECT_EDGE ?
 
     if (voxClass == VoxClass::M_DIRECT_EDGE) {  // TMC2 : VoxClass::S_DIRECT_EDGE or VoxClass::INDIRECT_EDGE
@@ -196,8 +189,8 @@ inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI,
 }
 
 // TODO(lf): special algorithm trajectory for S_DIRECT_EDGE_VOXEL
-inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices,
-                                                     const double weight, const std::vector<size_t>& voxExtendedScore) const {
+inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices, const double weight,
+                                           const std::vector<size_t>& voxExtendedScore) const {
     std::vector<double> weightedScoreSmooth(p_->projectionPlaneCount);
     for (size_t k = 0; k < p_->projectionPlaneCount; ++k) {
         weightedScoreSmooth[k] = weight * static_cast<double>(voxExtendedScore[k]);
@@ -219,11 +212,9 @@ inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, cons
     }
 }
 
-
 void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& inputPointsGeometry,
                                             std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
-                                            std::vector<size_t>& filledVoxels,
-                                            std::vector<std::vector<size_t>>& pointListInVoxels) {
+                                            std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels) {
     const size_t voxelizationShift =
         p_->geoBitDepthVoxelized - p_->geoBitDepthRefineSegmentation;  // i.e. : 9 - 8 = 1 (meaning 2x2x2 voxel dimension)
 
@@ -236,8 +227,8 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vecto
 
     const size_t estimatedPointsPerVoxel = 4;  // TODO(lf): verify and make it dependent on the chosen geoBitDepth
 
-    // TODO(lf): the "reserve" of the pointListInVoxels is probably inneficient. As for each vector inside the vector, we call reserve. Would it
-    // be better to reserve the main vector with constant sized (already allocated) smaller vectors and then call resize(0) on each of them
+    // TODO(lf): the "reserve" of the pointListInVoxels is probably inneficient. As for each vector inside the vector, we call reserve. Would
+    // it be better to reserve the main vector with constant sized (already allocated) smaller vectors and then call resize(0) on each of them
     // before to add the first point ?
 
     size_t vox_id = 0;
@@ -264,11 +255,11 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vecto
 
 // TODO(lf): tackle the cognitive complexity
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void PPISegmenter::fillNeighborAndAdjacentLists(
-    std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
-    std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
-    std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
-    std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs) {
+void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray,
+                                                robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
+                                                std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
+                                                std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
+                                                std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs) {
     const typeGeometryInput gridMaxAxisValue = (1U << p_->geoBitDepthRefineSegmentation) - 1;
     // TODO(lf): verify this above minus 1 is correct and that it is done everywhere it is needed
     for (size_t v_idx = 0; v_idx < filledVoxels.size(); ++v_idx) {
@@ -295,8 +286,8 @@ void PPISegmenter::fillNeighborAndAdjacentLists(
 
         const uvgvpcc_enc::Vector3<typeGeometryInput> currentPoint = {x, y, z};
 
-        // TODO(lf): find a way to directly add cur_pos_1D and pointAdjLocation1D, and then check if it is a valid point without extracting the
-        // x y and z values
+        // TODO(lf): find a way to directly add cur_pos_1D and pointAdjLocation1D, and then check if it is a valid point without extracting
+        // the x y and z values
 
         const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
         for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
@@ -316,7 +307,7 @@ void PPISegmenter::fillNeighborAndAdjacentLists(
                 }
 
                 const size_t pointAdjLocation1D = pointAdj[0] + (pointAdj[1] << p_->geoBitDepthRefineSegmentation) +
-                                                       (pointAdj[2] << (p_->geoBitDepthRefineSegmentation * 2));
+                                                  (pointAdj[2] << (p_->geoBitDepthRefineSegmentation * 2));
 
                 if (occFlagArray[pointAdjLocation1D]) {
                     const size_t neighbor_v_idx = voxelIdxMap.at(pointAdjLocation1D);
@@ -339,11 +330,9 @@ void PPISegmenter::fillNeighborAndAdjacentLists(
             }
         }
 
-        voxWeightList[v_idx] =
-            p_->refineSegmentationLambda / static_cast<double>(num_nn_points);  // NOLINT(clang-analyzer-core.DivideZero)
+        voxWeightList[v_idx] = p_->refineSegmentationLambda / static_cast<double>(num_nn_points);  // NOLINT(clang-analyzer-core.DivideZero)
     }
 }
-
 
 /*
 == Refine segmentation doc ==
@@ -377,19 +366,20 @@ in a voxel. The former is usually isolated points, and the latter indicates the 
 // TODO(lf): in the whole refine segmentation, be consistent between talking about grid cell or voxel
 // TODO(lf): use two flags, compute one time the flag for S or M instead of checking it like the other classification
 // TODO(lf): the refine segmentation voxelization (voxel dim etc..) should depend on geometry bit, not on the max range
-void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId) {
+void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
+                                      const size_t& frameId) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                             "Refine segmentation of frame " + std::to_string(frameId) + "\n");
+                                                           "Refine segmentation of frame " + std::to_string(frameId) + "\n");
     // One boolean for each voxel of the grid, indicating if a voxel is filled or not //
     const size_t gridMaxAxisValue = (1U << p_->geoBitDepthRefineSegmentation);
     std::vector<bool> occFlagArray(gridMaxAxisValue * gridMaxAxisValue * gridMaxAxisValue, false);
-    
+
     // std::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
     robin_hood::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
-    
-    std::vector<size_t> filledVoxels;                     // list of location1D
-    std::vector<std::vector<size_t>> pointListInVoxels;   // for each voxel, the list of the index of the points inside
-    
+
+    std::vector<size_t> filledVoxels;                    // list of location1D
+    std::vector<std::vector<size_t>> pointListInVoxels;  // for each voxel, the list of the index of the points inside
+
     voxelizationWithBitArray(pointsGeometry_, occFlagArray, voxelIdxMap, filledVoxels, pointListInVoxels);
 
     const size_t voxelCount = filledVoxels.size();
@@ -397,14 +387,14 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
     std::vector<std::vector<size_t>> ADJ_List(voxelCount);   // large    // This is voxNeighborsList
     std::vector<std::vector<size_t>> IDEV_List(voxelCount);  // small    // This is voxAdjacentsList
     std::vector<double> voxWeightList(voxelCount);
-    fillNeighborAndAdjacentLists(filledVoxels, occFlagArray, voxelIdxMap, ADJ_List, IDEV_List, pointListInVoxels,
-                                          voxWeightList, voxAttributeList, pointsPPIs);
+    fillNeighborAndAdjacentLists(filledVoxels, occFlagArray, voxelIdxMap, ADJ_List, IDEV_List, pointListInVoxels, voxWeightList,
+                                 voxAttributeList, pointsPPIs);
 
     // TODO(lf): find a way to break the refine segmentation iteration before reaching the number of iteration parameter (if number of updated
     // voxel lower than something for example)
 
-    // TODO(lf): in the for loop over all voxel, we access a lot of list to get the related voxel element. Why not TODO(lf)a structure voxel with
-    // everything at the same memory location and so reduce memory call ?
+    // TODO(lf): in the for loop over all voxel, we access a lot of list to get the related voxel element. Why not TODO(lf)a structure voxel
+    // with everything at the same memory location and so reduce memory call ?
     for (size_t iter = 0; iter < p_->refineSegmentationIterationCount; ++iter) {
         for (size_t voxelIndex = 0; voxelIndex < voxelCount; ++voxelIndex) {
             // TODO(lf): should we use a stack of voxel index instead of a for loop with a lot of if(true) ?
@@ -439,6 +429,6 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
     }
 
     if (p_->exportIntermediateFiles) {
-        FileExport::exportPointCloudRefineSegmentation(frame,pointsGeometry_,pointsPPIs);
-    } 
+        FileExport::exportPointCloudRefineSegmentation(frame, pointsGeometry_, pointsPPIs);
+    }
 }

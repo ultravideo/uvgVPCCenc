@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -30,7 +30,8 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-/// \file Entry point for the map generation process. Use the 2D location of the patch obtained during patch packing to create the occupancy, geometry and attribute 2D maps.
+/// \file Entry point for the map generation process. Use the 2D location of the patch obtained during patch packing to create the occupancy,
+/// geometry and attribute 2D maps.
 
 #include "mapGeneration.hpp"
 
@@ -45,84 +46,79 @@
 #include <string>
 #include <vector>
 
+#include "utils/fileExport.hpp"
+#include "utils/parameters.hpp"
+#include "utils/utils.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
-#include "utils/utils.hpp"
-#include "utils/fileExport.hpp"
 
 using namespace uvgvpcc_enc;
 
 void MapGenerationBaseLine::initializeStaticParameters() {}
 
-
 namespace {
-    
-    // lf: Notice that the current implementation of the occupancy map refinement does not remove the involved points from their patch.
-    template <uint8_t occBlkSize>
-    void occupancyMapDownscaling(const size_t& mapHeight, std::vector<uint8_t>& occupancyMap, std::vector<uint8_t>& occupancyMapDS) {
-    
-        const size_t mapWidth = p_->mapWidth;
-        
-        uint8_t* occMap = occupancyMap.data();
-        uint8_t* occMapDS = occupancyMapDS.data();
-        if constexpr (occBlkSize == 2) {
-            const size_t mapWidthDS = mapWidth >> 1U;
-            const size_t mapHeightDS = mapHeight >> 1U;
-            for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
-                const size_t yOffset = (yDS * mapWidth) << 1U;
-                for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
-                    const size_t xOffset = xDS << 1U;
-                    uint8_t* blockPtr = occMap + yOffset + xOffset;
-                    
-                    const uint8_t sum =
-                        blockPtr[0] + blockPtr[1] +
-                        blockPtr[mapWidth] + blockPtr[mapWidth + 1];
 
-                    if(sum >= p_->omRefinementTreshold2) {
-                        occMapDS[yDS * mapWidthDS + xDS] = 1U;
-                    } else {
-                        occMapDS[yDS * mapWidthDS + xDS] = 0U;
-                        // Update the occupancy map (lf: usefull for BBPE attribute background filling)
-                        std::fill_n(blockPtr, 2, 0U);
-                        std::fill_n(blockPtr + mapWidth, 2, 0U);
-                    }
+// lf: Notice that the current implementation of the occupancy map refinement does not remove the involved points from their patch.
+template <uint8_t occBlkSize>
+void occupancyMapDownscaling(const size_t& mapHeight, std::vector<uint8_t>& occupancyMap, std::vector<uint8_t>& occupancyMapDS) {
+    const size_t mapWidth = p_->mapWidth;
+
+    uint8_t* occMap = occupancyMap.data();
+    uint8_t* occMapDS = occupancyMapDS.data();
+    if constexpr (occBlkSize == 2) {
+        const size_t mapWidthDS = mapWidth >> 1U;
+        const size_t mapHeightDS = mapHeight >> 1U;
+        for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
+            const size_t yOffset = (yDS * mapWidth) << 1U;
+            for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
+                const size_t xOffset = xDS << 1U;
+                uint8_t* blockPtr = occMap + yOffset + xOffset;
+
+                const uint8_t sum = blockPtr[0] + blockPtr[1] + blockPtr[mapWidth] + blockPtr[mapWidth + 1];
+
+                if (sum >= p_->omRefinementTreshold2) {
+                    occMapDS[yDS * mapWidthDS + xDS] = 1U;
+                } else {
+                    occMapDS[yDS * mapWidthDS + xDS] = 0U;
+                    // Update the occupancy map (lf: usefull for BBPE attribute background filling)
+                    std::fill_n(blockPtr, 2, 0U);
+                    std::fill_n(blockPtr + mapWidth, 2, 0U);
                 }
             }
-        } else if constexpr (occBlkSize == 4) {
-            const size_t mapWidthDS = mapWidth >> 2U;
-            const size_t mapHeightDS = mapHeight >> 2U;        
-            for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
-                const size_t yOffset = (yDS * mapWidth) << 2U;
-                for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
-                    const size_t xOffset = xDS << 2U;
-                    uint8_t* blockPtr = occMap + yOffset + xOffset;
-                    
-                    const uint8_t sum =
-                    blockPtr[0] + blockPtr[1] + blockPtr[2] + blockPtr[3] +
-                    blockPtr[mapWidth] + blockPtr[mapWidth + 1] + blockPtr[mapWidth + 2] + blockPtr[mapWidth + 3] +
-                    blockPtr[2 * mapWidth] + blockPtr[2 * mapWidth + 1] + blockPtr[2 * mapWidth + 2] + blockPtr[2 * mapWidth + 3] +
-                    blockPtr[3 * mapWidth] + blockPtr[3 * mapWidth + 1] + blockPtr[3 * mapWidth + 2] + blockPtr[3 * mapWidth + 3];
-
-                    if(sum >= p_->omRefinementTreshold4) {
-                        occMapDS[yDS * mapWidthDS + xDS] = 1U;
-                    } else {
-                        occMapDS[yDS * mapWidthDS + xDS] = 0U;
-                        // Update the occupancy map (lf: usefull for BBPE attribute background filling)
-                        std::fill_n(blockPtr, 4, 0U);
-                        std::fill_n(blockPtr + 1 * mapWidth, 4, 0U);
-                        std::fill_n(blockPtr + 2 * mapWidth, 4, 0U);
-                        std::fill_n(blockPtr + 3 * mapWidth, 4, 0U);
-                    }
-                }
-            }
-        } else {
-            assert(false && "Unsupported block size for occupancy map downscaling");
         }
-    }
+    } else if constexpr (occBlkSize == 4) {
+        const size_t mapWidthDS = mapWidth >> 2U;
+        const size_t mapHeightDS = mapHeight >> 2U;
+        for (size_t yDS = 0; yDS < mapHeightDS; ++yDS) {
+            const size_t yOffset = (yDS * mapWidth) << 2U;
+            for (size_t xDS = 0; xDS < mapWidthDS; ++xDS) {
+                const size_t xOffset = xDS << 2U;
+                uint8_t* blockPtr = occMap + yOffset + xOffset;
 
+                const uint8_t sum = blockPtr[0] + blockPtr[1] + blockPtr[2] + blockPtr[3] + blockPtr[mapWidth] + blockPtr[mapWidth + 1] +
+                                    blockPtr[mapWidth + 2] + blockPtr[mapWidth + 3] + blockPtr[2 * mapWidth] + blockPtr[2 * mapWidth + 1] +
+                                    blockPtr[2 * mapWidth + 2] + blockPtr[2 * mapWidth + 3] + blockPtr[3 * mapWidth] +
+                                    blockPtr[3 * mapWidth + 1] + blockPtr[3 * mapWidth + 2] + blockPtr[3 * mapWidth + 3];
+
+                if (sum >= p_->omRefinementTreshold4) {
+                    occMapDS[yDS * mapWidthDS + xDS] = 1U;
+                } else {
+                    occMapDS[yDS * mapWidthDS + xDS] = 0U;
+                    // Update the occupancy map (lf: usefull for BBPE attribute background filling)
+                    std::fill_n(blockPtr, 4, 0U);
+                    std::fill_n(blockPtr + 1 * mapWidth, 4, 0U);
+                    std::fill_n(blockPtr + 2 * mapWidth, 4, 0U);
+                    std::fill_n(blockPtr + 3 * mapWidth, 4, 0U);
+                }
+            }
+        }
+    } else {
+        assert(false && "Unsupported block size for occupancy map downscaling");
+    }
+}
 
 template <bool doubleLayer, bool axisSwap>
-void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize,const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
+void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     const size_t patchWidth = patch.widthInPixel_;
     const size_t patchHeight = patch.heightInPixel_;
     const size_t omX = patch.omDSPosX_ * p_->occupancyMapDSResolution;
@@ -170,19 +166,19 @@ void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize,const 
     }
 }
 
-} // Anonymous namespace
+}  // Anonymous namespace
 
 void MapGenerationBaseLine::writePatches(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
 
-    if(p_->doubleLayer) {
+    if (p_->doubleLayer) {
         for (const uvgvpcc_enc::Patch& patch : frame->patchList) {
             if (patch.axisSwap_) {
                 writePatchT<true, true>(patch, imageSize, frame);
             } else {
                 writePatchT<true, false>(patch, imageSize, frame);
             }
-        }        
+        }
     } else {
         for (const uvgvpcc_enc::Patch& patch : frame->patchList) {
             if (patch.axisSwap_) {
@@ -192,12 +188,11 @@ void MapGenerationBaseLine::writePatches(const std::shared_ptr<uvgvpcc_enc::Fram
             }
         }
     }
-    if(p_->exportIntermediateFiles) {
+    if (p_->exportIntermediateFiles) {
         FileExport::exportImageAttribute(frame);
         FileExport::exportImageGeometry(frame);
     }
 }
-
 
 void MapGenerationBaseLine::allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
     // Notice that before this operation, the dimension of each frame occupancy map can be different. Thus, this OM resizing operation both
@@ -208,20 +203,18 @@ void MapGenerationBaseLine::allocateMaps(const std::shared_ptr<uvgvpcc_enc::Fram
 
     // The occupancy map already exist and might already have the correct size.
 
-
     // TODO(lf): is it necessary ? Yes if resizing due to bigger occupancy map (larger than minimumHeight parameter)
     // assert(frame->occupancyMap.size() <= imageSize); //TODO(lf) there is a bug here
     if (frame->occupancyMap.size() != imageSize) {
-        frame->occupancyMap.resize(imageSize,0);
+        frame->occupancyMap.resize(imageSize, 0);
     }
 
-    if(p_->exportIntermediateFiles) {
+    if (p_->exportIntermediateFiles) {
         FileExport::exportImageOccupancy(frame);
     }
 
-    const size_t imageSizeDS = imageSize / (p_->occupancyMapDSResolution*p_->occupancyMapDSResolution);
+    const size_t imageSizeDS = imageSize / (p_->occupancyMapDSResolution * p_->occupancyMapDSResolution);
     frame->occupancyMapDS.resize(imageSizeDS + (imageSizeDS >> 1U), 0U);  // TODO(lf): should be done at the down scaling function
-
 
     frame->geometryMapL1.resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
     frame->attributeMapL1.resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
@@ -234,7 +227,6 @@ void MapGenerationBaseLine::allocateMaps(const std::shared_ptr<uvgvpcc_enc::Fram
 }
 
 namespace {
-
 
 // TODO(lf): Why an integer only implementation is so bad in term of quality degradation?
 void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t& height) {
@@ -310,13 +302,12 @@ void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t
     img.swap(yuv420);
 }
 
-} // anonymous namespace
-
+}  // anonymous namespace
 
 // TODO(lf): use copy with relevant optimal memory copy to fill second layer. Tackle the cognitive complexity accordingly
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void MapGenerationBaseLine::fillBackgroundEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize, const size_t imageSize,
-                                                     const size_t uBlk, const size_t vBlk, const size_t uom,
+void MapGenerationBaseLine::fillBackgroundEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize,
+                                                     const size_t imageSize, const size_t uBlk, const size_t vBlk, const size_t uom,
                                                      const size_t vom) {
     if (uBlk > 0) {
         for (size_t j = 0; j < blockSize; ++j) {
@@ -384,10 +375,9 @@ void MapGenerationBaseLine::fillBackgroundEmptyBlock(const std::shared_ptr<uvgvp
 }
 
 void MapGenerationBaseLine::updateSums(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockLeft, const size_t blockTop,
-                                       const size_t iBlk, const size_t jBlk, const size_t imageSize,
-                                       std::vector<size_t>& iterations, const size_t blockSize, std::vector<size_t>& sumGeo,
-                                       std::vector<size_t>& sumR, std::vector<size_t>& sumG, std::vector<size_t>& sumB,
-                                       std::vector<size_t>& count) {
+                                       const size_t iBlk, const size_t jBlk, const size_t imageSize, std::vector<size_t>& iterations,
+                                       const size_t blockSize, std::vector<size_t>& sumGeo, std::vector<size_t>& sumR,
+                                       std::vector<size_t>& sumG, std::vector<size_t>& sumB, std::vector<size_t>& count) {
     const std::array<std::array<int8_t, 2>, 4> neighbors = {{{0, -1}, {-1, 0}, {1, 0}, {0, 1}}};
 
     const size_t currentXOM = blockLeft + iBlk;
@@ -398,8 +388,8 @@ void MapGenerationBaseLine::updateSums(const std::shared_ptr<uvgvpcc_enc::Frame>
         const size_t neighborX = currentXOM + neighbors[i][0];
         const size_t neighborY = currentYOM + neighbors[i][1];
         const size_t currentPosBlk = iBlk + neighbors[i][0] + (jBlk + neighbors[i][1]) * blockSize;
-        // lf : TODO(lf) why to check if the neighbor is in the current block ? We should check if it in the occupancy map. Otherwise, we could
-        // use the pixels from other block to have more relevant values.
+        // lf : TODO(lf) why to check if the neighbor is in the current block ? We should check if it in the occupancy map. Otherwise, we
+        // could use the pixels from other block to have more relevant values.
         if (neighborX >= blockLeft && neighborX < static_cast<size_t>(blockLeft + blockSize) && neighborY >= blockTop &&
             neighborY < static_cast<size_t>(blockTop + blockSize) && iterations[currentPosBlk] == 0) {  // missingPoint => iteration==0
             // add current border pixel value in the current neighbor sumGeo values
@@ -413,9 +403,10 @@ void MapGenerationBaseLine::updateSums(const std::shared_ptr<uvgvpcc_enc::Frame>
     }
 }
 
-void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize, const size_t imageSize,
-                                                        const size_t uom, const size_t vom, const size_t pixelBlockCount,
-                                                        size_t missingPixelCount, std::vector<size_t>& iterations) {
+void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize,
+                                                        const size_t imageSize, const size_t uom, const size_t vom,
+                                                        const size_t pixelBlockCount, size_t missingPixelCount,
+                                                        std::vector<size_t>& iterations) {
     // lf : knowing that we should not used a occupancyMapDSResolution (precision?) higher than 4 (probably 1(no downscaling) or 2), the
     // current algorithm seems overkill. Simple use of lookup table can do it I think.
 
@@ -461,13 +452,11 @@ void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(const std::shared_ptr<uv
 
                     // lf : Like in TMC2, the average computation is biased. Not sure why... To create a gradient ?
 
-                    frame->geometryMapL1[currentPosOM] =
-                        static_cast<uint8_t>((sumGeo[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
+                    frame->geometryMapL1[currentPosOM] = static_cast<uint8_t>((sumGeo[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
 
                     // TODO(lf): in TMC2 both map are doing it separately. Here, as a temporary solution, we do it only on L1
 
-                    frame->attributeMapL1[currentPosOM] =
-                        static_cast<uint8_t>((sumR[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
+                    frame->attributeMapL1[currentPosOM] = static_cast<uint8_t>((sumR[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
                     frame->attributeMapL1[currentPosOM + imageSize] =
                         static_cast<uint8_t>((sumG[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
                     frame->attributeMapL1[currentPosOM + 2 * imageSize] =
@@ -499,7 +488,8 @@ void MapGenerationBaseLine::fillBackgroundImages(const std::shared_ptr<uvgvpcc_e
     const size_t pixelBlockCount = blockSize * blockSize;  // lf nb of pixel per block from the frameOM POV
 
     // If p_->mapGenerationFillEmptyBlock == false, we need still need to fill the non-empty CTU. (A CTU with at least one OM block is
-    // non-empty.) A CTU is 64x64. If a CTU is empty, we can skip it (that is, keep the uniform gray background). TODO(lf): make this ctu check
+    // non-empty.) A CTU is 64x64. If a CTU is empty, we can skip it (that is, keep the uniform gray background). TODO(lf): make this ctu
+    // check
 
     // iterate over each block of the occupancy map
     for (size_t vBlk = 0; vBlk < occupancyMapDSHeightBlk; ++vBlk) {
@@ -525,8 +515,8 @@ void MapGenerationBaseLine::fillBackgroundImages(const std::shared_ptr<uvgvpcc_e
                 for (size_t i = 0; i < blockSize; ++i) {
                     const size_t currentPosOM = uom + i + (vom + j) * p_->mapWidth;
                     // TODO(lf): u_int16_y should be a typedef for geometry map (different from geometry precision ?)
-                    // TODO(lf): this is not a perfect detection. Indeed, what if all pixel in this block have really 128 as depth value ? lf :
-                    // a safety has been added to avoid a deadlock in the filling block process
+                    // TODO(lf): this is not a perfect detection. Indeed, what if all pixel in this block have really 128 as depth value ? lf
+                    // : a safety has been added to avoid a deadlock in the filling block process
                     if (frame->geometryMapL1[currentPosOM] == p_->mapGenerationBackgroundValueGeometry) {
                         ++missingPixelCount;
                     } else {
@@ -546,7 +536,7 @@ void MapGenerationBaseLine::fillBackgroundImages(const std::shared_ptr<uvgvpcc_e
             fillBackgroundNonEmptyBlock(frame, blockSize, imageSize, uom, vom, pixelBlockCount, missingPixelCount, iterations);
         }
     }
-    if(p_->exportIntermediateFiles) {
+    if (p_->exportIntermediateFiles) {
         FileExport::exportImageAttributeBgFill(frame);
         FileExport::exportImageGeometryBgFill(frame);
     }
@@ -556,21 +546,20 @@ void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc:
     allocateMaps(frame, frame->mapHeight);
 
     // TODO(lf): occupancy map downscaling can be done after write patches (or in parallel) maybe
-    if(p_->occupancyMapDSResolution == 2) {
-        occupancyMapDownscaling<2>(frame->mapHeight,frame->occupancyMap,frame->occupancyMapDS);
+    if (p_->occupancyMapDSResolution == 2) {
+        occupancyMapDownscaling<2>(frame->mapHeight, frame->occupancyMap, frame->occupancyMapDS);
     } else if (p_->occupancyMapDSResolution == 4) {
-        occupancyMapDownscaling<4>(frame->mapHeight,frame->occupancyMap,frame->occupancyMapDS);
+        occupancyMapDownscaling<4>(frame->mapHeight, frame->occupancyMap, frame->occupancyMapDS);
     } else {
         assert(false && "Unsupported downscaling factor for occupancy map.");
     }
-    if(p_->exportIntermediateFiles) {
+    if (p_->exportIntermediateFiles) {
         FileExport::exportImageOccupancyDS(frame);
     }
 
     // Geometry and attribute map generation //
     writePatches(frame, frame->mapHeight);
 
-    
     // Background filling //
     fillBackgroundImages(frame, frame->mapHeight);
 
@@ -579,10 +568,10 @@ void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc:
         RGB444toYUV420(frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
     }
 
-    if(p_->exportIntermediateFiles) {
+    if (p_->exportIntermediateFiles) {
         FileExport::exportImageAttributeYUV(frame);
     }
-    std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute); // Release memory TODO(lf):can be done early
+    std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute);  // Release memory TODO(lf):can be done early
 }
 
 // TODO(lf): for L2, find a way to make a copy write only the changing value between both map (same comment for geometry)
@@ -603,4 +592,3 @@ void MapGenerationBaseLine::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_e
         frame->mapHeight = gof->mapHeightGOF;
     }
 }
-

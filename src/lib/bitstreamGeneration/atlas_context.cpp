@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -29,7 +29,6 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
-
 
 #include "atlas_context.hpp"
 
@@ -45,6 +44,7 @@
 #include "atlas_frame.hpp"
 #include "bitstream_common.hpp"
 #include "bitstream_util.hpp"
+#include "utils/parameters.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 atlas_tile_header atlas_context::create_atlas_tile_header(size_t frameIndex, size_t tileIndex,
@@ -93,7 +93,7 @@ atlas_tile_header atlas_context::create_atlas_tile_header(size_t frameIndex, siz
             ath.ath_patch_size_y_info_quantizer = paramUVG.log2QuantizerSizeY;
         }
 
-        const size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
+        const size_t geometryNominal2dBitdepth = 8;  // TMC2 : Bit depth of geometry 2D
         if (afps_.afps_raw_3d_offset_bit_count_explicit_mode_flag) {
             ath.ath_raw_3d_offset_axis_bit_count_minus1 = paramUVG.geoBitDepthInput + 1 - geometryNominal2dBitdepth - 1;
         }
@@ -107,7 +107,8 @@ atlas_tile_header atlas_context::create_atlas_tile_header(size_t frameIndex, siz
     return ath;
 }
 
-atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_enc::Frame>& frameUVG,
+atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_enc::Parameters& paramUVG,
+                                                                const std::shared_ptr<uvgvpcc_enc::Frame>& frameUVG,
                                                                 atlas_tile_header& ath) const {
     (void)paramUVG;
 
@@ -154,8 +155,7 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
         atdu.patch_information_data_.push_back(pid);
     }
 
-
-    std::vector<uvgvpcc_enc::Patch>().swap(frameUVG->patchList); // Release memory 
+    std::vector<uvgvpcc_enc::Patch>().swap(frameUVG->patchList);  // Release memory
 
     // Last patch is I_END patch
     patch_information_data end_patch;
@@ -271,7 +271,7 @@ atlas_sequence_parameter_set atlas_context::create_atlas_sequence_parameter_set(
     asps.asps_frame_width = paramUVG.mapWidth;
     asps.asps_frame_height = gofUVG->mapHeightGOF;
     asps.asps_geometry_3d_bit_depth_minus1 = paramUVG.geoBitDepthInput;
-    const size_t geometryNominal2dBitdepth = 8; // TMC2 : Bit depth of geometry 2D
+    const size_t geometryNominal2dBitdepth = 8;  // TMC2 : Bit depth of geometry 2D
     asps.asps_geometry_2d_bit_depth_minus1 = geometryNominal2dBitdepth - 1;
     asps.asps_log2_max_atlas_frame_order_cnt_lsb_minus4 = 10 - 4;
     asps.asps_max_dec_atlas_frame_buffering_minus1 = 0;
