@@ -149,14 +149,13 @@ Volumetric video compression involves a trade-off between speed, quality, and bi
 For the best visual quality, at the expense of slower encoding and higher bitrate:
 
 - Set `presetName=slow`.
-- Use low QP values, e.g., `rate=16-22-2`.
-- For best quality with lossy encoding, use `rate=1-1-2`.
+- Use low QP values, e.g., `rate=16-22-2` (down to `rate=1-1-2`).
 
 - Enable lossless video encoding:
   - `geometryEncodingIsLossless=true`
   - `attributeEncodingIsLossless=true`
 
-Notice that full V-PCC lossless is not supported (some 3D points may still be lost due to 2D projection).
+Notice that full V-PCC lossless is not supported (some 3D points will still be lost due to 2D projection).
 
 
 #### Achieving High Encoding Speed (High FPS)
@@ -164,7 +163,7 @@ Notice that full V-PCC lossless is not supported (some 3D points may still be lo
 If you want to maximize encoding speed and can trade off some compression efficiency:
 
 - Set `presetName=fast`.
-- Use high QP values, e.g., `rate=32-42-4` or up to `rate=51-51-4`.
+- Use high QP values, e.g., `rate=32-42-4` (up to `rate=51-51-4`).
 - Disable double layer: `doubleLayer=false`.
 - Lower internal geometry bit depth:
   - `geoBitDepthVoxelized=8`
@@ -176,7 +175,7 @@ If you want to maximize encoding speed and can trade off some compression effici
 To reduce the bitrate while keeping quality and speed acceptable:
 
 - Set `presetName=slow`.
-- Use higher QP values, e.g., `rate=32-42-4`.
+- Use high QP values, e.g., `rate=32-42-4`.
 - Reduce the number of encoded points:
   - Disable double layer: `doubleLayer=false`
 
