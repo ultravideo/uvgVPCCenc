@@ -395,7 +395,7 @@ void atlas_context::write_atlas_seq_parameter_set(bitstream_t* stream) {
             if (ref.st_ref_atlas_frame_flag.at(i)) {
                 WRITE_UE(stream, ref.abs_delta_afoc_st.at(i), "abs_delta_afoc_st");
                 if (ref.abs_delta_afoc_st.at(i) > 0) {
-                    WRITE_U(stream, ref.straf_entry_sign_flag.at(i), 1, "straf_entry_sign_flag");
+                    WRITE_U(stream, uint(ref.straf_entry_sign_flag.at(i)), 1, "straf_entry_sign_flag");
                 }
             }
         }
