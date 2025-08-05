@@ -290,7 +290,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 /// @param output_path
 void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const uint16_t dst_port) {
     
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
     
     // ******** Initialize sample stream with input bitstream ***********
     //
@@ -304,20 +304,6 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
     if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
         throw std::runtime_error(std::string("V3C Sender : Error initializing state (message: ") + state.get_error_msg() + ")"); 
     }
-
-    // ******** Print info about sample stream **********
-    //
-    // Print state and bitstream info
-    //state.print_state(false);
-
-    // std::cout << "Bitstream info: " << std::endl;
-    //state.print_bitstream_info();
-
-    // size_t len = 0;
-    // auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(&len, uvgV3CRTP::INFO_FMT::PARAM), &free);
-    // std::cout << info.get() << std::endl;
-    //
-    //  **************************************
 
     // ******** Send sample stream **********
     //
@@ -392,6 +378,20 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
             state.reset_error_flag(); //More chunks are added later so reset EOS
         }
     }
+
+    // ******** Print info about sample stream **********
+    //
+    // Print state and bitstream info
+    state.print_state(false);
+
+    std::cout << "Bitstream info: " << std::endl;
+    state.print_bitstream_info();
+
+    size_t len = 0;
+    auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(&len, uvgV3CRTP::INFO_FMT::PARAM), &free);
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
+    //
+    //  **************************************
 
     if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK && state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
         throw std::runtime_error(std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")");
