@@ -22,9 +22,13 @@ var searchData=
   ['get_5fversion_5fpatch_19',['get_version_patch',['../namespaceuvgvpcc__enc.html#a4b69076966a6134f79ba02598d872a38',1,'uvgvpcc_enc']]],
   ['get_5fvps_5fbyte_5flen_20',['get_vps_byte_len',['../classvps.html#a7edd959092342e8cf4f989575e3e8656',1,'vps']]],
   ['getallindices_21',['getAllIndices',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#ac24cdabb366af7fd69a5a8b9e3e2cdcc',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],
-  ['getloglevel_22',['getLogLevel',['../classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507',1,'uvgvpcc_enc::Logger']]],
-  ['getname_23',['getName',['../classuvgvpcc__enc_1_1Job.html#a5f316185e7cead1e22db38fc064ae3ca',1,'uvgvpcc_enc::Job']]],
-  ['getopt_5flong_24',['getopt_long',['../getopt_8c.html#a670b3d6580b88001f22388938a15504d',1,'getopt_long(int nargc, char *const *nargv, const char *options, const struct option *long_options, int *idx):&#160;getopt.c'],['../getopt_8h.html#a5f683e7897fb551b02ba936456387cc3',1,'getopt_long(int, char *const *, const char *, const struct option *, int *):&#160;getopt.c']]],
-  ['getstate_25',['getState',['../classuvgvpcc__enc_1_1Job.html#a7cf6270621942304954b39e19f3ed147',1,'uvgvpcc_enc::Job']]],
-  ['gofpatchpacking_26',['gofPatchPacking',['../classPatchPacking.html#a3882407ca2aafda5290a6b52991124dd',1,'PatchPacking']]]
+  ['getframeid_22',['getFrameId',['../classuvgvpcc__enc_1_1jobKey.html#a15172178215556a10fffbfc227049edb',1,'uvgvpcc_enc::jobKey']]],
+  ['getfuncname_23',['getFuncName',['../classuvgvpcc__enc_1_1jobKey.html#ae5528ab8b5df4844176ff4bc34583bf4',1,'uvgvpcc_enc::jobKey']]],
+  ['getgofid_24',['getGofId',['../classuvgvpcc__enc_1_1jobKey.html#aee5e485d12d11bcc62783f1a831af5e3',1,'uvgvpcc_enc::jobKey']]],
+  ['getjob_25',['getjob',['../structuvgvpcc__enc_1_1JobManager.html#adfa607463689b65d27d66201379401ce',1,'uvgvpcc_enc::JobManager::getJob(size_t gofId, const std::string &amp;funcName)'],['../structuvgvpcc__enc_1_1JobManager.html#a293b41849cccaa231c10b49a3b85c7c2',1,'uvgvpcc_enc::JobManager::getJob(size_t gofId, size_t frameId, const std::string &amp;funcName)']]],
+  ['getloglevel_26',['getLogLevel',['../classuvgvpcc__enc_1_1Logger.html#a93dc0b596dbe176e77961cb5caf71507',1,'uvgvpcc_enc::Logger']]],
+  ['getname_27',['getName',['../classuvgvpcc__enc_1_1Job.html#a5f316185e7cead1e22db38fc064ae3ca',1,'uvgvpcc_enc::Job']]],
+  ['getopt_5flong_28',['getopt_long',['../getopt_8c.html#a670b3d6580b88001f22388938a15504d',1,'getopt_long(int nargc, char *const *nargv, const char *options, const struct option *long_options, int *idx):&#160;getopt.c'],['../getopt_8h.html#a5f683e7897fb551b02ba936456387cc3',1,'getopt_long(int, char *const *, const char *, const struct option *, int *):&#160;getopt.c']]],
+  ['getstate_29',['getState',['../classuvgvpcc__enc_1_1Job.html#a7cf6270621942304954b39e19f3ed147',1,'uvgvpcc_enc::Job']]],
+  ['gofpatchpacking_30',['gofPatchPacking',['../classPatchPacking.html#a3882407ca2aafda5290a6b52991124dd',1,'PatchPacking']]]
 ];

@@ -1,9 +1,12 @@
 <map id="byteStreamToSampleStream" name="byteStreamToSampleStream">
-<area shape="rect" id="Node000001" title=" " alt="" coords="584,13,792,38"/>
-<area shape="rect" id="Node000002" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="347,5,536,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="570,28,536,28,536,23,570,23"/>
-<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,5,299,45"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,28,299,28,299,23,333,23"/>
-<area shape="rect" id="Node000004" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,13,60,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="620,45,828,70"/>
+<area shape="rect" id="Node000002" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="383,37,572,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="606,60,572,60,572,55,606,55"/>
+<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc_1_1API.html#a75dacaf2d79b4a549ecb2a91ae8a6105" title="This function is called when all frames to be processed have been sent to the encoder...." alt="" coords="108,5,335,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="368,46,334,42,335,37,369,41"/>
+<area shape="rect" id="Node000005" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="126,69,317,109"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="369,74,317,80,316,75,368,68"/>
+<area shape="rect" id="Node000004" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,45,60,70"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="95,50,61,55,60,50,94,44"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="112,73,60,64,61,59,113,68"/>
 </map>

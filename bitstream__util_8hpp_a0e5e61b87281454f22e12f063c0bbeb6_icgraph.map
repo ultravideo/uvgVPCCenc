@@ -1,30 +1,33 @@
 <map id="uvg_bitstream_put" name="uvg_bitstream_put">
-<area shape="rect" id="Node000001" title=" " alt="" coords="829,223,973,249"/>
-<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#a423bd5bc72b723f5642a91deb7a5cb0b" title=" " alt="" coords="591,5,774,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="887,212,871,177,847,136,817,95,780,59,760,48,763,43,783,55,821,91,852,133,876,175,892,209"/>
-<area shape="rect" id="Node000005" href="$bitstream__util_8cpp.html#a30bd11b6c91d37315d3ee911d83a72ed" title=" " alt="" coords="599,70,766,95"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="882,214,840,161,812,133,780,110,752,98,754,93,783,106,815,129,844,157,886,210"/>
-<area shape="rect" id="Node000006" href="$classatlas__context.html#a56450f7f8e92c4a07026d4d7c4be7dcd" title=" " alt="" coords="607,120,758,160"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="866,219,780,174,750,163,752,158,782,170,868,214"/>
-<area shape="rect" id="Node000007" href="$classatlas__context.html#a144495d5cb47643d5d9bcf4283a8f97f" title=" " alt="" coords="607,184,758,224"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="815,226,758,218,759,212,816,221"/>
-<area shape="rect" id="Node000008" href="$classatlas__context.html#ab3da4e46b1b81ce24bcc82e93c4fe3ab" title=" " alt="" coords="584,248,781,288"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="816,251,782,256,781,251,815,246"/>
-<area shape="rect" id="Node000009" href="$classatlas__context.html#a24296684ad259ec9f83aec0bd2bbf53c" title=" " alt="" coords="602,312,763,352"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="868,258,782,302,752,314,750,309,780,298,866,253"/>
-<area shape="rect" id="Node000010" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="611,376,754,416"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="886,262,843,314,815,342,783,366,755,380,753,375,780,362,811,338,839,310,882,258"/>
-<area shape="rect" id="Node000014" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="611,440,754,480"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="893,263,877,300,854,345,822,391,783,430,755,446,753,441,780,426,818,387,849,342,873,297,888,261"/>
-<area shape="rect" id="Node000003" href="$bitstream__util_8cpp.html#a7a68eb472ffb2162b61292d074642d4c" title=" " alt="" coords="364,13,519,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="578,28,519,28,519,23,578,23"/>
-<area shape="rect" id="Node000004" href="$classvps.html#a621f597b4c41ed6cde608d6932299803" title=" " alt="" coords="145,13,261,38"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="350,28,262,28,262,23,350,23"/>
-<area shape="rect" id="Node000011" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="347,408,536,448"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="598,410,537,418,536,413,597,405"/>
-<area shape="rect" id="Node000012" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,408,299,448"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="333,431,299,431,299,425,333,425"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="865,223,1009,249"/>
+<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#a423bd5bc72b723f5642a91deb7a5cb0b" title=" " alt="" coords="627,5,810,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="923,212,907,177,883,136,853,95,816,59,796,48,799,43,819,55,857,91,888,133,912,175,928,209"/>
+<area shape="rect" id="Node000005" href="$bitstream__util_8cpp.html#a30bd11b6c91d37315d3ee911d83a72ed" title=" " alt="" coords="635,70,802,95"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="918,214,876,161,848,133,816,110,788,98,790,93,819,106,851,129,880,157,922,210"/>
+<area shape="rect" id="Node000006" href="$classatlas__context.html#a56450f7f8e92c4a07026d4d7c4be7dcd" title=" " alt="" coords="643,120,794,160"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="902,219,816,174,786,163,788,158,818,170,904,214"/>
+<area shape="rect" id="Node000007" href="$classatlas__context.html#a144495d5cb47643d5d9bcf4283a8f97f" title=" " alt="" coords="643,184,794,224"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="851,226,794,218,795,212,852,221"/>
+<area shape="rect" id="Node000008" href="$classatlas__context.html#ab3da4e46b1b81ce24bcc82e93c4fe3ab" title=" " alt="" coords="620,248,817,288"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="852,251,818,256,817,251,851,246"/>
+<area shape="rect" id="Node000009" href="$classatlas__context.html#a24296684ad259ec9f83aec0bd2bbf53c" title=" " alt="" coords="638,312,799,352"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="904,258,818,302,788,314,786,309,816,298,902,253"/>
+<area shape="rect" id="Node000010" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="647,376,790,416"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="922,262,879,314,851,342,819,366,791,380,789,375,816,362,847,338,875,310,918,258"/>
+<area shape="rect" id="Node000015" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="647,440,790,480"/>
+<area shape="poly" id="edge15_Node000001_Node000015" title=" " alt="" coords="929,263,913,300,890,345,858,391,819,430,791,446,789,441,816,426,854,387,885,342,909,297,924,261"/>
+<area shape="rect" id="Node000003" href="$bitstream__util_8cpp.html#a7a68eb472ffb2162b61292d074642d4c" title=" " alt="" coords="400,13,555,38"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="614,28,555,28,555,23,614,23"/>
+<area shape="rect" id="Node000004" href="$classvps.html#a621f597b4c41ed6cde608d6932299803" title=" " alt="" coords="163,13,279,38"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="387,28,280,28,280,23,387,23"/>
+<area shape="rect" id="Node000011" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="383,408,572,448"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="634,410,573,418,572,413,633,405"/>
+<area shape="rect" id="Node000012" href="$namespaceuvgvpcc__enc_1_1API.html#a75dacaf2d79b4a549ecb2a91ae8a6105" title="This function is called when all frames to be processed have been sent to the encoder...." alt="" coords="108,376,335,416"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="368,417,334,413,335,408,369,412"/>
+<area shape="rect" id="Node000014" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="126,440,317,480"/>
+<area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="369,444,317,451,316,445,368,439"/>
 <area shape="rect" id="Node000013" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,415,60,441"/>
-<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="94,431,60,431,60,425,94,425"/>
-<area shape="poly" id="edge14_Node000014_Node000011" title=" " alt="" coords="597,451,536,443,537,438,598,446"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="95,420,61,426,60,421,94,415"/>
+<area shape="poly" id="edge14_Node000014_Node000013" title=" " alt="" coords="112,444,60,435,61,430,113,439"/>
+<area shape="poly" id="edge16_Node000015_Node000011" title=" " alt="" coords="633,451,572,443,573,438,634,446"/>
 </map>

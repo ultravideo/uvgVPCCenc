@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.1.0</span>
    </div>
    <div id="projectbrief">uvgVPCCenc is an open-source real-time V-PCC encoder library written in C++ from scratch.</div>
   </td>
@@ -95,6 +95,10 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Job.html">Job</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1jobKey.html">jobKey</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1JobManager.html">JobManager</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Logger.html">Logger</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1ParameterInfo.html">ParameterInfo</a></td></tr>
@@ -129,16 +133,6 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:af55456acddf9a104316f01ddb4e646d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84bc09511fa119cf3bf77860463e3785" id="r_a84bc09511fa119cf3bf77860463e3785"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785">threadqueue_job_state</a> { <br />
-&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a7d96a74fc499864e2013a8203c082b78">THREADQUEUE_JOB_STATE_PAUSED</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a93aba4780018c22a2a6705f9520fd394">THREADQUEUE_JOB_STATE_WAITING</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a097282d782b89e1d8621c580afcebcf6">THREADQUEUE_JOB_STATE_READY</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a5716f85797a3b4ba72efa7e8e6fce0d4">THREADQUEUE_JOB_STATE_RUNNING</a>
-, <br />
-&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785aeafa773d39bfd3af97dbaef4117a23af">THREADQUEUE_JOB_STATE_DONE</a>
-<br />
- }</td></tr>
-<tr class="separator:a84bc09511fa119cf3bf77860463e3785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3dccc2812db619d45f2cccb9979b1791" id="r_a3dccc2812db619d45f2cccb9979b1791"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791">ParameterType</a> { <br />
 &#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a375be9937aadb91151f521b0fd0d8d92">BOOL</a>
 , <a class="el" href="namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a431584040676fade50c17b5a2b7da0bd">INT</a>
@@ -150,11 +144,19 @@ Enumerations</h2></td></tr>
 <br />
  }</td></tr>
 <tr class="separator:a3dccc2812db619d45f2cccb9979b1791"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84bc09511fa119cf3bf77860463e3785" id="r_a84bc09511fa119cf3bf77860463e3785"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785">threadqueue_job_state</a> { <br />
+&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a7d96a74fc499864e2013a8203c082b78">THREADQUEUE_JOB_STATE_PAUSED</a>
+, <a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a93aba4780018c22a2a6705f9520fd394">THREADQUEUE_JOB_STATE_WAITING</a>
+, <a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a097282d782b89e1d8621c580afcebcf6">THREADQUEUE_JOB_STATE_READY</a>
+, <a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785a5716f85797a3b4ba72efa7e8e6fce0d4">THREADQUEUE_JOB_STATE_RUNNING</a>
+, <br />
+&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785aeafa773d39bfd3af97dbaef4117a23af">THREADQUEUE_JOB_STATE_DONE</a>
+<br />
+ }</td></tr>
+<tr class="separator:a84bc09511fa119cf3bf77860463e3785"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a6ef352e1ec652d5bc86b849f94754e74" id="r_a6ef352e1ec652d5bc86b849f94754e74"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a6ef352e1ec652d5bc86b849f94754e74">jobStateToStr</a> (<a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785">threadqueue_job_state</a> s)</td></tr>
-<tr class="separator:a6ef352e1ec652d5bc86b849f94754e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a81d86f6ad45b7b1ae67d8d944d880022" id="r_a81d86f6ad45b7b1ae67d8d944d880022"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a81d86f6ad45b7b1ae67d8d944d880022">get_version</a> ()</td></tr>
 <tr class="separator:a81d86f6ad45b7b1ae67d8d944d880022"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fcf9cb432c954cf3de2df0562498cbf" id="r_a2fcf9cb432c954cf3de2df0562498cbf"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a2fcf9cb432c954cf3de2df0562498cbf">get_version_major</a> ()</td></tr>
@@ -169,6 +171,8 @@ Functions</h2></td></tr>
 <tr class="separator:a5f0085b986c3146442ec6cfc354a1e1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a32c76f976a12d83e4002ec04551c3fbc" id="r_a32c76f976a12d83e4002ec04551c3fbc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a32c76f976a12d83e4002ec04551c3fbc">applyPreset</a> (<a class="el" href="structuvgvpcc__enc_1_1Parameters.html">Parameters</a> &amp;param)</td></tr>
 <tr class="separator:a32c76f976a12d83e4002ec04551c3fbc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ef352e1ec652d5bc86b849f94754e74" id="r_a6ef352e1ec652d5bc86b849f94754e74"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a6ef352e1ec652d5bc86b849f94754e74">jobStateToStr</a> (<a class="el" href="namespaceuvgvpcc__enc.html#a84bc09511fa119cf3bf77860463e3785">threadqueue_job_state</a> s)</td></tr>
+<tr class="separator:a6ef352e1ec652d5bc86b849f94754e74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a69b2cb991ff48de10ff75bc3c0582a54" id="r_a69b2cb991ff48de10ff75bc3c0582a54"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54">zeroPad</a> (size_t value, size_t width)</td></tr>
 <tr class="separator:a69b2cb991ff48de10ff75bc3c0582a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a735c39eb14ded23670bac21df7dc8189" id="r_a735c39eb14ded23670bac21df7dc8189"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a735c39eb14ded23670bac21df7dc8189">roundUp</a> (const size_t &amp;number, const size_t &amp;multiple)</td></tr>

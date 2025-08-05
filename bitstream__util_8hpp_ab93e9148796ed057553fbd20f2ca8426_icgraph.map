@@ -1,14 +1,17 @@
 <map id="uvg_bitstream_finalize" name="uvg_bitstream_finalize">
-<area shape="rect" id="Node000001" title=" " alt="" coords="775,45,945,70"/>
-<area shape="rect" id="Node000002" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="584,5,727,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="765,45,727,39,727,34,765,40"/>
-<area shape="rect" id="Node000006" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="584,69,727,109"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="765,75,727,81,727,76,765,70"/>
-<area shape="rect" id="Node000003" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="347,37,536,77"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="571,41,536,46,536,41,570,35"/>
-<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,37,299,77"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="333,60,299,60,299,55,333,55"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="811,45,981,70"/>
+<area shape="rect" id="Node000002" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="620,5,763,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="801,45,763,39,763,34,801,40"/>
+<area shape="rect" id="Node000007" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="620,69,763,109"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="801,75,763,81,763,76,801,70"/>
+<area shape="rect" id="Node000003" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="383,37,572,77"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="607,41,572,46,572,41,606,35"/>
+<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc_1_1API.html#a75dacaf2d79b4a549ecb2a91ae8a6105" title="This function is called when all frames to be processed have been sent to the encoder...." alt="" coords="108,5,335,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="368,46,334,42,335,37,369,41"/>
+<area shape="rect" id="Node000006" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="126,69,317,109"/>
+<area shape="poly" id="edge5_Node000003_Node000006" title=" " alt="" coords="369,74,317,80,316,75,368,68"/>
 <area shape="rect" id="Node000005" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,45,60,70"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,60,60,60,60,55,94,55"/>
-<area shape="poly" id="edge6_Node000006_Node000003" title=" " alt="" coords="570,79,536,74,536,69,571,74"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="95,50,61,55,60,50,94,44"/>
+<area shape="poly" id="edge6_Node000006_Node000005" title=" " alt="" coords="112,73,60,64,61,59,113,68"/>
+<area shape="poly" id="edge8_Node000007_Node000003" title=" " alt="" coords="606,79,572,74,572,69,607,74"/>
 </map>

@@ -7,9 +7,7 @@ var searchData=
   ['count_4',['count',['../structminiply_1_1PLYElement.html#af26529ce5f5c83c9632526469bf0607f',1,'miniply::PLYElement']]],
   ['counttype_5',['countType',['../structminiply_1_1PLYProperty.html#a6b2ddaeefe926cb63ed9f3d223143531',1,'miniply::PLYProperty']]],
   ['cur_5fbit_6',['cur_bit',['../structbitstream__t.html#a6c4185d6fe6fecf4686b928f771a309f',1,'bitstream_t']]],
-  ['currentgof_7',['currentGOF',['../uvgvpcc_8cpp.html#a4701158fea816c994db4d98456a6f972',1,'uvgvpcc.cpp']]],
-  ['currentgof2dencodingjob_8',['currentGOF2DEncodingJob',['../uvgvpcc_8cpp.html#ada352f98e2ac0802499b6bcf77f48036',1,'uvgvpcc.cpp']]],
-  ['currentgofbitstreamgenjob_9',['currentGOFBitstreamGenJob',['../uvgvpcc_8cpp.html#a8b5f5d7ca4be4598333bcd99d228cf61',1,'uvgvpcc.cpp']]],
-  ['currentgofinitmapgenjob_10',['currentGOFInitMapGenJob',['../uvgvpcc_8cpp.html#a59cfd031c3b360f735134deed64c5ce9',1,'uvgvpcc.cpp']]],
-  ['currentgofinterpackjob_11',['currentGOFInterPackJob',['../uvgvpcc_8cpp.html#a2d3af68a51b250eee4af77bd2c508faf',1,'uvgvpcc.cpp']]]
+  ['currentframejobmap_7',['currentFrameJobMap',['../structuvgvpcc__enc_1_1JobManager.html#a12a44596ddfb76a038464ebd93ca2967',1,'uvgvpcc_enc::JobManager']]],
+  ['currentgof_8',['currentGOF',['../uvgvpcc_8cpp.html#a4701158fea816c994db4d98456a6f972',1,'uvgvpcc.cpp']]],
+  ['currentgofjobmap_9',['currentGOFJobMap',['../structuvgvpcc__enc_1_1JobManager.html#aa36f4a54f9002109cc847df5ed2706e3',1,'uvgvpcc_enc::JobManager']]]
 ];

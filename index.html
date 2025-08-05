@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.1.0</span>
    </div>
    <div id="projectbrief">uvgVPCCenc is an open-source real-time V-PCC encoder library written in C++ from scratch.</div>
   </td>
@@ -80,7 +80,8 @@ $(function() {
 <p>uvgVPCCenc is still under development. Speed and RD-quality will continue to improve.</p>
 <p>Join our Discord channel to contact us <a href="https://discord.gg/fZpub7BPUA"><img src="https://img.shields.io/discord/973260924288901140?style=plastic" alt="Discord" class="inline"/></a>.</p>
 <p><a href="https://ultravideo.fi/uvgvpccenc.html">https://ultravideo.fi/uvgvpccenc.html</a> for more information.</p>
-<h1><a class="anchor" id="autotoc_md0"></a>
+<hr  />
+<h1><a class="anchor" id="autotoc_md1"></a>
 Table of Contents</h1>
 <ul>
 <li>Compiling and testing uvgVPCCenc<ul>
@@ -94,34 +95,36 @@ Table of Contents</h1>
 <li>Application parameters</li>
 <li>uvgVPCCenc parameters</li>
 <li>Presets</li>
+<li>Best practices for tuning uvgVPCCenc</li>
+<li>Version 1.1</li>
 </ul>
 </li>
 <li>Academic research</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md1"></a>
+<h1><a class="anchor" id="autotoc_md2"></a>
 Compilation and testing</h1>
-<h2><a class="anchor" id="autotoc_md2"></a>
+<h2><a class="anchor" id="autotoc_md3"></a>
 Dependencies</h2>
 <p>To compile the library and the application, please install <code>CMake</code> and <code>g++</code>. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install cmake g++</div>
 </div><!-- fragment --><p>To generate the documentation, <code>doxygen</code> and <code>graphviz</code> are required. On Debian/Ubuntu: </p><div class="fragment"><div class="line">sudo apt install doxygen graphviz</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md3"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md4"></a>
 Compile uvgVPCCenc</h2>
 <p>To compile the encoder, please use following commands: </p><div class="fragment"><div class="line">cmake --preset=Release</div>
 <div class="line">cmake --build --preset=Release</div>
 </div><!-- fragment --><p>By default, the build application is located in <code>_build/Release/src/app/</code>. Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.</p>
-<h2><a class="anchor" id="autotoc_md4"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Test uvgVPCCenc</h2>
 <p>To test the encoder, please use following commands: </p><div class="fragment"><div class="line">ctest --preset=Release                   </div>
 </div><!-- fragment --><p>This runs small tests and checks whether the resulting encoding behaves as expected by verifying the bitstream MD5.</p>
-<h2><a class="anchor" id="autotoc_md5"></a>
+<h2><a class="anchor" id="autotoc_md6"></a>
 Compile documentation</h2>
 <p>To generate the doxygen documentation, please use the following: </p><div class="fragment"><div class="line">cmake --preset=docs</div>
 <div class="line">cmake --build --preset=docs</div>
 </div><!-- fragment --><p> The doxygen is then accessible under docs/html/index.html.</p>
-<h1><a class="anchor" id="autotoc_md6"></a>
+<h1><a class="anchor" id="autotoc_md7"></a>
 Using uvgVPCCenc</h1>
 <p>To demonstrate how to use the uvgVPCCenc library, a straightforward example application is provided in src/app, with its <a class="el" href="uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh...">main()</a> function located in <a href="src/app/uvgVPCCencAppExample.cpp">uvgVPCCencAppExample.cpp</a>.</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
+<h2><a class="anchor" id="autotoc_md8"></a>
 Example:</h2>
 <div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 -o out.vpcc</div>
 </div><!-- fragment --><p>The mandatory parameters are input, output and the number of frames. The input path should use <code>%0xd</code> for frame numbering. Example sequences are available in the <a href="https://ultravideo.fi/UVG-VPC">UVG-VPC</a> dataset. Example of an input sequence name: <code>ReadyForWinter_UVG_vox10_25_0_250_%04d.ply</code>.</p>
@@ -130,7 +133,8 @@ Example:</h2>
 <p>uvgVPCCenc accepts .ply files, using positive integer for geometry.</p>
 <p>The application option <code>--uvgvpcc</code> accept a string containing uvgVPCCenc parameters, separated by commas. Here is an example command: </p><div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 -o out.vpcc -t 20 --uvgvpcc rate=16-22-2,presetName=slow,mode=AI</div>
 </div><!-- fragment --><p>The list of uvgVPCCenc parameters that can be modified with the <code>--uvgvpcc</code> option is defined in the <code>parameterMap</code> initialized in <a href="src/lib/utils/parameters.cpp">parameters.cpp</a>.</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
+<hr  />
+<h2><a class="anchor" id="autotoc_md10"></a>
 Application parameters</h2>
 <div class="fragment"><div class="line">-i, --input &lt;file&gt;           Input filename (using %0Xd)</div>
 <div class="line">-o, --output &lt;file&gt;          Output filename</div>
@@ -142,7 +146,8 @@ Application parameters</h2>
 <div class="line">    --uvgvpcc &lt;params&gt;       Encoder configuration parameters (see next section)</div>
 <div class="line">    --help                   Show this help message</div>
 <div class="line">    --version                Show version information</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --> <hr  />
+<h2><a class="anchor" id="autotoc_md12"></a>
 uvgVPCCenc parameters</h2>
 <p>The uvgVPCCenc library includes several options that can only be configured using the API function uvgvpcc_enc::API::setParameter(...). The example application provides the &ndash;uvgvpcc &lt;string&gt; option, which passes the specified parameter string to the setParameter API function.</p>
 <p>All user-accessible parameters for uvgVPCCenc are defined in the parameterMap variable, located in the file <a href="src/lib/utils/parameters.cpp">parameters.cpp</a>.</p>
@@ -150,10 +155,121 @@ uvgVPCCenc parameters</h2>
 <div class="line">rate                V-PCC rate, i.g. 16-22-2</div>
 <div class="line">mode                Encoding mode, i.g. AI or RA</div>
 <div class="line">logLevel            Level of logging, i.g. TRACE</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --> <hr  />
+<h2><a class="anchor" id="autotoc_md14"></a>
 Presets</h2>
 <p>Six presets for Voxel 9, 10, and 11, labeled Fast and Slow, have been created to clarify the encoding pipeline parametrization of uvgVPCCenc. These presets were manually crafted starting from Kvazaar's own presets and refined through extensive tool space exploration using stochastic methods. While they are not exhaustive and do not address certain features, such as single- and double-layer options, they provide a practical reference for parameter adjustments. Notably, such presets are exclusive to uvgVPCCenc and do not exist for TMC2.</p>
-<h1><a class="anchor" id="autotoc_md11"></a>
+<hr  />
+<h2><a class="anchor" id="autotoc_md16"></a>
+Best practices for tuning uvgVPCCenc</h2>
+<p>Volumetric video compression involves a trade-off between speed, quality, and bitrate. <code>uvgVPCCenc</code> provides flexible parameters to match your needs. While <code>presetName=fast</code> and <code>presetName=slow</code> offer general presets, they are not always optimal. Below are tuning tips depending on your goal.</p>
+<h3><a class="anchor" id="autotoc_md17"></a>
+Achieving High Encoding Quality</h3>
+<p>For the best visual quality, at the expense of slower encoding and higher bitrate:</p>
+<ul>
+<li>Set <code>presetName=slow</code>.</li>
+<li>Use low QP values, e.g., <code>rate=16-22-2</code> (down to <code>rate=1-1-2</code>).</li>
+<li>Enable lossless video encoding:<ul>
+<li><code>geometryEncodingIsLossless=true</code></li>
+<li><code>attributeEncodingIsLossless=true</code></li>
+</ul>
+</li>
+</ul>
+<p>Notice that full V-PCC lossless is not supported (some 3D points will still be lost due to 2D projection).</p>
+<h3><a class="anchor" id="autotoc_md18"></a>
+Achieving High Encoding Speed (High FPS)</h3>
+<p>If you want to maximize encoding speed and can trade off some compression efficiency:</p>
+<ul>
+<li>Set <code>presetName=fast</code>.</li>
+<li>Use high QP values, e.g., <code>rate=32-42-4</code> (up to <code>rate=51-51-4</code>).</li>
+<li>Disable double layer: <code>doubleLayer=false</code>.</li>
+<li>Lower internal geometry bit depth:<ul>
+<li><code>geoBitDepthVoxelized=8</code></li>
+<li><code>geoBitDepthRefineSegmentation=7</code></li>
+</ul>
+</li>
+</ul>
+<h3><a class="anchor" id="autotoc_md19"></a>
+Achieving Low Bitrate</h3>
+<p>To reduce the bitrate while keeping quality and speed acceptable:</p>
+<ul>
+<li>Set <code>presetName=slow</code>.</li>
+<li>Use high QP values, e.g., <code>rate=32-42-4</code>.</li>
+<li>Reduce the number of encoded points:<ul>
+<li>Disable double layer: <code>doubleLayer=false</code></li>
+</ul>
+</li>
+</ul>
+<hr  />
+<h1><a class="anchor" id="autotoc_md21"></a>
+uvgVPCCenc Version 1.1</h1>
+<p>Version 1.1 shows better performance with negligible quality degradation or change in compression ratio.</p>
+<p>Compared to 1.0, uvgVPCCenc 1.1 features a better implementation of the point cloud and map processing parts (with no impact on 2D encoding speed), resulting in a speed-up of up to 1.7× in Fast voxel 9. Memory management is also significantly improved: uvgVPCCenc 1.1 runs smoothly with a small and stable RAM footprint over time. New developer features and bug fixes are also included in this version. As shown in the results below, compression efficiency (in terms of quality and bitrate) is not affected when switching from 1.0 to 1.1.</p>
+<p>The following results were obtained on the 12 sequences of the UVG-VPC dataset, each comprising 64 frames, using all 5 CTC bitrates. Experiments were run on an Intel i7-12700 CPU with 20 threads.</p>
+<h2><a class="anchor" id="autotoc_md22"></a>
+Encoding speed comparison: Major performance boosts in non-video encoding tasks</h2>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Voxel Size   </th><th class="markdownTableHeadNone">Preset   </th><th class="markdownTableHeadNone">Mode   </th><th class="markdownTableHeadNone">Version   </th><th class="markdownTableHeadNone">Speedup   </th><th class="markdownTableHeadNone">FPS    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Voxel 10   </td><td class="markdownTableBodyNone">slow   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">0.8    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.1   </td><td class="markdownTableBodyNone">0.9    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">1.0    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.14   </td><td class="markdownTableBodyNone">1.2    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">fast   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">4.7    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.70   </td><td class="markdownTableBodyNone">7.9    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">5.0    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.81   </td><td class="markdownTableBodyNone">9.1    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Voxel 9   </td><td class="markdownTableBodyNone">slow   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">3.7    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.09   </td><td class="markdownTableBodyNone">4.0    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">4.4    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.13   </td><td class="markdownTableBodyNone">4.9    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">fast   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">22.3    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.63   </td><td class="markdownTableBodyNone">36.3    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">V1.0   </td><td class="markdownTableBodyNone">-   </td><td class="markdownTableBodyNone">24.8    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">V1.1   </td><td class="markdownTableBodyNone">x1.75   </td><td class="markdownTableBodyNone">43.4   </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md23"></a>
+Compression efficiency comparison: Negligible impact on quality and bitrate</h2>
+<p>BD-BR PCQM for V1.1 using V1.0 as anchor (negative BD-BR shows better compression efficiency).</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone">Voxel Size   </th><th class="markdownTableHeadNone">Preset   </th><th class="markdownTableHeadNone">Mode   </th><th class="markdownTableHeadNone">BD-BR PCQM    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Voxel 10   </td><td class="markdownTableBodyNone">slow   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">-1.09%    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">0.06%    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">fast   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">-0.89%    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">0.01%    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone">Voxel 9   </td><td class="markdownTableBodyNone">slow   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">-3.33%    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">-0.27%    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">fast   </td><td class="markdownTableBodyNone">RA   </td><td class="markdownTableBodyNone">-2.30%    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone">AI   </td><td class="markdownTableBodyNone">0.12%    </td></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"></td><td class="markdownTableBodyNone"><b>Total average</b>   </td><td class="markdownTableBodyNone"><b>-0.96%</b>   </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Academic research</h1>
 <p>If you use uvgVPCCenc in your research, please cite the most appropriate papers in the following papers:</p>
 <div class="fragment"><div class="line">[1] L. Fréneau, G. Gautier, A. Mercat, and J. Vanne, “uvgVPCCenc: Practical open-source encoder for fast V-PCC compression,” Accepted to ACM Multimedia System, Stellenbosch, South Africa, Mar.—Apr. 2025.</div>

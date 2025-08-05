@@ -46,7 +46,7 @@
   </g>
 </defs>
 <script type="application/ecmascript">
-var viewWidth = 693;
+var viewWidth = 720;
 var viewHeight = 86;
 var sectionId = 'dynsection-20';
 </script>
@@ -58,8 +58,8 @@ var sectionId = 'dynsection-20';
 <g id="Node000001" class="node">
 <title>Node1</title>
 <g id="a_Node000001"><a xlink:title=" ">
-<polygon fill="#999999" stroke="#666666" points="685,-48.5 577,-48.5 577,-29.5 685,-29.5 685,-48.5"/>
-<text text-anchor="middle" x="631" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">uvg_bitstream_tell</text>
+<polygon fill="#999999" stroke="#666666" points="712,-48.5 604,-48.5 604,-29.5 712,-29.5 712,-48.5"/>
+<text text-anchor="middle" x="658" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">uvg_bitstream_tell</text>
 </a>
 </g>
 </g>
@@ -67,9 +67,9 @@ var sectionId = 'dynsection-20';
 <g id="Node000002" class="node">
 <title>Node2</title>
 <g id="a_Node000002"><a xlink:href="classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="541,-78 434,-78 434,-48 541,-48 541,-78"/>
-<text text-anchor="start" x="442" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">v3c_gof::write_v3c</text>
-<text text-anchor="middle" x="487.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">_chunk</text>
+<polygon fill="white" stroke="#666666" points="568,-78 461,-78 461,-48 568,-48 568,-78"/>
+<text text-anchor="start" x="469" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">v3c_gof::write_v3c</text>
+<text text-anchor="middle" x="514.5" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">_chunk</text>
 </a>
 </g>
 </g>
@@ -77,27 +77,27 @@ var sectionId = 'dynsection-20';
 <g id="edge1_Node000001_Node000002" class="edge">
 <title>Node1&#45;&gt;Node2</title>
 <g id="a_edge1_Node000001_Node000002"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M566.98,-49.69C558.45,-51.14 549.76,-52.61 541.42,-54.02"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="567.63,-53.13 576.91,-48 566.46,-46.23 567.63,-53.13"/>
+<path fill="none" stroke="#63b8ff" d="M593.98,-49.69C585.45,-51.14 576.76,-52.61 568.42,-54.02"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="594.63,-53.13 603.91,-48 593.46,-46.23 594.63,-53.13"/>
 </a>
 </g>
 </g>
-<!-- Node6 -->
-<g id="Node000006" class="node">
-<title>Node6</title>
-<g id="a_Node000006"><a xlink:href="classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="541,-30 434,-30 434,0 541,0 541,-30"/>
-<text text-anchor="start" x="442" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">v3c_gof::write_v3c</text>
-<text text-anchor="middle" x="487.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ld_chunk</text>
+<!-- Node7 -->
+<g id="Node000007" class="node">
+<title>Node7</title>
+<g id="a_Node000007"><a xlink:href="classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" target="_top" xlink:title=" ">
+<polygon fill="white" stroke="#666666" points="568,-30 461,-30 461,0 568,0 568,-30"/>
+<text text-anchor="start" x="469" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">v3c_gof::write_v3c</text>
+<text text-anchor="middle" x="514.5" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">_ld_chunk</text>
 </a>
 </g>
 </g>
-<!-- Node1&#45;&gt;Node6 -->
-<g id="edge5_Node000001_Node000006" class="edge">
-<title>Node1&#45;&gt;Node6</title>
-<g id="a_edge5_Node000001_Node000006"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M566.98,-28.31C558.45,-26.86 549.76,-25.39 541.42,-23.98"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="566.46,-31.77 576.91,-30 567.63,-24.87 566.46,-31.77"/>
+<!-- Node1&#45;&gt;Node7 -->
+<g id="edge7_Node000001_Node000007" class="edge">
+<title>Node1&#45;&gt;Node7</title>
+<g id="a_edge7_Node000001_Node000007"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M593.98,-28.31C585.45,-26.86 576.76,-25.39 568.42,-23.98"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="593.46,-31.77 603.91,-30 594.63,-24.87 593.46,-31.77"/>
 </a>
 </g>
 </g>
@@ -105,9 +105,9 @@ var sectionId = 'dynsection-20';
 <g id="Node000003" class="node">
 <title>Node3</title>
 <g id="a_Node000003"><a xlink:href="classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" target="_top" xlink:title=" ">
-<polygon fill="white" stroke="#666666" points="398,-54 256,-54 256,-24 398,-24 398,-54"/>
-<text text-anchor="start" x="264" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">BitstreamGeneration</text>
-<text text-anchor="middle" x="327" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">::createV3CGOFBitstream</text>
+<polygon fill="white" stroke="#666666" points="425,-54 283,-54 283,-24 425,-24 425,-54"/>
+<text text-anchor="start" x="291" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">BitstreamGeneration</text>
+<text text-anchor="middle" x="354" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">::createV3CGOFBitstream</text>
 </a>
 </g>
 </g>
@@ -115,18 +115,18 @@ var sectionId = 'dynsection-20';
 <g id="edge2_Node000002_Node000003" class="edge">
 <title>Node2&#45;&gt;Node3</title>
 <g id="a_edge2_Node000002_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M423.62,-53.48C415.22,-52.21 406.55,-50.89 398.03,-49.6"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="423.31,-56.97 433.72,-55.01 424.36,-50.05 423.31,-56.97"/>
+<path fill="none" stroke="#63b8ff" d="M450.62,-53.48C442.22,-52.21 433.55,-50.89 425.03,-49.6"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="450.31,-56.97 460.72,-55.01 451.36,-50.05 450.31,-56.97"/>
 </a>
 </g>
 </g>
 <!-- Node4 -->
 <g id="Node000004" class="node">
 <title>Node4</title>
-<g id="a_Node000004"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
-<polygon fill="white" stroke="#666666" points="220,-54 77,-54 77,-24 220,-24 220,-54"/>
-<text text-anchor="start" x="85" y="-42" font-family="Helvetica,sans-Serif" font-size="10.00">uvgvpcc_enc::API::encode</text>
-<text text-anchor="middle" x="148.5" y="-31" font-family="Helvetica,sans-Serif" font-size="10.00">Frame</text>
+<g id="a_Node000004"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#a75dacaf2d79b4a549ecb2a91ae8a6105" target="_top" xlink:title="This function is called when all frames to be processed have been sent to the encoder....">
+<polygon fill="white" stroke="#666666" points="247,-78 77,-78 77,-48 247,-48 247,-78"/>
+<text text-anchor="start" x="85" y="-66" font-family="Helvetica,sans-Serif" font-size="10.00">uvgvpcc_enc::API::emptyFrame</text>
+<text text-anchor="middle" x="162" y="-55" font-family="Helvetica,sans-Serif" font-size="10.00">Queue</text>
 </a>
 </g>
 </g>
@@ -134,8 +134,27 @@ var sectionId = 'dynsection-20';
 <g id="edge3_Node000003_Node000004" class="edge">
 <title>Node3&#45;&gt;Node4</title>
 <g id="a_edge3_Node000003_Node000004"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M245.91,-39C237.27,-39 228.52,-39 220,-39"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="245.99,-42.5 255.99,-39 245.99,-35.5 245.99,-42.5"/>
+<path fill="none" stroke="#63b8ff" d="M272.59,-49.16C264.15,-50.22 255.55,-51.31 247.07,-52.38"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="273.31,-52.59 282.79,-47.87 272.43,-45.65 273.31,-52.59"/>
+</a>
+</g>
+</g>
+<!-- Node6 -->
+<g id="Node000006" class="node">
+<title>Node6</title>
+<g id="a_Node000006"><a xlink:href="namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" target="_top" xlink:title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this...">
+<polygon fill="white" stroke="#666666" points="233.5,-30 90.5,-30 90.5,0 233.5,0 233.5,-30"/>
+<text text-anchor="start" x="98.5" y="-18" font-family="Helvetica,sans-Serif" font-size="10.00">uvgvpcc_enc::API::encode</text>
+<text text-anchor="middle" x="162" y="-7" font-family="Helvetica,sans-Serif" font-size="10.00">Frame</text>
+</a>
+</g>
+</g>
+<!-- Node3&#45;&gt;Node6 -->
+<g id="edge5_Node000003_Node000006" class="edge">
+<title>Node3&#45;&gt;Node6</title>
+<g id="a_edge5_Node000003_Node000006"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M272.51,-28.83C259.56,-27.2 246.25,-25.52 233.55,-23.91"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="272.43,-32.35 282.79,-30.13 273.31,-25.41 272.43,-32.35"/>
 </a>
 </g>
 </g>
@@ -152,17 +171,26 @@ var sectionId = 'dynsection-20';
 <g id="edge4_Node000004_Node000005" class="edge">
 <title>Node4&#45;&gt;Node5</title>
 <g id="a_edge4_Node000004_Node000005"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M66.74,-39C57.29,-39 48.42,-39 41.08,-39"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="66.77,-42.5 76.77,-39 66.77,-35.5 66.77,-42.5"/>
+<path fill="none" stroke="#63b8ff" d="M66.61,-46.76C57.19,-45.14 48.46,-43.64 41.24,-42.4"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="66.19,-50.24 76.63,-48.49 67.37,-43.34 66.19,-50.24"/>
 </a>
 </g>
 </g>
-<!-- Node6&#45;&gt;Node3 -->
-<g id="edge6_Node000006_Node000003" class="edge">
-<title>Node6&#45;&gt;Node3</title>
-<g id="a_edge6_Node000006_Node000003"><a xlink:title=" ">
-<path fill="none" stroke="#63b8ff" d="M423.62,-24.52C415.22,-25.79 406.55,-27.11 398.03,-28.4"/>
-<polygon fill="#63b8ff" stroke="#63b8ff" points="424.36,-27.95 433.72,-22.99 423.31,-21.03 424.36,-27.95"/>
+<!-- Node6&#45;&gt;Node5 -->
+<g id="edge6_Node000006_Node000005" class="edge">
+<title>Node6&#45;&gt;Node5</title>
+<g id="a_edge6_Node000006_Node000005"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M80.29,-28.89C65.73,-31.39 51.83,-33.78 41.2,-35.61"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="81.17,-32.29 90.43,-27.14 79.98,-25.39 81.17,-32.29"/>
+</a>
+</g>
+</g>
+<!-- Node7&#45;&gt;Node3 -->
+<g id="edge8_Node000007_Node000003" class="edge">
+<title>Node7&#45;&gt;Node3</title>
+<g id="a_edge8_Node000007_Node000003"><a xlink:title=" ">
+<path fill="none" stroke="#63b8ff" d="M450.62,-24.52C442.22,-25.79 433.55,-27.11 425.03,-28.4"/>
+<polygon fill="#63b8ff" stroke="#63b8ff" points="451.36,-27.95 460.72,-22.99 450.31,-21.03 451.36,-27.95"/>
 </a>
 </g>
 </g>

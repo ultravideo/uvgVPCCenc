@@ -21,7 +21,7 @@
  <tbody>
  <tr id="projectrow">
   <td id="projectalign">
-   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.0.0</span>
+   <div id="projectname">uvgVPCCenc<span id="projectnumber">&#160;1.1.0</span>
    </div>
    <div id="projectbrief">uvgVPCCenc is an open-source real-time V-PCC encoder library written in C++ from scratch.</div>
   </td>
@@ -80,30 +80,32 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="uvgvpcc_8hpp_source.html">uvgvpcc/uvgvpcc.hpp</a>&quot;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cassert&gt;</code><br />
 <code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;filesystem&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
 <code>#include &lt;iterator&gt;</code><br />
+<code>#include &lt;memory&gt;</code><br />
 <code>#include &lt;ostream&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
-<code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;regex&gt;</code><br />
 <code>#include &lt;stdexcept&gt;</code><br />
 <code>#include &lt;string&gt;</code><br />
+<code>#include &lt;thread&gt;</code><br />
 <code>#include &lt;unordered_map&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
-<code>#include &lt;regex&gt;</code><br />
-<code>#include &quot;<a class="el" href="threadqueue_8hpp_source.html">uvgvpcc/threadqueue.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="patchPacking_8hpp_source.html">patchPacking/patchPacking.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="bitstreamGeneration_8hpp_source.html">bitstreamGeneration/bitstreamGeneration.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="mapEncoding_8hpp_source.html">mapEncoding/mapEncoding.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="mapGeneration_8hpp_source.html">mapGeneration/mapGeneration.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="patchGeneration_8hpp_source.html">patchGeneration/patchGeneration.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="bitstreamGeneration_8hpp_source.html">bitstreamGeneration/bitstreamGeneration.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="preset_8hpp_source.html">utils/preset.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="log_8hpp_source.html">uvgvpcc/log.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">utils/parameters.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="patchPacking_8hpp_source.html">patchPacking/patchPacking.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="fileExport_8hpp_source.html">utils/fileExport.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="jobManagement_8hpp_source.html">utils/jobManagement.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">utils/parameters.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="preset_8hpp_source.html">utils/preset.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="threadqueue_8hpp_source.html">utils/threadqueue.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="log_8hpp_source.html">uvgvpcc/log.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for uvgvpcc.cpp:</div>
 <div class="dyncontent">
@@ -130,62 +132,6 @@ Namespaces</h2></td></tr>
 
 </div>
 </div>
-<a id="ada352f98e2ac0802499b6bcf77f48036" name="ada352f98e2ac0802499b6bcf77f48036"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada352f98e2ac0802499b6bcf77f48036">&#9670;&#160;</a></span>currentGOF2DEncodingJob</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classuvgvpcc__enc_1_1Job.html">Job</a>&gt; currentGOF2DEncodingJob</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8b5f5d7ca4be4598333bcd99d228cf61" name="a8b5f5d7ca4be4598333bcd99d228cf61"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8b5f5d7ca4be4598333bcd99d228cf61">&#9670;&#160;</a></span>currentGOFBitstreamGenJob</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classuvgvpcc__enc_1_1Job.html">Job</a>&gt; currentGOFBitstreamGenJob</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a59cfd031c3b360f735134deed64c5ce9" name="a59cfd031c3b360f735134deed64c5ce9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59cfd031c3b360f735134deed64c5ce9">&#9670;&#160;</a></span>currentGOFInitMapGenJob</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classuvgvpcc__enc_1_1Job.html">Job</a>&gt; currentGOFInitMapGenJob</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a2d3af68a51b250eee4af77bd2c508faf" name="a2d3af68a51b250eee4af77bd2c508faf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2d3af68a51b250eee4af77bd2c508faf">&#9670;&#160;</a></span>currentGOFInterPackJob</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classuvgvpcc__enc_1_1Job.html">Job</a>&gt; currentGOFInterPackJob</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <a id="a965c4c92a7105f32cedcc11e0fb91c08" name="a965c4c92a7105f32cedcc11e0fb91c08"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a965c4c92a7105f32cedcc11e0fb91c08">&#9670;&#160;</a></span>gofId</h2>
 
@@ -194,34 +140,6 @@ Namespaces</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">size_t gofId</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a889aff0fac0d63a53186213bf4bab944" name="a889aff0fac0d63a53186213bf4bab944"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a889aff0fac0d63a53186213bf4bab944">&#9670;&#160;</a></span>previousGOFBitstreamGenJob</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classuvgvpcc__enc_1_1Job.html">Job</a>&gt; previousGOFBitstreamGenJob</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a8a563863561b78dc1ebf32975c00213b" name="a8a563863561b78dc1ebf32975c00213b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8a563863561b78dc1ebf32975c00213b">&#9670;&#160;</a></span>queue</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classuvgvpcc__enc_1_1ThreadQueue.html">ThreadQueue</a>&gt; queue</td>
         </tr>
       </table>
 </div><div class="memdoc">

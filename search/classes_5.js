@@ -11,5 +11,6 @@ var searchData=
   ['hash_3c_20std_3a_3abasic_5fstring_3c_20chart_20_3e_20_3e_8',['hash&lt; std::basic_string&lt; CharT &gt; &gt;',['../structrobin__hood_1_1hash_3_01std_1_1basic__string_3_01CharT_01_4_01_4.html',1,'robin_hood']]],
   ['hash_3c_20std_3a_3ashared_5fptr_3c_20t_20_3e_20_3e_9',['hash&lt; std::shared_ptr&lt; T &gt; &gt;',['../structrobin__hood_1_1hash_3_01std_1_1shared__ptr_3_01T_01_4_01_4.html',1,'robin_hood']]],
   ['hash_3c_20std_3a_3aunique_5fptr_3c_20t_20_3e_20_3e_10',['hash&lt; std::unique_ptr&lt; T &gt; &gt;',['../structrobin__hood_1_1hash_3_01std_1_1unique__ptr_3_01T_01_4_01_4.html',1,'robin_hood']]],
-  ['hash_3c_20t_20_2a_20_3e_11',['hash&lt; T * &gt;',['../structrobin__hood_1_1hash_3_01T_01_5_01_4.html',1,'robin_hood']]]
+  ['hash_3c_20t_20_2a_20_3e_11',['hash&lt; T * &gt;',['../structrobin__hood_1_1hash_3_01T_01_5_01_4.html',1,'robin_hood']]],
+  ['hash_3c_20uvgvpcc_5fenc_3a_3ajobkey_20_3e_12',['hash&lt; uvgvpcc_enc::jobKey &gt;',['../structstd_1_1hash_3_01uvgvpcc__enc_1_1jobKey_01_4.html',1,'std']]]
 ];

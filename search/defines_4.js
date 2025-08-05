@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['nanoflann_5fversion_0',['NANOFLANN_VERSION',['../nanoflann_8hpp.html#a7b8efca796d8e1861a432a5f6b8404a1',1,'nanoflann.hpp']]],
-  ['no_5fargument_1',['no_argument',['../getopt_8h.html#a3bc1d5f667b5b4ca4b4abb685dc874ce',1,'getopt.h']]]
+  ['jobf_0',['JOBF',['../jobManagement_8hpp.html#a8e97b02884a44ca755a06d45f890b87f',1,'jobManagement.hpp']]],
+  ['jobg_1',['JOBG',['../jobManagement_8hpp.html#a67213a44f9d8f5aad015a902f0c8eb79',1,'jobManagement.hpp']]]
 ];
