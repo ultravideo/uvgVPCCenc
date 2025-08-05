@@ -1,7 +1,7 @@
 /*****************************************************************************
  * This file is part of uvgVPCCenc V-PCC encoder.
  *
- * Copyright (c) 2024, Tampere University, ITU/ISO/IEC, project contributors
+ * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
