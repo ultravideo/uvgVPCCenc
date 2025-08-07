@@ -335,17 +335,6 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
         chunks->v3c_chunks.pop();
         chunks->io_mutex.unlock();
 
-        // Prepare for sending data. Move back to previous sent gof
-        if (state.prev_gof() != uvgV3CRTP::ERROR_TYPE::OK) {
-            if (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::INVALID_IT) {
-                // prev_gof failed because we are at the first gof, just move to first gof
-                state.first_gof();
-                state.reset_error_flag();
-            } else {
-                break;
-            }
-        }
-
         // Send newly added data
         while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
             // Send gof if full
@@ -366,7 +355,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
 
             //    uvgV3CRTP::send_unit(&state, uvgV3CRTP::V3C_UNIT_TYPE(id));
             //}
-                state.next_gof();
+                //state.next_gof();
                 break;
             }
         }
