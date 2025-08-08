@@ -52,6 +52,7 @@
 #include <thread>
 #include <utility>
 #include <vector>
+#include <filesystem>
 
 #include "../utils/utils.hpp"
 #include "cli.hpp"
@@ -102,9 +103,15 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, cons
     // uvgVPCCenc currently support only geometry of type unsigned int
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>(
         "APPLICATION", "Loading frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + "\n");
+    
+    if(!std::filesystem::is_regular_file(frame->pointCloudPath)) {
+        throw std::runtime_error("\nThis path does not exist: " + frame->pointCloudPath);
+    }
+    
+    
     miniply::PLYReader reader(frame->pointCloudPath.c_str());
     if (!reader.valid()) {
-        throw std::runtime_error("miniply : Failed to open " + frame->pointCloudPath);
+        throw std::runtime_error("\nThe miniply reader failed to open " + frame->pointCloudPath);
     }
 
     // In a PLY file, an 'element' is a section of the file (it can be 'vertex' which list all the vertices, 'face' when dealing with
