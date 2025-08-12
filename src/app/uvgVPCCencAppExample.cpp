@@ -108,7 +108,6 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, cons
         throw std::runtime_error("\nThis path does not exist: " + frame->pointCloudPath);
     }
     
-    
     miniply::PLYReader reader(frame->pointCloudPath.c_str());
     if (!reader.valid()) {
         throw std::runtime_error("\nThe miniply reader failed to open " + frame->pointCloudPath);
@@ -359,6 +358,12 @@ int main(const int argc, const char* const argv[]) {
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY", e.what() + std::string("\n"));
         cli::print_usage();
         return EXIT_FAILURE;
+    }
+
+    
+    if(appParameters.dummyRun) {
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION","Dummy run finished without errors.\n");
+        return EXIT_SUCCESS;
     }
 
     // Initialize the application input and output threads

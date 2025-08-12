@@ -50,8 +50,8 @@ namespace cli {
 namespace {
 
 // NOLINTNEXTLINE(cert-err58-cpp)
-const std::string short_options = "i:g:l:n:o:s:t:b:";
-const std::array<struct option, 10> long_options{{{"input", required_argument, nullptr, 'i'},
+const std::string short_options = "i:g:l:n:o:s:t:b:d:";
+const std::array<struct option, 11> long_options{{{"input", required_argument, nullptr, 'i'},
                                                   {"output", required_argument, nullptr, 'o'},
                                                   {"frames", required_argument, nullptr, 'n'},
                                                   {"start-frame", required_argument, nullptr, 's'},
@@ -59,6 +59,7 @@ const std::array<struct option, 10> long_options{{{"input", required_argument, n
                                                   {"threads", required_argument, nullptr, 't'},
                                                   {"uvgvpcc", required_argument, nullptr, 0},
                                                   {"loop-input", required_argument, nullptr, 'l'},
+                                                  {"dummy-run", required_argument, nullptr, 'd'},
                                                   {"help", no_argument, nullptr, 0},
                                                   {"version", no_argument, nullptr, 0}}};
 
@@ -120,7 +121,6 @@ size_t select_start_frame_auto(std::string& file_name) {
 /// @brief Parse command line options
 /// @return True if the execution should end (for exemple if the flag --help is used).
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args) {
-
     for (optind = 0;;) {
         int long_options_index = -1;
 
@@ -175,11 +175,14 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         } else if (name == "version") {
             cli::print_version();
             return true;
+        } else if (name == "dummy-run") {
+            opts.dummyRun = static_cast<bool>(std::stoi(optarg));
         } else if (name == "help") {
             cli::print_help();
             return true;
         }
     }
+
     // Check for extra arguments.
     if (args.size() - optind > 0) {
         throw std::runtime_error("Input error: Extra argument found: " + std::string(args[optind]) + ".");
@@ -247,6 +250,7 @@ void print_help(void) {
     std::cout << "  -g, --geo-precision <number> Geometry precision for encoding\n";
     std::cout << "  -t, --threads <number>       Maximum number of threads to be used\n";
     std::cout << "  -l, --loop-input <number>    Number of input loop\n";
+    std::cout << "  -d, --dummy-run <number>     Vverify config without encoding\n";
     std::cout << "      --uvgvpcc <params>       Encoder configuration parameters\n";
     std::cout << "      --help                   Show this help message\n";
     std::cout << "      --version                Show version information\n";

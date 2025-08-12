@@ -63,6 +63,8 @@ struct opts_t {
     bool version = false;
     /** \brief Whether to loop input */
     size_t nbLoops = 1;
+    /** \brief If dummyRun is true, config is verified but no encoding is done */
+    bool dummyRun = false;    
 };
 
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args);
