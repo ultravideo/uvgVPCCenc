@@ -16,5 +16,6 @@ var searchData=
   ['divfeat_13',['divfeat',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a4013d8322f7d7a12deaba47992d5c7de',1,'nanoflann::KDTreeBaseClass::Node']]],
   ['divhigh_14',['divhigh',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a050d1d18ec3392e0dcd995f10f352f85',1,'nanoflann::KDTreeBaseClass::Node']]],
   ['divlow_15',['divlow',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a36d85fcaa2e26e2b8882c9645fb774e0',1,'nanoflann::KDTreeBaseClass::Node']]],
-  ['doublelayer_16',['doubleLayer',['../structuvgvpcc__enc_1_1Parameters.html#aae636549f46cbf81f22c604e6fc84501',1,'uvgvpcc_enc::Parameters']]]
+  ['doublelayer_16',['doubleLayer',['../structuvgvpcc__enc_1_1Parameters.html#aae636549f46cbf81f22c604e6fc84501',1,'uvgvpcc_enc::Parameters']]],
+  ['dummyrun_17',['dummyRun',['../structcli_1_1opts__t.html#ad57b5bb0a69b9668f3b7ad3281e389ae',1,'cli::opts_t']]]
 ];
