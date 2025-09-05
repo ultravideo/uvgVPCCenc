@@ -19,7 +19,8 @@
             "ENABLE_TESTING": false,
             "CHECK_PC_MD5": false,
             "ENABLE_CI_TESTING": false,
-            "ENABLE_MY_TESTING": false
+            "ENABLE_MY_TESTING": false,
+			"ENABLE_V3CRTP": false
          }
       },
       {

@@ -1,3 +1,3 @@
 [submodule "src/app/dependencies/uvgV3CRTP"]
 	path = src/app/dependencies/uvgV3CRTP
-	url = git@gitlab.tuni.fi:cs/ultravideo/pcc/uvgv3crtp.git
+	url = https://github.com/ultravideo/uvgV3CRTP.git
