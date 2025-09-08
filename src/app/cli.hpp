@@ -39,6 +39,7 @@
 #include <limits>
 #include <string>
 #include <span>
+#include <cstdint>
 
 namespace cli {
 
