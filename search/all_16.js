@@ -13,7 +13,7 @@ var searchData=
   ['updateflag_5f_10',['updateFlag_',['../structVoxelAttribute.html#a17d65149568b8d1a326a3f6cdb6a3b56',1,'VoxelAttribute']]],
   ['usedmemory_11',['usedmemory',['../classnanoflann_1_1KDTreeBaseClass.html#a01e8a4ba6f6110969d2768aed4f292b5',1,'nanoflann::KDTreeBaseClass::usedMemory()'],['../classnanoflann_1_1PooledAllocator.html#a738180fd27be69129876271b5ac20f43',1,'nanoflann::PooledAllocator::usedMemory']]],
   ['ushort_12',['UShort',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeeadfe785f133347f9b473f99009732b1bc',1,'miniply']]],
-  ['using_20uvgvpccenc_13',['Using uvgVPCCenc',['../index.html#autotoc_md7',1,'']]],
+  ['using_20uvgvpccenc_13',['Using uvgVPCCenc',['../index.html#autotoc_md8',1,'']]],
   ['utils_2ehpp_14',['utils.hpp',['../utils_8hpp.html',1,'']]],
   ['utilspatchgeneration_2ehpp_15',['utilsPatchGeneration.hpp',['../utilsPatchGeneration_8hpp.html',1,'']]],
   ['uvg266_5flog_5fcallback_16',['uvg266_log_callback',['../catchLibLog_8hpp.html#abfbb25a1b79edceb712aa64f5fa9da59',1,'catchLibLog.hpp']]],
@@ -41,9 +41,9 @@ var searchData=
   ['uvgvpcc_2ehpp_38',['uvgvpcc.hpp',['../uvgvpcc_8hpp.html',1,'']]],
   ['uvgvpcc_5fenc_39',['uvgvpcc_enc',['../namespaceuvgvpcc__enc.html',1,'']]],
   ['uvgvpcc_5fenc_3a_3aapi_40',['API',['../namespaceuvgvpcc__enc_1_1API.html',1,'uvgvpcc_enc']]],
-  ['uvgvpccenc_41',['uvgvpccenc',['../index.html#autotoc_md16',1,'Best practices for tuning uvgVPCCenc'],['../index.html#autotoc_md4',1,'Compile uvgVPCCenc'],['../index.html#autotoc_md5',1,'Test uvgVPCCenc'],['../index.html#autotoc_md7',1,'Using uvgVPCCenc'],['../index.html',1,'uvgVPCCenc']]],
-  ['uvgvpccenc_20parameters_42',['uvgVPCCenc parameters',['../index.html#autotoc_md12',1,'']]],
-  ['uvgvpccenc_20version_201_201_43',['uvgVPCCenc Version 1.1',['../index.html#autotoc_md21',1,'']]],
+  ['uvgvpccenc_41',['uvgvpccenc',['../index.html#autotoc_md18',1,'Best practices for tuning uvgVPCCenc'],['../index.html#autotoc_md4',1,'Compile uvgVPCCenc'],['../index.html#autotoc_md6',1,'Test uvgVPCCenc'],['../index.html#autotoc_md8',1,'Using uvgVPCCenc'],['../index.html',1,'uvgVPCCenc']]],
+  ['uvgvpccenc_20parameters_42',['uvgVPCCenc parameters',['../index.html#autotoc_md14',1,'']]],
+  ['uvgvpccenc_20version_201_201_43',['uvgVPCCenc Version 1.1',['../index.html#autotoc_md23',1,'']]],
   ['uvgvpccencappexample_2ecpp_44',['uvgVPCCencAppExample.cpp',['../uvgVPCCencAppExample_8cpp.html',1,'']]],
   ['uvgvpccparametersstring_45',['uvgvpccParametersString',['../structcli_1_1opts__t.html#a2392f3d2cd36b004f8fa5fb20218a410',1,'cli::opts_t']]]
 ];

@@ -22,7 +22,7 @@ var searchData=
   ['heightinpixel_5f_19',['heightInPixel_',['../structuvgvpcc__enc_1_1Patch.html#a98f14196a3f91169c7332e07b048a08a',1,'uvgvpcc_enc::Patch']]],
   ['help_20',['help',['../structcli_1_1opts__t.html#ab75f048b4ba1407abb10a5e917b96b82',1,'cli::opts_t']]],
   ['high_21',['high',['../structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#ad39f54310e89737fc22369979df14ba9',1,'nanoflann::KDTreeBaseClass::Interval']]],
-  ['high_20encoding_20quality_22',['Achieving High Encoding Quality',['../index.html#autotoc_md17',1,'']]],
-  ['high_20encoding_20speed_20high_20fps_23',['Achieving High Encoding Speed (High FPS)',['../index.html#autotoc_md18',1,'']]],
+  ['high_20encoding_20quality_22',['Achieving High Encoding Quality',['../index.html#autotoc_md19',1,'']]],
+  ['high_20encoding_20speed_20high_20fps_23',['Achieving High Encoding Speed (High FPS)',['../index.html#autotoc_md20',1,'']]],
   ['horizontal_5f_24',['horizontal_',['../structFilter444to420.html#a36feb9d82ffe13725e620057cee072b7',1,'Filter444to420']]]
 ];
