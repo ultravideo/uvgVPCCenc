@@ -55,6 +55,12 @@ cmake --build --preset=Release
 By default, the build application is located in ```_build/Release/src/app/```.
 Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.
 
+#### Compile with V3C RTP support
+To enable sending over RTP run cmake with
+```
+cmake --preset=Release -DENABLE_V3CRTP=ON
+```
+
 ### Test uvgVPCCenc
 To test the encoder, please use following commands:
 ```
@@ -98,6 +104,13 @@ The application option ```--uvgvpcc``` accept a string containing uvgVPCCenc par
 
 The list of uvgVPCCenc parameters that can be modified with the ```--uvgvpcc``` option is defined in the ```parameterMap``` initialized in [parameters.cpp](src/lib/utils/parameters.cpp).
 
+#### V3C RTP Example:
+```
+    uvgVPCCenc -i <path_to_ply> -n 10 --dst-address=127.0.0.1 --dst-port=8890 
+```
+
+Send encoded bitstream over RTP. Destination can be set using ```--dst-address``` and ```--dst-port```. A separate RTP media stream is created for each type of V3C unit and the streames are multiplexed to the same port using SSRC (hardcoded to be ```vuh_unit_type + 1```).
+
 ---
 
 
@@ -113,6 +126,8 @@ The list of uvgVPCCenc parameters that can be modified with the ```--uvgvpcc``` 
         --uvgvpcc <params>       Encoder configuration parameters (see next section)
         --help                   Show this help message
         --version                Show version information
+		--dst-address <IP>       Destination IP address for an rtp stream (when compiled with V3C RTP support)";
+        --dst-port <number>      Destination port for an rtp stream (when compiled with V3C RTP support)";
 ```
 ---
 

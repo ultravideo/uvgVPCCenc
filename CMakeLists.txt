@@ -16,6 +16,9 @@ set(TMC2_EP_UPDATE_DISCONNECTED ON)
 
 option(BUILD_SHARED_LIBS "Build using shared uvgVPCCenc library" ON)
 
+# Control if uvgVPCCenc should be build with RTP support
+option(ENABLE_V3CRTP "Enable RTP support" OFF)
+
 project(uvgVPCCenc
   VERSION ${uvgVPCCenc_VER}
   DESCRIPTION ${uvgVPCCenc_DESCR}

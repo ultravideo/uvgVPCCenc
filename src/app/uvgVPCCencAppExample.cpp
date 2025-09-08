@@ -60,6 +60,11 @@
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
+#if defined(ENABLE_V3CRTP)
+#include <uvgv3crtp/version.h>
+#include <uvgv3crtp/v3c_api.h>
+#endif
+
 namespace {
 
 // Semaphores for synchronization.
@@ -257,6 +262,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         if (chunk.data == nullptr && chunk.len == 0) {
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "All chunks written to file.\n");
             file.close();
+            chunks->io_mutex.unlock();
             break;
         }
         if (chunk.data != nullptr) {
@@ -280,6 +286,118 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         chunks->v3c_chunks.pop();
         chunks->io_mutex.unlock();
     }
+}
+
+/// @brief Application thread for sending output over RTP.
+/// @param chunks
+/// @param output_path
+void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const uint16_t dst_port) {
+#if defined(ENABLE_V3CRTP)
+
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
+    
+    // ******** Initialize sample stream with input bitstream ***********
+    //
+    uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> state(uvgV3CRTP::INIT_FLAGS::VPS | uvgV3CRTP::INIT_FLAGS::AD | uvgV3CRTP::INIT_FLAGS::OVD |
+                                                      uvgV3CRTP::INIT_FLAGS::GVD | uvgV3CRTP::INIT_FLAGS::AVD,
+                                                      dst_address.c_str(), dst_port  // Receiver address and port
+    );                                                                    // Create a new state in a sender configuration
+    state.init_sample_stream(FORCED_V3C_SIZE_PRECISION); // Use the forced precision for now
+    //
+    // ******************************************************************
+    if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
+        throw std::runtime_error(std::string("V3C Sender : Error initializing state (message: ") + state.get_error_msg() + ")"); 
+    }
+
+    // ******** Send sample stream **********
+    //
+    // TODO: Currently whole bitstream is stored, but should clear the sample stream at certain points
+    // For rate limiting sending
+    auto last_sleep_time = std::chrono::high_resolution_clock::now();
+    while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
+                
+        // Get chunks and add them to state for sending
+        chunks->available_chunks.acquire();
+        chunks->io_mutex.lock();
+
+        const uvgvpcc_enc::API::v3c_chunk& chunk = chunks->v3c_chunks.front();
+        if (chunk.data == nullptr && chunk.len == 0) {
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "All chunks sent.\n");
+            chunks->io_mutex.unlock();
+
+            break;
+        }
+
+        // Add new data to state
+        size_t len = chunk.len;
+        std::ptrdiff_t ptr = 0;  // Keep track of ptr in the V3C unit stream
+        for (const uint64_t current_size : chunk.v3c_unit_sizes) {
+            // Add the V3C unit to existing sample stream
+            // NOLINTNEXTLINE(concurrency-mt-unsafe)
+            state.append_to_sample_stream(std::next(chunk.data.get(), ptr), static_cast<size_t>(current_size));
+            ptr += static_cast<std::ptrdiff_t>(current_size);
+        }
+
+        chunks->v3c_chunks.pop();
+        chunks->io_mutex.unlock();
+
+        // Send newly added data
+        while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
+            // Send gof if full
+            if(state.cur_gof_is_full()) {
+                uvgV3CRTP::send_gof(&state);
+                state.next_gof();
+
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+                                                                       "Sent one gof " + std::to_string(len) + " bytes.\n");
+            }
+            else
+            {
+            //TODO: track which unit has been sent
+            //    for (uint8_t id = 0; id < uvgV3CRTP::NUM_V3C_UNIT_TYPES; id++) {
+            //    if (!state.cur_gof_has_unit(uvgV3CRTP::V3C_UNIT_TYPE(id))) continue;
+
+            //    // TODO: send side-channel info
+
+            //    uvgV3CRTP::send_unit(&state, uvgV3CRTP::V3C_UNIT_TYPE(id));
+            //}
+                //state.next_gof();
+                break;
+            }
+            // Get difference from last sleep and sleep if needed
+            const auto elapsed_time = std::chrono::high_resolution_clock::now() - last_sleep_time;
+            std::this_thread::sleep_for(std::chrono::nanoseconds((1000000000 / uvgV3CRTP::SEND_FRAME_RATE)) - elapsed_time);
+            last_sleep_time = std::chrono::high_resolution_clock::now();  // Update last send time
+        }
+
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+                                                               "Processed V3C chunk of size " + std::to_string(len) + " bytes.\n");
+
+        if (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::EOS) {
+            state.reset_error_flag(); //More chunks are added later so reset EOS
+        }
+    }
+
+    // ******** Print info about sample stream **********
+    //
+    // Print state and bitstream info
+    //state.print_state(false);
+
+    //std::cout << "Bitstream info: " << std::endl;
+    //state.print_bitstream_info();
+
+    size_t len = 0;
+    auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
+    //
+    //  **************************************
+
+    if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK && state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
+        throw std::runtime_error(std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")");
+    }
+#else
+    throw std::runtime_error("V3C RTP not enabled, re-run cmake with '-DENABLE_V3CRTP=ON'.");
+#endif
 }
 
 /// @brief Simple application wrapper taking a command string as input to set multiple encoder parameters.
@@ -375,7 +493,10 @@ int main(const int argc, const char* const argv[]) {
 
     uvgvpcc_enc::API::v3c_unit_stream output;  // Each v3c chunk gets appended to the V3C unit stream as they are encoded
     std::thread file_writer_thread;
-    file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
+    std::thread v3c_sender_thread;
+
+    if (!appParameters.outputPath.empty()) file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
+    if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort);
 
     // Main loop of the application, feeding one frame to the encoder at each iteration
     for (;;) {
@@ -410,7 +531,8 @@ int main(const int argc, const char* const argv[]) {
     output.io_mutex.unlock();
     output.available_chunks.release();
 
-    file_writer_thread.join();
+    if(file_writer_thread.joinable()) file_writer_thread.join();
+    if(v3c_sender_thread.joinable()) v3c_sender_thread.join();
 
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Encoded " + std::to_string(frameRead) + " frames.\n");
 
