@@ -59,8 +59,10 @@
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "../utils/utils.hpp"
 
+#if defined(ENABLE_V3CRTP)
 #include <uvgv3crtp/version.h>
 #include <uvgv3crtp/v3c_api.h>
+#endif
 
 namespace {
 
@@ -289,7 +291,8 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 /// @param chunks
 /// @param output_path
 void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const uint16_t dst_port) {
-    
+#if defined(ENABLE_V3CRTP)
+
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
     
     // ******** Initialize sample stream with input bitstream ***********
@@ -377,7 +380,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
     state.print_bitstream_info();
 
     size_t len = 0;
-    auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(&len, uvgV3CRTP::INFO_FMT::PARAM), &free);
+    auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::PARAM, &len), &free);
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
     //
     //  **************************************
@@ -385,6 +388,9 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
     if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK && state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
         throw std::runtime_error(std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")");
     }
+#else
+    throw std::runtime_error("V3C RTP not enabled, re-run cmake with '-DENABLE_V3CRTP=ON'.");
+#endif
 }
 
 /// @brief Simple application wrapper taking a command string as input to set multiple encoder parameters.

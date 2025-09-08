@@ -26,7 +26,9 @@ target_link_libraries(uvgVPCCenc uvgvpccenc)
 
 # Add uvgV3CRTP to link targets if enabled
 if(ENABLE_V3CRTP)
-target_link_libraries(uvgv3crtp)
+    target_link_libraries(uvgVPCCenc uvgv3crtp)
+    # Include define to uvgVPCCenc so uvgV3CRTP code is included
+    target_compile_definitions(uvgVPCCenc PRIVATE ENABLE_V3CRTP)
 endif()
 
 # Define installation destinations
