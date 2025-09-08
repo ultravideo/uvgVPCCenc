@@ -261,9 +261,10 @@ void print_help(void) {
     std::cout << "      --uvgvpcc <params>       Encoder configuration parameters\n";
     std::cout << "      --help                   Show this help message\n";
     std::cout << "      --version                Show version information\n";
+#if defined(ENABLE_V3CRTP)
     std::cout << "      --dst-address <IP>       Destination IP address for an rtp stream\n";
     std::cout << "      --dst-port <number>      Destination port for an rtp stream\n";
-
+#endif
     std::cout << "\nDescription:\n";
     std::cout << "  This tool encodes point cloud video frames using the uvgVPCCenc codec\n";
     std::cout << "  with specified parameters.\n";
