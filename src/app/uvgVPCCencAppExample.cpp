@@ -310,7 +310,9 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
 
     // ******** Send sample stream **********
     //
-    // TODO: Currently whole bitstream is stored, could also clear the sample stream at certain points
+    // TODO: Currently whole bitstream is stored, but should clear the sample stream at certain points
+    // For rate limiting sending
+    auto last_sleep_time = std::chrono::high_resolution_clock::now();
     while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
                 
         // Get chunks and add them to state for sending
@@ -361,6 +363,10 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
                 //state.next_gof();
                 break;
             }
+            // Get difference from last sleep and sleep if needed
+            const auto elapsed_time = std::chrono::high_resolution_clock::now() - last_sleep_time;
+            std::this_thread::sleep_for(std::chrono::nanoseconds((1000000000 / uvgV3CRTP::SEND_FRAME_RATE)) - elapsed_time);
+            last_sleep_time = std::chrono::high_resolution_clock::now();  // Update last send time
         }
 
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
@@ -374,14 +380,14 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
     // ******** Print info about sample stream **********
     //
     // Print state and bitstream info
-    state.print_state(false);
+    //state.print_state(false);
 
-    std::cout << "Bitstream info: " << std::endl;
-    state.print_bitstream_info();
+    //std::cout << "Bitstream info: " << std::endl;
+    //state.print_bitstream_info();
 
     size_t len = 0;
-    auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::PARAM, &len), &free);
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
+    auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
     //
     //  **************************************
 
