@@ -213,6 +213,7 @@ void initializeParameterMap(Parameters& param) {
         // ___ 2D encoding parameters ___ //
         {"sizeGOP2DEncoding", {UINT, "8,16", &param.sizeGOP2DEncoding}},
         {"intraFramePeriod", {UINT, "", &param.intraFramePeriod}},
+        {"encoderInfoSEI", {BOOL, "", &param.encoderInfoSEI}},
 
         // Occupancy map
         {"occupancyEncoderName", {STRING, "Kvazaar", &param.occupancyEncoderName}},

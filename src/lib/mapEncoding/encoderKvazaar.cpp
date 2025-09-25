@@ -131,6 +131,9 @@ void setKvazaarConfig(kvz_api* api, kvz_config* config, const size_t& width, con
     api->config_parse(config, "hash", "none");
     api->config_parse(config, "width", std::to_string(width).c_str());
     api->config_parse(config, "height", std::to_string(height).c_str());
+    if(!p_->encoderInfoSEI) {
+        api->config_parse(config, "info", "none");
+    }
 
     // Map-specific settings
     switch (encoderType) {
