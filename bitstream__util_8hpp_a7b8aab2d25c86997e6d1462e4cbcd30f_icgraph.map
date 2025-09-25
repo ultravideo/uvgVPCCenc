@@ -1,41 +1,47 @@
 <map id="uvg_bitstream_alloc_chunk" name="uvg_bitstream_alloc_chunk">
-<area shape="rect" id="Node000001" title=" " alt="" coords="1301,160,1456,200"/>
-<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#ac69c20ee312c7d90392e8a6b3b06341a" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="865,99,1020,139"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1287,170,1020,132,1020,127,1288,165"/>
-<area shape="rect" id="Node000009" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="1068,193,1253,218"/>
-<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="1288,193,1254,197,1253,192,1287,188"/>
-<area shape="rect" id="Node000003" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="647,35,790,75"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="858,97,788,77,790,72,859,92"/>
-<area shape="rect" id="Node000008" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="647,99,790,139"/>
-<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="851,121,790,121,790,116,851,116"/>
-<area shape="rect" id="Node000004" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="383,67,572,107"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="634,69,573,77,572,71,633,63"/>
-<area shape="rect" id="Node000005" href="$namespaceuvgvpcc__enc_1_1API.html#a75dacaf2d79b4a549ecb2a91ae8a6105" title="This function is called when all frames to be processed have been sent to the encoder...." alt="" coords="108,5,335,45"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="379,66,305,48,306,43,381,61"/>
-<area shape="rect" id="Node000007" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="126,69,317,109"/>
-<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="369,90,317,91,317,86,369,85"/>
-<area shape="rect" id="Node000006" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,45,60,70"/>
-<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="95,50,61,55,60,50,94,44"/>
-<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="112,73,60,64,61,59,113,68"/>
-<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="633,110,572,102,573,97,634,105"/>
-<area shape="rect" id="Node000010" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="871,227,1015,253"/>
-<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1068,223,1015,231,1014,226,1067,218"/>
-<area shape="poly" id="edge20_Node000010_Node000003" title=" " alt="" coords="919,219,863,152,842,117,832,103,816,89,789,74,791,70,819,84,836,100,846,115,867,149,923,215"/>
-<area shape="poly" id="edge21_Node000010_Node000008" title=" " alt="" coords="914,220,870,186,816,153,789,141,791,136,819,148,873,182,918,216"/>
-<area shape="rect" id="Node000011" href="$bitstream__util_8cpp.html#a423bd5bc72b723f5642a91deb7a5cb0b" title=" " alt="" coords="627,163,810,203"/>
-<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="878,226,797,205,798,200,880,221"/>
-<area shape="rect" id="Node000014" href="$bitstream__util_8cpp.html#a30bd11b6c91d37315d3ee911d83a72ed" title=" " alt="" coords="635,227,802,253"/>
-<area shape="poly" id="edge15_Node000010_Node000014" title=" " alt="" coords="857,243,802,243,802,237,857,237"/>
-<area shape="rect" id="Node000015" href="$classatlas__context.html#a56450f7f8e92c4a07026d4d7c4be7dcd" title=" " alt="" coords="643,277,794,317"/>
-<area shape="poly" id="edge16_Node000010_Node000015" title=" " alt="" coords="880,259,795,281,794,276,879,253"/>
-<area shape="rect" id="Node000016" href="$classatlas__context.html#a144495d5cb47643d5d9bcf4283a8f97f" title=" " alt="" coords="643,341,794,381"/>
-<area shape="poly" id="edge17_Node000010_Node000016" title=" " alt="" coords="918,264,873,298,819,332,791,344,789,339,816,327,870,294,914,260"/>
-<area shape="rect" id="Node000017" href="$classatlas__context.html#ab3da4e46b1b81ce24bcc82e93c4fe3ab" title=" " alt="" coords="620,405,817,445"/>
-<area shape="poly" id="edge18_Node000010_Node000017" title=" " alt="" coords="930,266,886,330,855,365,819,396,797,408,795,403,816,391,851,362,882,327,925,263"/>
-<area shape="rect" id="Node000018" href="$classatlas__context.html#a24296684ad259ec9f83aec0bd2bbf53c" title=" " alt="" coords="638,469,799,509"/>
-<area shape="poly" id="edge19_Node000010_Node000018" title=" " alt="" coords="936,267,920,309,896,360,862,413,819,459,800,472,797,467,816,455,858,410,891,358,915,307,931,265"/>
-<area shape="rect" id="Node000012" href="$bitstream__util_8cpp.html#a7a68eb472ffb2162b61292d074642d4c" title=" " alt="" coords="400,170,555,195"/>
-<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="614,185,555,185,555,180,614,180"/>
-<area shape="rect" id="Node000013" href="$classvps.html#a621f597b4c41ed6cde608d6932299803" title=" " alt="" coords="163,170,279,195"/>
-<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="387,185,280,185,280,180,387,180"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="1301,152,1456,192"/>
+<area shape="rect" id="Node000002" href="$bitstream__util_8cpp.html#ac69c20ee312c7d90392e8a6b3b06341a" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="865,69,1020,109"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1287,157,1020,106,1021,101,1288,152"/>
+<area shape="rect" id="Node000009" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="1068,185,1253,210"/>
+<area shape="poly" id="edge10_Node000001_Node000009" title=" " alt="" coords="1288,185,1254,189,1253,184,1287,180"/>
+<area shape="rect" id="Node000003" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="647,5,790,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="858,68,788,48,790,43,859,63"/>
+<area shape="rect" id="Node000008" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="647,69,790,109"/>
+<area shape="poly" id="edge8_Node000002_Node000008" title=" " alt="" coords="851,92,790,92,790,87,851,87"/>
+<area shape="rect" id="Node000004" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="383,69,572,109"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="635,50,554,72,553,67,633,45"/>
+<area shape="rect" id="Node000005" href="$namespaceuvgvpcc__enc_1_1API.html#a75dacaf2d79b4a549ecb2a91ae8a6105" title="This function is called when all frames to be processed have been sent to the encoder...." alt="" coords="108,31,335,71"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="369,76,334,70,335,65,370,70"/>
+<area shape="rect" id="Node000007" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="126,95,317,135"/>
+<area shape="poly" id="edge6_Node000004_Node000007" title=" " alt="" coords="369,103,317,108,316,103,368,97"/>
+<area shape="rect" id="Node000006" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,70,60,95"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="95,75,61,81,60,76,94,70"/>
+<area shape="poly" id="edge7_Node000007_Node000006" title=" " alt="" coords="112,99,60,90,61,85,113,94"/>
+<area shape="poly" id="edge9_Node000008_Node000004" title=" " alt="" coords="634,92,572,92,572,87,634,87"/>
+<area shape="rect" id="Node000010" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="871,213,1015,238"/>
+<area shape="poly" id="edge11_Node000009_Node000010" title=" " alt="" coords="1054,214,1015,219,1014,213,1054,208"/>
+<area shape="poly" id="edge22_Node000010_Node000003" title=" " alt="" coords="922,203,816,59,789,45,791,40,819,55,926,200"/>
+<area shape="poly" id="edge23_Node000010_Node000008" title=" " alt="" coords="918,205,873,164,816,124,789,111,792,107,819,119,877,160,922,201"/>
+<area shape="rect" id="Node000011" href="$bitstream__util_8cpp.html#a423bd5bc72b723f5642a91deb7a5cb0b" title=" " alt="" coords="627,491,810,531"/>
+<area shape="poly" id="edge12_Node000010_Node000011" title=" " alt="" coords="938,253,924,301,901,362,867,426,844,455,819,481,801,493,798,488,816,477,840,451,862,423,896,360,919,299,933,251"/>
+<area shape="rect" id="Node000014" href="$bitstream__util_8cpp.html#a30bd11b6c91d37315d3ee911d83a72ed" title=" " alt="" coords="635,134,802,159"/>
+<area shape="poly" id="edge15_Node000010_Node000014" title=" " alt="" coords="894,210,816,181,759,162,761,157,818,176,896,205"/>
+<area shape="rect" id="Node000016" href="$classatlas__context.html#a56450f7f8e92c4a07026d4d7c4be7dcd" title=" " alt="" coords="643,235,794,275"/>
+<area shape="poly" id="edge18_Node000010_Node000016" title=" " alt="" coords="857,239,795,247,794,242,856,234"/>
+<area shape="rect" id="Node000017" href="$classatlas__context.html#a144495d5cb47643d5d9bcf4283a8f97f" title=" " alt="" coords="643,299,794,339"/>
+<area shape="poly" id="edge19_Node000010_Node000017" title=" " alt="" coords="907,247,818,289,786,301,784,296,816,284,905,242"/>
+<area shape="rect" id="Node000018" href="$classatlas__context.html#ab3da4e46b1b81ce24bcc82e93c4fe3ab" title=" " alt="" coords="620,363,817,403"/>
+<area shape="poly" id="edge20_Node000010_Node000018" title=" " alt="" coords="926,251,881,302,851,329,819,353,795,365,793,360,816,348,848,325,877,298,922,247"/>
+<area shape="rect" id="Node000019" href="$classatlas__context.html#a24296684ad259ec9f83aec0bd2bbf53c" title=" " alt="" coords="638,427,799,467"/>
+<area shape="poly" id="edge21_Node000010_Node000019" title=" " alt="" coords="934,252,917,288,892,333,859,378,819,417,799,429,797,424,816,413,855,374,887,330,912,286,929,250"/>
+<area shape="rect" id="Node000020" href="$bitstream__util_8cpp.html#aa8c4c50cd09a25e7222ff889eb4fa737" title=" " alt="" coords="445,185,510,210"/>
+<area shape="poly" id="edge24_Node000010_Node000020" title=" " alt="" coords="857,223,510,202,511,197,857,218"/>
+<area shape="rect" id="Node000012" href="$bitstream__util_8cpp.html#a7a68eb472ffb2162b61292d074642d4c" title=" " alt="" coords="400,366,555,391"/>
+<area shape="poly" id="edge13_Node000011_Node000012" title=" " alt="" coords="634,488,619,481,546,436,492,393,495,389,549,431,621,476,636,483"/>
+<area shape="rect" id="Node000013" href="$classvps.html#a621f597b4c41ed6cde608d6932299803" title=" " alt="" coords="163,185,279,210"/>
+<area shape="poly" id="edge14_Node000012_Node000013" title=" " alt="" coords="446,360,239,212,242,208,449,356"/>
+<area shape="rect" id="Node000015" href="$bitstream__util_8cpp.html#ae284706aa3795e821fc5e735c7195149" title=" " alt="" coords="441,134,514,159"/>
+<area shape="poly" id="edge16_Node000014_Node000015" title=" " alt="" coords="621,149,514,149,514,144,621,144"/>
+<area shape="poly" id="edge17_Node000015_Node000013" title=" " alt="" coords="427,159,280,189,279,183,426,154"/>
+<area shape="poly" id="edge25_Node000020_Node000013" title=" " alt="" coords="431,200,280,200,280,195,431,195"/>
 </map>

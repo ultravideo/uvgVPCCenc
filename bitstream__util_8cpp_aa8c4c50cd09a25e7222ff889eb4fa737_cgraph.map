@@ -1,0 +1,13 @@
+<map id="writeU" name="writeU">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,71,56"/>
+<area shape="rect" id="Node000002" href="$namespaceFileExport.html#a7aeaa297ad205055b403629f094bec0d" title=" " alt="" coords="119,5,365,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="70,37,126,30,127,35,71,42"/>
+<area shape="rect" id="Node000004" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="170,55,314,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="71,44,157,55,156,60,70,50"/>
+<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54" title=" " alt="" coords="423,5,589,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="366,15,410,15,410,21,366,21"/>
+<area shape="rect" id="Node000005" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="413,55,599,80"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="314,65,400,65,400,70,314,70"/>
+<area shape="rect" id="Node000006" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="647,47,801,87"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="599,65,633,65,633,70,599,70"/>
+</map>

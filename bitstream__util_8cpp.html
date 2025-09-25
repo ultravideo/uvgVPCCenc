@@ -87,10 +87,12 @@ $(function() {
 <code>#include &lt;cstdlib&gt;</code><br />
 <code>#include &lt;cstring&gt;</code><br />
 <code>#include &lt;new&gt;</code><br />
+<code>#include &quot;<a class="el" href="parameters_8hpp_source.html">utils/parameters.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="fileExport_8hpp_source.html">utils/fileExport.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for bitstream_util.cpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp__incl.svg" width="536" height="198"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp__incl.svg" width="100%" height="503"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
@@ -116,6 +118,10 @@ Functions</h2></td></tr>
 <tr class="separator:aa11755e3025221790473c013345959ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30bd11b6c91d37315d3ee911d83a72ed" id="r_a30bd11b6c91d37315d3ee911d83a72ed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bitstream__util_8cpp.html#a30bd11b6c91d37315d3ee911d83a72ed">uvg_bitstream_put_ue</a> (<a class="el" href="structbitstream__t.html">bitstream_t</a> *stream, uint32_t code_num)</td></tr>
 <tr class="separator:a30bd11b6c91d37315d3ee911d83a72ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa8c4c50cd09a25e7222ff889eb4fa737" id="r_aa8c4c50cd09a25e7222ff889eb4fa737"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bitstream__util_8cpp.html#aa8c4c50cd09a25e7222ff889eb4fa737">writeU</a> (<a class="el" href="structbitstream__t.html">bitstream_t</a> *const stream, const uint32_t data, uint8_t bits, std::string name, size_t <a class="el" href="uvgvpcc_8cpp.html#a965c4c92a7105f32cedcc11e0fb91c08">gofId</a>)</td></tr>
+<tr class="separator:aa8c4c50cd09a25e7222ff889eb4fa737"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae284706aa3795e821fc5e735c7195149" id="r_ae284706aa3795e821fc5e735c7195149"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bitstream__util_8cpp.html#ae284706aa3795e821fc5e735c7195149">writeUE</a> (<a class="el" href="structbitstream__t.html">bitstream_t</a> *const stream, const uint32_t data, std::string name, size_t <a class="el" href="uvgvpcc_8cpp.html#a965c4c92a7105f32cedcc11e0fb91c08">gofId</a>)</td></tr>
+<tr class="separator:ae284706aa3795e821fc5e735c7195149"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acaa93fb107273dac326829c0caebeaeb" id="r_acaa93fb107273dac326829c0caebeaeb"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bitstream__util_8cpp.html#acaa93fb107273dac326829c0caebeaeb">uvg_calculate_ue_len</a> (uint32_t number)</td></tr>
 <tr class="separator:acaa93fb107273dac326829c0caebeaeb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a423bd5bc72b723f5642a91deb7a5cb0b" id="r_a423bd5bc72b723f5642a91deb7a5cb0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="bitstream__util_8cpp.html#a423bd5bc72b723f5642a91deb7a5cb0b">uvg_bitstream_add_rbsp_trailing_bits</a> (<a class="el" href="structbitstream__t.html">bitstream_t</a> *const stream)</td></tr>
@@ -496,6 +502,11 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp_a30bd11b6c91d37315d3ee911d83a72ed_cgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp_a30bd11b6c91d37315d3ee911d83a72ed_icgraph.svg" width="463" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
 
 </div>
 </div>
@@ -612,6 +623,112 @@ Here is the caller graph for this function:</div>
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp_acaa93fb107273dac326829c0caebeaeb_icgraph.svg" width="298" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="aa8c4c50cd09a25e7222ff889eb4fa737" name="aa8c4c50cd09a25e7222ff889eb4fa737"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa8c4c50cd09a25e7222ff889eb4fa737">&#9670;&#160;</a></span>writeU()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void writeU </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structbitstream__t.html">bitstream_t</a> *const&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">uint8_t&#160;</td>
+          <td class="paramname"><em>bits</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>gofId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp_aa8c4c50cd09a25e7222ff889eb4fa737_cgraph.svg" width="100%" height="370"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp_aa8c4c50cd09a25e7222ff889eb4fa737_icgraph.svg" width="240" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+</div>
+
+</div>
+</div>
+<a id="ae284706aa3795e821fc5e735c7195149" name="ae284706aa3795e821fc5e735c7195149"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae284706aa3795e821fc5e735c7195149">&#9670;&#160;</a></span>writeUE()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void writeUE </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="structbitstream__t.html">bitstream_t</a> *const&#160;</td>
+          <td class="paramname"><em>stream</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const uint32_t&#160;</td>
+          <td class="paramname"><em>data</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">size_t&#160;</td>
+          <td class="paramname"><em>gofId</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Here is the call graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp_ae284706aa3795e821fc5e735c7195149_cgraph.svg" width="100%" height="370"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+</div>
+<div class="dynheader">
+Here is the caller graph for this function:</div>
+<div class="dyncontent">
+<div class="center"><iframe scrolling="no" frameborder="0" src="bitstream__util_8cpp_ae284706aa3795e821fc5e735c7195149_icgraph.svg" width="248" height="36"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 
 </div>

@@ -30,7 +30,7 @@ var searchData=
   ['divlow_27',['divlow',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#a36d85fcaa2e26e2b8882c9645fb774e0',1,'nanoflann::KDTreeBaseClass::Node']]],
   ['documentation_28',['Compile documentation',['../index.html#autotoc_md7',1,'']]],
   ['dotproduct_29',['dotProduct',['../utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e',1,'utilsPatchGeneration.hpp']]],
-  ['double_30',['double',['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a1be5cc1af98c159bbd0f1dd60c1ed0eb',1,'uvgvpcc_enc::DOUBLE'],['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeead909d38d705ce75386dd86e611a82f5b',1,'miniply::Double']]],
+  ['double_30',['double',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeead909d38d705ce75386dd86e611a82f5b',1,'miniply::Double'],['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a1be5cc1af98c159bbd0f1dd60c1ed0eb',1,'uvgvpcc_enc::DOUBLE']]],
   ['doublelayer_31',['doubleLayer',['../structuvgvpcc__enc_1_1Parameters.html#aae636549f46cbf81f22c604e6fc84501',1,'uvgvpcc_enc::Parameters']]],
   ['dstaddress_32',['dstAddress',['../structcli_1_1opts__t.html#af695285723b9204d8e751889ef95ae0f',1,'cli::opts_t']]],
   ['dstport_33',['dstPort',['../structcli_1_1opts__t.html#a845dac6a47e2b9f89cf96babb6fc2641',1,'cli::opts_t']]],
