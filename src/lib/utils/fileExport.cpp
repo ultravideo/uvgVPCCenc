@@ -485,4 +485,28 @@ void exportGeometryBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const
     exportBitstream(outputPath, bitstream);
 }
 
+//TODO(lf): currently the file is open and close for every log line...
+void exportAtlasInformation(const size_t& gofId, const std::string& logLine) {
+    const std::string filePath = p_->intermediateFilesDir +
+        "/16-atlasInformation/ATLAS_g" + zeroPad(gofId, 3) + ".txt";
+
+    createDirs(filePath);
+
+    std::ofstream textFile(filePath, std::ios::app);
+    if (!textFile.is_open()) {
+        throw std::runtime_error("Unable to open file: " + filePath);
+    }
+
+    textFile << logLine << '\n';
+    if (!textFile) {
+        throw std::runtime_error("Error while writing to file: " + filePath);
+    }
+
+    textFile.close();
+    if (!textFile) {
+        throw std::runtime_error("Error while closing file: " + filePath);
+    }
+}
+
+
 }  // namespace FileExport

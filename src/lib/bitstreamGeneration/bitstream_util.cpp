@@ -39,6 +39,10 @@
 #include <cstring>
 #include <new>
 
+#include "utils/parameters.hpp"
+#include "utils/fileExport.hpp"
+
+
 // NOLINTBEGIN(cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,hicpp-no-malloc) //
 // TODO(gg) : lf : Currently we manually handle most of the memory object in the bitstream generation. Consider reducing alloc use to minimum
 
@@ -171,6 +175,28 @@ void uvg_bitstream_put_ue(bitstream_t *stream, uint32_t code_num) {
     const unsigned value = prefix | suffix;
 
     uvg_bitstream_put(stream, value, num_bits);
+}
+
+void writeU(bitstream_t *const stream, const uint32_t data, uint8_t bits, std::string name, size_t gofId) {
+    uvg_bitstream_put(stream, data, bits);
+    if(uvgvpcc_enc::p_->exportIntermediateFiles) {
+        std::ostringstream oss;
+        oss << std::left << std::setw(50) << name
+            << " u(" << bits << ") : " << data;
+        std::string logLine = oss.str();
+        FileExport::exportAtlasInformation(gofId,logLine);
+    }
+}
+
+void writeUE(bitstream_t *const stream, const uint32_t data, std::string name, size_t gofId) {
+    uvg_bitstream_put_ue(stream, data);
+    if(uvgvpcc_enc::p_->exportIntermediateFiles) {
+        std::ostringstream oss;
+        oss << std::left << std::setw(50) << name
+        << " ue(v): " << data;
+        std::string logLine = oss.str();
+        FileExport::exportAtlasInformation(gofId,logLine);
+    }
 }
 
 // TODO(lf): rename this function

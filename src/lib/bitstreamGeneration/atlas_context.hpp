@@ -65,7 +65,7 @@ class atlas_context {
     atlas_frame_parameter_set& get_afps() { return afps_; };
 
     // -------------- Getters - helper variables --------------
-    size_t get_gof_id() { return gof_id_; };
+    size_t get_gof_id() const { return gof_id_; };
     size_t get_atlas_sub_size() { return atlas_sub_size_; };
     std::vector<size_t> get_ad_nal_sizes() { return ad_nal_sizes_; };
     size_t get_ad_nal_precision() { return ad_nal_precision_; };

@@ -108,6 +108,8 @@ class vps {
     size_t get_vps_byte_len() { return vps_length_bytes_; };
 
    private:
+    size_t gofId; // lf addition for exporting intermediate atlas information
+
     /* Fill the PTL values in VPS */
     profile_tier_level fill_ptl(size_t& len) const;
 

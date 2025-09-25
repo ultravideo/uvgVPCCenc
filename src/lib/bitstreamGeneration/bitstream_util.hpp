@@ -35,8 +35,9 @@
 #include <cassert>
 #include <cstring>
 #include <cstdint>
+#include <string>
 
-#define BITSTREAM_DEBUG false
+#define BITSTREAM_DEBUG true
 
 /* Size of data chunks */
 #define UVG_DATA_CHUNK_SIZE 4096
@@ -124,26 +125,29 @@ void uvg_bitstream_copy_bytes(bitstream_t *const stream, const uint8_t *bytes, u
 /* Get the last (possibly incomplete) byte of the bitstream */
 uint32_t uvg_bitstream_peek_last_byte(bitstream_t *const stream);
 
-/* In debug mode print out some extra info */
-#if BITSTREAM_DEBUG
+/* In debug mode print out some extra info */ // lf: replaced with file export function
+// #if BITSTREAM_DEBUG
 /* Counter to keep up with bits written */
-#define WRITE_U(stream, data, bits, name)               \
-    {                                                   \
-        printf("%-50s u(%d) : %d\n", name, bits, data); \
-        uvg_bitstream_put(stream, data, bits);          \
-    }
-#define WRITE_UE(stream, data, name)             \
-    {                                            \
-        printf("%-50s ue(v): %d\n", name, data); \
-        uvg_bitstream_put_ue(stream, data);      \
-    }
-#else
-#define WRITE_U(stream, data, bits, name)      \
-    {                                          \
-        uvg_bitstream_put(stream, data, bits); \
-    }
-#define WRITE_UE(stream, data, name)        \
-    {                                       \
-        uvg_bitstream_put_ue(stream, data); \
-    }
-#endif
+// #define WRITE_U(stream, data, bits, name)               \
+//     {                                                   \
+//         printf("%-50s u(%d) : %d\n", name, bits, data); \
+//         uvg_bitstream_put(stream, data, bits);          \
+//     }
+// #define WRITE_UE(stream, data, name)             \
+//     {                                            \
+//         printf("%-50s ue(v): %d\n", name, data); \
+//         uvg_bitstream_put_ue(stream, data);      \
+//     }
+// #else
+// #define WRITE_U(stream, data, bits, name)      \
+//     {                                          \
+//         uvg_bitstream_put(stream, data, bits); \
+//     }
+// #define WRITE_UE(stream, data, name)        \
+//     {                                       \
+//         uvg_bitstream_put_ue(stream, data); \
+//     }
+// #endif
+
+void writeU(bitstream_t *const stream, const uint32_t data, uint8_t bits, std::string name, size_t gofId);
+void writeUE(bitstream_t *const stream, const uint32_t data, std::string name, size_t gofId);

@@ -374,81 +374,81 @@ void atlas_context::write_nal_hdr(bitstream_t* stream, const uint8_t nal_type, c
 }
 
 void atlas_context::write_atlas_seq_parameter_set(bitstream_t* stream) {
-    WRITE_UE(stream, asps_.asps_atlas_sequence_parameter_set_id, "asps_atlas_sequence_parameter_set_id");
-    WRITE_UE(stream, asps_.asps_frame_width, "asps_frame_width");
-    WRITE_UE(stream, asps_.asps_frame_height, "asps_frame_height");
-    WRITE_U(stream, uint8_t(asps_.asps_geometry_3d_bit_depth_minus1), 5, "asps_geometry_3d_bit_depth_minus1");
-    WRITE_U(stream, uint8_t(asps_.asps_geometry_2d_bit_depth_minus1), 5, "asps_geometry_2d_bit_depth_minus1");
-    WRITE_UE(stream, uint8_t(asps_.asps_log2_max_atlas_frame_order_cnt_lsb_minus4), "asps_log2_max_atlas_frame_order_cnt_lsb_minus4");
-    WRITE_UE(stream, asps_.asps_max_dec_atlas_frame_buffering_minus1, "asps_max_dec_atlas_frame_buffering_minus1");
+    writeUE(stream, asps_.asps_atlas_sequence_parameter_set_id, "asps_atlas_sequence_parameter_set_id",get_gof_id());
+    writeUE(stream, asps_.asps_frame_width, "asps_frame_width",get_gof_id());
+    writeUE(stream, asps_.asps_frame_height, "asps_frame_height",get_gof_id());
+    writeU(stream, uint8_t(asps_.asps_geometry_3d_bit_depth_minus1), 5, "asps_geometry_3d_bit_depth_minus1",get_gof_id());
+    writeU(stream, uint8_t(asps_.asps_geometry_2d_bit_depth_minus1), 5, "asps_geometry_2d_bit_depth_minus1",get_gof_id());
+    writeUE(stream, uint8_t(asps_.asps_log2_max_atlas_frame_order_cnt_lsb_minus4), "asps_log2_max_atlas_frame_order_cnt_lsb_minus4",get_gof_id());
+    writeUE(stream, asps_.asps_max_dec_atlas_frame_buffering_minus1, "asps_max_dec_atlas_frame_buffering_minus1",get_gof_id());
 
-    WRITE_U(stream, asps_.asps_long_term_ref_atlas_frames_flag, 1, "asps_long_term_ref_atlas_frames_flag");
-    WRITE_UE(stream, asps_.asps_num_ref_atlas_frame_lists_in_asps, "asps_num_ref_atlas_frame_lists_in_asps");
+    writeU(stream, asps_.asps_long_term_ref_atlas_frames_flag, 1, "asps_long_term_ref_atlas_frames_flag",get_gof_id());
+    writeUE(stream, asps_.asps_num_ref_atlas_frame_lists_in_asps, "asps_num_ref_atlas_frame_lists_in_asps",get_gof_id());
 
     for (size_t i = 0; i < asps_.asps_num_ref_atlas_frame_lists_in_asps; i++) {
         const ref_list_struct& ref = asps_.ref_lists.at(i);
-        WRITE_UE(stream, ref.num_ref_entries, "num_ref_entries");
+        writeUE(stream, ref.num_ref_entries, "num_ref_entries",get_gof_id());
         for (size_t i = 0; i < ref.num_ref_entries; ++i) {
             if (asps_.asps_long_term_ref_atlas_frames_flag) {
-                WRITE_U(stream, ref.st_ref_atlas_frame_flag.at(i), 1, "st_ref_atlas_frame_flag");
+                writeU(stream, ref.st_ref_atlas_frame_flag.at(i), 1, "st_ref_atlas_frame_flag",get_gof_id());
             }
             if (ref.st_ref_atlas_frame_flag.at(i)) {
-                WRITE_UE(stream, ref.abs_delta_afoc_st.at(i), "abs_delta_afoc_st");
+                writeUE(stream, ref.abs_delta_afoc_st.at(i), "abs_delta_afoc_st",get_gof_id());
                 if (ref.abs_delta_afoc_st.at(i) > 0) {
-                    WRITE_U(stream, uint(ref.straf_entry_sign_flag.at(i)), 1, "straf_entry_sign_flag");
+                    writeU(stream, uint(ref.straf_entry_sign_flag.at(i)), 1, "straf_entry_sign_flag",get_gof_id());
                 }
             }
         }
     }
-    WRITE_U(stream, asps_.asps_use_eight_orientations_flag, 1, "asps_use_eight_orientations_flag");
-    WRITE_U(stream, asps_.asps_extended_projection_enabled_flag, 1, "asps_extended_projection_enabled_flag");
+    writeU(stream, asps_.asps_use_eight_orientations_flag, 1, "asps_use_eight_orientations_flag",get_gof_id());
+    writeU(stream, asps_.asps_extended_projection_enabled_flag, 1, "asps_extended_projection_enabled_flag",get_gof_id());
 
     if (asps_.asps_extended_projection_enabled_flag) {  // false
-        WRITE_UE(stream, int(asps_.asps_max_number_projections_minus1), "asps_max_number_projections_minus1");
+        writeUE(stream, int(asps_.asps_max_number_projections_minus1), "asps_max_number_projections_minus1",get_gof_id());
     }
-    WRITE_U(stream, asps_.asps_normal_axis_limits_quantization_enabled_flag, 1, "asps_normal_axis_limits_quantization_enabled_flag");
-    WRITE_U(stream, asps_.asps_normal_axis_max_delta_value_enabled_flag, 1, "asps_normal_axis_max_delta_value_enabled_flag");
-    WRITE_U(stream, asps_.asps_patch_precedence_order_flag, 1, "asps_patch_precedence_order_flag");
-    WRITE_U(stream, asps_.asps_log2_patch_packing_block_size, 3, "asps_log2_patch_packing_block_size");
-    WRITE_U(stream, asps_.asps_patch_size_quantizer_present_flag, 1, "asps_patch_size_quantizer_present_flag");
-    WRITE_U(stream, asps_.asps_map_count_minus1, 4, "asps_map_count_minus1");
-    WRITE_U(stream, asps_.asps_pixel_deinterleaving_enabled_flag, 1, "asps_pixel_deinterleaving_enabled_flag");
+    writeU(stream, asps_.asps_normal_axis_limits_quantization_enabled_flag, 1, "asps_normal_axis_limits_quantization_enabled_flag",get_gof_id());
+    writeU(stream, asps_.asps_normal_axis_max_delta_value_enabled_flag, 1, "asps_normal_axis_max_delta_value_enabled_flag",get_gof_id());
+    writeU(stream, asps_.asps_patch_precedence_order_flag, 1, "asps_patch_precedence_order_flag",get_gof_id());
+    writeU(stream, asps_.asps_log2_patch_packing_block_size, 3, "asps_log2_patch_packing_block_size",get_gof_id());
+    writeU(stream, asps_.asps_patch_size_quantizer_present_flag, 1, "asps_patch_size_quantizer_present_flag",get_gof_id());
+    writeU(stream, asps_.asps_map_count_minus1, 4, "asps_map_count_minus1",get_gof_id());
+    writeU(stream, asps_.asps_pixel_deinterleaving_enabled_flag, 1, "asps_pixel_deinterleaving_enabled_flag",get_gof_id());
 
     if (asps_.asps_pixel_deinterleaving_enabled_flag) {  // false
         for (size_t j = 0; j < asps_.asps_map_count_minus1; ++j) {
-            WRITE_U(stream, int(asps_.asps_map_pixel_deinterleaving_flag.at(j)), 1, "asps_map_pixel_deinterleaving_flag");
+            writeU(stream, int(asps_.asps_map_pixel_deinterleaving_flag.at(j)), 1, "asps_map_pixel_deinterleaving_flag",get_gof_id());
         }
     }
-    WRITE_U(stream, asps_.asps_raw_patch_enabled_flag, 1, "asps_raw_patch_enabled_flag");
-    WRITE_U(stream, asps_.asps_eom_patch_enabled_flag, 1, "asps_eom_patch_enabled_flag");
+    writeU(stream, asps_.asps_raw_patch_enabled_flag, 1, "asps_raw_patch_enabled_flag",get_gof_id());
+    writeU(stream, asps_.asps_eom_patch_enabled_flag, 1, "asps_eom_patch_enabled_flag",get_gof_id());
 
     if (asps_.asps_eom_patch_enabled_flag && asps_.asps_map_count_minus1 == 0) {
-        WRITE_U(stream, asps_.asps_eom_fix_bit_count_minus1, 4, "asps_eom_fix_bit_count_minus1");
+        writeU(stream, asps_.asps_eom_fix_bit_count_minus1, 4, "asps_eom_fix_bit_count_minus1",get_gof_id());
     }
     if (asps_.asps_raw_patch_enabled_flag || asps_.asps_eom_patch_enabled_flag) {
-        WRITE_U(stream, asps_.asps_auxiliary_video_enabled_flag, 4, "asps_auxiliary_video_enabled_flag");
+        writeU(stream, asps_.asps_auxiliary_video_enabled_flag, 4, "asps_auxiliary_video_enabled_flag",get_gof_id());
     }
-    WRITE_U(stream, asps_.asps_plr_enabled_flag, 1, "asps_plr_enabled_flag");
+    writeU(stream, asps_.asps_plr_enabled_flag, 1, "asps_plr_enabled_flag",get_gof_id());
     /* Not needed since above
     if( asps_plr_enabled_flag )
         asps_plr_information( asps_map_count_minus1 ) */
 
-    WRITE_U(stream, asps_.asps_vui_parameters_present_flag, 1, "asps_vui_parameters_present_flag");
+    writeU(stream, asps_.asps_vui_parameters_present_flag, 1, "asps_vui_parameters_present_flag",get_gof_id());
     /* Not needed since above
     if( asps_vui_parameters_present_flag )
         vui_parameters( ) */
 
-    WRITE_U(stream, asps_.asps_extension_present_flag, 1, "asps_extension_present_flag");
+    writeU(stream, asps_.asps_extension_present_flag, 1, "asps_extension_present_flag",get_gof_id());
 
     if (asps_.asps_extension_present_flag) {
-        WRITE_U(stream, asps_.asps_vpcc_extension_present_flag, 1, "asps_vpcc_extension_present_flag");
-        WRITE_U(stream, asps_.asps_miv_extension_present_flag, 1, "asps_miv_extension_present_flag");
-        WRITE_U(stream, asps_.asps_extension_6bits, 6, "asps_extension_6bits");
+        writeU(stream, asps_.asps_vpcc_extension_present_flag, 1, "asps_vpcc_extension_present_flag",get_gof_id());
+        writeU(stream, asps_.asps_miv_extension_present_flag, 1, "asps_miv_extension_present_flag",get_gof_id());
+        writeU(stream, asps_.asps_extension_6bits, 6, "asps_extension_6bits",get_gof_id());
     }
     if (asps_.asps_vpcc_extension_present_flag) {
-        WRITE_U(stream, asps_.asps_vpcc_remove_duplicate_point_enabled_flag, 1, "asps_vpcc_remove_duplicate_point_enabled_flag");
+        writeU(stream, asps_.asps_vpcc_remove_duplicate_point_enabled_flag, 1, "asps_vpcc_remove_duplicate_point_enabled_flag",get_gof_id());
         if (asps_.asps_pixel_deinterleaving_enabled_flag || asps_.asps_plr_enabled_flag) {
-            WRITE_UE(stream, asps_.asps_vpcc_surface_thickness_minus1, "asps_vpcc_surface_thickness_minus1");
+            writeUE(stream, asps_.asps_vpcc_surface_thickness_minus1, "asps_vpcc_surface_thickness_minus1",get_gof_id());
         }
     }
     uvg_bitstream_align(stream);
@@ -457,39 +457,39 @@ void atlas_context::write_atlas_seq_parameter_set(bitstream_t* stream) {
 void atlas_context::write_atlas_adaption_parameter_set(bitstream_t* stream) { uvg_bitstream_align(stream); }
 
 void atlas_context::write_atlas_frame_parameter_set(bitstream_t* stream) const {
-    WRITE_UE(stream, afps_.afps_atlas_frame_parameter_set_id, "afps_atlas_frame_parameter_set_id");
-    WRITE_UE(stream, afps_.afps_atlas_sequence_parameter_set_id, "afps_atlas_sequence_parameter_set_id");
-    WRITE_U(stream, afps_.afti.afti_single_tile_in_atlas_frame_flag, 1, "afti_single_tile_in_atlas_frame_flag");
+    writeUE(stream, afps_.afps_atlas_frame_parameter_set_id, "afps_atlas_frame_parameter_set_id",get_gof_id());
+    writeUE(stream, afps_.afps_atlas_sequence_parameter_set_id, "afps_atlas_sequence_parameter_set_id",get_gof_id());
+    writeU(stream, afps_.afti.afti_single_tile_in_atlas_frame_flag, 1, "afti_single_tile_in_atlas_frame_flag",get_gof_id());
     // parts of atlas frame tile information not written for now, as it it not used
-    WRITE_U(stream, afps_.afti.afti_signalled_tile_id_flag, 1, "afti_signalled_tile_id_flag");
-    WRITE_U(stream, afps_.afps_output_flag_present_flag, 1, "afps_output_flag_present_flag");
-    WRITE_UE(stream, afps_.afps_num_ref_idx_default_active_minus1, "afps_num_ref_idx_default_active_minus1");
-    WRITE_UE(stream, afps_.afps_additional_lt_afoc_lsb_len, "afps_additional_lt_afoc_lsb_len");
-    WRITE_U(stream, afps_.afps_lod_mode_enabled_flag, 1, "afps_lod_mode_enabled_flag");
-    WRITE_U(stream, afps_.afps_raw_3d_offset_bit_count_explicit_mode_flag, 1, "afps_raw_3d_offset_bit_count_explicit_mode_flag");
-    WRITE_U(stream, afps_.afps_extension_present_flag, 1, "afps_extension_present_flag");
-    WRITE_U(stream, afps_.afps_miv_extension_present_flag, 1, "afps_miv_extension_present_flag");
-    WRITE_U(stream, afps_.afps_extension_7bits, 7, "afps_extension_7bits");
+    writeU(stream, afps_.afti.afti_signalled_tile_id_flag, 1, "afti_signalled_tile_id_flag",get_gof_id());
+    writeU(stream, afps_.afps_output_flag_present_flag, 1, "afps_output_flag_present_flag",get_gof_id());
+    writeUE(stream, afps_.afps_num_ref_idx_default_active_minus1, "afps_num_ref_idx_default_active_minus1",get_gof_id());
+    writeUE(stream, afps_.afps_additional_lt_afoc_lsb_len, "afps_additional_lt_afoc_lsb_len",get_gof_id());
+    writeU(stream, afps_.afps_lod_mode_enabled_flag, 1, "afps_lod_mode_enabled_flag",get_gof_id());
+    writeU(stream, afps_.afps_raw_3d_offset_bit_count_explicit_mode_flag, 1, "afps_raw_3d_offset_bit_count_explicit_mode_flag",get_gof_id());
+    writeU(stream, afps_.afps_extension_present_flag, 1, "afps_extension_present_flag",get_gof_id());
+    writeU(stream, afps_.afps_miv_extension_present_flag, 1, "afps_miv_extension_present_flag",get_gof_id());
+    writeU(stream, afps_.afps_extension_7bits, 7, "afps_extension_7bits",get_gof_id());
     uvg_bitstream_align(stream);
 }
 
 void atlas_context::write_atlas_tile_header(bitstream_t* stream, NAL_UNIT_TYPE nalu_t, const atlas_tile_header& ath) const {
     if (nalu_t >= NAL_GBLA_W_LP && nalu_t <= NAL_RSV_IRAP_ACL_29) {
-        WRITE_U(stream, ath.ath_no_output_of_prior_atlas_frames_flag, 1, "ath_no_output_of_prior_atlas_frames_flag");
+        writeU(stream, ath.ath_no_output_of_prior_atlas_frames_flag, 1, "ath_no_output_of_prior_atlas_frames_flag",get_gof_id());
     }
-    WRITE_UE(stream, ath.ath_atlas_frame_parameter_set_id, "ath_atlas_frame_parameter_set_id");
-    WRITE_UE(stream, ath.ath_atlas_adaptation_parameter_set_id, "ath_atlas_adaptation_parameter_set_id");
-    WRITE_U(stream, ath.ath_id, 0, "ath_id");  // TODO(lf): Dynamic bit length
+    writeUE(stream, ath.ath_atlas_frame_parameter_set_id, "ath_atlas_frame_parameter_set_id",get_gof_id());
+    writeUE(stream, ath.ath_atlas_adaptation_parameter_set_id, "ath_atlas_adaptation_parameter_set_id",get_gof_id());
+    writeU(stream, ath.ath_id, 0, "ath_id",get_gof_id());  // TODO(lf): Dynamic bit length
     // const uint16_t tileID = ath.ath_id;              // ath_id: This doesnt get written, as the length gets inferred to u(0)
-    WRITE_UE(stream, ath.ath_type, "ath_type");
+    writeUE(stream, ath.ath_type, "ath_type",get_gof_id());
     if (afps_.afps_output_flag_present_flag) {
-        WRITE_U(stream, ath.ath_atlas_output_flag, 1, "ath_atlas_output_flag");
+        writeU(stream, ath.ath_atlas_output_flag, 1, "ath_atlas_output_flag",get_gof_id());
     }
     const size_t Log2MaxAtlasFrmOrderCntLsb = asps_.asps_log2_max_atlas_frame_order_cnt_lsb_minus4 + 4;
-    WRITE_U(stream, int(ath.ath_atlas_frm_order_cnt_lsb), int(Log2MaxAtlasFrmOrderCntLsb), "ath_atlas_frm_order_cnt_lsb");  // u(v)
+    writeU(stream, int(ath.ath_atlas_frm_order_cnt_lsb), int(Log2MaxAtlasFrmOrderCntLsb), "ath_atlas_frm_order_cnt_lsb",get_gof_id());  // u(v)
 
     if (asps_.asps_num_ref_atlas_frame_lists_in_asps > 0) {
-        WRITE_U(stream, ath.ath_ref_atlas_frame_list_asps_flag, 1, "ath_ref_atlas_frame_list_asps_flag");
+        writeU(stream, ath.ath_ref_atlas_frame_list_asps_flag, 1, "ath_ref_atlas_frame_list_asps_flag",get_gof_id());
     }
     if (!ath.ath_ref_atlas_frame_list_asps_flag) {
         std::cout << "ERROR: NOT IMPLEMENTED" << std::endl;
@@ -497,34 +497,34 @@ void atlas_context::write_atlas_tile_header(bitstream_t* stream, NAL_UNIT_TYPE n
     }
     if (asps_.asps_num_ref_atlas_frame_lists_in_asps > 1) {
         const size_t bit_len = std::ceil(std::log2(asps_.asps_num_ref_atlas_frame_lists_in_asps));
-        WRITE_U(stream, int(ath.ath_ref_atlas_frame_list_idx), int(bit_len), "ath_ref_atlas_frame_list_idx");
+        writeU(stream, int(ath.ath_ref_atlas_frame_list_idx), int(bit_len), "ath_ref_atlas_frame_list_idx",get_gof_id());
     }
     const size_t NumLtrAtlasFrmEntries = 0;  // default value, ref list is from ASPS TODO(lf): dynamic
     for (size_t j = 0; j < NumLtrAtlasFrmEntries; j++) {
-        WRITE_U(stream, ath.ath_additional_afoc_lsb_present_flag.at(j), 1, "ath_additional_afoc_lsb_present_flag");
+        writeU(stream, ath.ath_additional_afoc_lsb_present_flag.at(j), 1, "ath_additional_afoc_lsb_present_flag",get_gof_id());
         if (ath.ath_additional_afoc_lsb_present_flag.at(j)) {
-            WRITE_U(stream, ath.ath_additional_afoc_lsb_val.at(j), afps_.afps_additional_lt_afoc_lsb_len, "ath_additional_afoc_lsb_val");
+            writeU(stream, ath.ath_additional_afoc_lsb_val.at(j), afps_.afps_additional_lt_afoc_lsb_len, "ath_additional_afoc_lsb_val",get_gof_id());
         }
     }
     if (ath.ath_type != SKIP_TILE) {
         if (asps_.asps_normal_axis_limits_quantization_enabled_flag) {
-            WRITE_U(stream, ath.ath_pos_min_d_quantizer, 5, "ath_pos_min_d_quantizer");
+            writeU(stream, ath.ath_pos_min_d_quantizer, 5, "ath_pos_min_d_quantizer",get_gof_id());
             if (asps_.asps_normal_axis_max_delta_value_enabled_flag) {
-                WRITE_U(stream, ath.ath_pos_delta_max_d_quantizer, 5, "ath_pos_delta_max_d_quantizer");
+                writeU(stream, ath.ath_pos_delta_max_d_quantizer, 5, "ath_pos_delta_max_d_quantizer",get_gof_id());
             }
         }
         if (asps_.asps_patch_size_quantizer_present_flag) {
-            WRITE_U(stream, ath.ath_patch_size_x_info_quantizer, 3, "ath_patch_size_x_info_quantizer");
-            WRITE_U(stream, ath.ath_patch_size_y_info_quantizer, 3, "ath_patch_size_y_info_quantizer");
+            writeU(stream, ath.ath_patch_size_x_info_quantizer, 3, "ath_patch_size_x_info_quantizer",get_gof_id());
+            writeU(stream, ath.ath_patch_size_y_info_quantizer, 3, "ath_patch_size_y_info_quantizer",get_gof_id());
         }
         if (afps_.afps_raw_3d_offset_bit_count_explicit_mode_flag) {
             const size_t bit_len = std::floor(std::log2(asps_.asps_geometry_3d_bit_depth_minus1 + 1));
-            WRITE_U(stream, int(ath.ath_raw_3d_offset_axis_bit_count_minus1), int(bit_len), "ath_raw_3d_offset_axis_bit_count_minus1");
+            writeU(stream, int(ath.ath_raw_3d_offset_axis_bit_count_minus1), int(bit_len), "ath_raw_3d_offset_axis_bit_count_minus1",get_gof_id());
         }
         if (ath.ath_type == ATH_TYPE::P_TILE && NumLtrAtlasFrmEntries > 1) {
-            WRITE_U(stream, ath.ath_num_ref_idx_active_override_flag, 1, "ath_num_ref_idx_active_override_flag");
+            writeU(stream, ath.ath_num_ref_idx_active_override_flag, 1, "ath_num_ref_idx_active_override_flag",get_gof_id());
             if (ath.ath_num_ref_idx_active_override_flag) {
-                WRITE_UE(stream, ath.ath_num_ref_idx_active_minus1, "ath_num_ref_idx_active_minus1");
+                writeUE(stream, ath.ath_num_ref_idx_active_minus1, "ath_num_ref_idx_active_minus1",get_gof_id());
             }
         }
     }

@@ -32,7 +32,9 @@
 
 /// \file Intermediary files exportation management.
 
+#include <cstddef>
 #include <memory>
+#include <string>
 #include <vector>
 
 #include "utils/utils.hpp"
@@ -71,5 +73,9 @@ void exportAttributeBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, cons
                               const std::string& codecExtension);
 void exportGeometryBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const std::vector<uint8_t>& bitstream,
                              const std::string& codecExtension);
+
+// Bitstream generation
+void exportAtlasInformation(const size_t& gofId, const std::string& logLine);
+
 
 }  // namespace FileExport

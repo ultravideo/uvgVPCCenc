@@ -54,7 +54,8 @@ vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_
             "Error : unknown ptl_profile_codec_group_idc. This bitstream parameter indicates what codec is used to encode the 2D videos.");
     }
     size_t vps_length_bits = 0;
-    ptl_ = fill_ptl(vps_length_bits);                // profile_tier_level
+    ptl_ = fill_ptl(vps_length_bits);          // profile_tier_level
+    gofId = gofUVG->gofId;                           // lf addition for exporting intermediate atlas information
     vps_v3c_parameter_set_id_ = gofUVG->gofId % 16;  // The value of vps_v3c_parameter_set_id shall be in the range of 0 to 15
     vps_atlas_count_minus1_ = 0;                     // for atlas count 1
     vps_length_bits += 18;                           // fixed fields
@@ -152,76 +153,77 @@ vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_
 }
 
 bool vps::write_vps(bitstream_t* stream) {
+    
     // profile_tier_level
-    WRITE_U(stream, ptl_.ptl_tier_flag, 1, "ptl_tier_flag");
-    WRITE_U(stream, ptl_.ptl_profile_codec_group_idc, 7, "ptl_profile_codec_group_idc");
-    WRITE_U(stream, ptl_.ptl_profile_toolset_idc, 8, "ptl_profile_toolset_idc");
-    WRITE_U(stream, ptl_.ptl_profile_reconstruction_idc, 8, "ptl_profile_reconstruction_idc");
-    WRITE_U(stream, 0, 16, "ptl_reserved_zero_16bits");
-    WRITE_U(stream, ptl_.ptl_max_decodes_idc, 4, "ptl_max_decodes_idc");
-    WRITE_U(stream, 0xfff, 12, "ptl_reserved_0xfff_12bits");
-    WRITE_U(stream, ptl_.ptl_level_idc, 8, "ptl_level_idc");
-    WRITE_U(stream, ptl_.ptl_num_sub_profiles, 6, "ptl_num_sub_profiles");
-    WRITE_U(stream, ptl_.ptl_extended_sub_profile_flag, 1, "ptl_extended_sub_profile_flag");
-    WRITE_U(stream, ptl_.ptl_toolset_constraints_present_flag, 1, "ptl_toolset_constraints_present_flag");
+    writeU(stream, ptl_.ptl_tier_flag, 1, "ptl_tier_flag",gofId);
+    writeU(stream, ptl_.ptl_profile_codec_group_idc, 7, "ptl_profile_codec_group_idc",gofId);
+    writeU(stream, ptl_.ptl_profile_toolset_idc, 8, "ptl_profile_toolset_idc",gofId);
+    writeU(stream, ptl_.ptl_profile_reconstruction_idc, 8, "ptl_profile_reconstruction_idc",gofId);
+    writeU(stream, 0, 16, "ptl_reserved_zero_16bits",gofId);
+    writeU(stream, ptl_.ptl_max_decodes_idc, 4, "ptl_max_decodes_idc",gofId);
+    writeU(stream, 0xfff, 12, "ptl_reserved_0xfff_12bits",gofId);
+    writeU(stream, ptl_.ptl_level_idc, 8, "ptl_level_idc",gofId);
+    writeU(stream, ptl_.ptl_num_sub_profiles, 6, "ptl_num_sub_profiles",gofId);
+    writeU(stream, ptl_.ptl_extended_sub_profile_flag, 1, "ptl_extended_sub_profile_flag",gofId);
+    writeU(stream, ptl_.ptl_toolset_constraints_present_flag, 1, "ptl_toolset_constraints_present_flag",gofId);
 
     // profile_toolset_constraints_information
     // TODO(lf): Do we need profile_toolset_constraints_information? Not present from TMC2 interface
 
-    WRITE_U(stream, vps_v3c_parameter_set_id_, 4, "vps_v3c_parameter_set_id");
-    WRITE_U(stream, 0, 8, "vps_reserved_zero_8bits");
-    WRITE_U(stream, vps_atlas_count_minus1_, 6, "vps_atlas_count_minus1");
+    writeU(stream, vps_v3c_parameter_set_id_, 4, "vps_v3c_parameter_set_id",gofId);
+    writeU(stream, 0, 8, "vps_reserved_zero_8bits",gofId);
+    writeU(stream, vps_atlas_count_minus1_, 6, "vps_atlas_count_minus1",gofId);
 
     for (uint8_t j = 0; j < (vps_atlas_count_minus1_ + 1); j++) {
-        WRITE_U(stream, j, 6, "vps_atlas_id");
-        WRITE_UE(stream, int(vps_frame_width_.at(j)), "vps_frame_width");
-        WRITE_UE(stream, int(vps_frame_height_.at(j)), "vps_frame_height");
-        WRITE_U(stream, vps_map_count_minus1_.at(j), 4, "vps_map_count_minus1");
+        writeU(stream, j, 6, "vps_atlas_id",gofId);
+        writeUE(stream, int(vps_frame_width_.at(j)), "vps_frame_width",gofId);
+        writeUE(stream, int(vps_frame_height_.at(j)), "vps_frame_height",gofId);
+        writeU(stream, vps_map_count_minus1_.at(j), 4, "vps_map_count_minus1",gofId);
 
         if (vps_map_count_minus1_.at(j) > 0) {
-            WRITE_U(stream, int(vps_multiple_map_streams_present_flag_.at(j)), 1, "vps_multiple_map_streams_present_flag");
+            writeU(stream, int(vps_multiple_map_streams_present_flag_.at(j)), 1, "vps_multiple_map_streams_present_flag",gofId);
         }
-        WRITE_U(stream, int(vps_auxiliary_video_present_flag_.at(j)), 1, "vps_auxiliary_video_present_flag");
-        WRITE_U(stream, int(vps_occupancy_video_present_flag_.at(j)), 1, "vps_occupancy_video_present_flag");
-        WRITE_U(stream, int(vps_geometry_video_present_flag_.at(j)), 1, "vps_geometry_video_present_flag");
-        WRITE_U(stream, int(vps_attribute_video_present_flag_.at(j)), 1, "vps_attribute_video_present_flag");
+        writeU(stream, int(vps_auxiliary_video_present_flag_.at(j)), 1, "vps_auxiliary_video_present_flag",gofId);
+        writeU(stream, int(vps_occupancy_video_present_flag_.at(j)), 1, "vps_occupancy_video_present_flag",gofId);
+        writeU(stream, int(vps_geometry_video_present_flag_.at(j)), 1, "vps_geometry_video_present_flag",gofId);
+        writeU(stream, int(vps_attribute_video_present_flag_.at(j)), 1, "vps_attribute_video_present_flag",gofId);
 
         if (vps_occupancy_video_present_flag_.at(j)) {
-            WRITE_U(stream, occupancy_info_.at(j).oi_occupancy_codec_id, 8, "oi_occupancy_codec_id");
-            WRITE_U(stream, occupancy_info_.at(j).oi_lossy_occupancy_compression_threshold, 8, "oi_lossy_occupancy_compression_threshold");
-            WRITE_U(stream, occupancy_info_.at(j).oi_occupancy_2d_bit_depth_minus1, 5, "oi_occupancy_2d_bit_depth_minus1");
-            WRITE_U(stream, occupancy_info_.at(j).oi_occupancy_MSB_align_flag, 1, "oi_occupancy_MSB_align_flag");
+            writeU(stream, occupancy_info_.at(j).oi_occupancy_codec_id, 8, "oi_occupancy_codec_id",gofId);
+            writeU(stream, occupancy_info_.at(j).oi_lossy_occupancy_compression_threshold, 8, "oi_lossy_occupancy_compression_threshold",gofId);
+            writeU(stream, occupancy_info_.at(j).oi_occupancy_2d_bit_depth_minus1, 5, "oi_occupancy_2d_bit_depth_minus1",gofId);
+            writeU(stream, occupancy_info_.at(j).oi_occupancy_MSB_align_flag, 1, "oi_occupancy_MSB_align_flag",gofId);
         }
 
         if (vps_geometry_video_present_flag_.at(j)) {
-            WRITE_U(stream, geometry_info_.at(j).gi_geometry_codec_id, 8, "gi_geometry_codec_id");
-            WRITE_U(stream, geometry_info_.at(j).gi_geometry_2d_bit_depth_minus1, 5, "gi_geometry_2d_bit_depth_minus1");
-            WRITE_U(stream, geometry_info_.at(j).gi_geometry_MSB_align_flag, 1, "gi_geometry_MSB_align_flag");
-            WRITE_U(stream, geometry_info_.at(j).gi_geometry_3d_coordinates_bit_depth_minus1, 5,
-                    "gi_geometry_3d_coordinates_bit_depth_minus1");
+            writeU(stream, geometry_info_.at(j).gi_geometry_codec_id, 8, "gi_geometry_codec_id",gofId);
+            writeU(stream, geometry_info_.at(j).gi_geometry_2d_bit_depth_minus1, 5, "gi_geometry_2d_bit_depth_minus1",gofId);
+            writeU(stream, geometry_info_.at(j).gi_geometry_MSB_align_flag, 1, "gi_geometry_MSB_align_flag",gofId);
+            writeU(stream, geometry_info_.at(j).gi_geometry_3d_coordinates_bit_depth_minus1, 5,
+                    "gi_geometry_3d_coordinates_bit_depth_minus1",gofId);
 
             if (vps_auxiliary_video_present_flag_.at(j)) {
-                WRITE_U(stream, geometry_info_.at(j).gi_auxiliary_geometry_codec_id, 8, "gi_auxiliary_geometry_codec_id");
+                writeU(stream, geometry_info_.at(j).gi_auxiliary_geometry_codec_id, 8, "gi_auxiliary_geometry_codec_id",gofId);
             }
         }
 
         if (vps_attribute_video_present_flag_.at(j)) {
-            WRITE_U(stream, attribute_info_.at(j).ai_attribute_count, 7, "ai_attribute_count");
+            writeU(stream, attribute_info_.at(j).ai_attribute_count, 7, "ai_attribute_count",gofId);
 
             for (uint8_t i = 0; i < attribute_info_.at(j).ai_attribute_count; ++i) {
-                WRITE_U(stream, attribute_info_.at(j).ai_attribute_type_id.at(i), 4, "ai_attribute_type_id");
-                WRITE_U(stream, attribute_info_.at(j).ai_attribute_codec_id.at(i), 8, "ai_attribute_codec_id");
+                writeU(stream, attribute_info_.at(j).ai_attribute_type_id.at(i), 4, "ai_attribute_type_id",gofId);
+                writeU(stream, attribute_info_.at(j).ai_attribute_codec_id.at(i), 8, "ai_attribute_codec_id",gofId);
 
                 if (vps_auxiliary_video_present_flag_.at(j)) {
-                    WRITE_U(stream, attribute_info_.at(j).ai_auxiliary_attribute_codec_id.at(i), 8, "ai_auxiliary_attribute_codec_id");
+                    writeU(stream, attribute_info_.at(j).ai_auxiliary_attribute_codec_id.at(i), 8, "ai_auxiliary_attribute_codec_id",gofId);
                 }
                 if (vps_map_count_minus1_.at(j) > 0) {
-                    WRITE_U(stream, int(attribute_info_.at(j).ai_attribute_map_absolute_coding_persistence_flag.at(i)), 1,
-                            "ai_attribute_map_absolute_coding_persistence_flag");
+                    writeU(stream, int(attribute_info_.at(j).ai_attribute_map_absolute_coding_persistence_flag.at(i)), 1,
+                            "ai_attribute_map_absolute_coding_persistence_flag",gofId);
                 }
 
                 uint8_t d = attribute_info_.at(j).ai_attribute_dimension_minus1.at(i);
-                WRITE_U(stream, d, 6, "ai_attribute_dimension_minus1");
+                writeU(stream, d, 6, "ai_attribute_dimension_minus1",gofId);
 
                 uint8_t m = 0;
                 if (d == 0) {  // true
@@ -229,8 +231,8 @@ bool vps::write_vps(bitstream_t* stream) {
                     attribute_info_.at(j).ai_attribute_dimension_partitions_minus1.at(i) = 0;
                 } else {
                     m = attribute_info_.at(j).ai_attribute_dimension_partitions_minus1.at(i);
-                    WRITE_U(stream, attribute_info_.at(j).ai_attribute_dimension_partitions_minus1.at(i), 6,
-                            "ai_attribute_dimension_partitions_minus1");
+                    writeU(stream, attribute_info_.at(j).ai_attribute_dimension_partitions_minus1.at(i), 6,
+                            "ai_attribute_dimension_partitions_minus1",gofId);
                 }
 
                 uint16_t n = 0;
@@ -240,23 +242,23 @@ bool vps::write_vps(bitstream_t* stream) {
                         attribute_info_.at(j).ai_attribute_partition_channels_minus1.at(i).at(k) = 0;
                     } else {
                         n = attribute_info_.at(j).ai_attribute_partition_channels_minus1.at(i).at(k);
-                        WRITE_UE(stream, attribute_info_.at(j).ai_attribute_partition_channels_minus1.at(i).at(k),
-                                 "ai_attribute_partition_channels_minus1");
+                        writeUE(stream, attribute_info_.at(j).ai_attribute_partition_channels_minus1.at(i).at(k),
+                                 "ai_attribute_partition_channels_minus1",gofId);
                     }
                     d -= n + 1;
                 }
                 attribute_info_.at(j).ai_attribute_partition_channels_minus1.at(i).at(m) = d;
 
-                WRITE_U(stream, attribute_info_.at(j).ai_attribute_2d_bit_depth_minus1.at(i), 5, "ai_attribute_2d_bit_depth_minus1");
-                WRITE_U(stream, int(attribute_info_.at(j).ai_attribute_MSB_align_flag.at(i)), 1, "ai_attribute_MSB_align_flag");
+                writeU(stream, attribute_info_.at(j).ai_attribute_2d_bit_depth_minus1.at(i), 5, "ai_attribute_2d_bit_depth_minus1",gofId);
+                writeU(stream, int(attribute_info_.at(j).ai_attribute_MSB_align_flag.at(i)), 1, "ai_attribute_MSB_align_flag",gofId);
             }
         }
-        WRITE_U(stream, vps_extension_present_flag_, 1, "vps_extension_present_flag");
+        writeU(stream, vps_extension_present_flag_, 1, "vps_extension_present_flag",gofId);
 
         if (vps_extension_present_flag_) {
-            WRITE_U(stream, vps_packing_information_present_flag_, 1, "vps_packing_information_present_flag");
-            WRITE_U(stream, vps_miv_extension_present_flag_, 1, "vps_miv_extension_present_flag");
-            WRITE_U(stream, vps_extension_6bits_, 6, "vps_extension_6bits");
+            writeU(stream, vps_packing_information_present_flag_, 1, "vps_packing_information_present_flag",gofId);
+            writeU(stream, vps_miv_extension_present_flag_, 1, "vps_miv_extension_present_flag",gofId);
+            writeU(stream, vps_extension_6bits_, 6, "vps_extension_6bits",gofId);
         }
         // No packing information
         // No MIV extension
