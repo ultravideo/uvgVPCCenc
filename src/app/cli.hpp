@@ -70,6 +70,8 @@ struct opts_t {
     std::string dstAddress{};
     /** \brief Destination port for rtp streams */
     uint16_t dstPort = 0;
+    /** \brief Output directory for SDP files */
+    std::string sdpOutdir{};
 };
 
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args);

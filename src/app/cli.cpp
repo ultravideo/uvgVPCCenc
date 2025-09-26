@@ -51,7 +51,7 @@ namespace {
 
 // NOLINTNEXTLINE(cert-err58-cpp)
 const std::string short_options = "i:g:l:n:o:s:t:b:d:";
-const std::array<struct option, 13> long_options{{{"input", required_argument, nullptr, 'i'},
+const std::array<struct option, 14> long_options{{{"input", required_argument, nullptr, 'i'},
                                                   {"output", required_argument, nullptr, 'o'},
                                                   {"frames", required_argument, nullptr, 'n'},
                                                   {"start-frame", required_argument, nullptr, 's'},
@@ -63,7 +63,9 @@ const std::array<struct option, 13> long_options{{{"input", required_argument, n
                                                   {"help", no_argument, nullptr, 0},
                                                   {"version", no_argument, nullptr, 0},
                                                   {"dst-address", required_argument, nullptr, 0},
-                                                  {"dst-port", required_argument, nullptr, 0}}};
+                                                  {"dst-port", required_argument, nullptr, 0},
+                                                  {"sdp-outdir", required_argument, nullptr, 0}
+}};
 
 /**
  * \brief Try to detect voxel size from file name automatically
@@ -186,6 +188,8 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             opts.dstAddress = optarg;  // TODO: Check that the address is valid
         } else if (name == "dst-port") {
             opts.dstPort = static_cast<uint16_t>(std::stoi(optarg));
+        } else if (name == "sdp-outdir") {
+            opts.sdpOutdir = optarg;
         }
     }
 
@@ -268,6 +272,7 @@ void print_help(void) {
 #if defined(ENABLE_V3CRTP)
     std::cout << "      --dst-address <IP>       Destination IP address for an rtp stream\n";
     std::cout << "      --dst-port <number>      Destination port for an rtp stream\n";
+    std::cout << "      --sdp - outdir<dir>      Destination directory where out-of-band info is written in the SDP-format (when compiled with V3C RTP support)\n";
 #endif
     std::cout << "\nDescription:\n";
     std::cout << "  This tool encodes point cloud video frames using the uvgVPCCenc codec\n";

@@ -63,6 +63,7 @@
 #if defined(ENABLE_V3CRTP)
 #include <uvgv3crtp/version.h>
 #include <uvgv3crtp/v3c_api.h>
+#include <uvgrtp/util.hh>
 #endif
 
 namespace {
@@ -352,6 +353,68 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
 
         chunks->v3c_chunks.pop();
         chunks->io_mutex.unlock();
+
+        // Write SDP files if needed
+        if (write_sdp) {
+            // Define template SDP message and map V3C unit types to SDP media types
+            static constexpr const char* video_codec = "H265";
+            static constexpr RTP_FORMAT video_format = RTP_FORMAT_H265;
+            static const std::array<std::tuple<uvgV3CRTP::V3C_UNIT_TYPE, std::string, std::string, RTP_FORMAT, std::string>, 4> v3c_to_sdp{
+                {{uvgV3CRTP::V3C_AD, "AD", "application", RTP_FORMAT_ATLAS, "v3c"},
+                 {uvgV3CRTP::V3C_OVD, "OVD", "video", video_format, video_codec},
+                 {uvgV3CRTP::V3C_GVD, "GVD", "video", video_format, video_codec},
+                 {uvgV3CRTP::V3C_AVD, "AVD", "video", video_format, video_codec}}
+            };
+            static constexpr const char* sdp_template = 
+              "m={1} {2} RTP/AVP {3}\n"
+              "a=rtpmap:{3} {4}/{5}\n"
+              "a=v3cfmtp:sprop-v3c-unit-header={6};sprop-v3c-parameter-set={7}\n ";
+
+
+            if (!std::filesystem::is_directory(sdp_output_dir)) {
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+                    "APPLICATION", "SDP output directory " + sdp_output_dir + " does not exist, trying to create it.\n");
+                try {
+                    std::filesystem::create_directories(sdp_output_dir);
+                } catch (const std::exception& e) {
+                    throw std::runtime_error("V3C Sender : Could not create the directory " + sdp_output_dir +
+                                             " for SDP output (message: " + std::string(e.what()) + ")");
+                }
+            }
+
+            // Get V3C parameter set from current gof
+            auto vps = std::unique_ptr<char, decltype(&free)>(state.get_cur_gof_unit_info_string(uvgV3CRTP::V3C_VPS, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64), &free);
+
+            // Write separate SDP for each unit type
+            for ( const auto& [type, type_str, media_name, format, codec] : v3c_to_sdp) {
+                if (!state.cur_gof_has_unit(type)) continue;  // No such unit in the stream
+
+                const std::string sdp_file = sdp_output_dir + "/V3C_" + type_str + ".sdp";
+
+                // Use current gof to get parameters for SDP
+                auto unit_header = std::unique_ptr<char, decltype(&free)>(state.get_cur_gof_unit_info_string(type, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64), &free);
+
+                if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
+                    throw std::runtime_error(std::string("V3C Sender : Error creating SDP file (message: ") + state.get_error_msg() + ")");
+                }
+
+                const auto sdp = "m=" + media_name + std::to_string(dst_port) + " RTP/AVP " + std::to_string(format) + "\n"
+                                 "a=rtpmap:" + std::to_string(format) + " " + codec + "/" + std::to_string(uvgV3CRTP::RTP_CLOCK_RATE) + "\n"
+                                 "a=v3cfmtp:sprop-v3c-unit-header=" + unit_header.get() + ";sprop-v3c-parameter-set=" + vps.get();
+
+                // Write the SDP to file
+                std::ofstream sdp_stream(sdp_file);
+                if (!sdp_stream.is_open()) {
+                    throw std::runtime_error("V3C Sender : Could not open SDP file " + sdp_file + " for writing.");
+                }
+                sdp_stream << sdp;
+
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+                                                                       "Wrote SDP file to " + sdp_file + ".\n");
+            }
+
+            write_sdp = false;  // Only write once
+        }
 
         // Send newly added data
         while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {

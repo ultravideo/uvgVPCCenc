@@ -126,9 +126,9 @@ Send encoded bitstream over RTP. Destination can be set using ```--dst-address``
         --uvgvpcc <params>       Encoder configuration parameters (see next section)
         --help                   Show this help message
         --version                Show version information
-        --dst-address <IP>       Destination IP address for an rtp stream (when compiled with V3C RTP support)";
-        --dst-port <number>      Destination port for an rtp stream (when compiled with V3C RTP support)";
-        --sdp-out_dir <dir>      Destination directory where out-of-band info is written in the SDP-format
+        --dst-address <IP>       Destination IP address for an rtp stream (when compiled with V3C RTP support)
+        --dst-port <number>      Destination port for an rtp stream (when compiled with V3C RTP support)
+        --sdp-outdir <dir>       Destination directory where out-of-band info is written in the SDP-format (when compiled with V3C RTP support)
 ```
 ---
 
