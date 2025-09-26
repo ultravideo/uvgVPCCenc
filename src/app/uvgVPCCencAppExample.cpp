@@ -290,32 +290,44 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 
 /// @brief Application thread for sending output over RTP.
 /// @param chunks
-/// @param output_path
-void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const uint16_t dst_port) {
+/// @param dst_address
+/// @param dst_port
+/// @param sdp_output_dir
+void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const uint16_t dst_port, const std::string& sdp_output_dir) {
 #if defined(ENABLE_V3CRTP)
 
+    // ******** Print library version info **********
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
     
-    // ******** Initialize sample stream with input bitstream ***********
+    // ******** Create sender state object to manage sending ***********
     //
-    uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> state(uvgV3CRTP::INIT_FLAGS::VPS | uvgV3CRTP::INIT_FLAGS::AD | uvgV3CRTP::INIT_FLAGS::OVD |
-                                                      uvgV3CRTP::INIT_FLAGS::GVD | uvgV3CRTP::INIT_FLAGS::AVD,
+    uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> state(uvgV3CRTP::INIT_FLAGS::AD
+                                                    | uvgV3CRTP::INIT_FLAGS::OVD 
+                                                    | uvgV3CRTP::INIT_FLAGS::GVD 
+                                                    | uvgV3CRTP::INIT_FLAGS::AVD 
+                                                    | (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
                                                       dst_address.c_str(), dst_port  // Receiver address and port
-    );                                                                    // Create a new state in a sender configuration
-    state.init_sample_stream(FORCED_V3C_SIZE_PRECISION); // Use the forced precision for now
+    );
     //
-    // ******************************************************************
-    if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
-        throw std::runtime_error(std::string("V3C Sender : Error initializing state (message: ") + state.get_error_msg() + ")"); 
-    }
+    // *****************************************************************
 
-    // ******** Send sample stream **********
+    // ******** Start sending sample stream **********
     //
-    // TODO: Currently whole bitstream is stored, but should clear the sample stream at certain points
     // For rate limiting sending
     auto last_sleep_time = std::chrono::high_resolution_clock::now();
+    bool re_init = true;  // If sample stream is cleared, need to re-init the state
+    bool write_sdp = !sdp_output_dir.empty();
+
     while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
-                
+
+        if (re_init) {
+            state.init_sample_stream(FORCED_V3C_SIZE_PRECISION);  // Use the forced precision for now
+            if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
+                throw std::runtime_error(std::string("V3C Sender : Error initializing state (message: ") + state.get_error_msg() + ")");
+            }
+            re_init = false;
+        }
+
         // Get chunks and add them to state for sending
         chunks->available_chunks.acquire();
         chunks->io_mutex.lock();
@@ -353,7 +365,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
             }
             else
             {
-            //TODO: track which unit has been sent
+                // TODO: track which unit has been sent if sending partially filled gof
             //    for (uint8_t id = 0; id < uvgV3CRTP::NUM_V3C_UNIT_TYPES; id++) {
             //    if (!state.cur_gof_has_unit(uvgV3CRTP::V3C_UNIT_TYPE(id))) continue;
 
@@ -372,6 +384,24 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
 
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
                                                                "Processed V3C chunk of size " + std::to_string(len) + " bytes.\n");
+
+        // Check if we should clear the sample stream
+        if (state.num_gofs() >= uvgV3CRTP::RECEIVE_BUFFER_SIZE) {
+            // Write bitstream info before clearing
+            size_t len = 0;
+            auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+                                                                   "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Cleared sample stream after sending " +
+                                                                   std::to_string(uvgV3CRTP::RECEIVE_BUFFER_SIZE) + " gofs.\n");
+            if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+                    "APPLICATION", "Clearing sample stream before EOS, some data may not have been sent.\n");
+            }
+            state.clear_sample_stream();
+            re_init = true;  // Need to re-init the state
+            write_sdp = !sdp_output_dir.empty();  // Write new SDP if needed
+        }
 
         if (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::EOS) {
             state.reset_error_flag(); //More chunks are added later so reset EOS
@@ -496,7 +526,7 @@ int main(const int argc, const char* const argv[]) {
     std::thread v3c_sender_thread;
 
     if (!appParameters.outputPath.empty()) file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
-    if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort);
+    if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort, std::string());
 
     // Main loop of the application, feeding one frame to the encoder at each iteration
     for (;;) {
