@@ -383,7 +383,9 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
             }
 
             // Get V3C parameter set from current gof
-            auto vps = std::unique_ptr<char, decltype(&free)>(state.get_cur_gof_unit_info_string(uvgV3CRTP::V3C_VPS, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64), &free);
+            auto vps = std::unique_ptr<char, decltype(&free)>( state.get_cur_gof_unit_info_string(uvgV3CRTP::V3C_VPS, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::NONE,
+                                                                                                                      uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64),
+                &free);
 
             // Write separate SDP for each unit type
             for ( const auto& [type, type_str, media_name, format, codec] : v3c_to_sdp) {
@@ -392,15 +394,18 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
                 const std::string sdp_file = sdp_output_dir + "/V3C_" + type_str + ".sdp";
 
                 // Use current gof to get parameters for SDP
-                auto unit_header = std::unique_ptr<char, decltype(&free)>(state.get_cur_gof_unit_info_string(type, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64), &free);
+                size_t header_len = 0;
+                auto unit_header = std::unique_ptr<char, decltype(&free)>(state.get_cur_gof_unit_info_string(type, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64,
+                                                                                                                   uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::NONE, &header_len),
+                    &free);
 
                 if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
                     throw std::runtime_error(std::string("V3C Sender : Error creating SDP file (message: ") + state.get_error_msg() + ")");
                 }
 
-                const auto sdp = "m=" + media_name + std::to_string(dst_port) + " RTP/AVP " + std::to_string(format) + "\n"
+                const auto sdp = "m=" + media_name + " " + std::to_string(dst_port) + " RTP/AVP " + std::to_string(format) + "\n"
                                  "a=rtpmap:" + std::to_string(format) + " " + codec + "/" + std::to_string(uvgV3CRTP::RTP_CLOCK_RATE) + "\n"
-                                 "a=v3cfmtp:sprop-v3c-unit-header=" + unit_header.get() + ";sprop-v3c-parameter-set=" + vps.get();
+                                 "a=v3cfmtp:sprop-v3c-unit-header=" + std::string(unit_header.get(), header_len - 2) + ";\n  sprop-v3c-parameter-set=" + vps.get();
 
                 // Write the SDP to file
                 std::ofstream sdp_stream(sdp_file);
@@ -589,7 +594,7 @@ int main(const int argc, const char* const argv[]) {
     std::thread v3c_sender_thread;
 
     if (!appParameters.outputPath.empty()) file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
-    if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort, std::string());
+    if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort, appParameters.sdpOutdir);
 
     // Main loop of the application, feeding one frame to the encoder at each iteration
     for (;;) {
