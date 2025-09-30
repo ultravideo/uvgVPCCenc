@@ -460,8 +460,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
             auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
             uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
                                                                    "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Cleared sample stream after sending " +
-                                                                   std::to_string(uvgV3CRTP::RECEIVE_BUFFER_SIZE) + " gofs.\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Cleared sample stream after sending " + std::to_string(state.num_gofs()) + " gofs.\n");
             if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
                 uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
                     "APPLICATION", "Clearing sample stream before EOS, some data may not have been sent.\n");
@@ -491,7 +490,8 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
     //  **************************************
 
     if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK && state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
-        throw std::runtime_error(std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")");
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+            "APPLICATION", std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")\n");
     }
 #else
     throw std::runtime_error("V3C RTP not enabled, re-run cmake with '-DENABLE_V3CRTP=ON'.");

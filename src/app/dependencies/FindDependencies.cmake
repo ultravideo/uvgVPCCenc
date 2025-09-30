@@ -1,12 +1,12 @@
 if(ENABLE_V3CRTP)
 	# Check if uvgV3CRTP is already available
-	find_package(uvgV3CRTP 0.9.3 QUIET) #TODO: update min version to a version with necessary bug fixes etc.
+	find_package(uvgV3CRTP 0.9.4 QUIET) #TODO: update min version to a version with necessary bug fixes etc.
 
 	# Try pkgConfig as well
 	find_package(PkgConfig QUIET)
 	if(PkgConfig_FOUND)
 		if(NOT UVGV3CRTP_FOUND)
-			pkg_search_module(UVGV3CRTP uvgv3crtp>=0.9.3 uvgV3CRTP>=0.9.3)
+			pkg_search_module(UVGV3CRTP uvgv3crtp>=0.9.4 uvgV3CRTP>=0.9.4)
 		endif()
 	endif()
 
