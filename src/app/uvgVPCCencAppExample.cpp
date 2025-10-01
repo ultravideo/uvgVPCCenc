@@ -294,7 +294,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 /// @param dst_address
 /// @param dst_port
 /// @param sdp_output_dir
-void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const uint16_t dst_port, const std::string& sdp_output_dir) {
+void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const std::vector<uint16_t> dst_port, const std::string& sdp_output_dir) {
 #if defined(ENABLE_V3CRTP)
 
     // ******** Print library version info **********
@@ -302,13 +302,38 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
     
     // ******** Create sender state object to manage sending ***********
     //
-    uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> state(uvgV3CRTP::INIT_FLAGS::AD
-                                                    | uvgV3CRTP::INIT_FLAGS::OVD 
-                                                    | uvgV3CRTP::INIT_FLAGS::GVD 
-                                                    | uvgV3CRTP::INIT_FLAGS::AVD 
-                                                    | (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
-                                                      dst_address.c_str(), dst_port  // Receiver address and port
-    );
+    // If only one port is given, use it for all V3C unit types. Otherwise, use the given ports in order VPS, AD, OVD, GVD, AVD
+    uint16_t ports[uvgV3CRTP::NUM_V3C_UNIT_TYPES] = {};
+
+    // Use lambda to pick correct constructor to get correct scope for state object
+    uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> state = ([&]() {
+        if (dst_port.size() == 1)
+        {
+          // Set ports to the same value
+          std::fill(std::begin(ports), std::end(ports), dst_port.front());
+          return uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> (uvgV3CRTP::INIT_FLAGS::AD
+                                                            | uvgV3CRTP::INIT_FLAGS::OVD 
+                                                            | uvgV3CRTP::INIT_FLAGS::GVD 
+                                                            | uvgV3CRTP::INIT_FLAGS::AVD 
+                                                            | (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
+                                                              dst_address.c_str(), dst_port.front()  // Receiver address and port
+          );
+        }
+        else
+        {
+          if (sdp_output_dir.empty()) std::copy(dst_port.begin(), dst_port.end(), ports);  // Use all given ports
+          else std::copy(dst_port.begin(), dst_port.end(), std::next(ports));  // Leave first port as 0 if SDP is created
+
+          return uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> (uvgV3CRTP::INIT_FLAGS::AD
+                                                            | uvgV3CRTP::INIT_FLAGS::OVD 
+                                                            | uvgV3CRTP::INIT_FLAGS::GVD 
+                                                            | uvgV3CRTP::INIT_FLAGS::AVD 
+                                                            | (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
+                                                              dst_address.c_str(), ports  // Receiver address and ports
+          );
+        }
+    })();
+    
     //
     // *****************************************************************
 
@@ -403,7 +428,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst
                     throw std::runtime_error(std::string("V3C Sender : Error creating SDP file (message: ") + state.get_error_msg() + ")");
                 }
 
-                const auto sdp = "m=" + media_name + " " + std::to_string(dst_port) + " RTP/AVP " + std::to_string(format) + "\n"
+                const auto sdp = "m=" + media_name + " " + std::to_string(ports[type]) + " RTP/AVP " + std::to_string(format) + "\n"
                                  "a=rtpmap:" + std::to_string(format) + " " + codec + "/" + std::to_string(uvgV3CRTP::RTP_CLOCK_RATE) + "\n"
                                  "a=v3cfmtp:sprop-v3c-unit-header=" + std::string(unit_header.get(), header_len - 2) + ";\n  sprop-v3c-parameter-set=" + vps.get();
 

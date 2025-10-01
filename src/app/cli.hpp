@@ -40,6 +40,7 @@
 #include <string>
 #include <span>
 #include <cstdint>
+#include <vector>
 
 namespace cli {
 
@@ -69,7 +70,7 @@ struct opts_t {
     /** \brief Destination address for rtp streams */
     std::string dstAddress{};
     /** \brief Destination port for rtp streams */
-    uint16_t dstPort = 0;
+    std::vector<uint16_t> dstPort{};
     /** \brief Output directory for SDP files */
     std::string sdpOutdir{};
 };

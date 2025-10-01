@@ -109,8 +109,11 @@ The list of uvgVPCCenc parameters that can be modified with the ```--uvgvpcc``` 
     uvgVPCCenc -i <path_to_ply> -n 10 --dst-address=127.0.0.1 --dst-port=8890 
 ```
 
-Send encoded bitstream over RTP. Destination can be set using ```--dst-address``` and ```--dst-port```. A separate RTP media stream is created for each type of V3C unit and the streames are multiplexed to the same port using SSRC (hardcoded to be ```vuh_unit_type + 1```).
-
+Send encoded bitstream over RTP. Destination can be set using ```--dst-address``` and ```--dst-port```. A separate RTP media stream is created for each type of V3C unit and the streames are multiplexed to the same port using SSRC (hardcoded to be ```vuh_unit_type + 1```). Use a comma separated list to specify separate ports for each media stream e.g.
+```
+    --dst-port=[<VPS_port>,]<AD_port>,<OVD_port>,<GVD_port>,<AVD_port>
+```
+note: VPS port should be ommitted if a SDP output directory is specified.
 ---
 
 
@@ -127,8 +130,8 @@ Send encoded bitstream over RTP. Destination can be set using ```--dst-address``
         --help                   Show this help message
         --version                Show version information
         --dst-address <IP>       Destination IP address for an rtp stream (when compiled with V3C RTP support)
-        --dst-port <number>      Destination port for an rtp stream (when compiled with V3C RTP support)
-        --sdp-outdir <dir>       Destination directory where out-of-band info is written in the SDP-format (when compiled with V3C RTP support)
+        --dst-port <number-list> Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set) (when compiled with V3C RTP support)
+        --sdp-outdir <dir>       Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP (when compiled with V3C RTP support)
 ```
 ---
 

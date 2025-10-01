@@ -42,6 +42,7 @@
 #include <span>
 #include <stdexcept>
 #include <string>
+#include <sstream>
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/version.hpp"
 
@@ -187,7 +188,21 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         } else if (name == "dst-address") {
             opts.dstAddress = optarg;  // TODO: Check that the address is valid
         } else if (name == "dst-port") {
-            opts.dstPort = static_cast<uint16_t>(std::stoi(optarg));
+            std::stringstream port_list(optarg);
+            std::string tmp;
+            while (std::getline(port_list, tmp, ',')) {
+                try {
+                    const int port = std::stoi(tmp);
+                    if (port < 0 || port > 65535) {
+                        throw std::runtime_error("Input error: Given port number is out of range (0-65535).");
+                    }
+                    opts.dstPort.push_back(static_cast<uint16_t>(port));
+                } catch (const std::invalid_argument&) {
+                    throw std::runtime_error("Input error: Given port number is not a valid integer.");
+                } catch (const std::out_of_range&) {
+                    throw std::runtime_error("Input error: Given port number is out of range (0-65535).");
+                }
+            }
         } else if (name == "sdp-outdir") {
             opts.sdpOutdir = optarg;
         }
@@ -206,6 +221,16 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
     // Check that at least one output method is defined
     if (opts.outputPath.empty() && opts.dstAddress.empty()) {
         throw std::runtime_error("Input error: At least one output should be specified (e.g. 'output' or 'dst-address')\n");
+    }
+
+    // Check that the number of ports is valid
+    if (!opts.dstAddress.empty()) {
+        if (opts.sdpOutdir.empty() && opts.dstPort.size() != 1 && opts.dstPort.size() != 5) {
+            throw std::runtime_error("Input error: When using rtp streaming, either one port or five ports should be specified (one for each of the V3C layers).");
+        }
+        if (!opts.sdpOutdir.empty() && opts.dstPort.size() != 1 && opts.dstPort.size() != 4) {
+            throw std::runtime_error("Input error: When using rtp streaming with sdp output, one or four ports should be specified (one for each of the V3C layers except VPS).");
+        }
     }
 
     if (opts.inputGeoPrecision == 0) {
@@ -271,8 +296,8 @@ void print_help(void) {
     std::cout << "      --version                Show version information\n";
 #if defined(ENABLE_V3CRTP)
     std::cout << "      --dst-address <IP>       Destination IP address for an rtp stream\n";
-    std::cout << "      --dst-port <number>      Destination port for an rtp stream\n";
-    std::cout << "      --sdp - outdir<dir>      Destination directory where out-of-band info is written in the SDP-format (when compiled with V3C RTP support)\n";
+    std::cout << "      --dst-port <number-list> Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set)\n";
+    std::cout << "      --sdp - outdir<dir>      Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP\n";
 #endif
     std::cout << "\nDescription:\n";
     std::cout << "  This tool encodes point cloud video frames using the uvgVPCCenc codec\n";
