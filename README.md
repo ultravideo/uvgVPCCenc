@@ -114,6 +114,7 @@ Send encoded bitstream over RTP. Destination can be set using ```--dst-address``
     --dst-port=[<VPS_port>,]<AD_port>,<OVD_port>,<GVD_port>,<AVD_port>
 ```
 note: VPS port should be ommitted if a SDP output directory is specified.
+
 ---
 
 
