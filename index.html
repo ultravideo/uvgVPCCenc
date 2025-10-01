@@ -139,7 +139,8 @@ Example:</h2>
 <h3><a class="anchor" id="autotoc_md10"></a>
 V3C RTP Example:</h3>
 <div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 --dst-address=127.0.0.1 --dst-port=8890 </div>
-</div><!-- fragment --><p>Send encoded bitstream over RTP. Destination can be set using <code>--dst-address</code> and <code>--dst-port</code>. A separate RTP media stream is created for each type of V3C unit and the streames are multiplexed to the same port using SSRC (hardcoded to be <code>vuh_unit_type + 1</code>).</p>
+</div><!-- fragment --><p>Send encoded bitstream over RTP. Destination can be set using <code>--dst-address</code> and <code>--dst-port</code>. A separate RTP media stream is created for each type of V3C unit and the streames are multiplexed to the same port using SSRC (hardcoded to be <code>vuh_unit_type + 1</code>). Use a comma separated list to specify separate ports for each media stream e.g. </p><div class="fragment"><div class="line">--dst-port=[&lt;VPS_port&gt;,]&lt;AD_port&gt;,&lt;OVD_port&gt;,&lt;GVD_port&gt;,&lt;AVD_port&gt;</div>
+</div><!-- fragment --><p> note: VPS port should be ommitted if a SDP output directory is specified.</p>
 <hr  />
 <h2><a class="anchor" id="autotoc_md12"></a>
 Application parameters</h2>
@@ -153,8 +154,9 @@ Application parameters</h2>
 <div class="line">    --uvgvpcc &lt;params&gt;       Encoder configuration parameters (see next section)</div>
 <div class="line">    --help                   Show this help message</div>
 <div class="line">    --version                Show version information</div>
-<div class="line">    --dst-address &lt;IP&gt;       Destination IP address for an rtp stream (when compiled with V3C RTP support)&quot;;</div>
-<div class="line">    --dst-port &lt;number&gt;      Destination port for an rtp stream (when compiled with V3C RTP support)&quot;;</div>
+<div class="line">    --dst-address &lt;IP&gt;       Destination IP address for an rtp stream (when compiled with V3C RTP support)</div>
+<div class="line">    --dst-port &lt;number-list&gt; Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set) (when compiled with V3C RTP support)</div>
+<div class="line">    --sdp-outdir &lt;dir&gt;       Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP (when compiled with V3C RTP support)</div>
 </div><!-- fragment --> <hr  />
 <h2><a class="anchor" id="autotoc_md14"></a>
 uvgVPCCenc parameters</h2>

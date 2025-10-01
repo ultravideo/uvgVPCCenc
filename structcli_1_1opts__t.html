@@ -85,7 +85,7 @@ $(function() {
 <div class="dynheader">
 Collaboration diagram for cli::opts_t:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="structcli_1_1opts__t__coll__graph.svg" width="206" height="316"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="structcli_1_1opts__t__coll__graph.svg" width="206" height="336"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
@@ -126,9 +126,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:af695285723b9204d8e751889ef95ae0f" id="r_af695285723b9204d8e751889ef95ae0f"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcli_1_1opts__t.html#af695285723b9204d8e751889ef95ae0f">dstAddress</a> {}</td></tr>
 <tr class="memdesc:af695285723b9204d8e751889ef95ae0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination address for rtp streams.  <br /></td></tr>
 <tr class="separator:af695285723b9204d8e751889ef95ae0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a845dac6a47e2b9f89cf96babb6fc2641" id="r_a845dac6a47e2b9f89cf96babb6fc2641"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcli_1_1opts__t.html#a845dac6a47e2b9f89cf96babb6fc2641">dstPort</a> = 0</td></tr>
-<tr class="memdesc:a845dac6a47e2b9f89cf96babb6fc2641"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination port for rtp streams.  <br /></td></tr>
-<tr class="separator:a845dac6a47e2b9f89cf96babb6fc2641"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23703595958615622f735d6e204e6b30" id="r_a23703595958615622f735d6e204e6b30"><td class="memItemLeft" align="right" valign="top">std::vector&lt; uint16_t &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcli_1_1opts__t.html#a23703595958615622f735d6e204e6b30">dstPort</a> {}</td></tr>
+<tr class="memdesc:a23703595958615622f735d6e204e6b30"><td class="mdescLeft">&#160;</td><td class="mdescRight">Destination port for rtp streams.  <br /></td></tr>
+<tr class="separator:a23703595958615622f735d6e204e6b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5e8883cbc33c7b4ea229b44e63f03f1" id="r_ad5e8883cbc33c7b4ea229b44e63f03f1"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structcli_1_1opts__t.html#ad5e8883cbc33c7b4ea229b44e63f03f1">sdpOutdir</a> {}</td></tr>
+<tr class="memdesc:ad5e8883cbc33c7b4ea229b44e63f03f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Output directory for SDP files.  <br /></td></tr>
+<tr class="separator:ad5e8883cbc33c7b4ea229b44e63f03f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Data Documentation</h2>
 <a id="af695285723b9204d8e751889ef95ae0f" name="af695285723b9204d8e751889ef95ae0f"></a>
@@ -147,14 +150,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="a845dac6a47e2b9f89cf96babb6fc2641" name="a845dac6a47e2b9f89cf96babb6fc2641"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a845dac6a47e2b9f89cf96babb6fc2641">&#9670;&#160;</a></span>dstPort</h2>
+<a id="a23703595958615622f735d6e204e6b30" name="a23703595958615622f735d6e204e6b30"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a23703595958615622f735d6e204e6b30">&#9670;&#160;</a></span>dstPort</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">uint16_t cli::opts_t::dstPort = 0</td>
+          <td class="memname">std::vector&lt;uint16_t&gt; cli::opts_t::dstPort {}</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -272,6 +275,22 @@ Public Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Output filename. </p>
+
+</div>
+</div>
+<a id="ad5e8883cbc33c7b4ea229b44e63f03f1" name="ad5e8883cbc33c7b4ea229b44e63f03f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5e8883cbc33c7b4ea229b44e63f03f1">&#9670;&#160;</a></span>sdpOutdir</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string cli::opts_t::sdpOutdir {}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Output directory for SDP files. </p>
 
 </div>
 </div>
