@@ -54,6 +54,7 @@
 #include "mapEncoding/mapEncoding.hpp"
 #include "mapGeneration/mapGeneration.hpp"
 #include "patchGeneration/patchGeneration.hpp"
+#include "patchGeneration/utilsPatchGeneration.hpp"
 #include "patchPacking/patchPacking.hpp"
 #include "utils/fileExport.hpp"
 #include "utils/jobManagement.hpp"
@@ -225,6 +226,11 @@ void verifyConfig() {
         throw std::runtime_error(
             "Intermediate files need to be exported (exportIntermediateFiles=true) but no intermediate files directory has been set "
             "(intermediateFilesDir parameter is empty).");
+    }
+
+    if (p_->refineSegmentationMaxNNVoxelDistanceLUT >= adjacentPointsSearch.size()) {
+        throw std::runtime_error("The refineSegmentationMaxNNVoxelDistanceLUT (" + std::to_string(p_->refineSegmentationMaxNNVoxelDistanceLUT) +
+            ") needs to be smaller than the size of the adjacentPointsSearch array (" + std::to_string(adjacentPointsSearch.size()) + ").");
     }
 }
 
