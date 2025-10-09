@@ -228,9 +228,9 @@ void verifyConfig() {
             "(intermediateFilesDir parameter is empty).");
     }
 
-    if (p_->refineSegmentationMaxNNVoxelDistanceLUT >= adjacentPointsSearch.size()) {
+    if (p_->refineSegmentationMaxNNVoxelDistanceLUT > adjacentPointsSearch.size()) {
         throw std::runtime_error("The refineSegmentationMaxNNVoxelDistanceLUT (" + std::to_string(p_->refineSegmentationMaxNNVoxelDistanceLUT) +
-            ") needs to be smaller than the size of the adjacentPointsSearch array (" + std::to_string(adjacentPointsSearch.size()) + ").");
+            ") needs to be smaller or equal to the size of the adjacentPointsSearch array (" + std::to_string(adjacentPointsSearch.size()) + ").");
     }
 }
 
