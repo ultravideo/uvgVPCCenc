@@ -73,6 +73,9 @@ struct opts_t {
     std::vector<uint16_t> dstPort{};
     /** \brief Output directory for SDP files */
     std::string sdpOutdir{};
+    /** \brief FPS limit for reading input frames */
+    size_t inputFramePerSecondLimiter = 0; // 0 means no input frame limiter (maxConcurrentFrames can still be a limiter)
+
 };
 
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args);

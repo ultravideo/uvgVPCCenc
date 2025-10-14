@@ -161,6 +161,9 @@ struct Parameters {
     size_t attributeEncodingQp;
     std::string attributeEncodingPreset;
 
+    // ___ Bitstream generation ___ //
+    bool displayBitstreamGenerationFps = false;
+
     // ___ Miscellaneous ___ //
     // bool useEncoderCommand = false; // lf : All mention of this parameter has been commented. This might be usefull to support command line
     // 2D encoder in the futur.

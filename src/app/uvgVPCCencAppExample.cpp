@@ -197,6 +197,10 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     bool run = true;
     const size_t totalNbFrames = appParameters.nbFrames * appParameters.nbLoops;
     Retval returnValue = Retval::Running;
+    
+    // For input frame limiter
+    double lastFrameTimeStamp = 0;    
+    
     // Producer thread that reads input frames.
     while (run) {
         // Signal that all input frames has been load
@@ -229,6 +233,20 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
                                    std::string(e.what()) + "\n");
             returnValue = Retval::Failure;
         }
+
+        if(appParameters.inputFramePerSecondLimiter != 0) {
+            const double targetDelayMs = 1000.0 / static_cast<double>(appParameters.inputFramePerSecondLimiter);
+            const double currentFrameStamp = uvgvpcc_enc::global_timer.elapsed(); //TODO(lf,gg): is it okay to access such library objects from the application?
+            const double delay = currentFrameStamp - lastFrameTimeStamp;
+            if(delay < targetDelayMs) {
+                const double waitMs = targetDelayMs - delay;
+                std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(waitMs)));
+                lastFrameTimeStamp = currentFrameStamp + waitMs;
+            } else {
+                lastFrameTimeStamp = currentFrameStamp;
+            }
+        }
+        
 
         // Signal that an item has been produced
         available_input_slot.acquire();

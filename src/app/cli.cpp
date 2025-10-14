@@ -52,7 +52,7 @@ namespace {
 
 // NOLINTNEXTLINE(cert-err58-cpp)
 const std::string short_options = "i:g:l:n:o:s:t:b:d:";
-const std::array<struct option, 14> long_options{{{"input", required_argument, nullptr, 'i'},
+const std::array<struct option, 15> long_options{{{"input", required_argument, nullptr, 'i'},
                                                   {"output", required_argument, nullptr, 'o'},
                                                   {"frames", required_argument, nullptr, 'n'},
                                                   {"start-frame", required_argument, nullptr, 's'},
@@ -65,7 +65,8 @@ const std::array<struct option, 14> long_options{{{"input", required_argument, n
                                                   {"version", no_argument, nullptr, 0},
                                                   {"dst-address", required_argument, nullptr, 0},
                                                   {"dst-port", required_argument, nullptr, 0},
-                                                  {"sdp-outdir", required_argument, nullptr, 0}
+                                                  {"sdp-outdir", required_argument, nullptr, 0},
+                                                  {"input-frame-per-second-limiter", required_argument, nullptr, 0}
 }};
 
 /**
@@ -205,6 +206,10 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             }
         } else if (name == "sdp-outdir") {
             opts.sdpOutdir = optarg;
+        } else if (name == "input-frame-per-second-limiter") {
+            opts.inputFramePerSecondLimiter = std::stoi(optarg);
+        } else {
+            //TODO(lf): throw error ?
         }
     }
 

@@ -246,6 +246,10 @@ void initializeParameterMap(Parameters& param) {
         {"attributeEncodingQp", {UINT, "", &param.attributeEncodingQp}},
         {"attributeEncodingPreset",
          {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.attributeEncodingPreset}},
+
+        // ___ Bitstream generation ___ //
+        {"displayBitstreamGenerationFps", {BOOL, "", &param.displayBitstreamGenerationFps}},
+
     };
 }
 
