@@ -1,19 +1,21 @@
 <map id="src/lib/patchGeneration/robin_hood.h" name="src/lib/patchGeneration/robin_hood.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="329,5,502,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="147,5,321,45"/>
 <area shape="rect" id="Node000002" href="$patchSegmentation_8cpp.html" title=" " alt="" coords="5,181,185,221"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="316,51,261,70,207,96,179,116,152,139,112,183,108,179,149,135,175,112,205,91,259,65,315,46"/>
-<area shape="rect" id="Node000003" href="$ppiSegmenter_8cpp.html" title=" " alt="" coords="605,181,778,221"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="516,44,569,63,618,91,641,112,659,135,685,180,680,182,655,138,637,115,615,95,567,68,514,49"/>
-<area shape="rect" id="Node000004" href="$ppiSegmenter_8hpp.html" title=" " alt="" coords="431,93,605,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="450,52,497,91,494,95,447,56"/>
-<area shape="rect" id="Node000006" href="$utilsPatchGeneration_8hpp.html" title=" " alt="" coords="218,93,407,133"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="384,56,337,95,334,91,380,52"/>
-<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="569,137,655,179,652,184,567,142"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,58,113,183,108,179,208,55"/>
+<area shape="rect" id="Node000003" href="$ppiSegmenter_8cpp.html" title=" " alt="" coords="210,181,383,221"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="214,58,197,95,195,114,200,132,223,159,253,179,250,183,219,163,196,135,190,114,192,93,209,56"/>
+<area shape="rect" id="Node000004" href="$ppiSegmenter_8hpp.html" title=" " alt="" coords="210,93,383,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="258,55,285,92,281,95,254,58"/>
+<area shape="rect" id="Node000006" href="$utilsPatchGeneration_8hpp.html" title=" " alt="" coords="407,93,597,133"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="307,47,444,91,443,96,305,52"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="299,147,299,181,294,181,294,147"/>
 <area shape="rect" id="Node000005" href="$patchGeneration_8cpp.html" title=" " alt="" coords="407,181,581,221"/>
-<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="512,147,502,182,497,180,506,146"/>
-<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="253,141,144,184,142,179,251,136"/>
-<area shape="poly" id="edge10_Node000006_Node000003" title=" " alt="" coords="410,134,609,179,608,184,408,139"/>
-<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="366,137,455,179,453,184,364,142"/>
-<area shape="rect" id="Node000007" href="$normalOrientation_8cpp.html" title=" " alt="" coords="210,181,383,221"/>
-<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="309,147,303,182,298,181,304,146"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="353,136,452,179,450,184,351,141"/>
+<area shape="poly" id="edge9_Node000006_Node000002" title=" " alt="" coords="400,139,185,184,184,179,399,134"/>
+<area shape="poly" id="edge10_Node000006_Node000003" title=" " alt="" coords="445,141,343,184,341,179,443,136"/>
+<area shape="poly" id="edge8_Node000006_Node000005" title=" " alt="" coords="502,147,498,181,493,181,496,147"/>
+<area shape="rect" id="Node000007" href="$normalOrientation_8cpp.html" title=" " alt="" coords="775,181,949,221"/>
+<area shape="poly" id="edge7_Node000006_Node000007" title=" " alt="" coords="595,134,784,179,783,184,593,139"/>
+<area shape="rect" id="Node000008" href="$uvgvpcc_8cpp.html" title=" " alt="" coords="605,189,751,214"/>
+<area shape="poly" id="edge11_Node000006_Node000008" title=" " alt="" coords="554,137,656,186,653,191,552,142"/>
 </map>
