@@ -42,6 +42,8 @@ test-long:
   stage: test-long-default
   script:
     - export PATH="${HOME}/bin:${PATH}"
+    - cmake --preset=CI
+    - cmake --build --preset=CI
     - ctest --preset=CI-ci-long-default
   dependencies:
     - build
@@ -58,6 +60,8 @@ test-short:
   stage: test-long-slicing
   script:
     - export PATH="${HOME}/bin:${PATH}"
+    - cmake --preset=CI
+    - cmake --build --preset=CI
     - ctest --preset=CI-ci-long-slicing
   dependencies:
     - build
