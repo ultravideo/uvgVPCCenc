@@ -50,7 +50,7 @@ namespace cli {
 
 namespace {
 
-// NOLINTNEXTLINE(cert-err58-cpp)
+// NOLINTNEXTLINE(cert-err58-cpp,bugprone-throwing-static-initialization)
 const std::string short_options = "i:g:l:n:o:s:t:b:d:";
 const std::array<struct option, 15> long_options{{{"input", required_argument, nullptr, 'i'},
                                                   {"output", required_argument, nullptr, 'o'},

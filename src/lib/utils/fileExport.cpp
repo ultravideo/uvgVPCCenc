@@ -61,9 +61,18 @@ using namespace uvgvpcc_enc;
 namespace {
 
 // NOLINTNEXTLINE(cert-err58-cpp)
-const std::array<Vector3<uint8_t>, 6> ppiColors = {{{51, 51, 51}, {0, 102, 51}, {153, 0, 0}, {0, 51, 102}, {255, 204, 0}, {102, 204, 204}}};
+// const std::array<Vector3<uint8_t>, 6> ppiColors = {{
+//     {51, 51, 51},
+//     {0, 102, 51},
+//     {153, 0, 0},
+//     {0, 51, 102},
+//     {255, 204, 0},
+//     {102, 204, 204}
+// }};
 
-// NOLINTNEXTLINE(cert-err58-cpp)
+
+
+// NOLINTNEXTLINE(cert-err58-cpp,bugprone-throwing-static-initialization)
 const std::array<Vector3<uint8_t>, 114> patchColors = {{
     // Red color is for points not being part of a patch before the 2D projection.
     {139, 0, 0},     {165, 42, 42},   {178, 34, 34},   {220, 20, 60},   {255, 99, 71},   {255, 127, 80},  {205, 92, 92},   {240, 128, 128},
@@ -279,6 +288,32 @@ void exportPointCloudInitialSegmentation(const std::shared_ptr<Frame>& frame, co
         "EXPORT FILE", "Export intermediate point cloud after initial segmentation for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/03-initialSegmentation/INITIAL-SEGMENTATION_f" +
+                                   zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthVoxelized) + ".ply";
+
+    std::vector<Vector3<uint8_t>> attributes(pointsGeometry.size());
+    for (size_t pointIndex = 0; pointIndex < pointsGeometry.size(); ++pointIndex) {
+        attributes[pointIndex] = ppiColors[pointsPPIs[pointIndex]];
+    }
+    exportPointCloud(outputPath, pointsGeometry, attributes);
+}
+
+void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,const std::vector<Vector3<uint8_t>>& attributes,
+                                       const std::string& axisStr) {
+    Logger::log<LogLevel::TRACE>(
+        "EXPORT FILE", "Export intermediate point cloud after " + axisStr + " axis slicing for frame " + std::to_string(frame->frameId) + ".\n");
+
+    const std::string outputPath = p_->intermediateFilesDir + "/0-" + axisStr + "Slicing/SLICING_" + axisStr + "_f" +
+                                   zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthVoxelized) + ".ply";
+
+    exportPointCloud(outputPath, pointsGeometry, attributes);
+}
+
+void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
+                                        const std::vector<size_t>& pointsPPIs) {
+    Logger::log<LogLevel::TRACE>(
+        "EXPORT FILE", "Export intermediate point cloud after refine segmentation for frame " + std::to_string(frame->frameId) + ".\n");
+
+    const std::string outputPath = p_->intermediateFilesDir + "/03-SlicingPPISegmentation/SLICING_PPI_SEGMENTATION_f" +
                                    zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthVoxelized) + ".ply";
 
     std::vector<Vector3<uint8_t>> attributes(pointsGeometry.size());

@@ -41,6 +41,8 @@
 #include <string>
 #include <vector>
 
+#include <cstdlib>
+
 #include "normalComputation.hpp"
 #include "normalOrientation.hpp"
 #include "patchGeneration/kdTree.hpp"
@@ -48,6 +50,7 @@
 #include "ppiSegmenter.hpp"
 #include "utils/parameters.hpp"
 #include "utils/utils.hpp"
+#include "slicingComputation.hpp"
 #include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
@@ -101,20 +104,27 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
         voxelization(frame->pointsGeometry, voxelizedGeometryBuffer, voxelIdToPointsId, p_->geoBitDepthInput, p_->geoBitDepthVoxelized);
     }
 
-    // kdtree init and knn searches //
-    std::vector<std::vector<size_t>> pointsNNList;
-    computePointsNNList(pointsNNList, voxelizedPointsGeometry, std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
+    std::vector<size_t> voxelsPPIs(voxelizedPointsGeometry.size(),PPI_NON_ASSIGNED);
 
-    // Normal computation & orientation //
-    std::vector<uvgvpcc_enc::Vector3<double>> pointsNormal(voxelizedPointsGeometry.size());
-    NormalComputation::computeNormals(frame, pointsNormal, voxelizedPointsGeometry, pointsNNList);
-    NormalOrientation::orientNormals(frame, pointsNormal, voxelizedPointsGeometry, pointsNNList);
+    if(p_->activateSlicing) {
+        slicingComputation::ppiAssignationSlicing(frame, voxelizedPointsGeometry, voxelsPPIs);
+    } else {
+        // kdtree init and knn searches //
+        std::vector<std::vector<size_t>> pointsNNList;
+        computePointsNNList( pointsNNList, voxelizedPointsGeometry,
+            std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
 
-    // Projection Plane Index Segmentation //
-    std::vector<size_t> voxelsPPIs(voxelizedPointsGeometry.size());
-    PPISegmenter ppiSegmenter(voxelizedPointsGeometry, pointsNormal);
-    ppiSegmenter.initialSegmentation(frame, voxelsPPIs, frame->frameId);
-    ppiSegmenter.refineSegmentation(frame, voxelsPPIs, frame->frameId);
+        // Normal computation & orientation //
+        std::vector<uvgvpcc_enc::Vector3<double>> pointsNormal(voxelizedPointsGeometry.size());
+        NormalComputation::computeNormals(frame, pointsNormal, voxelizedPointsGeometry, pointsNNList);
+        NormalOrientation::orientNormals(frame, pointsNormal, voxelizedPointsGeometry, pointsNNList);
+
+        // Projection Plane Index Segmentation //
+        PPISegmenter ppiSegmenter(voxelizedPointsGeometry, pointsNormal);
+        ppiSegmenter.initialSegmentation(frame, voxelsPPIs, frame->frameId);
+        ppiSegmenter.refineSegmentation(frame, voxelsPPIs, frame->frameId);        
+    }
+
 
     // "De-voxelization"
     std::vector<size_t> pointsPPIsBuffer;

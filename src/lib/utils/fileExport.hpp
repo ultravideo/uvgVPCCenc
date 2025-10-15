@@ -44,6 +44,19 @@ using namespace uvgvpcc_enc;
 
 namespace FileExport {
 
+const std::array<Vector3<uint8_t>, 10> ppiColors = {{
+    {91, 91, 91},    // Charcoal Gray
+    {0, 102, 51},    // Forest Green
+    {153, 0, 0},     // Rich Crimson
+    {0, 51, 102},    // Deep Blue
+    {255, 204, 0},   // Golden Yellow
+    {102, 204, 204}, // Muted Cyan
+    {255,0,255},     // Magenta for isolated point identification
+    {255,255,255},   // White for masters
+    {0,0,0},         // Black
+    {255, 0, 255} // 
+}};    
+
 void cleanIntermediateFiles();
 
 // Patch generation
@@ -53,6 +66,10 @@ void exportPointCloudNormalOrientation(const std::shared_ptr<Frame>& frame, cons
                                        std::vector<Vector3<double>>& normals);
 void exportPointCloudInitialSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                          const std::vector<size_t>& pointsPPIs);
+void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,const std::vector<Vector3<uint8_t>>& attributes,
+                                       const std::string& axisStr);
+void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
+                                        const std::vector<size_t>& pointsPPIs);
 void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                         const std::vector<size_t>& pointsPPIs);
 void exportPointCloudPatchSegmentation(const std::shared_ptr<Frame>& frame);

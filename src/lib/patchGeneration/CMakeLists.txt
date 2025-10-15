@@ -13,6 +13,7 @@ add_library(patchGenerationLibrary STATIC
     normalOrientation.cpp
     ppiSegmenter.cpp
     patchSegmentation.cpp
+    slicingComputation.cpp
 )
 
 # Include directories for headers

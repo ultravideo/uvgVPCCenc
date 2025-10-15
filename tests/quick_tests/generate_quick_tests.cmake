@@ -25,7 +25,7 @@ message(STATUS "Defining tests in generate_quick_tests.cmake")
 
 # Test configurations
 # set(TEST_CONFIGURATIONS default slicing efficientMapGen)
-set(TEST_CONFIGURATIONS default)
+set(TEST_CONFIGURATIONS default slicing)
 set(REF_MD5_FILE "${CMAKE_SOURCE_DIR}/tests/quick_tests/ref_md5_quick_tests.csv")
 set(TEST_SEQ_DIR "${CMAKE_SOURCE_DIR}/_sequences/VPCC")
 set(TIMEOUT 300)

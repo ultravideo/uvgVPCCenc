@@ -47,7 +47,7 @@ namespace {
 
 using Preset = std::vector<std::pair<const char*, const char*>>;
 
-// NOLINTBEGIN(cert-err58-cpp)
+// NOLINTBEGIN(cert-err58-cpp,bugprone-throwing-static-initialization)
 Preset preset_vox9_fast = {
     // ___ General parameters __ //
     {"sizeGOF", "16"},
@@ -61,10 +61,16 @@ Preset preset_vox9_fast = {
 
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "7"},
-    {"refineSegmentationMaxNNVoxelDistanceLUT", "2"},
-    {"refineSegmentationMaxNNTotalPointCount", "32"},
-    {"refineSegmentationLambda", "3.5"},
-    {"refineSegmentationIterationCount", "3"},
+    {"refineSegmentationMaxNNVoxelDistanceLUT", "2"}, // old : 2
+    {"refineSegmentationMaxNNTotalPointCount", "32"}, // old : 32
+    {"refineSegmentationLambda", "3.5"}, // old : 3.5
+    {"refineSegmentationIterationCount", "3"}, // old : 3
+
+    // ___ PPI smoothing for Slicing Algorithm ___ //
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},   
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "12"},  
+    {"slicingRefineSegmentationLambda", "3.5"},               
+    {"slicingRefineSegmentationIterationCount", "1"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},  // TODO(lf)-PRESET: subjective quality and performance only
@@ -80,8 +86,8 @@ Preset preset_vox9_fast = {
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding", "16"},
     {"occupancyEncodingPreset", "ultrafast"},  // (Always lossless) Negligeable impact on both performance and bitrate (Kvazaar)
-    {"geometryEncodingPreset", "fast"},        // TODO(lf)-PRESET: fast or medium ?
-    {"attributeEncodingPreset", "ultrafast"}   // TODO(lf)-PRESET: fixed ?
+    {"geometryEncodingPreset", "fast"},        // TODO(lf)-PRESET: fast or medium ?  // old : fast
+    {"attributeEncodingPreset", "ultrafast"}   // TODO(lf)-PRESET: fixed ?     // old : ultrafast
 };
 
 Preset preset_vox9_slow = {
@@ -99,8 +105,14 @@ Preset preset_vox9_slow = {
     {"geoBitDepthRefineSegmentation", "8"},             // TODO(lf)-PRESET: fixed
     {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},   // TODO(lf)-PRESET: fixed
     {"refineSegmentationMaxNNTotalPointCount", "256"},  // TODO(lf)-PRESET: fixed
-    {"refineSegmentationLambda", "3.0"},                // TODO(lf)-PRESET : should be tested with iterations
-    {"refineSegmentationIterationCount", "15"},         // TODO(lf)-PRESET : should be tested with lambda
+    {"refineSegmentationLambda", "3"},                // TODO(lf)-PRESET : should be tested with iterations
+    {"refineSegmentationIterationCount", "15"},        // old : 15 // TODO(lf)-PRESET : should be tested with lambda
+
+    // ___ PPI smoothing for Slicing Algorithm ___ //
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},   
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},  
+    {"slicingRefineSegmentationLambda", "5"},               
+    {"slicingRefineSegmentationIterationCount", "10"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "5"},  // TODO(lf)-PRESET: fixed
@@ -136,7 +148,13 @@ Preset preset_vox10_fast = {
     {"refineSegmentationMaxNNVoxelDistanceLUT", "2"},
     {"refineSegmentationMaxNNTotalPointCount", "32"},
     {"refineSegmentationLambda", "3.5"},
-    {"refineSegmentationIterationCount", "3"},
+    {"refineSegmentationIterationCount", "3"}, // old : 3
+
+    // ___ PPI smoothing for Slicing Algorithm ___ //
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},   
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "16"},  
+    {"slicingRefineSegmentationLambda", "4"},               
+    {"slicingRefineSegmentationIterationCount", "2"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},
@@ -151,9 +169,9 @@ Preset preset_vox10_fast = {
 
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding", "16"},
-    {"occupancyEncodingPreset", "ultrafast"},
-    {"geometryEncodingPreset", "fast"},
-    {"attributeEncodingPreset", "ultrafast"}};
+    {"occupancyEncodingPreset", "ultrafast"}, // old ultrafast
+    {"geometryEncodingPreset", "fast"},  // old fast
+    {"attributeEncodingPreset", "ultrafast"}};  // old ultrafast};
 
 Preset preset_vox10_slow = {
     // ___ General parameters __ //
@@ -171,7 +189,13 @@ Preset preset_vox10_slow = {
     {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},
     {"refineSegmentationMaxNNTotalPointCount", "256"},
     {"refineSegmentationLambda", "3.0"},
-    {"refineSegmentationIterationCount", "15"},
+    {"refineSegmentationIterationCount", "15"}, // old : 15
+
+    // ___ PPI smoothing for Slicing Algorithm ___ //
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "6"},   
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},  
+    {"slicingRefineSegmentationLambda", "5"},               
+    {"slicingRefineSegmentationIterationCount", "10"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "5"},
@@ -208,6 +232,12 @@ Preset preset_vox11_fast = {
     {"refineSegmentationLambda", "3.0"},
     {"refineSegmentationIterationCount", "4"},
 
+    // ___ PPI smoothing for Slicing Algorithm ___ //
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},   
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "128"},  
+    {"slicingRefineSegmentationLambda", "3.0"},             
+    {"slicingRefineSegmentationIterationCount", "4"},
+
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},
 
@@ -243,6 +273,12 @@ Preset preset_vox11_slow = {
     {"refineSegmentationLambda", "3.0"},
     {"refineSegmentationIterationCount", "4"},
 
+    // ___ PPI smoothing for Slicing Algorithm ___ //
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},   
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "128"},  
+    {"slicingRefineSegmentationLambda", "3.0"},             
+    {"slicingRefineSegmentationIterationCount", "4"},
+
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},
 
@@ -259,7 +295,7 @@ Preset preset_vox11_slow = {
     {"occupancyEncodingPreset", "veryslow"},
     {"geometryEncodingPreset", "veryslow"},
     {"attributeEncodingPreset", "veryslow"}};
-// NOLINTEND(cert-err58-cpp)
+// NOLINTEND(cert-err58-cpp,bugprone-throwing-static-initialization)
 
 void setPresetValues(const Preset& preset) {
     for (const auto& pair : preset) {

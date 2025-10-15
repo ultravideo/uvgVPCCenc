@@ -369,6 +369,13 @@ void setMode() {
     }
 }
 
+void updateParametersForSlicing(const size_t distLUT, const size_t NNCount, const double lambda, const size_t refineIteration){
+    setParameterValue("refineSegmentationMaxNNVoxelDistanceLUT", std::to_string(distLUT), true);
+    setParameterValue("refineSegmentationMaxNNTotalPointCount", std::to_string(NNCount), true);
+    setParameterValue("refineSegmentationLambda", std::to_string(lambda), true);
+    setParameterValue("refineSegmentationIterationCount", std::to_string(refineIteration), true);
+    }
+
 // TODO(lf)check in debug mode for example if rate and occupancyMapDSResolution are both in the lib command line TODO(lf)a warning
 void parseUvgvpccParameters() {
     // Special parameters need to be handle first
@@ -385,8 +392,14 @@ void parseUvgvpccParameters() {
             // Those parameters have been handled at the top of this function
             continue;
         }
-
         setParameterValue(paramPair.first, paramPair.second, false);
+    }
+    //  Change the Refine Segmentation parameters for the Slicing Algorithm
+    if(p_->activateSlicing) {
+        updateParametersForSlicing(p_->slicingRefineSegmentationMaxNNVoxelDistanceLUT,
+                                   p_->slicingRefineSegmentationMaxNNTotalPointCount,
+                                   p_->slicingRefineSegmentationLambda,
+                                   p_->slicingRefineSegmentationIterationCount);
     }
 
     const std::string detectedThreadNumber = std::to_string(std::thread::hardware_concurrency());

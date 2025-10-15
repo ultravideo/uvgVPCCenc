@@ -1,18 +1,70 @@
+# image: ultravideo/uvgvpccenc-ci-base
+
+# # Build and test uvgVPCCenc
+# test-uvgvpcc: &test-template
+#   stage: test
+#   script:
+#     - export PATH="${HOME}/bin:${PATH}"
+#     - cmake --preset=CI
+#     - cmake --build --preset=CI
+#     - ctest --preset=CI-ci-long-default
+#   artifacts:
+#     paths:
+#     - _build/CI/src/app/uvgVPCCenc
+#     - _build/CI/Testing/Temporary/CTestCostData.txt
+#     - _build/CI/Testing/Temporary/LastTest.log
+#     - _build/CI/bitstream/long_default_ReadyForWinter_vox9_AI_16-22-2_fast_true_2t_1l_1n.vpcc
+#     - _build/CI/bitstream/long_default_ReadyForWinter_vox9_RA_32-42-4_slow_true_2t_1l_1n.vpcc
+#     expire_in: 1 week
+
+
 image: ultravideo/uvgvpccenc-ci-base
 
-# Build and test uvgVPCCenc
-test-uvgvpcc: &test-template
-  stage: test
+stages:
+  - build
+  - test-long-default
+  - test-long-slicing
+
+# Build uvgVPCCenc
+build:
+  stage: build
   script:
     - export PATH="${HOME}/bin:${PATH}"
     - cmake --preset=CI
     - cmake --build --preset=CI
-    - ctest --preset=CI-ci-long-default
   artifacts:
     paths:
-    - _build/CI/src/app/uvgVPCCenc
-    - _build/CI/Testing/Temporary/CTestCostData.txt
-    - _build/CI/Testing/Temporary/LastTest.log
-    - _build/CI/bitstream/long_default_ReadyForWinter_vox9_AI_16-22-2_fast_true_2t_1l_1n.vpcc
-    - _build/CI/bitstream/long_default_ReadyForWinter_vox9_RA_32-42-4_slow_true_2t_1l_1n.vpcc
+      - _build/CI/src/app/uvgVPCCenc
+    expire_in: 1 week
+
+# Test long default
+test-long:
+  stage: test-long-default
+  script:
+    - export PATH="${HOME}/bin:${PATH}"
+    - ctest --preset=CI-ci-long-default
+  dependencies:
+    - build
+  artifacts:
+    paths:
+      - _build/CI/Testing/Temporary/CTestCostData.txt
+      - _build/CI/Testing/Temporary/LastTest.log
+      - _build/CI/bitstream/long_default_ReadyForWinter_vox9_AI_16-22-2_fast_true_2t_1l_1n.vpcc
+      - _build/CI/bitstream/long_default_ReadyForWinter_vox9_RA_32-42-4_slow_true_2t_1l_1n.vpcc
+    expire_in: 1 week
+
+# Test long slicing
+test-short:
+  stage: test-long-slicing
+  script:
+    - export PATH="${HOME}/bin:${PATH}"
+    - ctest --preset=CI-ci-long-slicing
+  dependencies:
+    - build
+  artifacts:
+    paths:
+      - _build/CI/Testing/Temporary/CTestCostData.txt
+      - _build/CI/Testing/Temporary/LastTest.log
+      - _build/CI/bitstream/long_slicing_ReadyForWinter_vox9_AI_16-22-2_fast_true_2t_1l_1n.vpcc
+      - _build/CI/bitstream/long_slicing_ReadyForWinter_vox9_RA_32-42-4_slow_true_2t_1l_1n.vpcc
     expire_in: 1 week

@@ -94,6 +94,8 @@ void diagonalize(const std::array<uvgvpcc_enc::Vector3<double>, 3>& A, std::arra
     std::array<double, 4> jr{0.0, 0.0, 0.0, 0.0};
     std::array<uvgvpcc_enc::Vector3<double>, 3> AQ;
 
+    // static int uval = 1;
+
     for (size_t i = 0; i < maxsteps; ++i) {
         // quat to matrix
         const double sqx = q[0] * q[0];

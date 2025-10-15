@@ -491,7 +491,8 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
     for (size_t ptIndex = 0; ptIndex < pointCount; ++ptIndex) {
         const auto& point = frame->pointsGeometry[ptIndex];
         const size_t pointLocation1D = point[0] + (point[1] << p_->geoBitDepthInput) + (point[2] << (p_->geoBitDepthInput * 2));
-        mapList[pointsPPIs[ptIndex]].emplace(pointLocation1D, ptIndex);
+        assert(pointsPPIs[ptIndex] < 6);
+        mapList[pointsPPIs[ptIndex]].emplace(pointLocation1D,ptIndex);
     }
 
     robin_hood::unordered_set<size_t> resamplePointSetLocation1D;

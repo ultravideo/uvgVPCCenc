@@ -69,6 +69,10 @@ struct Parameters {
     // ___ Voxelization ___ //       (grid-based segmentation)
     size_t geoBitDepthVoxelized;  // voxelizedGeometryBitDepth3D         // grid-based segmentation
 
+    // ___ Slicing Algorithm ___ //
+    bool activateSlicing = false; // Boolean to activate the slicing algorithm or run the original algorithm
+    size_t tresholdShortSlice = 50;
+
     // ___ KdTree ___ //
     size_t kdTreeMaxLeafSize = 10;  // TODO(lf)deprecated no ? (as there are other parameterrs for it, for each kdtree case)
 
@@ -92,6 +96,11 @@ struct Parameters {
     double refineSegmentationLambda;
     size_t refineSegmentationIterationCount;
     // TODO(lf)check the config if all concerned parameters are poqwer of two
+    // Slicing Algorithm refine segmentation parameter
+    size_t slicingRefineSegmentationMaxNNVoxelDistanceLUT;  // lf note : 9**2 = 81 ~ 192/2
+    size_t slicingRefineSegmentationMaxNNTotalPointCount;
+    double slicingRefineSegmentationLambda;
+    size_t slicingRefineSegmentationIterationCount;
 
     // ___ Patch generation ___ //   (patch segmentation)
     size_t maxAllowedDist2RawPointsDetection = 5;  // TODO(lf): add verification to avoid segfault because index out of bound

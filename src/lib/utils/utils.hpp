@@ -50,7 +50,11 @@ const size_t g_infinitenumber = (std::numeric_limits<size_t>::max)();
 const size_t g_valueNotSet = (std::numeric_limits<size_t>::max)();
 
 constexpr size_t INVALID_PATCH_INDEX = std::numeric_limits<size_t>::max();
+constexpr size_t PPI_NON_ASSIGNED = std::numeric_limits<size_t>::max();
+constexpr size_t UNDEFINED_PARENT_PPI = std::numeric_limits<size_t>::max() - 1; //TODO(lf) temp
 
+// Projection Plan Index, 0-5 -> one of the six bounding box plan. 6+ -> used for slicing ppi attribution
+enum class PPI : uint8_t {ppi0,ppi1,ppi2,ppi3,ppi4,ppi5,ppiBlank,notAssigned};
 
 template <typename T>
 class Vector3 : public std::array<T, 3> {

@@ -167,6 +167,11 @@ void initializeParameterMap(Parameters& param) {
         // ___ Voxelization ___ //       (grid-based segmentation)
         {"geoBitDepthVoxelized", {UINT, "", &param.geoBitDepthVoxelized}},
 
+        // ___ Slicing Algorithm ___ //
+        {"activateSlicing", {BOOL, "", &param.activateSlicing}},
+        {"tresholdShortSlice", {UINT, "", &param.tresholdShortSlice}},
+
+        
         // ___ KdTree ___ //
         {"kdTreeMaxLeafSize", {UINT, "", &param.kdTreeMaxLeafSize}},
 
@@ -185,6 +190,11 @@ void initializeParameterMap(Parameters& param) {
         {"refineSegmentationMaxNNTotalPointCount", {UINT, "", &param.refineSegmentationMaxNNTotalPointCount}},
         {"refineSegmentationLambda", {DOUBLE, "", &param.refineSegmentationLambda}},
         {"refineSegmentationIterationCount", {UINT, "", &param.refineSegmentationIterationCount}},
+        // __ PPI smoothing with Slicing Algorithm __ //
+        {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", {UINT, "", &param.slicingRefineSegmentationMaxNNVoxelDistanceLUT}},
+        {"slicingRefineSegmentationMaxNNTotalPointCount", {UINT, "", &param.slicingRefineSegmentationMaxNNTotalPointCount}},
+        {"slicingRefineSegmentationLambda", {DOUBLE, "", &param.slicingRefineSegmentationLambda}},
+        {"slicingRefineSegmentationIterationCount", {UINT, "", &param.slicingRefineSegmentationIterationCount}},
 
         // ___ Patch generation ___ //   (patch segmentation)
         {"maxAllowedDist2RawPointsDetection", {UINT, "", &param.maxAllowedDist2RawPointsDetection}},
