@@ -124,6 +124,7 @@ std::vector<uint8_t>& getBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof,
     }
 }
 
+//TODO(lf): verify the return value for each api->config_parse (make a wrapper)
 void setKvazaarConfig(kvz_api* api, kvz_config* config, const size_t& width, const size_t& height, const ENCODER_TYPE& encoderType) {
     // Basic config
     api->config_parse(config, "enable-logging", "1");  // TODO(lf) what about performance ? It should depends on the log level

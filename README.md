@@ -62,9 +62,9 @@ cmake --preset=Release -DENABLE_V3CRTP=ON
 ```
 
 ### Test uvgVPCCenc
-To test the encoder, please use following commands:
+To test the encoder, please use following commands (after building Release):
 ```
-ctest --preset=Release                   
+ctest --preset=Release-local-quick-default                   
 ```
 
 This runs small tests and checks whether the resulting encoding behaves as expected by verifying the bitstream MD5.

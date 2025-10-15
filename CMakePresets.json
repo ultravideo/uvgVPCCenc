@@ -40,7 +40,8 @@
          "cacheVariables": {
             "UVG_LOG_LEVEL": "DEBUG",
             "CMAKE_BUILD_TYPE": "RelWithDebInfo",
-            "ENABLE_TESTING": true
+            "ENABLE_TESTING": true,
+            "ENABLE_CI_TESTING": true
          }
       },
       {
@@ -48,7 +49,9 @@
          "inherits": "base-config",
          "cacheVariables": {
             "UVG_LOG_LEVEL": "DEBUG",
-            "CMAKE_BUILD_TYPE": "Debug"
+            "CMAKE_BUILD_TYPE": "Debug",
+            "ENABLE_TESTING": true,
+            "ENABLE_CI_TESTING": true
          }
       },
       {
@@ -112,31 +115,123 @@
    ],
    "testPresets": [
       {
-         "name": "base-test",
+         "name": "base-test-local",
          "hidden": true,
-         "execution": {
-            "stopOnFailure": false
-         }
+            "execution": {
+               "stopOnFailure": false,
+               "jobs": 20,
+               "outputOnFailure": true,
+               "noTestsAction": "error",
+               "verbose": true,
+               "arguments": ["-V"]
+            }
       },
       {
-         "name": "Debug",
-         "inherits": "base-test",
-         "configurePreset": "Debug"
-      },
-      {
-         "name": "Release",
-         "inherits": "base-test",
-         "configurePreset": "Release"
-      },
-      {
-         "name": "RelWithDebInfo",
-         "inherits": "base-test",
-         "configurePreset": "RelWithDebInfo"
-      },
-      {
-         "name": "CI",
-         "inherits": "RelWithDebInfo",
-         "configurePreset": "CI"
-      }
+         "name": "base-test-ci",
+         "hidden": true,
+            "execution": {
+               "stopOnFailure": false,
+               "jobs": 1,
+               "outputOnFailure": true,
+               "noTestsAction": "error"
+            }
+      }, 
+      
+
+      {"name": "Release-local-quick-all","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"quick_*"}}},
+      {"name": "Release-local-quick-default","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "Release-local-quick-slicing","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "Release-local-quick-efficientMapGen","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "Release-local-long-all","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"long_*"}}},
+      {"name": "Release-local-long-default","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "Release-local-long-slicing","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "Release-local-long-efficientMapGen","inherits": "base-test-local","configurePreset": "Release","filter": {"include": {"name":"long_efficientMapGen_*"}}},   
+
+
+      {"name": "Release-ci-quick-all","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"quick_*"}}},
+      {"name": "Release-ci-quick-default","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "Release-ci-quick-slicing","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "Release-ci-quick-efficientMapGen","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "Release-ci-long-all","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"long_*"}}},
+      {"name": "Release-ci-long-default","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "Release-ci-long-slicing","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "Release-ci-long-efficientMapGen","inherits": "base-test-ci","configurePreset": "Release","filter": {"include": {"name":"long_efficientMapGen_*"}}},   
+
+
+
+
+      {"name": "RelWithDebInfo-local-quick-all","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_*"}}},
+      {"name": "RelWithDebInfo-local-quick-default","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "RelWithDebInfo-local-quick-slicing","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "RelWithDebInfo-local-quick-efficientMapGen","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "RelWithDebInfo-local-long-all","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_*"}}},
+      {"name": "RelWithDebInfo-local-long-default","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "RelWithDebInfo-local-long-slicing","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "RelWithDebInfo-local-long-efficientMapGen","inherits": "base-test-local","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_efficientMapGen_*"}}},   
+
+
+      {"name": "RelWithDebInfo-ci-quick-all","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_*"}}},
+      {"name": "RelWithDebInfo-ci-quick-default","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "RelWithDebInfo-ci-quick-slicing","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "RelWithDebInfo-ci-quick-efficientMapGen","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "RelWithDebInfo-ci-long-all","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_*"}}},
+      {"name": "RelWithDebInfo-ci-long-default","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "RelWithDebInfo-ci-long-slicing","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "RelWithDebInfo-ci-long-efficientMapGen","inherits": "base-test-ci","configurePreset": "RelWithDebInfo","filter": {"include": {"name":"long_efficientMapGen_*"}}},   
+
+
+
+
+      {"name": "Debug-local-quick-all","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"quick_*"}}},
+      {"name": "Debug-local-quick-default","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "Debug-local-quick-slicing","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "Debug-local-quick-efficientMapGen","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "Debug-local-long-all","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"long_*"}}},
+      {"name": "Debug-local-long-default","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "Debug-local-long-slicing","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "Debug-local-long-efficientMapGen","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"long_efficientMapGen_*"}}},   
+
+
+      {"name": "Debug-ci-quick-all","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"quick_*"}}},
+      {"name": "Debug-ci-quick-default","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "Debug-ci-quick-slicing","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "Debug-ci-quick-efficientMapGen","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "Debug-ci-long-all","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"long_*"}}},
+      {"name": "Debug-ci-long-default","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "Debug-ci-long-slicing","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "Debug-ci-long-efficientMapGen","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"long_efficientMapGen_*"}}},
+
+      
+
+
+      {"name": "CI-local-quick-all","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"quick_*"}}},
+      {"name": "CI-local-quick-default","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "CI-local-quick-slicing","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "CI-local-quick-efficientMapGen","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "CI-local-long-all","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"long_*"}}},
+      {"name": "CI-local-long-default","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "CI-local-long-slicing","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "CI-local-long-efficientMapGen","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"long_efficientMapGen_*"}}},   
+
+
+      {"name": "CI-ci-quick-all","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"quick_*"}}},
+      {"name": "CI-ci-quick-default","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"quick_default_*"}}},
+      {"name": "CI-ci-quick-slicing","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"quick_slicing_*"}}},
+      {"name": "CI-ci-quick-efficientMapGen","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"quick_efficientMapGen_*"}}},   
+
+      {"name": "CI-ci-long-all","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_*"}}},
+      {"name": "CI-ci-long-default","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_default_*"}}},
+      {"name": "CI-ci-long-slicing","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_slicing_*"}}},
+      {"name": "CI-ci-long-efficientMapGen","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_efficientMapGen_*"}}}   
+
+      
+
    ]
 }
