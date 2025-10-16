@@ -26,7 +26,7 @@ var searchData=
   ['fixedsize_23',['fixedSize',['../structminiply_1_1PLYElement.html#a0e94947dcb4014aa64777af9a38c36a8',1,'miniply::PLYElement']]],
   ['flag_24',['flag',['../structoption.html#ab366eea5fe7be25c1928328ba715e353',1,'option']]],
   ['flags_25',['flags',['../structnanoflann_1_1KDTreeSingleIndexAdaptorParams.html#aba1bcb3df6045e89ba6015ac190ebc3f',1,'nanoflann::KDTreeSingleIndexAdaptorParams']]],
-  ['float_26',['float',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea22ae0e2b89e5e3d477f988cc36d3272b',1,'miniply::Float'],['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a9ea084be3fd0513286e7764a63ad0e15',1,'uvgvpcc_enc::FLOAT']]],
+  ['float_26',['float',['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a9ea084be3fd0513286e7764a63ad0e15',1,'uvgvpcc_enc::FLOAT'],['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea22ae0e2b89e5e3d477f988cc36d3272b',1,'miniply::Float']]],
   ['for_20kd_20trees_27',['nanoflann C++ library for KD-trees',['../group__nanoflann__grp.html',1,'']]],
   ['for_20ply_20files_28',['miniply - A simple and fast parser for PLY files',['../namespaceminiply.html#autotoc_md27',1,'']]],
   ['for_20tuning_20uvgvpccenc_29',['Best practices for tuning uvgVPCCenc',['../index.html#autotoc_md18',1,'']]],

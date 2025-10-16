@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['threadqueue_2ecpp_0',['threadqueue.cpp',['../threadqueue_8cpp.html',1,'']]],
-  ['threadqueue_2ehpp_1',['threadqueue.hpp',['../threadqueue_8hpp.html',1,'']]]
+  ['slicingcomputation_2ecpp_0',['slicingComputation.cpp',['../slicingComputation_8cpp.html',1,'']]],
+  ['slicingcomputation_2ehpp_1',['slicingComputation.hpp',['../slicingComputation_8hpp.html',1,'']]]
 ];

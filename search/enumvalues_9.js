@@ -65,5 +65,6 @@ var searchData=
   ['nal_5funspec_5f63_62',['NAL_UNSPEC_63',['../bitstream__common_8hpp.html#aa4d6ea389bb570277d1a098faf18bd04acc2b0772cdb96819b4822c7d1d886591',1,'bitstream_common.hpp']]],
   ['nal_5fv3c_5faud_63',['NAL_V3C_AUD',['../bitstream__common_8hpp.html#aa4d6ea389bb570277d1a098faf18bd04a71bc7e34da992ea9694c8209ba4657d6',1,'bitstream_common.hpp']]],
   ['no_5fedge_64',['NO_EDGE',['../ppiSegmenter_8hpp.html#a0d28d3ba3f42ec77cba289dae8c76f9aa38a74ee0f8764437c5fce05a7b4964e1',1,'ppiSegmenter.hpp']]],
-  ['none_65',['none',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea6adf97f83acf6453d4a6a4b1070f3754',1,'miniply::None'],['../group__param__grp.html#gga514edb9f2a1fb99ebe5b564ad45ab966a6adf97f83acf6453d4a6a4b1070f3754',1,'nanoflann::None']]]
+  ['none_65',['none',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea6adf97f83acf6453d4a6a4b1070f3754',1,'miniply::None'],['../group__param__grp.html#gga514edb9f2a1fb99ebe5b564ad45ab966a6adf97f83acf6453d4a6a4b1070f3754',1,'nanoflann::None']]],
+  ['notassigned_66',['notAssigned',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa62e4219a088967e824d2d1716eedb8e3',1,'uvgvpcc_enc']]]
 ];

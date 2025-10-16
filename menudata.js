@@ -194,7 +194,9 @@ var menudata={children:[
 {text:"t",url:"globals_t.html#index_t"},
 {text:"u",url:"globals_u.html#index_u"},
 {text:"v",url:"globals_v.html#index_v"},
-{text:"w",url:"globals_w.html#index_w"}]},
+{text:"w",url:"globals_w.html#index_w"},
+{text:"x",url:"globals_x.html#index_x"},
+{text:"y",url:"globals_y.html#index_y"}]},
 {text:"Functions",url:"globals_func.html",children:[
 {text:"b",url:"globals_func.html#index_b"},
 {text:"d",url:"globals_func.html#index_d"},

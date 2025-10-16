@@ -25,5 +25,12 @@ var searchData=
   ['patch_5forientation_5frot270_22',['PATCH_ORIENTATION_ROT270',['../patchPacking_8hpp.html#afee61bea53c45f55d210667ab24e2f7ba047c2bbf3b1cf1679be6491e99a841ec',1,'patchPacking.hpp']]],
   ['patch_5forientation_5frot90_23',['PATCH_ORIENTATION_ROT90',['../patchPacking_8hpp.html#afee61bea53c45f55d210667ab24e2f7ba0880847a211f0b6946a94230e8d3c028',1,'patchPacking.hpp']]],
   ['patch_5forientation_5fswap_24',['PATCH_ORIENTATION_SWAP',['../patchPacking_8hpp.html#afee61bea53c45f55d210667ab24e2f7ba0e714ee8532577476817fa0200832747',1,'patchPacking.hpp']]],
-  ['profiling_25',['PROFILING',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3ad4e245e32ce1419d1a8ffa7dc85d1790',1,'uvgvpcc_enc']]]
+  ['ppi0_25',['ppi0',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa114e2017e2c4fe3312f1106000ecf769',1,'uvgvpcc_enc']]],
+  ['ppi1_26',['ppi1',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa5d1e37283e93ac35e46268e042f545cf',1,'uvgvpcc_enc']]],
+  ['ppi2_27',['ppi2',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caaa6da940dd43af255382a97a8a6924438',1,'uvgvpcc_enc']]],
+  ['ppi3_28',['ppi3',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa9d1ae4f98aadf0a06200c2aa7413018a',1,'uvgvpcc_enc']]],
+  ['ppi4_29',['ppi4',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa98e774ae15b2c7f6d12098e55e4372ba',1,'uvgvpcc_enc']]],
+  ['ppi5_30',['ppi5',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa1793df69f4e3d1a0c902ceb9282980ef',1,'uvgvpcc_enc']]],
+  ['ppiblank_31',['ppiBlank',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa1ed52b123196a56bea8601a0d40bb00f',1,'uvgvpcc_enc']]],
+  ['profiling_32',['PROFILING',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3ad4e245e32ce1419d1a8ffa7dc85d1790',1,'uvgvpcc_enc']]]
 ];

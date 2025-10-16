@@ -1,7 +1,9 @@
 <map id="src/lib/patchGeneration/ppiSegmenter.hpp" name="src/lib/patchGeneration/ppiSegmenter.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="104,5,277,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="203,5,376,45"/>
 <area shape="rect" id="Node000002" href="$patchGeneration_8cpp.html" title=" " alt="" coords="5,93,179,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="160,56,116,95,112,91,157,52"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="235,53,136,96,134,91,233,48"/>
 <area shape="rect" id="Node000003" href="$ppiSegmenter_8cpp.html" title=" " alt="" coords="203,93,376,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="224,52,269,91,266,95,221,56"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="292,59,292,93,287,93,287,59"/>
+<area shape="rect" id="Node000004" href="$slicingComputation_8cpp.html" title=" " alt="" coords="400,93,579,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="347,48,447,91,444,96,345,53"/>
 </map>

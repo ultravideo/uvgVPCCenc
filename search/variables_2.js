@@ -9,5 +9,6 @@ var searchData=
   ['cur_5fbit_6',['cur_bit',['../structbitstream__t.html#a6c4185d6fe6fecf4686b928f771a309f',1,'bitstream_t']]],
   ['currentframejobmap_7',['currentFrameJobMap',['../structuvgvpcc__enc_1_1JobManager.html#a12a44596ddfb76a038464ebd93ca2967',1,'uvgvpcc_enc::JobManager']]],
   ['currentgof_8',['currentGOF',['../uvgvpcc_8cpp.html#a4701158fea816c994db4d98456a6f972',1,'uvgvpcc.cpp']]],
-  ['currentgofjobmap_9',['currentGOFJobMap',['../structuvgvpcc__enc_1_1JobManager.html#aa36f4a54f9002109cc847df5ed2706e3',1,'uvgvpcc_enc::JobManager']]]
+  ['currentgofjobmap_9',['currentGOFJobMap',['../structuvgvpcc__enc_1_1JobManager.html#aa36f4a54f9002109cc847df5ed2706e3',1,'uvgvpcc_enc::JobManager']]],
+  ['currentsubslicechildpos1d_10',['currentSubsliceChildPos1D',['../slicingComputation_8cpp.html#a136f63e4bdcb023ccf5c52988908d9f9',1,'slicingComputation.cpp']]]
 ];
