@@ -19,14 +19,18 @@ mapfile -t lines < "$logFile"
 echo
 echo "test_name,md5_bitstream,md5_pc;"
 
+output_lines=()
+
 for ((i=0; i<${#lines[@]}; i++)); do
     line="${lines[$i]}"
     if [[ "$line" == *"Test:"*"_md5_bitstream"* ]]; then
         testName=$(echo "$line" | sed -E 's/.*Test: (.*)_md5_bitstream.*/\1/')
         sha_line_index=$((i + 6))
         sha=$(echo "${lines[$sha_line_index]}" | awk '{print $1}')
-        echo "${testName},${sha},;"
+        output_lines+=("${testName},${sha},;")
     fi
 done
-echo
 
+printf '%s\n' "${output_lines[@]}" | sort
+
+echo

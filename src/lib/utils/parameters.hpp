@@ -71,7 +71,6 @@ struct Parameters {
 
     // ___ Slicing Algorithm ___ //
     bool activateSlicing = false; // Boolean to activate the slicing algorithm or run the original algorithm
-    size_t tresholdShortSlice = 50;
 
     // ___ KdTree ___ //
     size_t kdTreeMaxLeafSize = 10;  // TODO(lf)deprecated no ? (as there are other parameterrs for it, for each kdtree case)
@@ -128,9 +127,13 @@ struct Parameters {
     float gpaTresholdIoU = 0.3;  // global patch allocation treshold for the intersection over union process
 
     // ___ Map generation ___ //
-    bool mapGenerationFillEmptyBlock = true;
     size_t mapGenerationBackgroundValueAttribute = 128;
     size_t mapGenerationBackgroundValueGeometry = 128;
+    std::string attributeBgFill = "patchExtension";
+    size_t blockSizeBBPE = 8;
+    bool useTmc2YuvDownscaling = false;
+    bool mapGenerationFillEmptyBlock = true;
+
 
     // ___ 2D encoding parameters ___ //
     size_t sizeGOP2DEncoding;

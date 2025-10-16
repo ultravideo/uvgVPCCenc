@@ -46,6 +46,8 @@
 #include <string>
 #include <vector>
 
+#include "bgFillAttribute.hpp"
+#include "bgFillGeometry.hpp"
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
 #include "utils/utils.hpp"
@@ -53,8 +55,6 @@
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
-
-void MapGenerationBaseLine::initializeStaticParameters() {}
 
 namespace {
 
@@ -166,9 +166,7 @@ void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, const
     }
 }
 
-}  // Anonymous namespace
-
-void MapGenerationBaseLine::writePatches(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
+void writePatches(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
 
     if (p_->doubleLayer) {
@@ -194,7 +192,7 @@ void MapGenerationBaseLine::writePatches(const std::shared_ptr<uvgvpcc_enc::Fram
     }
 }
 
-void MapGenerationBaseLine::allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
+void allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
     // Notice that before this operation, the dimension of each frame occupancy map can be different. Thus, this OM resizing operation both
     // makes all GOF occupancy maps dimension uniform and convert them to YUV420. FYI, U and V images of the occupancy and geometry maps are
     // empty/not used by the decoder/do not cary any usefull information.
@@ -226,9 +224,7 @@ void MapGenerationBaseLine::allocateMaps(const std::shared_ptr<uvgvpcc_enc::Fram
     }
 }
 
-namespace {
-
-// TODO(lf): Why an integer only implementation is so bad in term of quality degradation?
+// TODO(lf): Why an integer only implementation is so bad in term of quality degradation? -> Probably because of PCQM
 void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t& height) {
     Logger::log<LogLevel::TRACE>("MapGeneration", "RGB444toYUV420\n");
 
@@ -302,247 +298,151 @@ void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t
     img.swap(yuv420);
 }
 
-}  // anonymous namespace
+// NOLINTBEGIN(readability-avoid-nested-conditional-operator)
+inline float fMin(float a, float b) { return ((a) < (b)) ? (a) : (b); }
+inline float fMax(float a, float b) { return ((a) > (b)) ? (a) : (b); }
+inline float fClip(float x, float low, float high) { return fMin(fMax(x, low), high); }
+int clamp(int v, int a, int b) { return ((v < a) ? a : ((v > b) ? b : v)); }
+double clamp(double v, double a, double b) { return ((v < a) ? a : ((v > b) ? b : v)); }
+// NOLINTEND(readability-avoid-nested-conditional-operator)
 
-// TODO(lf): use copy with relevant optimal memory copy to fill second layer. Tackle the cognitive complexity accordingly
-// NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void MapGenerationBaseLine::fillBackgroundEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize,
-                                                     const size_t imageSize, const size_t uBlk, const size_t vBlk, const size_t uom,
-                                                     const size_t vom) {
-    if (uBlk > 0) {
-        for (size_t j = 0; j < blockSize; ++j) {
-            const size_t currentY = vom + j;
-            for (size_t i = 0; i < blockSize; ++i) {
-                const size_t currentPos = uom + i + currentY * p_->mapWidth;
-                const size_t previousPos = uom + i - 1 + currentY * p_->mapWidth;  // pixel on left
+void RGBtoFloatRGB(const std::vector<uint8_t>& src, std::array<std::vector<float>, 3>& RGB444, std::size_t width, std::size_t height) {
+    const std::size_t imageSize = width * height;
+    const float maxValue = 255.F;
+    RGB444[0].resize(imageSize);
+    RGB444[1].resize(imageSize);
+    RGB444[2].resize(imageSize);
+    for (std::size_t i = 0; i < imageSize; ++i) {
+        RGB444[0][i] = static_cast<float>(src[i]) / maxValue;
+        RGB444[1][i] = static_cast<float>(src[i + imageSize]) / maxValue;
+        RGB444[2][i] = static_cast<float>(src[i + 2 * imageSize]) / maxValue;
+    }
+}
 
-                frame->geometryMapL1[currentPos] = frame->geometryMapL1[previousPos];
+void convertRGBToYUV(const std::vector<float>& R, const std::vector<float>& G, const std::vector<float>& B, std::vector<float>& Y,
+                     std::vector<float>& U, std::vector<float>& V) {
+    std::size_t const count = R.size();
+    Y.resize(count);
+    U.resize(count);
+    V.resize(count);
+    for (std::size_t i = 0; i < count; i++) {
+        Y[i] = static_cast<float>(clamp(0.212600 * R[i] + 0.715200 * G[i] + 0.072200 * B[i], 0.0, 1.0));
+        U[i] = static_cast<float>(clamp(-0.114572 * R[i] - 0.385428 * G[i] + 0.500000 * B[i], -0.5, 0.5));
+        V[i] = static_cast<float>(clamp(0.500000 * R[i] - 0.454153 * G[i] - 0.045847 * B[i], -0.5, 0.5));
+    }
+}
 
-                frame->attributeMapL1[currentPos] = frame->attributeMapL1[previousPos];
-                frame->attributeMapL1[currentPos + imageSize] = frame->attributeMapL1[previousPos + imageSize];
-                frame->attributeMapL1[currentPos + 2 * imageSize] = frame->attributeMapL1[previousPos + 2 * imageSize];
+void floatYUVToYUV(const std::vector<float>& luma, const std::vector<float>& cb, const std::vector<float>& cr, std::vector<uint8_t>& dst,
+                   std::size_t width, std::size_t height) {
+    const std::size_t imageSize = width * height;
+    dst.resize(imageSize + (imageSize >> 1U));
+    const double scale = 255.;
 
-                if (p_->doubleLayer) {
-                    frame->geometryMapL2[currentPos] = frame->geometryMapL1[currentPos];
-                    frame->attributeMapL2[currentPos] = frame->attributeMapL1[currentPos];
-                    frame->attributeMapL2[currentPos + imageSize] = frame->attributeMapL1[currentPos + imageSize];
-                    frame->attributeMapL2[currentPos + 2 * imageSize] = frame->attributeMapL1[currentPos + 2 * imageSize];
-                }
-            }
+    // Luma //
+    double offset = 0;
+    for (std::size_t i = 0; i < imageSize; ++i) {
+        dst[i] = static_cast<uint8_t>(
+            fClip(std::round(static_cast<float>(scale * static_cast<double>(luma[i]) + offset)), 0.F, static_cast<float>(scale)));
+    }
+
+    // Chroma //
+    offset = 128.;
+    for (std::size_t i = 0; i < imageSize / 4; ++i) {
+        dst[imageSize + i] = static_cast<uint8_t>(
+            fClip(std::round(static_cast<float>(scale * static_cast<double>(cb[i]) + offset)), 0.F, static_cast<float>(scale)));
+        dst[imageSize + imageSize / 4 + i] = static_cast<uint8_t>(
+            fClip(std::round(static_cast<float>(scale * static_cast<double>(cr[i]) + offset)), 0.F, static_cast<float>(scale)));
+    }
+}
+
+// Horizontal filter used by TMC2 (only the filter of index 4 (4 DF_GS) is used in TMC2 (in our case))
+constexpr std::array<float, 15> g_filter444to420_horizontal = {
+    static_cast<float>(-0.01716352771649 * 512), static_cast<float>(0.0),
+    static_cast<float>(+0.04066666714886 * 512), static_cast<float>(0.0),
+    static_cast<float>(-0.09154810319329 * 512), static_cast<float>(0.0),
+    static_cast<float>(0.31577823859943 * 512),  static_cast<float>(0.50453345032298 * 512),
+    static_cast<float>(0.31577823859943 * 512),  static_cast<float>(0.0),
+    static_cast<float>(-0.09154810319329 * 512), static_cast<float>(0.0),
+    static_cast<float>(0.04066666714886 * 512),  static_cast<float>(0.0),
+    static_cast<float>(-0.01716352771649 * 512)};
+
+constexpr double g_filter444to420_horizontal_shift = 9.0;
+
+inline float downsamplingHorizontal(const std::vector<float>& img, const std::size_t width,
+                                    const std::size_t i0, const std::size_t j0) {
+    const float scale = 1.0F / (static_cast<float>(1U << (static_cast<std::size_t>(g_filter444to420_horizontal_shift))));
+    const float offset = 0.00000000;
+    const std::size_t position = static_cast<std::size_t>(g_filter444to420_horizontal.size() - 1) >> 1U;
+    double value = 0;
+    for (std::size_t j = 0; j < static_cast<std::size_t>(g_filter444to420_horizontal.size()); j++) {
+        value +=
+            static_cast<double>(g_filter444to420_horizontal[j]) *
+            static_cast<double>(img[static_cast<std::size_t>(i0 * width) +
+                                    static_cast<std::size_t>(clamp(static_cast<int>(j0 + j - position), 0, static_cast<int>(width - 1)))]);
+    }
+    return static_cast<float>((value + static_cast<double>(offset)) * static_cast<double>(scale));
+}
+
+// Vertical filter used by TMC2 (only the filter of index 4 (4 DF_GS) is used in TMC2 (in our case))
+constexpr std::array<float, 16> g_filter444to420_vertical = {
+    static_cast<float>(-0.00945406160902 * 512), static_cast<float>(-0.01539537217249 * 512), static_cast<float>(0.02360533018213 * 512),
+    static_cast<float>(0.03519540819902 * 512),  static_cast<float>(-0.05254456550808 * 512), static_cast<float>(-0.08189331229717 * 512),
+    static_cast<float>(0.14630826357715 * 512),  static_cast<float>(0.45417830962846 * 512),  static_cast<float>(0.45417830962846 * 512),
+    static_cast<float>(0.14630826357715 * 512),  static_cast<float>(-0.08189331229717 * 512), static_cast<float>(-0.05254456550808 * 512),
+    static_cast<float>(0.03519540819902 * 512),  static_cast<float>(0.02360533018213 * 512),  static_cast<float>(-0.01539537217249 * 512),
+    static_cast<float>(-0.00945406160902 * 512)};
+
+constexpr double g_filter444to420_vertical_shift = 9.0;
+
+inline float downsamplingVertical(const std::vector<float>& img, const std::size_t width,
+                                  const std::size_t height, const std::size_t i0, const std::size_t j0) {
+    const float offset = 0;
+    const float scale = 1.F / (static_cast<float>(1U << (static_cast<std::size_t>(g_filter444to420_vertical_shift))));
+    const std::size_t position = static_cast<std::size_t>(g_filter444to420_vertical.size() - 1) >> 1U;
+    double value = 0;
+    for (std::size_t i = 0; i < static_cast<std::size_t>(g_filter444to420_vertical.size()); i++) {
+        value += static_cast<double>(g_filter444to420_vertical[i]) *
+                 static_cast<double>(img[clamp(static_cast<int>(i0 + i - position), 0, static_cast<int>(height - 1)) * width + j0]);
+    }
+    return static_cast<float>((value + static_cast<double>(offset)) * static_cast<double>(scale));
+}
+
+void downsampling(const std::vector<float>& chroma_in, std::vector<float>& chroma_out, const std::size_t widthIn,
+                  const std::size_t heightIn) {
+    std::size_t const widthOut = widthIn / 2;
+    std::size_t const heightOut = heightIn / 2;
+    std::vector<float> temp(static_cast<std::size_t>(widthOut) * static_cast<std::size_t>(heightIn));
+    chroma_out.resize(static_cast<std::size_t>(widthOut) * static_cast<std::size_t>(heightOut));
+
+    for (std::size_t i = 0; i < heightIn; i++) {
+        for (std::size_t j = 0; j < widthOut; j++) {
+            temp[i * widthOut + j] = downsamplingHorizontal(chroma_in, widthIn, i, j * 2);
         }
-    } else if (vBlk > 0) {  // first left column, copy top next block value
-        for (size_t j = 0; j < blockSize; ++j) {
-            const size_t currentY = vom + j;
-            const size_t previousY = currentY - 1;
-            for (size_t i = 0; i < blockSize; ++i) {
-                const size_t currentPos = uom + i + currentY * p_->mapWidth;
-                const size_t previousPos = uom + i + previousY * p_->mapWidth;  // pixel on top
-
-                frame->geometryMapL1[currentPos] = frame->geometryMapL1[previousPos];
-                frame->attributeMapL1[currentPos] = frame->attributeMapL1[previousPos];
-                frame->attributeMapL1[currentPos + imageSize] = frame->attributeMapL1[previousPos + imageSize];
-                frame->attributeMapL1[currentPos + 2 * imageSize] = frame->attributeMapL1[previousPos + 2 * imageSize];
-
-                if (p_->doubleLayer) {
-                    frame->geometryMapL2[currentPos] = frame->geometryMapL1[currentPos];
-                    frame->attributeMapL2[currentPos] = frame->attributeMapL1[currentPos];
-                    frame->attributeMapL2[currentPos + imageSize] = frame->attributeMapL1[currentPos + imageSize];
-                    frame->attributeMapL2[currentPos + 2 * imageSize] = frame->attributeMapL1[currentPos + 2 * imageSize];
-                }
-            }
-        }
-    } else {
-        // lf : In TMC2 the top left block, if it is an empty block, keep the default value. Here, we put the middle (mid-gray)
-        for (size_t j = 0; j < blockSize; ++j) {
-            for (size_t i = 0; i < blockSize; ++i) {
-                const size_t currentPos = uom + i + (vom + j) * p_->mapWidth;
-                const size_t fillingValue = 128;
-
-                frame->geometryMapL1[currentPos] = fillingValue;
-                frame->attributeMapL1[currentPos] = fillingValue;
-                frame->attributeMapL1[currentPos + imageSize] = fillingValue;
-                frame->attributeMapL1[currentPos + 2 * imageSize] = fillingValue;
-
-                if (p_->doubleLayer) {
-                    frame->geometryMapL2[currentPos] = fillingValue;
-                    frame->attributeMapL2[currentPos] = fillingValue;
-                    frame->attributeMapL2[currentPos + imageSize] = fillingValue;
-                    frame->attributeMapL2[currentPos + 2 * imageSize] = fillingValue;
-                }
-            }
+    }
+    for (std::size_t i = 0; i < heightOut; i++) {
+        for (std::size_t j = 0; j < widthOut; j++) {
+            chroma_out[i * widthOut + j] = downsamplingVertical(temp, widthOut, heightIn, 2 * i, j);
         }
     }
 }
 
-void MapGenerationBaseLine::updateSums(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockLeft, const size_t blockTop,
-                                       const size_t iBlk, const size_t jBlk, const size_t imageSize, std::vector<size_t>& iterations,
-                                       const size_t blockSize, std::vector<size_t>& sumGeo, std::vector<size_t>& sumR,
-                                       std::vector<size_t>& sumG, std::vector<size_t>& sumB, std::vector<size_t>& count) {
-    const std::array<std::array<int8_t, 2>, 4> neighbors = {{{0, -1}, {-1, 0}, {1, 0}, {0, 1}}};
+void RGB444toYUV420TMC2(std::vector<uint8_t>& img, const std::size_t& width, const std::size_t& height) {
+    Logger::log<uvgvpcc_enc::LogLevel::TRACE>("MapGeneration", "RGB444toYUV420TMC2\n");
 
-    const size_t currentXOM = blockLeft + iBlk;
-    const size_t currentYOM = blockTop + jBlk;
-    const size_t currentPosOM = currentXOM + currentYOM * p_->mapWidth;
-    // filled pixel at the first iteration)
-    for (int i = 0; i < 4; ++i) {
-        const size_t neighborX = currentXOM + neighbors[i][0];
-        const size_t neighborY = currentYOM + neighbors[i][1];
-        const size_t currentPosBlk = iBlk + neighbors[i][0] + (jBlk + neighbors[i][1]) * blockSize;
-        // lf : TODO(lf) why to check if the neighbor is in the current block ? We should check if it in the occupancy map. Otherwise, we
-        // could use the pixels from other block to have more relevant values.
-        if (neighborX >= blockLeft && neighborX < static_cast<size_t>(blockLeft + blockSize) && neighborY >= blockTop &&
-            neighborY < static_cast<size_t>(blockTop + blockSize) && iterations[currentPosBlk] == 0) {  // missingPoint => iteration==0
-            // add current border pixel value in the current neighbor sumGeo values
-            sumGeo[currentPosBlk] += frame->geometryMapL1[currentPosOM];
+    std::array<std::vector<float>, 3> RGB444;
+    std::array<std::vector<float>, 3> YUV444;
+    std::array<std::vector<float>, 3> YUV420;
 
-            sumR[currentPosBlk] += frame->attributeMapL1[currentPosOM];
-            sumG[currentPosBlk] += frame->attributeMapL1[currentPosOM + imageSize];
-            sumB[currentPosBlk] += frame->attributeMapL1[currentPosOM + 2 * imageSize];
-            ++count[currentPosBlk];
-        }
-    }
+    RGBtoFloatRGB(img, RGB444, width, height);
+    convertRGBToYUV(RGB444[0], RGB444[1], RGB444[2], YUV444[0], YUV444[1], YUV444[2]);
+    downsampling(YUV444[1], YUV420[1], width, height);
+    downsampling(YUV444[2], YUV420[2], width, height);
+    floatYUVToYUV(YUV444[0], YUV420[1], YUV420[2], img, width, height);
 }
 
-void MapGenerationBaseLine::fillBackgroundNonEmptyBlock(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t blockSize,
-                                                        const size_t imageSize, const size_t uom, const size_t vom,
-                                                        const size_t pixelBlockCount, size_t missingPixelCount,
-                                                        std::vector<size_t>& iterations) {
-    // lf : knowing that we should not used a occupancyMapDSResolution (precision?) higher than 4 (probably 1(no downscaling) or 2), the
-    // current algorithm seems overkill. Simple use of lookup table can do it I think.
+}  // Anonymous namespace
 
-    // lf : WARNING : what happen if the true value of the geometry is the uint8 max value ?
-
-    // lf : optimization possible -> different result, but less complex -> if there are missing pixels. Do four "passes", in each
-    // direction (up to down, down to top, left to right, right to left). The 'values' for each passe will just be the one before. And
-    // the count will be incremented if there is a value before. lf : the same optimization can be used using the same iteration
-    // scheme. (stop propagation in a line or column after reaching one missing pixel) lf : for each pixel of the focused block
-    // (uBlk,vBlk), if it is an empty pixel (no value in the occupancyMapDS  (lf OPT : check in the geometry map instead (seems to be
-    // done like this in this RW function)), do nothing. lf : if it is a filled pixel, add the value of this pixel in its empty
-    // neighboring pixels in the "value" array, which has the size of a block. Increase by one the count value of all neighbor pixel.
-
-    std::vector<size_t> count(pixelBlockCount, 0);
-    std::vector<size_t> sumGeo(pixelBlockCount, 0);
-    std::vector<size_t> sumR(pixelBlockCount, 0);
-    std::vector<size_t> sumG(pixelBlockCount, 0);
-    std::vector<size_t> sumB(pixelBlockCount, 0);
-    size_t iteration = 1;
-
-    // lf TODO(lf): the fact that other block can be considered during the average computation should be improve. Only block related to
-    // the same patch should be used to ensure relevant color (it might help to avoid those blue line on the face of longdress for
-    // example). lf : propagation of the average to fill the missing points TODO(lf): use lookup table -> warning, pixel from
-    // neighboring block are also used for the average
-    while (missingPixelCount > 0 && iteration < pixelBlockCount) {
-        // lf note: the second condition (iteration < pixelBlockCount) is for safety only. A deadlock can happen if some pixel got a real
-        // geometry value of 128 which is the default background value. iterate over all pixels of the block to initialise the averages
-        for (size_t j = 0; j < blockSize; ++j) {
-            for (size_t i = 0; i < blockSize; ++i) {
-                if (iterations[i + j * blockSize] == iteration) {  // lf border pixel (created from the previous iteration or simply
-                    updateSums(frame, uom, vom, i, j, imageSize, iterations, blockSize, sumGeo, sumR, sumG, sumB, count);
-                }
-            }
-        }
-        // iterate over all pixels of the block to assign values if possible
-        for (size_t j = 0; j < blockSize; ++j) {
-            for (size_t i = 0; i < blockSize; ++i) {
-                const size_t pixelPos = i + j * blockSize;
-                if (count[pixelPos] != 0U) {  // lf : it has neighbors (at least one) so a value can be added
-                    const size_t currentXOM = uom + i;
-                    const size_t currentYOM = vom + j;
-                    const size_t currentPosOM = currentXOM + currentYOM * p_->mapWidth;
-
-                    // lf : Like in TMC2, the average computation is biased. Not sure why... To create a gradient ?
-
-                    frame->geometryMapL1[currentPosOM] = static_cast<uint8_t>((sumGeo[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
-
-                    // TODO(lf): in TMC2 both map are doing it separately. Here, as a temporary solution, we do it only on L1
-
-                    frame->attributeMapL1[currentPosOM] = static_cast<uint8_t>((sumR[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
-                    frame->attributeMapL1[currentPosOM + imageSize] =
-                        static_cast<uint8_t>((sumG[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
-                    frame->attributeMapL1[currentPosOM + 2 * imageSize] =
-                        static_cast<uint8_t>((sumB[pixelPos] + count[pixelPos] / 2) / count[pixelPos]);
-
-                    if (p_->doubleLayer) {
-                        frame->geometryMapL2[currentPosOM] = frame->geometryMapL1[currentPosOM];
-                        frame->attributeMapL2[currentPosOM] = frame->attributeMapL1[currentPosOM];
-                        frame->attributeMapL2[currentPosOM + imageSize] = frame->attributeMapL1[currentPosOM + imageSize];
-                        frame->attributeMapL2[currentPosOM + 2 * imageSize] = frame->attributeMapL1[currentPosOM + 2 * imageSize];
-                    }
-
-                    iterations[pixelPos] = iteration + 1;  // lf considered as a border pixel at the next iteration
-                    count[pixelPos] = 0;
-                    --missingPixelCount;
-                }
-            }
-        }
-        ++iteration;
-    }
-}
-
-void MapGenerationBaseLine::fillBackgroundImages(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& gofMapsHeight) {
-    const size_t blockSize = p_->occupancyMapDSResolution;
-    const size_t occupancyMapDSWidthBlk =
-        p_->mapWidth / blockSize;  // TODO(lf): this should be a frame param (yes for the height, and a static param for the width)
-    const size_t occupancyMapDSHeightBlk = gofMapsHeight / blockSize;  // what is the difference with occupancyImage.getHeight() ??
-    const size_t imageSize = p_->mapWidth * gofMapsHeight;
-    const size_t pixelBlockCount = blockSize * blockSize;  // lf nb of pixel per block from the frameOM POV
-
-    // If p_->mapGenerationFillEmptyBlock == false, we need still need to fill the non-empty CTU. (A CTU with at least one OM block is
-    // non-empty.) A CTU is 64x64. If a CTU is empty, we can skip it (that is, keep the uniform gray background). TODO(lf): make this ctu
-    // check
-
-    // iterate over each block of the occupancy map
-    for (size_t vBlk = 0; vBlk < occupancyMapDSHeightBlk; ++vBlk) {
-        const size_t vom = vBlk * blockSize;
-        for (size_t uBlk = 0; uBlk < occupancyMapDSWidthBlk; ++uBlk) {
-            const size_t uom = uBlk * blockSize;
-
-            // empty block -> copy the value of previous block (one of the TMC2 solution) or do nothing (let the uniform value set during map
-            // allocation)
-            if (frame->occupancyMapDS[uBlk + vBlk * occupancyMapDSWidthBlk] == 0U) {
-                if (p_->mapGenerationFillEmptyBlock) {
-                    fillBackgroundEmptyBlock(frame, blockSize, imageSize, uBlk, vBlk, uom, vom);
-                }
-                continue;
-            }
-            // TODO(lf): lf : empty block inside a non empty CTU (64x64) should not be filled with gray but should extend the average value I
-            // guess
-
-            // non empty block -> check if all pixels of the block already have a value or not
-            size_t missingPixelCount = 0;
-            std::vector<size_t> iterations(pixelBlockCount, 0);
-            for (size_t j = 0; j < blockSize; ++j) {
-                for (size_t i = 0; i < blockSize; ++i) {
-                    const size_t currentPosOM = uom + i + (vom + j) * p_->mapWidth;
-                    // TODO(lf): u_int16_y should be a typedef for geometry map (different from geometry precision ?)
-                    // TODO(lf): this is not a perfect detection. Indeed, what if all pixel in this block have really 128 as depth value ? lf
-                    // : a safety has been added to avoid a deadlock in the filling block process
-                    if (frame->geometryMapL1[currentPosOM] == p_->mapGenerationBackgroundValueGeometry) {
-                        ++missingPixelCount;
-                    } else {
-                        iterations[i + j * blockSize] = 1;
-                        // lf : first iteration of the propagation average could be done here
-                    }
-                }
-            }
-
-            // all pixels in the block have a value -> nothing to do
-            if (missingPixelCount == 0) {
-                continue;
-            }
-
-            // one or more pixel need a value. Those pixel will appear in the decoded point cloud. They result from the downscaling of the
-            // occupancy map. -> Compute average value from neigboring pixels
-            fillBackgroundNonEmptyBlock(frame, blockSize, imageSize, uom, vom, pixelBlockCount, missingPixelCount, iterations);
-        }
-    }
-    if (p_->exportIntermediateFiles) {
-        FileExport::exportImageAttributeBgFill(frame);
-        FileExport::exportImageGeometryBgFill(frame);
-    }
-}
-
-void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
+void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame) {
     allocateMaps(frame, frame->mapHeight);
 
     // TODO(lf): occupancy map downscaling can be done after write patches (or in parallel) maybe
@@ -560,12 +460,36 @@ void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc:
     // Geometry and attribute map generation //
     writePatches(frame, frame->mapHeight);
 
-    // Background filling //
-    fillBackgroundImages(frame, frame->mapHeight);
-
-    RGB444toYUV420(frame->attributeMapL1, p_->mapWidth, frame->mapHeight);
+    // Geometry map background filling
+    bgFillGeometry(frame->occupancyMapDS, frame->mapHeight, frame->geometryMapL1);
     if (p_->doubleLayer) {
-        RGB444toYUV420(frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
+        bgFillGeometry(frame->occupancyMapDS, frame->mapHeight, frame->geometryMapL2);
+    }
+
+    // Attribute map background filling
+    bgFillAttribute(*frame, frame->attributeMapL1);
+    if (p_->doubleLayer) {
+        bgFillAttribute(*frame, frame->attributeMapL2);
+    }
+
+    if (p_->exportIntermediateFiles) {
+        FileExport::exportImageAttributeBgFill(frame);
+        FileExport::exportImageGeometryBgFill(frame);
+    }
+
+    // lf: BT.709 standard is used within TMC2 for RGB->YUV conversion. Notice that some PCC metrics also applied such conversion, but may
+    // used different conversion standards, resulting in incorrect quality assessment. TODO(lf): Find the mention of the conversion standard
+    // within the ISO norm.
+    if (p_->useTmc2YuvDownscaling) {
+        RGB444toYUV420TMC2(frame->attributeMapL1, p_->mapWidth, frame->mapHeight);
+        if (p_->doubleLayer) {
+            RGB444toYUV420TMC2(frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
+        }
+    } else {
+        RGB444toYUV420(frame->attributeMapL1, p_->mapWidth, frame->mapHeight);
+        if (p_->doubleLayer) {
+            RGB444toYUV420(frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
+        }
     }
 
     if (p_->exportIntermediateFiles) {
@@ -577,7 +501,7 @@ void MapGenerationBaseLine::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc:
 // TODO(lf): for L2, find a way to make a copy write only the changing value between both map (same comment for geometry)
 // TODO(lf): we first do YUV420 for all maps, but we might consider YUV400 for geometry and occupancy if Kvazaar can handle it and if the
 // decoder can handle it too. TODO(lf): allocate all the maps of the GOF in one memory allocation ?
-void MapGenerationBaseLine::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
+void MapGeneration::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {

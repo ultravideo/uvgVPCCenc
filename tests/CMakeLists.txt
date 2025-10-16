@@ -127,7 +127,6 @@ endmacro()
 
 if(NOT DEFINED ADD_TEST_WRAPPER_DEFINED)
     # Wrapper for add_test_macro(...) (avoid any inconsistency between the test parameter and the test name)
-
     function(add_test_wrapper testSet testConfig testSeqDir seq voxelSize mode rate preset doubleLayer nbThread nbLoop nbFrame timeout ref_md5)
         # build test name
         set(testName "${testSet}_${testConfig}_${seq}_${voxelSize}_${mode}_${rate}_${preset}_${doubleLayer}_${nbThread}t_${nbLoop}l_${nbFrame}n")
@@ -138,7 +137,7 @@ if(NOT DEFINED ADD_TEST_WRAPPER_DEFINED)
             set(configParam ",activateSlicing=true")
         endif()
         if(testConfig STREQUAL "efficientMapGen")
-            set(configParam ",efficientMapGen=true")
+            set(configParam ",attributeBgFill=bbpe")
         endif()
         set(uvgVPCCencParam "presetName=${preset},mode=${mode},rate=${rate},doubleLayer=${doubleLayer},logLevel=DEBUG${configParam}")
 

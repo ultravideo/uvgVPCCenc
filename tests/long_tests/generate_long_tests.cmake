@@ -44,8 +44,7 @@ set(VOXELS_CasualSquat vox11)
 set(VOXELS_BlueBackpack vox11)
 
 # Test configurations
-# set(TEST_CONFIGURATIONS default slicing efficientMapGen)
-set(TEST_CONFIGURATIONS default slicing)
+set(TEST_CONFIGURATIONS default slicing efficientMapGen)
 
 set(THREADS_LIST 2)
 set(LOOPS_LIST 1)

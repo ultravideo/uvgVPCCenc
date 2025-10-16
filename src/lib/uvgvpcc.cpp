@@ -96,7 +96,6 @@ ThreadHandler g_threadHandler;
 void initializeStaticParameters() {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize static parameters.\n");
     // Job::setExecutionMethod(p_->timerLog);
-    MapGenerationBaseLine::initializeStaticParameters();
     MapEncoding::initializeStaticParameters();
 }
 
@@ -551,7 +550,7 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
             ppJob = JOBG(g_threadHandler.currentGOF->gofId, 3, PatchPacking::gofPatchPacking, g_threadHandler.currentGOF);
             // TODO(lf): add a new priority level ?
         }
-        initGOFMG = JOBG(g_threadHandler.currentGOF->gofId, 3, MapGenerationBaseLine::initGOFMapGeneration, g_threadHandler.currentGOF);
+        initGOFMG = JOBG(g_threadHandler.currentGOF->gofId, 3, MapGeneration::initGOFMapGeneration, g_threadHandler.currentGOF);
         encodeGOF = JOBG(g_threadHandler.currentGOF->gofId, 5, MapEncoding::encodeGOFMaps, g_threadHandler.currentGOF);
         auto bsJob =
             JOBG(g_threadHandler.currentGOF->gofId, 5, BitstreamGeneration::createV3CGOFBitstream, g_threadHandler.currentGOF, *(p_), output);
@@ -566,7 +565,7 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
                 JobManager::getJob(g_threadHandler.currentGOF->gofId - 1, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
         }
     } else {
-        initGOFMG = JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapGenerationBaseLine::initGOFMapGeneration));
+        initGOFMG = JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapGeneration::initGOFMapGeneration));
         encodeGOF = JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapEncoding::encodeGOFMaps));
     }
 
@@ -587,7 +586,7 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
         initGOFMG->addDependency(patchPack);
     }
 
-    auto mapGen = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 4, MapGenerationBaseLine::generateFrameMaps, frame);
+    auto mapGen = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 4, MapGeneration::generateFrameMaps, frame);
 
     mapGen->addDependency(initGOFMG);
     encodeGOF->addDependency(mapGen);
