@@ -45,6 +45,7 @@
 #include <memory>
 #include <regex>
 #include <semaphore>
+#include <chrono>
 #include <span>
 #include <sstream>
 #include <stdexcept>
@@ -60,7 +61,7 @@
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
-#if defined(ENABLE_V3CRTP)
+#ifdef ENABLE_V3CRTP
 #include <uvgv3crtp/version.h>
 #include <uvgv3crtp/v3c_api.h>
 #include <uvgrtp/util.hh>
@@ -312,8 +313,9 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 /// @param dst_address
 /// @param dst_port
 /// @param sdp_output_dir
-void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string dst_address, const std::vector<uint16_t> dst_port, const std::string& sdp_output_dir) {
-#if defined(ENABLE_V3CRTP)
+// NOLINTNEXTLINE(misc-unused-parameters)
+void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& dst_address, const std::vector<uint16_t>& dst_port, const std::string& sdp_output_dir) {
+#ifdef ENABLE_V3CRTP
 
     // ******** Print library version info **********
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");

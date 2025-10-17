@@ -474,9 +474,9 @@ inline bool isEndOfSubslice(const size_t& distanceBestCandidate, const Point2D& 
 template <const std::array<size_t, 2>& axis>
 inline PPI getPreviousPPI(const Vector2D& previousVector) {
     // Compute dot products
-    std::array<int, 4> dotProducts = {previousVector.y, -previousVector.x, -previousVector.y, previousVector.x};
+    const std::array<int, 4> dotProducts = {previousVector.y, -previousVector.x, -previousVector.y, previousVector.x};
     // Find index of maximum dot product
-    size_t max_idx = std::distance(dotProducts.begin(), std::max_element(dotProducts.begin(), dotProducts.end()));
+    const size_t max_idx = std::distance(dotProducts.begin(), std::max_element(dotProducts.begin(), dotProducts.end()));
     return normalVectorIntoPPI[AxisIndex<axis>()][max_idx];
 }
 

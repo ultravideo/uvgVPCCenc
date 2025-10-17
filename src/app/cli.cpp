@@ -187,7 +187,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             cli::print_help();
             return true;
         } else if (name == "dst-address") {
-            opts.dstAddress = optarg;  // TODO: Check that the address is valid
+            opts.dstAddress = optarg;  // TODO(jl): Check that the address is valid
         } else if (name == "dst-port") {
             std::stringstream port_list(optarg);
             std::string tmp;
@@ -299,7 +299,7 @@ void print_help(void) {
     std::cout << "      --uvgvpcc <params>       Encoder configuration parameters\n";
     std::cout << "      --help                   Show this help message\n";
     std::cout << "      --version                Show version information\n";
-#if defined(ENABLE_V3CRTP)
+#ifdef ENABLE_V3CRTP
     std::cout << "      --dst-address <IP>       Destination IP address for an rtp stream\n";
     std::cout << "      --dst-port <number-list> Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set)\n";
     std::cout << "      --sdp - outdir<dir>      Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP\n";
