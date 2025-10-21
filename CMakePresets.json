@@ -12,7 +12,7 @@
          "generator": "Unix Makefiles",
          "binaryDir": "${sourceDir}/_build/${presetName}",
          "cacheVariables": {
-            "UVG_LOG_LEVEL": "INFO",
+            "UVG_LOG_LEVEL_PRESET": "INFO",
             "BUILD_SHARED_LIBS": true,
             "CMAKE_BUILD_TYPE": "RelWithDebInfo",
             "CMAKE_EXPORT_COMPILE_COMMANDS": true,
@@ -27,7 +27,7 @@
          "name": "Release",
          "inherits": "base-config",
          "cacheVariables": {
-            "UVG_LOG_LEVEL": "INFO",
+            "UVG_LOG_LEVEL_PRESET": "INFO",
             "CMAKE_BUILD_TYPE": "Release",
             "ENABLE_TESTING": true,
             "ENABLE_CI_TESTING": true,
@@ -38,7 +38,7 @@
          "name": "RelWithDebInfo",
          "inherits": "base-config",
          "cacheVariables": {
-            "UVG_LOG_LEVEL": "DEBUG",
+            "UVG_LOG_LEVEL_PRESET": "DEBUG",
             "CMAKE_BUILD_TYPE": "RelWithDebInfo",
             "ENABLE_TESTING": true,
             "ENABLE_CI_TESTING": true
@@ -48,7 +48,7 @@
          "name": "Debug",
          "inherits": "base-config",
          "cacheVariables": {
-            "UVG_LOG_LEVEL": "DEBUG",
+            "UVG_LOG_LEVEL_PRESET": "DEBUG",
             "CMAKE_BUILD_TYPE": "Debug",
             "ENABLE_TESTING": true,
             "ENABLE_CI_TESTING": true
