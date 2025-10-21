@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['mapgenerationbaseline_0',['MapGenerationBaseLine',['../classMapGenerationBaseLine.html',1,'']]],
+  ['mapgeneration_0',['MapGeneration',['../classMapGeneration.html',1,'']]],
   ['merge_5fpatch_5fdata_5funit_1',['merge_patch_data_unit',['../structmerge__patch__data__unit.html',1,'']]],
   ['metric_2',['Metric',['../structnanoflann_1_1Metric.html',1,'nanoflann']]],
   ['metric_5fl1_3',['metric_L1',['../structnanoflann_1_1metric__L1.html',1,'nanoflann']]],

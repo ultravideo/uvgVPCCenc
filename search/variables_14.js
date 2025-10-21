@@ -7,8 +7,7 @@ var searchData=
   ['val_4',['val',['../structoption.html#a13bd155ec3b405d29c41ab8d0793be11',1,'option']]],
   ['value_5',['value',['../structrobin__hood_1_1detail_1_1swappable_1_1nothrow.html#ad0f9d2944cc7a6e6d9e0ed206c86bd63',1,'robin_hood::detail::swappable::nothrow']]],
   ['version_6',['version',['../structcli_1_1opts__t.html#a11e1940d73deb7994633f15a2f2d23ec',1,'cli::opts_t']]],
-  ['vertical_5f_7',['vertical_',['../structFilter444to420.html#ae2b73a4c0a136bfe5d70720874f905d7',1,'Filter444to420']]],
-  ['voxclass_5f_8',['voxClass_',['../structVoxelAttribute.html#aaca598aa577b7a1c2133207e357e3a64',1,'VoxelAttribute']]],
-  ['voxppi_5f_9',['voxPPI_',['../structVoxelAttribute.html#a76b9cd5ba6552e64dd8f7f87d1413794',1,'VoxelAttribute']]],
-  ['voxscore_5f_10',['voxScore_',['../structVoxelAttribute.html#a67be1a2a991d0e51b2e36aa6d3277016',1,'VoxelAttribute']]]
+  ['voxclass_5f_7',['voxClass_',['../structVoxelAttribute.html#aaca598aa577b7a1c2133207e357e3a64',1,'VoxelAttribute']]],
+  ['voxppi_5f_8',['voxPPI_',['../structVoxelAttribute.html#a76b9cd5ba6552e64dd8f7f87d1413794',1,'VoxelAttribute']]],
+  ['voxscore_5f_9',['voxScore_',['../structVoxelAttribute.html#a67be1a2a991d0e51b2e36aa6d3277016',1,'VoxelAttribute']]]
 ];

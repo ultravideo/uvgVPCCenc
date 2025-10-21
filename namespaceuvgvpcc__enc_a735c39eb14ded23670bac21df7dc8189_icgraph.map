@@ -1,7 +1,7 @@
 <map id="uvgvpcc_enc::roundUp" name="uvgvpcc_enc::roundUp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="576,13,745,38"/>
-<area shape="rect" id="Node000002" href="$classMapGenerationBaseLine.html#a186ae71d7a2e66d0f3200b8c2b43f148" title=" " alt="" coords="347,5,528,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="562,28,528,28,528,23,562,23"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="601,13,771,38"/>
+<area shape="rect" id="Node000002" href="$classMapGeneration.html#a32d71a02253eecb06527a202de6cd543" title=" " alt="" coords="347,5,553,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="588,28,553,28,553,23,588,23"/>
 <area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,5,299,45"/>
 <area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,28,299,28,299,23,333,23"/>
 <area shape="rect" id="Node000004" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,13,60,38"/>

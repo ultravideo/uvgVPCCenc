@@ -5,7 +5,7 @@ var searchData=
   ['g_5forientationhorizontal_2',['g_orientationHorizontal',['../patchPacking_8hpp.html#abbd5b4afaab2a2ce809b72e071eaac1c',1,'patchPacking.hpp']]],
   ['g_5forientationvertical_3',['g_orientationVertical',['../patchPacking_8hpp.html#ae1bb48f5404bacd62d17d4357576dac0',1,'patchPacking.hpp']]],
   ['g_5fvaluenotset_4',['g_valueNotSet',['../namespaceuvgvpcc__enc.html#af9fe9d69f62a01755abc270a9df1fbda',1,'uvgvpcc_enc']]],
-  ['generateframemaps_5',['generateFrameMaps',['../classMapGenerationBaseLine.html#a7d9862ea5acff65b91f5a2bfad449030',1,'MapGenerationBaseLine']]],
+  ['generateframemaps_5',['generateFrameMaps',['../classMapGeneration.html#a56bc2b6243c157465d684157b84246e0',1,'MapGeneration']]],
   ['generateframepatches_6',['generateFramePatches',['../classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7',1,'PatchGeneration']]],
   ['generaterandompointcloud_7',['generateRandomPointCloud',['../nanoflann_8hpp.html#a282bb331562768bae92c40e2fbe3c1d4',1,'nanoflann.hpp']]],
   ['generaterandompointcloud_5forient_8',['generateRandomPointCloud_Orient',['../nanoflann_8hpp.html#a9c84dca1dcc0d68812a9e856b740e506',1,'nanoflann.hpp']]],

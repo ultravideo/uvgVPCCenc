@@ -4,6 +4,5 @@ var searchData=
   ['heightinoccblk_5f_1',['heightInOccBlk_',['../structuvgvpcc__enc_1_1Patch.html#a3584f85d4981509104441212d1562b33',1,'uvgvpcc_enc::Patch']]],
   ['heightinpixel_5f_2',['heightInPixel_',['../structuvgvpcc__enc_1_1Patch.html#a98f14196a3f91169c7332e07b048a08a',1,'uvgvpcc_enc::Patch']]],
   ['help_3',['help',['../structcli_1_1opts__t.html#ab75f048b4ba1407abb10a5e917b96b82',1,'cli::opts_t']]],
-  ['high_4',['high',['../structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#ad39f54310e89737fc22369979df14ba9',1,'nanoflann::KDTreeBaseClass::Interval']]],
-  ['horizontal_5f_5',['horizontal_',['../structFilter444to420.html#a36feb9d82ffe13725e620057cee072b7',1,'Filter444to420']]]
+  ['high_4',['high',['../structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#ad39f54310e89737fc22369979df14ba9',1,'nanoflann::KDTreeBaseClass::Interval']]]
 ];
