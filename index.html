@@ -74,9 +74,8 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="md_README"></a></p>
-<p>uvgVPCCenc is an academic open-source volumetric video encoder for the state of the art Video-based Point-Compression (V-PCC) standard. uvgVPCCenc is being developed in C++ under the BSD-3-Clause license.</p>
-<p>The uvgVPCC encoder accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux. In version 1.0, the focus is on building a functional encoding pipeline using only essential tools and algorithms inspired by the TMC2 reference software. Prioritizing practical encoding, we’ve omitted lossless tools and those adding significant computational complexity such as geometry reconstruction. In the future we plan on developing innovative methods to reduce the massive complexity of the V-PCC encoding process.</p>
-<p>uvgVPCCenc serves as a research platform for new coding tool development and other encoder research activities as well as provides a high-quality and practical V-PCC encoder for the public to use.</p>
+<p>uvgVPCCenc is an academic, open-source volumetric video encoder for the state-of-the-art Video-based Point Cloud Compression (V-PCC) standard. It serves as a research platform for new coding tool development and a practical V-PCC encoder for public use.</p>
+<p>uvgVPCCenc is being developed in C++ under the permissive BSD-3-Clause license. It accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux. uvgVPCCenc 1.0 implements a functional encoding pipeline using only essential coding tools and algorithms inspired by the TMC2 reference software. It prioritizes practical encoding by omitting tools, like geometry reconstruction and lossless tools.</p>
 <p>uvgVPCCenc is still under development. Speed and RD-quality will continue to improve.</p>
 <p>Join our Discord channel to contact us <a href="https://discord.gg/fZpub7BPUA"><img src="https://img.shields.io/discord/973260924288901140?style=plastic" alt="Discord" class="inline"/></a>.</p>
 <p><a href="https://ultravideo.fi/uvgvpccenc.html">https://ultravideo.fi/uvgvpccenc.html</a> for more information.</p>
@@ -114,7 +113,8 @@ Compile uvgVPCCenc</h2>
 </div><!-- fragment --><p>By default, the build application is located in <code>_build/Release/src/app/</code>. Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.</p>
 <h3><a class="anchor" id="autotoc_md5"></a>
 Compile with V3C RTP support</h3>
-<p>To enable sending over RTP run cmake with </p><div class="fragment"><div class="line">cmake --preset=Release -DENABLE_V3CRTP=ON</div>
+<p>To compile the encoder and enable sending over RTP, please use following commands: </p><div class="fragment"><div class="line">cmake --preset=Release -DENABLE_V3CRTP=ON</div>
+<div class="line">cmake --preset=Release</div>
 </div><!-- fragment --><h2><a class="anchor" id="autotoc_md6"></a>
 Test uvgVPCCenc</h2>
 <p>To test the encoder, please use following commands (after building Release): </p><div class="fragment"><div class="line">ctest --preset=Release-local-quick-default                   </div>
@@ -138,25 +138,27 @@ Example:</h2>
 </div><!-- fragment --><p>The list of uvgVPCCenc parameters that can be modified with the <code>--uvgvpcc</code> option is defined in the <code>parameterMap</code> initialized in <a href="src/lib/utils/parameters.cpp">parameters.cpp</a>.</p>
 <h3><a class="anchor" id="autotoc_md10"></a>
 V3C RTP Example:</h3>
-<div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 --dst-address=127.0.0.1 --dst-port=8890 </div>
+<div class="fragment"><div class="line">uvgVPCCenc -i &lt;path_to_ply&gt; -n 10 --dst-address=127.0.0.1 --dst-port=8890 [--input-fps-limiter 25] [--uvgvpcc displayBitstreamGenerationFps=true]</div>
 </div><!-- fragment --><p>Send encoded bitstream over RTP. Destination can be set using <code>--dst-address</code> and <code>--dst-port</code>. A separate RTP media stream is created for each type of V3C unit and the streames are multiplexed to the same port using SSRC (hardcoded to be <code>vuh_unit_type + 1</code>). Use a comma separated list to specify separate ports for each media stream e.g. </p><div class="fragment"><div class="line">--dst-port=[&lt;VPS_port&gt;,]&lt;AD_port&gt;,&lt;OVD_port&gt;,&lt;GVD_port&gt;,&lt;AVD_port&gt;</div>
 </div><!-- fragment --><p> note: VPS port should be ommitted if a SDP output directory is specified.</p>
 <hr  />
+<p>To have a fix sending rate, the input frame rate (in fps) of the encoder can be set via the application parameter <code>--input-fps-limiter</code>.</p>
 <h2><a class="anchor" id="autotoc_md12"></a>
 Application parameters</h2>
-<div class="fragment"><div class="line">-i, --input &lt;file&gt;           Input filename (using %0Xd)</div>
-<div class="line">-o, --output &lt;file&gt;          Output filename</div>
-<div class="line">-n, --frames &lt;number&gt;        Number of frames to encode</div>
-<div class="line">-s, --start-frame &lt;number&gt;   Frame number to start the encoding</div>
-<div class="line">-g, --geo-precision &lt;number&gt; Geometry precision for encoding</div>
-<div class="line">-t, --threads &lt;number&gt;       Maximum number of threads to be used (0 auto detection)</div>
-<div class="line">-l, --loop-input &lt;number&gt;    Number of input loop (0 for inifinite loop)</div>
-<div class="line">    --uvgvpcc &lt;params&gt;       Encoder configuration parameters (see next section)</div>
-<div class="line">    --help                   Show this help message</div>
-<div class="line">    --version                Show version information</div>
-<div class="line">    --dst-address &lt;IP&gt;       Destination IP address for an rtp stream (when compiled with V3C RTP support)</div>
-<div class="line">    --dst-port &lt;number-list&gt; Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set) (when compiled with V3C RTP support)</div>
-<div class="line">    --sdp-outdir &lt;dir&gt;       Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP (when compiled with V3C RTP support)</div>
+<div class="fragment"><div class="line">-i, --input &lt;file&gt;                Input filename (using %0Xd)</div>
+<div class="line">-o, --output &lt;file&gt;               Output filename</div>
+<div class="line">-n, --frames &lt;number&gt;             Number of frames to encode</div>
+<div class="line">-s, --start-frame &lt;number&gt;        Frame number to start the encoding</div>
+<div class="line">-g, --geo-precision &lt;number&gt;      Geometry precision for encoding</div>
+<div class="line">-t, --threads &lt;number&gt;            Maximum number of threads to be used (0 auto detection)</div>
+<div class="line">-l, --loop-input &lt;number&gt;         Number of input loop (0 for inifinite loop)</div>
+<div class="line">    --uvgvpcc &lt;params&gt;            Encoder configuration parameters (see next section)</div>
+<div class="line">    --help                        Show this help message</div>
+<div class="line">    --version                     Show version information</div>
+<div class="line">    --input-fps-limiter &lt;number&gt;  Limit the frame rate (in frames per second) at which input frames are read</div>
+<div class="line">    --dst-address &lt;IP&gt;            Destination IP address for an rtp stream (when compiled with V3C RTP support)</div>
+<div class="line">    --dst-port &lt;number-list&gt;      Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set) (when compiled with V3C RTP support)</div>
+<div class="line">    --sdp-outdir &lt;dir&gt;            Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP (when compiled with V3C RTP support)</div>
 </div><!-- fragment --> <hr  />
 <h2><a class="anchor" id="autotoc_md14"></a>
 uvgVPCCenc parameters</h2>
