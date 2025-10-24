@@ -36,7 +36,14 @@ if(ENABLE_V3CRTP)
 		set(UVGV3CRTP_DISABLE_TESTS ON CACHE BOOL "" FORCE)
 		set(UVGV3CRTP_DISABLE_EXAMPLES  ON CACHE BOOL "" FORCE)
 		set(UVGV3CRTP_DISABLE_INSTALL OFF CACHE BOOL "" FORCE)
-
+		
+		# Disable uvgRTP prints unless using a debug prints
+		if(ENABLE_UVGRTP_PRINTS)
+			set(UVGRTP_DISABLE_PRINTS OFF CACHE BOOL "" FORCE)
+		else()
+			set(UVGRTP_DISABLE_PRINTS ON CACHE BOOL "" FORCE)
+		endif()
+		
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/uvgV3CRTP)
 		
 		include_directories(${uvgv3crtp_SOURCE_DIR}/include)

@@ -20,7 +20,8 @@
             "CHECK_PC_MD5": false,
             "ENABLE_CI_TESTING": false,
             "ENABLE_MY_TESTING": false,
-			"ENABLE_V3CRTP": false
+            "ENABLE_V3CRTP": false,
+            "ENABLE_UVGRTP_PRINTS": true
          }
       },
       {
@@ -31,7 +32,8 @@
             "CMAKE_BUILD_TYPE": "Release",
             "ENABLE_TESTING": true,
             "ENABLE_CI_TESTING": true,
-            "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG"
+            "CMAKE_CXX_FLAGS_RELEASE": "-O3 -DNDEBUG",
+            "ENABLE_UVGRTP_PRINTS": false
          }
       },
       {
