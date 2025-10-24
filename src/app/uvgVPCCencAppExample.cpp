@@ -359,8 +359,6 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 
     // ******** Start sending sample stream **********
     //
-    // For rate limiting sending
-    auto last_sleep_time = std::chrono::high_resolution_clock::now();
     bool re_init = true;  // If sample stream is cleared, need to re-init the state
     bool write_sdp = !sdp_output_dir.empty();
 
@@ -489,10 +487,6 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
                 //state.next_gof();
                 break;
             }
-            // Get difference from last sleep and sleep if needed
-            const auto elapsed_time = std::chrono::high_resolution_clock::now() - last_sleep_time;
-            std::this_thread::sleep_for(std::chrono::nanoseconds((1000000000 / uvgV3CRTP::SEND_FRAME_RATE)) - elapsed_time);
-            last_sleep_time = std::chrono::high_resolution_clock::now();  // Update last send time
         }
 
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
