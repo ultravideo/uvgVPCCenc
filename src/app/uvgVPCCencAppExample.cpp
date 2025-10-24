@@ -318,7 +318,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 #ifdef ENABLE_V3CRTP
 
     // ******** Print library version info **********
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
     
     // ******** Create sender state object to manage sending ***********
     //
@@ -378,7 +378,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 
         const uvgvpcc_enc::API::v3c_chunk& chunk = chunks->v3c_chunks.front();
         if (chunk.data == nullptr && chunk.len == 0) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "All chunks sent.\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "All chunks sent.\n");
             chunks->io_mutex.unlock();
 
             break;
@@ -416,7 +416,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 
             if (!std::filesystem::is_directory(sdp_output_dir)) {
                 uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
-                    "APPLICATION", "SDP output directory " + sdp_output_dir + " does not exist, trying to create it.\n");
+                    "V3CRTP", "SDP output directory " + sdp_output_dir + " does not exist, trying to create it.\n");
                 try {
                     std::filesystem::create_directories(sdp_output_dir);
                 } catch (const std::exception& e) {
@@ -457,7 +457,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
                 }
                 sdp_stream << sdp;
 
-                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
                                                                        "Wrote SDP file to " + sdp_file + ".\n");
             }
 
@@ -471,7 +471,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
                 uvgV3CRTP::send_gof(&state);
                 state.next_gof();
 
-                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
                                                                        "Sent one gof " + std::to_string(len) + " bytes.\n");
             }
             else
@@ -487,9 +487,14 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
                 //state.next_gof();
                 break;
             }
+            // Get difference from last sleep and sleep if needed
+            const auto elapsed_time = std::chrono::high_resolution_clock::now() - last_sleep_time;
+            last_sleep_time = std::chrono::high_resolution_clock::now();  // Update last send time
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
+                "Delay since last sending iteration: " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count()) + "ms.\n");
         }
-
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+        
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
                                                                "Processed V3C chunk of size " + std::to_string(len) + " bytes.\n");
 
         // Check if we should clear the sample stream
@@ -497,12 +502,12 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
             // Write bitstream info before clearing
             size_t len = 0;
             auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
                                                                    "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Cleared sample stream after sending " + std::to_string(state.num_gofs()) + " gofs.\n");
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "Cleared sample stream after sending " + std::to_string(state.num_gofs()) + " gofs.\n");
             if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
                 uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
-                    "APPLICATION", "Clearing sample stream before EOS, some data may not have been sent.\n");
+                    "V3CRTP", "Clearing sample stream before EOS, some data may not have been sent.\n");
             }
             state.clear_sample_stream();
             re_init = true;  // Need to re-init the state
@@ -524,13 +529,13 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 
     size_t len = 0;
     auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
+    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
     //
     //  **************************************
 
     if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK && state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
-            "APPLICATION", std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")\n");
+            "V3CRTP", std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")\n");
     }
 #else
     throw std::runtime_error("V3C RTP not enabled, re-run cmake with '-DENABLE_V3CRTP=ON'.");
@@ -591,6 +596,14 @@ int main(const int argc, const char* const argv[]) {
         return EXIT_SUCCESS;
     }
 
+
+    // Verify application configuration //
+    if(!appParameters.outputPath.empty() && !appParameters.dstAddress.empty()) {
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
+    "The application parameters 'outputPath' and 'dstAddress' are both non empty.\nIt seems you are trying to write the output V-PCC bistream in a file as well as sending it with uvgRTP. Currently, uvgVPCCenc does not support both feature at the same time.\n");
+        return EXIT_FAILURE;
+    }
+
     // The only way for the application to change the encoder parameters is through the uvgvpcc_enc::API::setParameter(...) function. //
     try {
         setParameters(appParameters.uvgvpccParametersString);
@@ -631,6 +644,7 @@ int main(const int argc, const char* const argv[]) {
     uvgvpcc_enc::API::v3c_unit_stream output;  // Each v3c chunk gets appended to the V3C unit stream as they are encoded
     std::thread file_writer_thread;
     std::thread v3c_sender_thread;
+
 
     if (!appParameters.outputPath.empty()) file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
     if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort, appParameters.sdpOutdir);

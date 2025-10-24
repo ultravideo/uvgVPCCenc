@@ -66,7 +66,7 @@ const std::array<struct option, 15> long_options{{{"input", required_argument, n
                                                   {"dst-address", required_argument, nullptr, 0},
                                                   {"dst-port", required_argument, nullptr, 0},
                                                   {"sdp-outdir", required_argument, nullptr, 0},
-                                                  {"input-frame-per-second-limiter", required_argument, nullptr, 0}
+                                                  {"input-fps-limiter", required_argument, nullptr, 0}
 }};
 
 /**
@@ -206,7 +206,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             }
         } else if (name == "sdp-outdir") {
             opts.sdpOutdir = optarg;
-        } else if (name == "input-frame-per-second-limiter") {
+        } else if (name == "input-fps-limiter") {
             opts.inputFramePerSecondLimiter = std::stoi(optarg);
         } else {
             //TODO(lf): throw error ?

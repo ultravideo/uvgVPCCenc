@@ -1,11 +1,9 @@
 uvgVPCCenc
 =======
 
-uvgVPCCenc is an academic open-source volumetric video encoder for the state of the art Video-based Point-Compression (V-PCC) standard. uvgVPCCenc is being developed in C++ under the BSD-3-Clause license. 
-              
-The uvgVPCC encoder accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux. In version 1.0, the focus is on building a functional encoding pipeline using only essential tools and algorithms inspired by the TMC2 reference software. Prioritizing practical encoding, we’ve omitted lossless tools and those adding significant computational complexity such as geometry reconstruction. In the future we plan on developing innovative methods to reduce the massive complexity of the V-PCC encoding process. 
-  
-uvgVPCCenc serves as a research platform for new coding tool development and other encoder research activities as well as provides a high-quality and practical V-PCC encoder for the public to use.
+uvgVPCCenc is an academic, open-source volumetric video encoder for the state-of-the-art Video-based Point Cloud Compression (V-PCC) standard. It serves as a research platform for new coding tool development and a practical V-PCC encoder for public use.
+
+uvgVPCCenc is being developed in C++ under the permissive BSD-3-Clause license. It accepts point cloud frames as input (with geometry being positive integers), supports all voxel sizes, and runs on Linux. uvgVPCCenc 1.0 implements a functional encoding pipeline using only essential coding tools and algorithms inspired by the TMC2 reference software. It prioritizes practical encoding by omitting tools, like geometry reconstruction and lossless tools.
 
 uvgVPCCenc is still under development. Speed and RD-quality will continue to improve.
 
@@ -56,9 +54,10 @@ By default, the build application is located in ```_build/Release/src/app/```.
 Refer to "Using uvgVPCCenc" section to learn how to use the library, and attached application.
 
 #### Compile with V3C RTP support
-To enable sending over RTP run cmake with
+To compile the encoder and enable sending over RTP, please use following commands:
 ```
 cmake --preset=Release -DENABLE_V3CRTP=ON
+cmake --preset=Release
 ```
 
 ### Test uvgVPCCenc
@@ -106,7 +105,7 @@ The list of uvgVPCCenc parameters that can be modified with the ```--uvgvpcc``` 
 
 #### V3C RTP Example:
 ```
-    uvgVPCCenc -i <path_to_ply> -n 10 --dst-address=127.0.0.1 --dst-port=8890 
+    uvgVPCCenc -i <path_to_ply> -n 10 --dst-address=127.0.0.1 --dst-port=8890 [--input-fps-limiter 25] [--uvgvpcc displayBitstreamGenerationFps=true]
 ```
 
 Send encoded bitstream over RTP. Destination can be set using ```--dst-address``` and ```--dst-port```. A separate RTP media stream is created for each type of V3C unit and the streames are multiplexed to the same port using SSRC (hardcoded to be ```vuh_unit_type + 1```). Use a comma separated list to specify separate ports for each media stream e.g.
@@ -117,22 +116,25 @@ note: VPS port should be ommitted if a SDP output directory is specified.
 
 ---
 
+To have a fix sending rate, the input frame rate (in fps) of the encoder can be set via the application parameter ```--input-fps-limiter```.
+
 
 ### Application parameters
 ```
-    -i, --input <file>           Input filename (using %0Xd)
-    -o, --output <file>          Output filename
-    -n, --frames <number>        Number of frames to encode
-    -s, --start-frame <number>   Frame number to start the encoding
-    -g, --geo-precision <number> Geometry precision for encoding
-    -t, --threads <number>       Maximum number of threads to be used (0 auto detection)
-    -l, --loop-input <number>    Number of input loop (0 for inifinite loop)
-        --uvgvpcc <params>       Encoder configuration parameters (see next section)
-        --help                   Show this help message
-        --version                Show version information
-        --dst-address <IP>       Destination IP address for an rtp stream (when compiled with V3C RTP support)
-        --dst-port <number-list> Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set) (when compiled with V3C RTP support)
-        --sdp-outdir <dir>       Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP (when compiled with V3C RTP support)
+    -i, --input <file>                Input filename (using %0Xd)
+    -o, --output <file>               Output filename
+    -n, --frames <number>             Number of frames to encode
+    -s, --start-frame <number>        Frame number to start the encoding
+    -g, --geo-precision <number>      Geometry precision for encoding
+    -t, --threads <number>            Maximum number of threads to be used (0 auto detection)
+    -l, --loop-input <number>         Number of input loop (0 for inifinite loop)
+        --uvgvpcc <params>            Encoder configuration parameters (see next section)
+        --help                        Show this help message
+        --version                     Show version information
+        --input-fps-limiter <number>  Limit the frame rate (in frames per second) at which input frames are read
+        --dst-address <IP>            Destination IP address for an rtp stream (when compiled with V3C RTP support)
+        --dst-port <number-list>      Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set) (when compiled with V3C RTP support)
+        --sdp-outdir <dir>            Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP (when compiled with V3C RTP support)
 ```
 ---
 

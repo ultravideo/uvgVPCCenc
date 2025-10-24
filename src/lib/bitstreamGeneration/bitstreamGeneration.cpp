@@ -148,8 +148,6 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
         gof.write_v3c_chunk(output);
     }
 
-    output->available_chunks.release();
-
     if (paramUVG.displayBitstreamGenerationFps) {
         static double lastStampJobCreateV3CGOFBitstream = 0.0;
         const double currentStampJobCreateV3CGOFBitstream = global_timer.elapsed();
@@ -166,5 +164,8 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
         uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
             "BITSTREAM GENERATION", "GOF " + std::to_string(gofUVG->gofId) + " : Delay since last createV3CGOFBitstream: " + msStr + "ms, GOF with " + std::to_string(gofUVG->nbFrames) + " frames => " + fpsStr + "fps\n");
     }
+    
+    output->available_chunks.release();
+
 
 }
