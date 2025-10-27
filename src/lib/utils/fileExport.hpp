@@ -72,7 +72,9 @@ void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, 
                                         const std::vector<size_t>& pointsPPIs);
 void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                         const std::vector<size_t>& pointsPPIs);
-void exportPointCloudPatchSegmentation(const std::shared_ptr<Frame>& frame);
+void exportPointCloudPatchSegmentationColor(const std::shared_ptr<Frame>& frame);
+void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame);
+void exportPointCloudPatchSegmentationBorderBlank(const std::shared_ptr<Frame>& frame);
 
 // Map generation
 void exportImageOccupancy(const std::shared_ptr<Frame>& frame);

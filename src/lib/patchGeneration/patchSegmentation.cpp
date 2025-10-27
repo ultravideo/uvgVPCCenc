@@ -543,6 +543,8 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
     }
 
     if (p_->exportIntermediateFiles) {
-        FileExport::exportPointCloudPatchSegmentation(frame);
+        FileExport::exportPointCloudPatchSegmentationColor(frame);
+        FileExport::exportPointCloudPatchSegmentationBorder(frame);
+        FileExport::exportPointCloudPatchSegmentationBorderBlank(frame);
     }
 }

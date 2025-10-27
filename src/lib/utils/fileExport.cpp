@@ -338,10 +338,10 @@ void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, con
     exportPointCloud(outputPath, pointsGeometry, attributes);
 }
 
-void exportPointCloudPatchSegmentation(const std::shared_ptr<Frame>& frame) {
+void exportPointCloudPatchSegmentationColor(const std::shared_ptr<Frame>& frame) {
     Logger::log<LogLevel::TRACE>(
-        "EXPORT FILE", "Export intermediate point cloud after patch segmentation for frame " + std::to_string(frame->frameId) + ".\n");
-    const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentation/PATCH-SEGMENTATION_f" + zeroPad(frame->frameNumber, 3) +
+        "EXPORT FILE", "Export re-colored intermediate point cloud after patch segmentation for frame " + std::to_string(frame->frameId) + ".\n");
+    const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationColor/PATCH-SEGMENTATION-COLOR_f" + zeroPad(frame->frameNumber, 3) +
                                    "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
 
     std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
@@ -379,6 +379,154 @@ void exportPointCloudPatchSegmentation(const std::shared_ptr<Frame>& frame) {
 
     exportPointCloud(outputPath, frame->pointsGeometry, attributes);
 }
+
+void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame) {
+    Logger::log<LogLevel::TRACE>(
+        "EXPORT FILE", "Export intermediate point cloud with patch border after patch segmentation for frame " +
+        std::to_string(frame->frameId) + ".\n");
+
+    const std::string outputPath = p_->intermediateFilesDir +
+        "/05-patchSegmentationBorder/PATCH-SEGMENTATION-BORDER_f" +
+        zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
+
+    std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
+    std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
+
+    const Vector3<uint8_t> borderColor = {42, 85, 185}; // couleur pour les bords
+
+    for (const auto& patch : frame->patchList) {
+        const auto color = patchColors[patch.patchIndex_ % patchColors.size()];
+        const size_t width = patch.widthInPixel_;
+        const size_t height = patch.heightInPixel_;
+
+        for (size_t v = 0; v < height; ++v) {
+            for (size_t u = 0; u < width; ++u) {
+                const size_t pos = v * width + u;
+                const typeGeometryInput depth = patch.depthL1_[pos];
+                if (depth == g_infiniteDepth) continue;
+
+                bool isBorder = false;
+
+                // Vérifie si on est sur le bord du rectangle
+                if (u == 0 || v == 0 || u == width - 1 || v == height - 1) {
+                    isBorder = true;
+                } else {
+                    // Vérifie si un voisin a une valeur vide
+                    const int du[4] = { -1, 1, 0, 0 };
+                    const int dv[4] = { 0, 0, -1, 1 };
+                    for (int k = 0; k < 4; ++k) {
+                        int uu = static_cast<int>(u) + du[k];
+                        int vv = static_cast<int>(v) + dv[k];
+                        if (uu < 0 || vv < 0 || uu >= static_cast<int>(width) || vv >= static_cast<int>(height))
+                            continue;
+                        const size_t neighborPos = vv * width + uu;
+                        if (patch.depthL1_[neighborPos] == g_infiniteDepth) {
+                            isBorder = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isBorder) continue;
+
+                // Colorer uniquement les points de bordure
+                const size_t ptIndexL1 = patch.depthPCidxL1_[pos];
+                attributes[ptIndexL1] = borderColor;
+                pointColored[ptIndexL1] = true;
+
+                if (p_->doubleLayer) {
+                    const size_t ptIndexL2 = patch.depthPCidxL2_[pos];
+                    if (ptIndexL1 != ptIndexL2) {
+                        attributes[ptIndexL2] = borderColor;
+                        pointColored[ptIndexL2] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < frame->pointsGeometry.size(); ++i) {
+        if (pointColored[i]) continue;
+        // Points non-bordures : gris clair
+        attributes[i] = frame->pointsAttribute[i];
+    }
+
+    exportPointCloud(outputPath, frame->pointsGeometry, attributes);
+}
+
+void exportPointCloudPatchSegmentationBorderBlank(const std::shared_ptr<Frame>& frame) {
+    Logger::log<LogLevel::TRACE>(
+        "EXPORT FILE", "Export intermediate point cloud with patch border (blank) after patch segmentation for frame " +
+        std::to_string(frame->frameId) + ".\n");
+
+    const std::string outputPath = p_->intermediateFilesDir +
+        "/05-patchSegmentationBorderBlank/PATCH-SEGMENTATION-BORDER-BLANK_f" +
+        zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
+
+    std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
+    std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
+
+    const Vector3<uint8_t> borderColor = {42, 85, 185}; // couleur pour les bords
+
+    for (const auto& patch : frame->patchList) {
+        const auto color = patchColors[patch.patchIndex_ % patchColors.size()];
+        const size_t width = patch.widthInPixel_;
+        const size_t height = patch.heightInPixel_;
+
+        for (size_t v = 0; v < height; ++v) {
+            for (size_t u = 0; u < width; ++u) {
+                const size_t pos = v * width + u;
+                const typeGeometryInput depth = patch.depthL1_[pos];
+                if (depth == g_infiniteDepth) continue;
+
+                bool isBorder = false;
+
+                // Vérifie si on est sur le bord du rectangle
+                if (u == 0 || v == 0 || u == width - 1 || v == height - 1) {
+                    isBorder = true;
+                } else {
+                    // Vérifie si un voisin a une valeur vide
+                    const int du[4] = { -1, 1, 0, 0 };
+                    const int dv[4] = { 0, 0, -1, 1 };
+                    for (int k = 0; k < 4; ++k) {
+                        int uu = static_cast<int>(u) + du[k];
+                        int vv = static_cast<int>(v) + dv[k];
+                        if (uu < 0 || vv < 0 || uu >= static_cast<int>(width) || vv >= static_cast<int>(height))
+                            continue;
+                        const size_t neighborPos = vv * width + uu;
+                        if (patch.depthL1_[neighborPos] == g_infiniteDepth) {
+                            isBorder = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isBorder) continue;
+
+                // Colorer uniquement les points de bordure
+                const size_t ptIndexL1 = patch.depthPCidxL1_[pos];
+                attributes[ptIndexL1] = borderColor;
+                pointColored[ptIndexL1] = true;
+
+                if (p_->doubleLayer) {
+                    const size_t ptIndexL2 = patch.depthPCidxL2_[pos];
+                    if (ptIndexL1 != ptIndexL2) {
+                        attributes[ptIndexL2] = borderColor;
+                        pointColored[ptIndexL2] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < frame->pointsGeometry.size(); ++i) {
+        if (pointColored[i]) continue;
+        attributes[i] = Vector3<uint8_t>(185, 185, 200);
+    }
+
+    exportPointCloud(outputPath, frame->pointsGeometry, attributes);
+}
+
 
 void exportImageOccupancy(const std::shared_ptr<Frame>& frame) {
     Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate occupancy map for frame " + std::to_string(frame->frameId) + ".\n");
