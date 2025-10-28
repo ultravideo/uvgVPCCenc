@@ -37,6 +37,18 @@ build:
       - _build/CI/src/app/uvgVPCCenc
     expire_in: 1 week
 
+# Test building uvgVPCCenc with v3c rtp integration
+build-v3crtp:
+  stage: build
+  script:
+    - export PATH="${HOME}/bin:${PATH}"
+    - cmake --preset=CI -DENABLE_V3CRTP=ON
+    - cmake --build --preset=CI
+  artifacts:
+    paths:
+      - _build/CI/src/app/uvgVPCCenc
+    expire_in: 1 week
+
 # Test long default
 test-long:
   stage: test-long-default
