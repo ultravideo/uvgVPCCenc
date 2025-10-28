@@ -57,7 +57,7 @@ Refer to "Using uvgVPCCenc" section to learn how to use the library, and attache
 To compile the encoder and enable sending over RTP, please use following commands:
 ```
 cmake --preset=Release -DENABLE_V3CRTP=ON
-cmake --preset=Release
+cmake --build --preset=Release
 ```
 
 ### Test uvgVPCCenc
