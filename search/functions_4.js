@@ -29,12 +29,14 @@ var searchData=
   ['exportpointcloudinitialsegmentation_26',['exportPointCloudInitialSegmentation',['../namespaceFileExport.html#abfd9c58f0cd1e6b112ef97709d6a56fd',1,'FileExport']]],
   ['exportpointcloudnormalcomputation_27',['exportPointCloudNormalComputation',['../namespaceFileExport.html#a6ebdd5de8f9a45307e11b410bb952b8a',1,'FileExport']]],
   ['exportpointcloudnormalorientation_28',['exportPointCloudNormalOrientation',['../namespaceFileExport.html#a47686502937a09de52acf65f0d6357db',1,'FileExport']]],
-  ['exportpointcloudpatchsegmentation_29',['exportPointCloudPatchSegmentation',['../namespaceFileExport.html#a2679d8ba97301be6900c125953a54986',1,'FileExport']]],
-  ['exportpointcloudppiattributionslicing_30',['exportPointCloudPPIAttributionSlicing',['../namespaceFileExport.html#af97c60c1293687b5cf50fc553f0902b8',1,'FileExport']]],
-  ['exportpointcloudrefinesegmentation_31',['exportPointCloudRefineSegmentation',['../namespaceFileExport.html#abb3934fea49bd8651d8498d236496bb8',1,'FileExport']]],
-  ['exportpointcloudsubslices_32',['exportPointCloudSubslices',['../namespaceFileExport.html#a0fd74d198831b276f3faff9169ff618d',1,'FileExport']]],
-  ['extract_5flist_5fproperty_33',['extract_list_property',['../classminiply_1_1PLYReader.html#a2c71e492c56ebee22a9011c76cad0ae9',1,'miniply::PLYReader']]],
-  ['extract_5fproperties_34',['extract_properties',['../classminiply_1_1PLYReader.html#a567b0c1b1aa8ee95da31305f8a0703dc',1,'miniply::PLYReader']]],
-  ['extract_5fproperties_5fwith_5fstride_35',['extract_properties_with_stride',['../classminiply_1_1PLYReader.html#acb9146f0176d6d12701f1e71126a4ee2',1,'miniply::PLYReader']]],
-  ['extract_5ftriangles_36',['extract_triangles',['../classminiply_1_1PLYReader.html#aa51b5c6344acb425b1b5d36c98a8f698',1,'miniply::PLYReader']]]
+  ['exportpointcloudpatchsegmentationborder_29',['exportPointCloudPatchSegmentationBorder',['../namespaceFileExport.html#a77ccae02b99d57cd4d828bee46139f51',1,'FileExport']]],
+  ['exportpointcloudpatchsegmentationborderblank_30',['exportPointCloudPatchSegmentationBorderBlank',['../namespaceFileExport.html#afa65f718975b30cc1387729f9e355b75',1,'FileExport']]],
+  ['exportpointcloudpatchsegmentationcolor_31',['exportPointCloudPatchSegmentationColor',['../namespaceFileExport.html#a05bd491ceaac33ece5f9ce26395d0cbd',1,'FileExport']]],
+  ['exportpointcloudppiattributionslicing_32',['exportPointCloudPPIAttributionSlicing',['../namespaceFileExport.html#af97c60c1293687b5cf50fc553f0902b8',1,'FileExport']]],
+  ['exportpointcloudrefinesegmentation_33',['exportPointCloudRefineSegmentation',['../namespaceFileExport.html#abb3934fea49bd8651d8498d236496bb8',1,'FileExport']]],
+  ['exportpointcloudsubslices_34',['exportPointCloudSubslices',['../namespaceFileExport.html#a0fd74d198831b276f3faff9169ff618d',1,'FileExport']]],
+  ['extract_5flist_5fproperty_35',['extract_list_property',['../classminiply_1_1PLYReader.html#a2c71e492c56ebee22a9011c76cad0ae9',1,'miniply::PLYReader']]],
+  ['extract_5fproperties_36',['extract_properties',['../classminiply_1_1PLYReader.html#a567b0c1b1aa8ee95da31305f8a0703dc',1,'miniply::PLYReader']]],
+  ['extract_5fproperties_5fwith_5fstride_37',['extract_properties_with_stride',['../classminiply_1_1PLYReader.html#acb9146f0176d6d12701f1e71126a4ee2',1,'miniply::PLYReader']]],
+  ['extract_5ftriangles_38',['extract_triangles',['../classminiply_1_1PLYReader.html#aa51b5c6344acb425b1b5d36c98a8f698',1,'miniply::PLYReader']]]
 ];
