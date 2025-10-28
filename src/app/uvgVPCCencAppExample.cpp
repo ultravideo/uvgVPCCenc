@@ -359,6 +359,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 
     // ******** Start sending sample stream **********
     //
+    auto last_sleep_time = std::chrono::high_resolution_clock::now();
     bool re_init = true;  // If sample stream is cleared, need to re-init the state
     bool write_sdp = !sdp_output_dir.empty();
 

@@ -1,12 +1,12 @@
 if(ENABLE_V3CRTP)
 	# Check if uvgV3CRTP is already available
-	find_package(uvgV3CRTP 0.11.1 QUIET) #TODO: update min version to a version with necessary bug fixes etc.
+	find_package(uvgV3CRTP 0.13.0 QUIET) #TODO: update min version to a version with necessary bug fixes etc.
 
 	# Try pkgConfig as well
 	find_package(PkgConfig QUIET)
 	if(PkgConfig_FOUND)
 		if(NOT UVGV3CRTP_FOUND)
-			pkg_search_module(UVGV3CRTP uvgv3crtp>=0.11.1 uvgV3CRTP>=0.11.1)
+			pkg_search_module(UVGV3CRTP uvgv3crtp>=0.13.0 uvgV3CRTP>=0.13.0)
 		endif()
 	endif()
 
@@ -46,8 +46,8 @@ if(ENABLE_V3CRTP)
 		
 		add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/dependencies/uvgV3CRTP)
 		
-		include_directories(${uvgv3crtp_SOURCE_DIR}/include)
-		link_directories(${uvgv3crtp_SOURCE_DIR})
+		#include_directories(${uvgv3crtp_SOURCE_DIR}/include)
+		#link_directories(${uvgv3crtp_SOURCE_DIR})
 		
 		unset(BUILD_SHARED_LIBS)
 
