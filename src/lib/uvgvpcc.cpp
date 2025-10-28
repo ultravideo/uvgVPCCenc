@@ -231,6 +231,16 @@ void verifyConfig() {
         throw std::runtime_error("The refineSegmentationMaxNNVoxelDistanceLUT (" + std::to_string(p_->refineSegmentationMaxNNVoxelDistanceLUT) +
             ") needs to be smaller or equal to the size of the adjacentPointsSearch array (" + std::to_string(adjacentPointsSearch.size()) + ").");
     }
+
+    if (p_->lowDelayBitstream && !p_->encoderInfoSEI) {
+        throw std::runtime_error("Low delay bitstream (lowDelayBitstream=true) is an experimental feature. It needs the library parameter 'encoderInfoSEI=true' to work properly.");  
+    }
+
+    if (p_->lowDelayBitstream && p_->encoderInfoSEI) {
+        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+            "VERIFY CONFIG",
+            "Low delay bitstream (lowDelayBitstream=true) is an experimental feature. The generated bitstream will probably not be decoded by TMC2.\n");
+    }
 }
 
 void setInputGeoPrecision() {
