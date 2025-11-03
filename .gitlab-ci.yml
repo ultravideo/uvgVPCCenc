@@ -22,8 +22,9 @@ image: ultravideo/uvgvpccenc-ci-base
 
 stages:
   - build
-  - test-long-default
-  - test-long-slicing
+  - test-default
+  - test-slicing
+  - test-v3crtp
 
 # Build uvgVPCCenc
 build:
@@ -50,14 +51,16 @@ build-v3crtp:
     expire_in: 1 week
 
 # Test long default
-test-long:
-  stage: test-long-default
+test-long-default:
+  stage: test-default
   script:
     - export PATH="${HOME}/bin:${PATH}"
     - cmake --preset=CI
     - cmake --build --preset=CI
     - ctest --preset=CI-ci-long-default
   dependencies:
+    - build
+  needs:
     - build
   artifacts:
     paths:
@@ -68,8 +71,8 @@ test-long:
     expire_in: 1 week
 
 # Test long slicing
-test-short:
-  stage: test-long-slicing
+test-long-slicing:
+  stage: test-slicing
   script:
     - export PATH="${HOME}/bin:${PATH}"
     - cmake --preset=CI
@@ -77,6 +80,9 @@ test-short:
     - ctest --preset=CI-ci-long-slicing
   dependencies:
     - build
+  needs:
+    - build
+    - test-long-default
   artifacts:
     paths:
       - _build/CI/Testing/Temporary/CTestCostData.txt
@@ -84,3 +90,45 @@ test-short:
       - _build/CI/bitstream/long_slicing_ReadyForWinter_vox9_AI_16-22-2_fast_true_2t_1l_1n.vpcc
       - _build/CI/bitstream/long_slicing_ReadyForWinter_vox9_RA_32-42-4_slow_true_2t_1l_1n.vpcc
     expire_in: 1 week
+
+# Test v3c rtp integration
+test-v3crtp-CI:
+  stage: test-v3crtp
+  script:
+    - export PATH="${HOME}/bin:${PATH}"
+    - cmake --preset=CI -DENABLE_V3CRTP=ON
+    - cmake --build --preset=CI
+    - ctest --preset=CI-ci-v3crtp
+  dependencies:
+    - build-v3crtp
+  needs:
+    - build-v3crtp
+  artifacts:
+    paths:
+      - _build/CI/Testing/Temporary/CTestCostData.txt
+      - _build/CI/Testing/Temporary/LastTest.log
+      - _build/CI/bitstream/long_slicing_ReadyForWinter_vox9_AI_16-22-2_fast_true_2t_1l_1n.vpcc
+      - _build/CI/bitstream/long_slicing_ReadyForWinter_vox9_RA_32-42-4_slow_true_2t_1l_1n.vpcc
+    expire_in: 1 week
+
+# Test v3c rtp integration
+test-v3crtp-Debug:
+  stage: test-v3crtp
+  script:
+    - export PATH="${HOME}/bin:${PATH}"
+    - cmake --preset=Debug -DENABLE_V3CRTP=ON
+    - cmake --build --preset=Debug
+    - ctest --preset=Debug-ci-v3crtp
+  dependencies:
+    - build-v3crtp
+  needs:
+    - build-v3crtp
+  when: manual
+  artifacts:
+    paths:
+      - _build/Debug/Testing/Temporary/CTestCostData.txt
+      - _build/Debug/Testing/Temporary/LastTest.log
+      - _build/Debug/bitstream/long_slicing_ReadyForWinter_vox9_AI_16-22-2_fast_true_2t_1l_1n.vpcc
+      - _build/Debug/bitstream/long_slicing_ReadyForWinter_vox9_RA_32-42-4_slow_true_2t_1l_1n.vpcc
+    expire_in: 1 week
+    

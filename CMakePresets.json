@@ -231,9 +231,11 @@
       {"name": "CI-ci-long-all","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_*"}}},
       {"name": "CI-ci-long-default","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_default_*"}}},
       {"name": "CI-ci-long-slicing","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_slicing_*"}}},
-      {"name": "CI-ci-long-efficientMapGen","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_efficientMapGen_*"}}}   
+      {"name": "CI-ci-long-efficientMapGen","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"long_efficientMapGen_*"}}},   
 
-      
-
+      {"name": "CI-local-v3crtp","inherits": "base-test-local","configurePreset": "CI","filter": {"include": {"name":"v3crtp_*"}}},
+      {"name": "CI-ci-v3crtp","inherits": "base-test-ci","configurePreset": "CI","filter": {"include": {"name":"v3crtp_*"}}},
+      {"name": "Debug-local-v3crtp","inherits": "base-test-local","configurePreset": "Debug","filter": {"include": {"name":"v3crtp_*"}}},
+      {"name": "Debug-ci-v3crtp","inherits": "base-test-ci","configurePreset": "Debug","filter": {"include": {"name":"v3crtp_*"}}}
    ]
 }

@@ -80,12 +80,10 @@ macro(add_test_macro test_name test_input test_nbframe test_startFrame test_nbth
     )
     set_tests_properties(${test_name}_encoding PROPERTIES TIMEOUT ${test_timeout})
 
-
     
     add_test(NAME ${test_name}_md5_bitstream
     COMMAND ${CMAKE_COMMAND} -E md5sum ${TEST_OUTPUT_BITSTREAM_DIR}/${test_name}.vpcc
     )
-
 
 
     # Make md5 test depend on encoding
@@ -123,8 +121,6 @@ macro(add_test_macro test_name test_input test_nbframe test_startFrame test_nbth
 endmacro()
 
 
-
-
 if(NOT DEFINED ADD_TEST_WRAPPER_DEFINED)
     # Wrapper for add_test_macro(...) (avoid any inconsistency between the test parameter and the test name)
     function(add_test_wrapper testSet testConfig testSeqDir seq voxelSize mode rate preset doubleLayer nbThread nbLoop nbFrame timeout ref_md5)
@@ -158,9 +154,78 @@ if(NOT DEFINED ADD_TEST_WRAPPER_DEFINED)
     set(ADD_TEST_WRAPPER_DEFINED TRUE)
 endif()
 
+
+macro(add_v3crtp_test_macro test_name test_input test_nbframe test_startFrame test_nbthread test_nbloop test_ip test_port test_sdp_dir test_uvgvpccencParam test_timeout)
+    
+	# Handle ommitting sdp-outdir if test_sdp_dir == "-"
+	if(${test_sdp_dir} STREQUAL "-")
+	    set(sdp_command "")
+	else()
+	    set(sdp_command "--sdp-outdir=${test_sdp_dir}")
+	endif()
+	
+    add_test(NAME ${test_name}_encoding
+        COMMAND uvgVPCCenc
+        -i ${test_input}
+        -n ${test_nbframe}
+        -s ${test_startFrame}
+        #-o ${TEST_OUTPUT_BITSTREAM_DIR}/${test_name}.vpcc
+        -t ${test_nbthread}
+        -l ${test_nbloop}
+		--dst-address=${test_ip}
+		--dst-port=${test_port}
+		${sdp_command}
+        --uvgvpcc ${test_uvgvpccencParam}
+    )
+    set_tests_properties(${test_name}_encoding PROPERTIES TIMEOUT ${test_timeout})
+
+endmacro()
+
+if(NOT DEFINED ADD_V3CRTP_TEST_WRAPPER_DEFINED)
+    # Wrapper for add_v3crtp_test_macro(...) (avoid any inconsistency between the test parameter and the test name)
+    function(add_v3crtp_test_wrapper testSet testConfig testSeqDir seq voxelSize mode rate preset doubleLayer nbThread nbLoop nbFrame ip ports sdpOutdir timeout)
+        # build test name
+		# Handle ommitting sdp-outdir if test_sdp_dir == "-"
+		if(sdpOutdir STREQUAL "-")
+			set(use_sdp "")
+		else()
+			set(use_sdp "_sdp")
+		endif()
+        set(testName "${testSet}_${testConfig}_${seq}_${voxelSize}_${mode}_${rate}_${preset}_${doubleLayer}_${nbThread}t_${nbLoop}l_${nbFrame}n_${ip}:${ports}${use_sdp}")
+        set(startFrame 0)
+        set(inputFile "${testSeqDir}/UVG-VPC/${seq}/ply_${voxelSize}/ply_xyz_rgb/${seq}_UVG_${voxelSize}_25_0_250_%04d.ply")
+        set(configParam "")
+        if(testConfig STREQUAL "slicing")
+            set(configParam ",activateSlicing=true")
+        endif()
+        if(testConfig STREQUAL "efficientMapGen")
+            set(configParam ",attributeBgFill=bbpe")
+        endif()
+        set(uvgVPCCencParam "presetName=${preset},mode=${mode},rate=${rate},doubleLayer=${doubleLayer},logLevel=DEBUG${configParam}")
+
+        # call the add test macro
+        add_v3crtp_test_macro(
+            ${testName}
+            ${inputFile}
+            ${nbFrame}
+            ${startFrame}
+            ${nbThread}
+            ${nbLoop}
+			${ip}
+			${ports}
+			${sdpOutdir}
+            ${uvgVPCCencParam}
+            ${timeout}
+        )
+    endfunction()
+
+    set(ADD_V3CRTP_TEST_WRAPPER_DEFINED TRUE)
+endif()
+
 if(ENABLE_CI_TESTING)
     add_subdirectory(quick_tests)
     add_subdirectory(long_tests)
+	add_subdirectory(v3crtp_tests)
 endif()
 
 if(ENABLE_MY_TESTING)
