@@ -70,8 +70,6 @@ namespace {
 //     {102, 204, 204}
 // }};
 
-
-
 // NOLINTNEXTLINE(cert-err58-cpp,bugprone-throwing-static-initialization)
 const std::array<Vector3<uint8_t>, 114> patchColors = {{
     // Red color is for points not being part of a patch before the 2D projection.
@@ -196,6 +194,52 @@ void exportImage(const std::string& filePath, const std::vector<uint8_t>& image,
     }
 }
 
+void exportImageRepacked(const std::string& filePath, const std::vector<uint8_t>& imagePlanar,
+                         const std::vector<uint8_t>& imagePlanarL2 = {}) {
+    createDirs(filePath);
+
+    const size_t channelSize = imagePlanar.size() / 3;
+    std::vector<uint8_t> image(3 * channelSize);  // Repacked image
+    for (size_t i = 0; i < channelSize; ++i) {
+        image[i * 3] = imagePlanar[i];
+        image[i * 3 + 1] = imagePlanar[i + channelSize];
+        image[i * 3 + 2] = imagePlanar[i + 2 * channelSize];
+    }
+
+    const std::streamsize streamSize = static_cast<std::streamsize>(image.size());
+
+    std::ofstream yuvFile(filePath, std::ios::binary);
+    if (!yuvFile.is_open()) {
+        throw std::runtime_error("Unable to open file: " + filePath);
+    }
+
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : lf Accepted for I/O operations
+    yuvFile.write(reinterpret_cast<const char*>(image.data()), streamSize);
+    if (!yuvFile) {
+        throw std::runtime_error("Error while writing to file: " + filePath);
+    }
+
+    if (!imagePlanarL2.empty()) {
+        std::vector<uint8_t> imageL2(3 * channelSize);  // Repacked image
+        for (size_t i = 0; i < channelSize; ++i) {
+            imageL2[i * 3] = imagePlanarL2[i];
+            imageL2[i * 3 + 1] = imagePlanarL2[i + channelSize];
+            imageL2[i * 3 + 2] = imagePlanarL2[i + 2 * channelSize];
+        }
+
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast) : lf Accepted for I/O operations
+        yuvFile.write(reinterpret_cast<const char*>(imageL2.data()), streamSize);
+        if (!yuvFile) {
+            throw std::runtime_error("Error while writing L2 to file: " + filePath);
+        }
+    }
+
+    yuvFile.close();
+    if (!yuvFile) {
+        throw std::runtime_error("Error while closing file: " + filePath);
+    }
+}
+
 void exportBitstream(const std::string& filePath, const std::vector<uint8_t>& bitstream) {
     createDirs(filePath);
     const std::streamsize streamSize = static_cast<std::streamsize>(bitstream.size());
@@ -297,10 +341,10 @@ void exportPointCloudInitialSegmentation(const std::shared_ptr<Frame>& frame, co
     exportPointCloud(outputPath, pointsGeometry, attributes);
 }
 
-void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,const std::vector<Vector3<uint8_t>>& attributes,
-                                       const std::string& axisStr) {
-    Logger::log<LogLevel::TRACE>(
-        "EXPORT FILE", "Export intermediate point cloud after " + axisStr + " axis slicing for frame " + std::to_string(frame->frameId) + ".\n");
+void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
+                               const std::vector<Vector3<uint8_t>>& attributes, const std::string& axisStr) {
+    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate point cloud after " + axisStr + " axis slicing for frame " +
+                                                    std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/0-" + axisStr + "Slicing/SLICING_" + axisStr + "_f" +
                                    zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthVoxelized) + ".ply";
@@ -309,7 +353,7 @@ void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::v
 }
 
 void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
-                                        const std::vector<size_t>& pointsPPIs) {
+                                           const std::vector<size_t>& pointsPPIs) {
     Logger::log<LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate point cloud after refine segmentation for frame " + std::to_string(frame->frameId) + ".\n");
 
@@ -339,10 +383,10 @@ void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, con
 }
 
 void exportPointCloudPatchSegmentationColor(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>(
-        "EXPORT FILE", "Export re-colored intermediate point cloud after patch segmentation for frame " + std::to_string(frame->frameId) + ".\n");
-    const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationColor/PATCH-SEGMENTATION-COLOR_f" + zeroPad(frame->frameNumber, 3) +
-                                   "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
+    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export re-colored intermediate point cloud after patch segmentation for frame " +
+                                                    std::to_string(frame->frameId) + ".\n");
+    const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationColor/PATCH-SEGMENTATION-COLOR_f" +
+                                   zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
 
     std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
     std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
@@ -381,18 +425,16 @@ void exportPointCloudPatchSegmentationColor(const std::shared_ptr<Frame>& frame)
 }
 
 void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>(
-        "EXPORT FILE", "Export intermediate point cloud with patch border after patch segmentation for frame " +
-        std::to_string(frame->frameId) + ".\n");
+    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate point cloud with patch border after patch segmentation for frame " +
+                                                    std::to_string(frame->frameId) + ".\n");
 
-    const std::string outputPath = p_->intermediateFilesDir +
-        "/05-patchSegmentationBorder/PATCH-SEGMENTATION-BORDER_f" +
-        zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
+    const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationBorder/PATCH-SEGMENTATION-BORDER_f" +
+                                   zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
 
     std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
     std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
 
-    const Vector3<uint8_t> borderColor = {42, 85, 185}; // couleur pour les bords
+    const Vector3<uint8_t> borderColor = {42, 85, 185};  // couleur pour les bords
 
     for (const auto& patch : frame->patchList) {
         const auto color = patchColors[patch.patchIndex_ % patchColors.size()];
@@ -412,13 +454,12 @@ void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame
                     isBorder = true;
                 } else {
                     // Vérifie si un voisin a une valeur vide
-                    const int du[4] = { -1, 1, 0, 0 };
-                    const int dv[4] = { 0, 0, -1, 1 };
+                    const int du[4] = {-1, 1, 0, 0};
+                    const int dv[4] = {0, 0, -1, 1};
                     for (int k = 0; k < 4; ++k) {
                         int uu = static_cast<int>(u) + du[k];
                         int vv = static_cast<int>(v) + dv[k];
-                        if (uu < 0 || vv < 0 || uu >= static_cast<int>(width) || vv >= static_cast<int>(height))
-                            continue;
+                        if (uu < 0 || vv < 0 || uu >= static_cast<int>(width) || vv >= static_cast<int>(height)) continue;
                         const size_t neighborPos = vv * width + uu;
                         if (patch.depthL1_[neighborPos] == g_infiniteDepth) {
                             isBorder = true;
@@ -455,18 +496,17 @@ void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame
 }
 
 void exportPointCloudPatchSegmentationBorderBlank(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>(
-        "EXPORT FILE", "Export intermediate point cloud with patch border (blank) after patch segmentation for frame " +
-        std::to_string(frame->frameId) + ".\n");
+    Logger::log<LogLevel::TRACE>("EXPORT FILE",
+                                 "Export intermediate point cloud with patch border (blank) after patch segmentation for frame " +
+                                     std::to_string(frame->frameId) + ".\n");
 
-    const std::string outputPath = p_->intermediateFilesDir +
-        "/05-patchSegmentationBorderBlank/PATCH-SEGMENTATION-BORDER-BLANK_f" +
-        zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
+    const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationBorderBlank/PATCH-SEGMENTATION-BORDER-BLANK_f" +
+                                   zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
 
     std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
     std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
 
-    const Vector3<uint8_t> borderColor = {42, 85, 185}; // couleur pour les bords
+    const Vector3<uint8_t> borderColor = {42, 85, 185};  // couleur pour les bords
 
     for (const auto& patch : frame->patchList) {
         const auto color = patchColors[patch.patchIndex_ % patchColors.size()];
@@ -486,13 +526,12 @@ void exportPointCloudPatchSegmentationBorderBlank(const std::shared_ptr<Frame>& 
                     isBorder = true;
                 } else {
                     // Vérifie si un voisin a une valeur vide
-                    const int du[4] = { -1, 1, 0, 0 };
-                    const int dv[4] = { 0, 0, -1, 1 };
+                    const int du[4] = {-1, 1, 0, 0};
+                    const int dv[4] = {0, 0, -1, 1};
                     for (int k = 0; k < 4; ++k) {
                         int uu = static_cast<int>(u) + du[k];
                         int vv = static_cast<int>(v) + dv[k];
-                        if (uu < 0 || vv < 0 || uu >= static_cast<int>(width) || vv >= static_cast<int>(height))
-                            continue;
+                        if (uu < 0 || vv < 0 || uu >= static_cast<int>(width) || vv >= static_cast<int>(height)) continue;
                         const size_t neighborPos = vv * width + uu;
                         if (patch.depthL1_[neighborPos] == g_infiniteDepth) {
                             isBorder = true;
@@ -526,7 +565,6 @@ void exportPointCloudPatchSegmentationBorderBlank(const std::shared_ptr<Frame>& 
 
     exportPointCloud(outputPath, frame->pointsGeometry, attributes);
 }
-
 
 void exportImageOccupancy(const std::shared_ptr<Frame>& frame) {
     Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate occupancy map for frame " + std::to_string(frame->frameId) + ".\n");
@@ -590,9 +628,9 @@ void exportImageAttribute(const std::shared_ptr<Frame>& frame) {
     const std::string outputPath = p_->intermediateFilesDir + "/08-attribute/ATTRIBUTE_f" + zeroPad(frame->frameNumber, 3) + "_RGB444_" +
                                    std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".rgb";
     if (p_->doubleLayer) {
-        exportImage(outputPath, frame->attributeMapL1, frame->attributeMapL2);
+        exportImageRepacked(outputPath, frame->attributeMapL1, frame->attributeMapL2);
     } else {
-        exportImage(outputPath, frame->attributeMapL1);
+        exportImageRepacked(outputPath, frame->attributeMapL1);
     }
 }
 
@@ -668,10 +706,9 @@ void exportGeometryBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const
     exportBitstream(outputPath, bitstream);
 }
 
-//TODO(lf): currently the file is open and close for every log line...
+// TODO(lf): currently the file is open and close for every log line...
 void exportAtlasInformation(const size_t& gofId, const std::string& logLine) {
-    const std::string filePath = p_->intermediateFilesDir +
-        "/16-atlasInformation/ATLAS_g" + zeroPad(gofId, 3) + ".txt";
+    const std::string filePath = p_->intermediateFilesDir + "/16-atlasInformation/ATLAS_g" + zeroPad(gofId, 3) + ".txt";
 
     createDirs(filePath);
 
@@ -690,6 +727,5 @@ void exportAtlasInformation(const size_t& gofId, const std::string& logLine) {
         throw std::runtime_error("Error while closing file: " + filePath);
     }
 }
-
 
 }  // namespace FileExport
