@@ -121,7 +121,7 @@
          "hidden": true,
             "execution": {
                "stopOnFailure": false,
-               "jobs": 20,
+               "jobs": 5,
                "outputOnFailure": true,
                "noTestsAction": "error",
                "verbose": true,

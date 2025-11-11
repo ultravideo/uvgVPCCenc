@@ -40,7 +40,6 @@
 #include "parameters.hpp"
 #include "uvgvpcc/log.hpp"
 
-
 namespace uvgvpcc_enc {
 
 namespace {
@@ -61,15 +60,15 @@ Preset preset_vox9_fast = {
 
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "7"},
-    {"refineSegmentationMaxNNVoxelDistanceLUT", "2"}, // old : 2
-    {"refineSegmentationMaxNNTotalPointCount", "32"}, // old : 32
-    {"refineSegmentationLambda", "3.5"}, // old : 3.5
-    {"refineSegmentationIterationCount", "3"}, // old : 3
+    {"refineSegmentationMaxNNVoxelDistanceLUT", "2"},  // old : 2
+    {"refineSegmentationMaxNNTotalPointCount", "32"},  // old : 32
+    {"refineSegmentationLambda", "3.5"},               // old : 3.5
+    {"refineSegmentationIterationCount", "3"},         // old : 3
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
-    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},   
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "12"},  
-    {"slicingRefineSegmentationLambda", "3.5"},               
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "12"},
+    {"slicingRefineSegmentationLambda", "3.5"},
     {"slicingRefineSegmentationIterationCount", "1"},
 
     // ___ Patch generation ___ //   (patch segmentation)
@@ -105,13 +104,13 @@ Preset preset_vox9_slow = {
     {"geoBitDepthRefineSegmentation", "8"},             // TODO(lf)-PRESET: fixed
     {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},   // TODO(lf)-PRESET: fixed
     {"refineSegmentationMaxNNTotalPointCount", "256"},  // TODO(lf)-PRESET: fixed
-    {"refineSegmentationLambda", "3"},                // TODO(lf)-PRESET : should be tested with iterations
-    {"refineSegmentationIterationCount", "15"},        // old : 15 // TODO(lf)-PRESET : should be tested with lambda
+    {"refineSegmentationLambda", "3"},                  // TODO(lf)-PRESET : should be tested with iterations
+    {"refineSegmentationIterationCount", "15"},         // old : 15 // TODO(lf)-PRESET : should be tested with lambda
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
-    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},   
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},  
-    {"slicingRefineSegmentationLambda", "5"},               
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},
+    {"slicingRefineSegmentationLambda", "5"},
     {"slicingRefineSegmentationIterationCount", "10"},
 
     // ___ Patch generation ___ //   (patch segmentation)
@@ -148,12 +147,12 @@ Preset preset_vox10_fast = {
     {"refineSegmentationMaxNNVoxelDistanceLUT", "2"},
     {"refineSegmentationMaxNNTotalPointCount", "32"},
     {"refineSegmentationLambda", "3.5"},
-    {"refineSegmentationIterationCount", "3"}, // old : 3
+    {"refineSegmentationIterationCount", "3"},  // old : 3
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
-    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},   
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "16"},  
-    {"slicingRefineSegmentationLambda", "4"},               
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "16"},
+    {"slicingRefineSegmentationLambda", "4"},
     {"slicingRefineSegmentationIterationCount", "2"},
 
     // ___ Patch generation ___ //   (patch segmentation)
@@ -169,8 +168,8 @@ Preset preset_vox10_fast = {
 
     // ___ 2D encoding parameters ___ //
     {"sizeGOP2DEncoding", "16"},
-    {"occupancyEncodingPreset", "ultrafast"}, // old ultrafast
-    {"geometryEncodingPreset", "fast"},  // old fast
+    {"occupancyEncodingPreset", "ultrafast"},   // old ultrafast
+    {"geometryEncodingPreset", "fast"},         // old fast
     {"attributeEncodingPreset", "ultrafast"}};  // old ultrafast};
 
 Preset preset_vox10_slow = {
@@ -189,12 +188,12 @@ Preset preset_vox10_slow = {
     {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},
     {"refineSegmentationMaxNNTotalPointCount", "256"},
     {"refineSegmentationLambda", "3.0"},
-    {"refineSegmentationIterationCount", "15"}, // old : 15
+    {"refineSegmentationIterationCount", "15"},  // old : 15
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
-    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "6"},   
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},  
-    {"slicingRefineSegmentationLambda", "5"},               
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "6"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},
+    {"slicingRefineSegmentationLambda", "5"},
     {"slicingRefineSegmentationIterationCount", "10"},
 
     // ___ Patch generation ___ //   (patch segmentation)
@@ -219,24 +218,24 @@ Preset preset_vox11_fast = {
     {"sizeGOF", "16"},
 
     // ___ Voxelization ___ //       (grid-based segmentation)
-    {"geoBitDepthVoxelized", "10"},
+    {"geoBitDepthVoxelized", "9"},
 
     // ___ Normal computation ___ //
-    {"normalComputationKnnCount", "6"},
+    {"normalComputationKnnCount", "8"},
     {"normalComputationMaxDiagonalStep", "8"},
 
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
-    {"geoBitDepthRefineSegmentation", "9"},
-    {"refineSegmentationMaxNNVoxelDistanceLUT", "4"},
-    {"refineSegmentationMaxNNTotalPointCount", "128"},
-    {"refineSegmentationLambda", "3.0"},
-    {"refineSegmentationIterationCount", "4"},
+    {"geoBitDepthRefineSegmentation", "6"},
+    {"refineSegmentationMaxNNVoxelDistanceLUT", "5"},
+    {"refineSegmentationMaxNNTotalPointCount", "256"},
+    {"refineSegmentationLambda", "3.5"},
+    {"refineSegmentationIterationCount", "9"},
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
-    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},   
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "128"},  
-    {"slicingRefineSegmentationLambda", "3.0"},             
-    {"slicingRefineSegmentationIterationCount", "4"},
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "5"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "256"},
+    {"slicingRefineSegmentationLambda", "3.5"},
+    {"slicingRefineSegmentationIterationCount", "9"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},
@@ -263,21 +262,21 @@ Preset preset_vox11_slow = {
     {"geoBitDepthVoxelized", "10"},
 
     // ___ Normal computation ___ //
-    {"normalComputationKnnCount", "6"},
-    {"normalComputationMaxDiagonalStep", "8"},
+    {"normalComputationKnnCount", "9"},
+    {"normalComputationMaxDiagonalStep", "13"},
 
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
-    {"geoBitDepthRefineSegmentation", "9"},
-    {"refineSegmentationMaxNNVoxelDistanceLUT", "4"},
-    {"refineSegmentationMaxNNTotalPointCount", "128"},
-    {"refineSegmentationLambda", "3.0"},
-    {"refineSegmentationIterationCount", "4"},
+    {"geoBitDepthRefineSegmentation", "10"},
+    {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},
+    {"refineSegmentationMaxNNTotalPointCount", "512"},
+    {"refineSegmentationLambda", "3.5"},
+    {"refineSegmentationIterationCount", "19"},
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
-    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},   
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "128"},  
-    {"slicingRefineSegmentationLambda", "3.0"},             
-    {"slicingRefineSegmentationIterationCount", "4"},
+    {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "9"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "512"},
+    {"slicingRefineSegmentationLambda", "3.5"},
+    {"slicingRefineSegmentationIterationCount", "19"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},

@@ -46,7 +46,7 @@ set(VOXELS_BlueBackpack vox11)
 # Test configurations
 set(TEST_CONFIGURATIONS default slicing efficientMapGen)
 
-set(THREADS_LIST 2)
+set(THREADS_LIST 4)
 set(LOOPS_LIST 1)
 set(TIMEOUT 200)
 set(REF_MD5_FILE "${CMAKE_SOURCE_DIR}/tests/long_tests/ref_md5_long_tests.csv")
