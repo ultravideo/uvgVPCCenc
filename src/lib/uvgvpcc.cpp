@@ -113,13 +113,22 @@ void verifyConfig() {
     }
 
     if (!((p_->occupancyEncoderName == "Kvazaar" && p_->geometryEncoderName == "Kvazaar" && p_->attributeEncoderName == "Kvazaar"))) {
-        std::cerr << p_->occupancyEncoderName << " " << p_->geometryEncoderName << " " << p_->attributeEncoderName << std::endl;
-        throw std::runtime_error(
-            "A single 2D encoder is currently supported : 'Kvazaar'. Here are the values used : occupancy encoder: '" +
-            p_->occupancyEncoderName + "',  geometry encoder: '" + p_->geometryEncoderName + "', attribute encoder: '" +
-            p_->attributeEncoderName +
-            "'. Moreover, you have to use the same 2D encoder for all maps (occupancy, geometry and attribute). This is due to the V3C "
-            "parameter 'CodecGroupIdc' that operate at GOF level. (Notice that a modification in vps.cpp could solve this issue).");
+        #if LINK_FFMPEG
+        if (p_->occupancyEncoderName == "FFmpeg" || p_->geometryEncoderName == "FFmpeg" || p_->attributeEncoderName == "FFmpeg") {
+            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+                "VERIFY CONFIG",
+                "FFmpeg is an experimental 2D encoder for uvgVPCC. Use at your own risk.\n");
+        } else {
+        #endif
+            throw std::runtime_error(
+                "A single 2D encoder is currently supported : 'Kvazaar'. Here are the values used : occupancy encoder: '" +
+                p_->occupancyEncoderName + "',  geometry encoder: '" + p_->geometryEncoderName + "', attribute encoder: '" +
+                p_->attributeEncoderName +
+                "'. Moreover, you have to use the same 2D encoder for all maps (occupancy, geometry and attribute). This is due to the V3C "
+                "parameter 'CodecGroupIdc' that operate at GOF level. (Notice that a modification in vps.cpp could solve this issue).");
+        #if LINK_FFMPEG
+        }
+        #endif
     }
 
     if (p_->sizeGOF > p_->maxConcurrentFrames) {

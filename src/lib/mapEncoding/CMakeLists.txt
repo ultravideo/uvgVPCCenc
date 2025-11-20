@@ -22,6 +22,44 @@ else()
     message(FATAL_ERROR "Could not find stdio.h")
 endif()
 
+
+add_library(catchLibLogLibrary STATIC
+    catchLibLog.cpp
+)
+
+set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_DEFAULT}")
+
+# Set the default build libraries
+set(LIB_SOURCES "mapEncoding.cpp" "catchLibLog.cpp" "encoderKvazaar.cpp")
+
+if(ENABLE_FFMPEG)
+    # check if ffmpeg is available if available include encoderFFmpeg.cpp
+    find_package(PkgConfig QUIET)
+    if(PKG_CONFIG_FOUND)
+        pkg_check_modules(FFMPEG REQUIRED IMPORTED_TARGET 
+            libavcodec
+            libavformat
+            libavutil
+        )
+        message(STATUS "FFmpeg found: ${FFMPEG_VERSION}")
+        set(LIB_SOURCES ${LIB_SOURCES} encoderFFmpeg.cpp)
+        set(FFMPEG_LIBS PkgConfig::FFMPEG)
+    else()
+        message(WARNING "FFmpeg not found, skipping encoderFFmpeg")
+        set(FFMPEG_LIBS "")
+    endif()
+endif()
+
+# Define the library
+add_library(mapEncodingLibrary STATIC
+    ${LIB_SOURCES}
+)
+
+if(FFMPEG_LIBS)
+    target_link_libraries(mapEncodingLibrary PUBLIC ${FFMPEG_LIBS})
+endif()
+
+
 set(STDIO_PREFIX "kvazaar")
 set(KVAZAAR_STDIO_LIB ${STDIO_PREFIX}_stdio)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/uvg_stdio.h.in ${CMAKE_CURRENT_BINARY_DIR}/include/${STDIO_PREFIX}_stdio.h @ONLY)
@@ -60,19 +98,8 @@ ExternalProject_Add(
 )
 add_dependencies(kvazaar ${KVAZAAR_STDIO_LIB})
 
-# Define the library
-add_library(catchLibLogLibrary STATIC
-    catchLibLog.cpp
-)
 
 set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_DEFAULT}")
-
-# Define the library
-add_library(mapEncodingLibrary STATIC
-    encoderKvazaar.cpp
-    mapEncoding.cpp
-    catchLibLog.cpp
-)
 
 # Include directories for headers
 target_include_directories(mapEncodingLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR}/include)

@@ -18,6 +18,11 @@ option(BUILD_SHARED_LIBS "Build using shared uvgVPCCenc library" ON)
 
 # Control if uvgVPCCenc should be build with RTP support
 option(ENABLE_V3CRTP "Enable RTP support" OFF)
+option(ENABLE_FFMPEG "Link ffmpeg library" OFF)
+
+if(ENABLE_FFMPEG)
+    add_compile_definitions(LINK_FFMPEG)
+endif()
 
 project(uvgVPCCenc
   VERSION ${uvgVPCCenc_VER}

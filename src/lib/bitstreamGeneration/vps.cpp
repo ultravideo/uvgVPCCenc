@@ -42,9 +42,12 @@
 #include "uvgvpcc/uvgvpcc.hpp"
 
 vps::vps(const uvgvpcc_enc::Parameters& paramUVG, const std::shared_ptr<uvgvpcc_enc::GOF>& gofUVG) {
-    if (paramUVG.occupancyEncoderName=="Kvazaar" &&paramUVG.geometryEncoderName=="Kvazaar" &&paramUVG.attributeEncoderName=="Kvazaar" /*|| paramUVG.useEncoderCommand*/) {
+    if (paramUVG.occupancyEncoderName=="Kvazaar" && paramUVG.geometryEncoderName=="Kvazaar" && paramUVG.attributeEncoderName=="Kvazaar" /*|| paramUVG.useEncoderCommand*/) {
         codec_group_ = 1;  // TMC2 : CODEC_GROUP_HEVC_MAIN10
-    
+    #if LINK_FFMPEG
+    } else if (paramUVG.occupancyEncoderName=="FFmpeg" || paramUVG.geometryEncoderName=="FFmpeg" || paramUVG.attributeEncoderName=="FFmpeg") {
+        codec_group_ = 1;  // TMC2 : CODEC_GROUP_HEVC_MAIN10
+    #endif
     /**} else if (paramUVG.occupancyEncoderName=="uvg266" &&paramUVG.geometryEncoderName=="uvg266" &&paramUVG.attributeEncoderName=="uvg266") {
         codec_group_ = 3;  // TMC2 : CODEC_GROUP_VVC_MAIN10
     **/

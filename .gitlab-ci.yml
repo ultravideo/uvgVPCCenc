@@ -50,6 +50,19 @@ build-v3crtp:
       - _build/CI/src/app/uvgVPCCenc
     expire_in: 1 week
 
+# Test building uvgVPCCenc with v3c rtp integration
+build-ffmpeg:
+  stage: build
+  script:
+    - apt-get update && apt-get install -y ffmpeg libavcodec-dev libavformat-dev libavutil-dev
+    - export PATH="${HOME}/bin:${PATH}"
+    - cmake --preset=CI -DENABLE_FFMPEG=ON
+    - cmake --build --preset=CI
+  artifacts:
+    paths:
+      - _build/CI/src/app/uvgVPCCenc
+    expire_in: 1 week
+
 # Test long default
 test-long-default:
   stage: test-default

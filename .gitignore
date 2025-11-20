@@ -2,3 +2,4 @@ build
 _*
 docs
 sdp
+.clangd-trace

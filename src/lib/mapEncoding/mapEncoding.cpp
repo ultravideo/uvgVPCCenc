@@ -41,6 +41,11 @@
 
 #include "abstract2DMapEncoder.hpp"
 #include "encoderKvazaar.hpp"
+
+#if LINK_FFMPEG
+#include "encoderFFmpeg.hpp" // Include FFmepg
+#endif
+
 #include "utils/parameters.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
@@ -58,7 +63,12 @@ std::unique_ptr<Abstract2DMapEncoder> attributeMapEncoder;
 void MapEncoding::initializeStaticParameters() {
     if (p_->occupancyEncoderName == "Kvazaar" || p_->geometryEncoderName == "Kvazaar" || p_->attributeEncoderName == "Kvazaar") {
         EncoderKvazaar::initializeLogCallback();
-    } else {
+    #if LINK_FFMPEG
+    }  else if (p_->occupancyEncoderName == "FFmpeg" || p_->geometryEncoderName == "FFmpeg" || p_->attributeEncoderName == "FFmpeg" ) {
+        EncoderFFmpeg::initializeLogCallback();
+    #endif
+    }
+    else {
         assert(false);
     }
 }
@@ -66,18 +76,48 @@ void MapEncoding::initializeStaticParameters() {
 void MapEncoding::initializeEncoderPointers() {
     if (p_->occupancyEncoderName == "Kvazaar") {
         occupancyMapDSEncoder = std::make_unique<EncoderKvazaar>(OCCUPANCY);
+    #if LINK_FFMPEG
+    } else if (p_->occupancyEncoderName == "FFmpeg") {
+        occupancyMapDSEncoder = std::make_unique<EncoderFFmpeg>(
+            OCCUPANCY, 
+            p_->occupancyFFmpegCodecName,
+            "",
+            p_->occupancyFFmpegCodecOptions,
+            p_->occupancyFFmpegCodecParams 
+        );
+    #endif
     } else {
         assert(false);
     }
 
     if (p_->geometryEncoderName == "Kvazaar") {
         geometryMapEncoder = std::make_unique<EncoderKvazaar>(GEOMETRY);
+    #if LINK_FFMPEG
+    } else if (p_->geometryEncoderName == "FFmpeg") {
+        geometryMapEncoder = std::make_unique<EncoderFFmpeg>(
+            GEOMETRY, 
+            p_->geometryFFmpegCodecName,
+            "",
+            p_->geometryFFmpegCodecOptions,
+            p_->geometryFFmpegCodecParams 
+        );
+    #endif
     } else {
         assert(false);
     }
 
     if (p_->attributeEncoderName == "Kvazaar") {
         attributeMapEncoder = std::make_unique<EncoderKvazaar>(ATTRIBUTE);
+    #if LINK_FFMPEG
+    } else if (p_->attributeEncoderName == "FFmpeg") {
+        attributeMapEncoder = std::make_unique<EncoderFFmpeg>(
+            ATTRIBUTE, 
+            p_->attributeFFmpegCodecName,
+            "",
+            p_->attributeFFmpegCodecOptions,
+            p_->attributeFFmpegCodecParams 
+        );
+    #endif
     } else {
         assert(false);
     }

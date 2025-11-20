@@ -229,7 +229,11 @@ void initializeParameterMap(Parameters& param) {
         {"encoderInfoSEI", {BOOL, "", &param.encoderInfoSEI}},
 
         // Occupancy map
+        #if LINK_FFMPEG
+        {"occupancyEncoderName", {STRING, "Kvazaar,FFmpeg", &param.occupancyEncoderName}},
+        #else
         {"occupancyEncoderName", {STRING, "Kvazaar", &param.occupancyEncoderName}},
+        #endif
         {"occupancyEncodingIsLossless", {BOOL, "", &param.occupancyEncodingIsLossless}},
         {"occupancyEncodingMode", {STRING, "AI,RA", &param.occupancyEncodingMode}},
         {"occupancyEncodingFormat", {STRING, "YUV420", &param.occupancyEncodingFormat}},
@@ -239,9 +243,18 @@ void initializeParameterMap(Parameters& param) {
          {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.occupancyEncodingPreset}},
         {"omRefinementTreshold2", {UINT, "1,2,3,4", &param.omRefinementTreshold2}},
         {"omRefinementTreshold4", {UINT, "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16", &param.omRefinementTreshold4}},
+        #if LINK_FFMPEG
+        {"occupancyFFmpegCodecName", {STRING, "", &param.occupancyFFmpegCodecName}},
+        {"occupancyFFmpegCodecOptions", {STRING, "", &param.occupancyFFmpegCodecOptions}},
+        {"occupancyFFmpegCodecParams", {STRING, "", &param.occupancyFFmpegCodecParams}},
+        #endif
 
         // Geometry map
+        #if LINK_FFMPEG
+        {"geometryEncoderName", {STRING, "Kvazaar,FFmpeg", &param.geometryEncoderName}},
+        #else
         {"geometryEncoderName", {STRING, "Kvazaar", &param.geometryEncoderName}},
+        #endif
         {"geometryEncodingIsLossless", {BOOL, "", &param.geometryEncodingIsLossless}},
         {"geometryEncodingMode", {STRING, "AI,RA", &param.geometryEncodingMode}},
         {"geometryEncodingFormat", {STRING, "YUV420", &param.geometryEncodingFormat}},
@@ -249,9 +262,18 @@ void initializeParameterMap(Parameters& param) {
         {"geometryEncodingQp", {UINT, "", &param.geometryEncodingQp}},
         {"geometryEncodingPreset",
          {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.geometryEncodingPreset}},
+         #if LINK_FFMPEG
+        {"geometryFFmpegCodecName", {STRING, "", &param.geometryFFmpegCodecName}},
+        {"geometryFFmpegCodecOptions", {STRING, "", &param.geometryFFmpegCodecOptions}},
+        {"geometryFFmpegCodecParams", {STRING, "", &param.geometryFFmpegCodecParams}},
+        #endif
 
         // Attribute map
+        #if LINK_FFMPEG
+        {"attributeEncoderName", {STRING, "Kvazaar,FFmpeg", &param.attributeEncoderName}},
+        #else
         {"attributeEncoderName", {STRING, "Kvazaar", &param.attributeEncoderName}},
+        #endif
         {"attributeEncodingIsLossless", {BOOL, "", &param.attributeEncodingIsLossless}},
         {"attributeEncodingMode", {STRING, "AI,RA", &param.attributeEncodingMode}},
         {"attributeEncodingFormat", {STRING, "YUV420", &param.attributeEncodingFormat}},
@@ -259,6 +281,11 @@ void initializeParameterMap(Parameters& param) {
         {"attributeEncodingQp", {UINT, "", &param.attributeEncodingQp}},
         {"attributeEncodingPreset",
          {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.attributeEncodingPreset}},
+         #if LINK_FFMPEG
+        {"attributeFFmpegCodecName", {STRING, "", &param.attributeFFmpegCodecName}},
+        {"attributeFFmpegCodecOptions", {STRING, "", &param.attributeFFmpegCodecOptions}},
+        {"attributeFFmpegCodecParams", {STRING, "", &param.attributeFFmpegCodecParams}},
+        #endif
 
         // ___ Bitstream generation ___ //
         {"displayBitstreamGenerationFps", {BOOL, "", &param.displayBitstreamGenerationFps}},

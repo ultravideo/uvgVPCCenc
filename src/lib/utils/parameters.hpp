@@ -124,7 +124,7 @@ struct Parameters {
     // TODO(lf): lf : As Joose explain to me, in theory, it would be the height which is constant and equals to 64*nbThreads
     size_t spacePatchPacking = 1;
     bool interPatchPacking;
-    float gpaTresholdIoU = 0.3;  // global patch allocation treshold for the intersection over union process
+    float gpaTresholdIoU = 0.3;  // global patch allocation threshold for the intersection over union process
 
     // ___ Map generation ___ //
     size_t mapGenerationBackgroundValueAttribute = 128;
@@ -152,6 +152,10 @@ struct Parameters {
     std::string occupancyEncodingPreset;
     size_t omRefinementTreshold2;
     size_t omRefinementTreshold4;
+    std::string occupancyFFmpegCodecName; // Name of the codec as specified in ffmpeg documentation
+    std::string occupancyFFmpegCodecOptions;
+    std::string occupancyFFmpegCodecParams;
+
 
     // Geometry map
     std::string geometryEncoderName = "Kvazaar";
@@ -162,6 +166,10 @@ struct Parameters {
         0;  // 0 by default means that this variable will have for value during execution the actual number of detected threads
     size_t geometryEncodingQp;
     std::string geometryEncodingPreset;
+    std::string geometryFFmpegCodecName; // Name of the codec as specified in ffmpeg documentation
+    std::string geometryFFmpegCodecOptions;
+    std::string geometryFFmpegCodecParams;
+
 
     // Attribute map
     std::string attributeEncoderName = "Kvazaar";
@@ -172,6 +180,9 @@ struct Parameters {
         0;  // 0 by default means that this variable will have for value during execution the actual number of detected threads
     size_t attributeEncodingQp;
     std::string attributeEncodingPreset;
+    std::string attributeFFmpegCodecName; // Name of the codec as specified in ffmpeg documentation
+    std::string attributeFFmpegCodecOptions;
+    std::string attributeFFmpegCodecParams;
 
     // ___ Bitstream generation ___ //
     bool displayBitstreamGenerationFps = false;
