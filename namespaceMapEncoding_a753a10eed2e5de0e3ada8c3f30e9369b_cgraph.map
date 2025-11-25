@@ -1,9 +1,11 @@
 <map id="MapEncoding::initializeStaticParameters" name="MapEncoding::initializeStaticParameters">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,216,45"/>
-<area shape="rect" id="Node000002" href="$classEncoderKvazaar.html#adab91d200e76091ec41f96afc9eea4d0" title=" " alt="" coords="264,5,455,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,23,250,23,250,28,216,28"/>
-<area shape="rect" id="Node000003" href="$catchLibLog_8cpp.html#adbbbbd21939ee7e3d31fde350c5fda01" title=" " alt="" coords="503,13,688,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="455,23,489,23,489,28,455,28"/>
-<area shape="rect" id="Node000004" href="$classuvgvpcc__enc_1_1Logger.html#ac9681a9cbe3ddd401d9f6163e762b788" title=" " alt="" coords="736,5,895,45"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="688,23,722,23,722,28,688,28"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,37,216,77"/>
+<area shape="rect" id="Node000002" href="$classEncoderFFmpeg.html#a5a3535ae20fbc6e9f8dcb739d17f06b1" title=" " alt="" coords="264,5,455,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="216,41,250,37,250,42,217,46"/>
+<area shape="rect" id="Node000003" href="$classEncoderKvazaar.html#adab91d200e76091ec41f96afc9eea4d0" title=" " alt="" coords="264,69,455,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,68,250,73,250,78,216,74"/>
+<area shape="rect" id="Node000004" href="$catchLibLog_8cpp.html#adbbbbd21939ee7e3d31fde350c5fda01" title=" " alt="" coords="503,77,688,102"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="455,87,489,87,489,92,455,92"/>
+<area shape="rect" id="Node000005" href="$classuvgvpcc__enc_1_1Logger.html#ac9681a9cbe3ddd401d9f6163e762b788" title=" " alt="" coords="736,69,895,109"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="688,87,722,87,722,92,688,92"/>
 </map>
