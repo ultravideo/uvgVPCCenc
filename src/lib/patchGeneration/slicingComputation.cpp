@@ -459,7 +459,7 @@ inline bool isEndOfSubslice(const size_t& distanceBestCandidate, const Point2D& 
         starting_point_dist = startingVector.x * startingVector.x + startingVector.y * startingVector.y;
     }
 
-    assert(starting_point_dist == 0);  // starting point is current point (start of subslice) (already checked before)
+    assert(starting_point_dist != 0);  // starting point is current point (start of subslice) (already checked before)
 
     // If the starting point is closer than the candidate point, there is no need to compute the angle, and this is the end of the subslice
     if (starting_point_dist < distanceBestCandidate) return true;
