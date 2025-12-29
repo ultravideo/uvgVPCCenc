@@ -56,7 +56,7 @@ else()
 endif()
 
 # Run subdirectory make files
-add_subdirectory(src/lib)
+add_subdirectory(src/libuvgvpccenc)
 add_subdirectory(src/app)
 # add_subdirectory(examples)
 
@@ -130,16 +130,16 @@ else()
   set(UVGVPCCENC_PC_INCDIR "\${exec_prefix}/${CMAKE_INSTALL_INCLUDEDIR}")
 endif()
 
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/lib/uvgvpccenc.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc.temp" @ONLY)
-install(CODE "configure_file(\"${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc.temp\" \"${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc\" @ONLY)")
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/src/libuvgvpccenc/uvgvpccenc.pc.in" "${CMAKE_CURRENT_BINARY_DIR}/src/libuvgvpccenc/uvgvpccenc.pc.temp" @ONLY)
+install(CODE "configure_file(\"${CMAKE_CURRENT_BINARY_DIR}/src/libuvgvpccenc/uvgvpccenc.pc.temp\" \"${CMAKE_CURRENT_BINARY_DIR}/src/libuvgvpccenc/uvgvpccenc.pc\" @ONLY)")
 
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/src/lib/uvgvpccenc.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/src/libuvgvpccenc/uvgvpccenc.pc DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig)
 install(TARGETS uvgVPCCenc DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(TARGETS uvgvpccenc
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR})
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/lib/include/uvgvpcc DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(DIRECTORY ${CMAKE_SOURCE_DIR}/src/libuvgvpccenc/include/uvgvpcc DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # Include test configuration script
 if(ENABLE_TESTING)

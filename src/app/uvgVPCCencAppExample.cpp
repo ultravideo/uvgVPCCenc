@@ -60,8 +60,8 @@
 #include "extras/miniply.h"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
-#include "../lib/utils/statsCollector.hpp"
-#include "../lib/utils/parameters.hpp"
+#include "../libuvgvpccenc/utils/statsCollector.hpp"
+#include "../libuvgvpccenc/utils/parameters.hpp"
 
 #ifdef ENABLE_V3CRTP
 #include <uvgv3crtp/version.h>
