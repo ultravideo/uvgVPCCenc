@@ -53,7 +53,7 @@
 
 #include "parameters.hpp"
 #include "utils.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
@@ -267,7 +267,7 @@ namespace FileExport {
 
 void cleanIntermediateFiles() {
     // Remove all files within the intermediate files directory if it exists but keep the subdirectory structure intact.
-    Logger::log<LogLevel::INFO>("EXPORT FILE", "Clean intermediate files directory.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::INFO>("EXPORT FILE", "Clean intermediate files directory.\n");
 
     const std::filesystem::path root(p_->intermediateFilesDir);
 
@@ -294,7 +294,7 @@ void cleanIntermediateFiles() {
 
 void exportPointCloudNormalComputation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                        std::vector<Vector3<double>>& normals) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate point cloud after normal computation for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/01-normalComputation/NORMAL-COMPUTATION_f" + zeroPad(frame->frameNumber, 3) +
@@ -311,7 +311,7 @@ void exportPointCloudNormalComputation(const std::shared_ptr<Frame>& frame, cons
 
 void exportPointCloudNormalOrientation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                        std::vector<Vector3<double>>& normals) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate point cloud after normal orientation for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/02-normalOrientation/NORMAL-ORIENTATION_f" + zeroPad(frame->frameNumber, 3) +
@@ -328,7 +328,7 @@ void exportPointCloudNormalOrientation(const std::shared_ptr<Frame>& frame, cons
 
 void exportPointCloudInitialSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                          const std::vector<size_t>& pointsPPIs) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate point cloud after initial segmentation for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/03-initialSegmentation/INITIAL-SEGMENTATION_f" +
@@ -343,8 +343,8 @@ void exportPointCloudInitialSegmentation(const std::shared_ptr<Frame>& frame, co
 
 void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                const std::vector<Vector3<uint8_t>>& attributes, const std::string& axisStr) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate point cloud after " + axisStr + " axis slicing for frame " +
-                                                    std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("EXPORT FILE", "Export intermediate point cloud after " + axisStr +
+                                                                        " axis slicing for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/0-" + axisStr + "Slicing/SLICING_" + axisStr + "_f" +
                                    zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthVoxelized) + ".ply";
@@ -354,7 +354,7 @@ void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::v
 
 void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                            const std::vector<size_t>& pointsPPIs) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate point cloud after refine segmentation for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/03-SlicingPPISegmentation/SLICING_PPI_SEGMENTATION_f" +
@@ -369,7 +369,7 @@ void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, 
 
 void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
                                         const std::vector<size_t>& pointsPPIs) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate point cloud after refine segmentation for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/04-refineSegmentation/REFINE-SEGMENTATION_f" +
@@ -383,8 +383,9 @@ void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, con
 }
 
 void exportPointCloudPatchSegmentationColor(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export re-colored intermediate point cloud after patch segmentation for frame " +
-                                                    std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+        "EXPORT FILE",
+        "Export re-colored intermediate point cloud after patch segmentation for frame " + std::to_string(frame->frameId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationColor/PATCH-SEGMENTATION-COLOR_f" +
                                    zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
 
@@ -425,8 +426,9 @@ void exportPointCloudPatchSegmentationColor(const std::shared_ptr<Frame>& frame)
 }
 
 void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate point cloud with patch border after patch segmentation for frame " +
-                                                    std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+        "EXPORT FILE",
+        "Export intermediate point cloud with patch border after patch segmentation for frame " + std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationBorder/PATCH-SEGMENTATION-BORDER_f" +
                                    zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
@@ -496,9 +498,9 @@ void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame
 }
 
 void exportPointCloudPatchSegmentationBorderBlank(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE",
-                                 "Export intermediate point cloud with patch border (blank) after patch segmentation for frame " +
-                                     std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+        "EXPORT FILE", "Export intermediate point cloud with patch border (blank) after patch segmentation for frame " +
+                           std::to_string(frame->frameId) + ".\n");
 
     const std::string outputPath = p_->intermediateFilesDir + "/05-patchSegmentationBorderBlank/PATCH-SEGMENTATION-BORDER-BLANK_f" +
                                    zeroPad(frame->frameNumber, 3) + "_vox" + std::to_string(p_->geoBitDepthInput) + ".ply";
@@ -567,7 +569,8 @@ void exportPointCloudPatchSegmentationBorderBlank(const std::shared_ptr<Frame>& 
 }
 
 void exportImageOccupancy(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate occupancy map for frame " + std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("EXPORT FILE",
+                                                     "Export intermediate occupancy map for frame " + std::to_string(frame->frameId) + ".\n");
 
     {
         // Export the pristine occupancy map (YUV400)
@@ -594,8 +597,8 @@ void exportImageOccupancy(const std::shared_ptr<Frame>& frame) {
 }
 
 void exportImageOccupancyDS(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE",
-                                 "Export intermediate downscaled occupancy map for frame " + std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+        "EXPORT FILE", "Export intermediate downscaled occupancy map for frame " + std::to_string(frame->frameId) + ".\n");
 
     {
         // Export the pristine occupancy map (YUV420)
@@ -624,7 +627,8 @@ void exportImageOccupancyDS(const std::shared_ptr<Frame>& frame) {
 }
 
 void exportImageAttribute(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate attribute map for frame " + std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("EXPORT FILE",
+                                                     "Export intermediate attribute map for frame " + std::to_string(frame->frameId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/08-attribute/ATTRIBUTE_f" + zeroPad(frame->frameNumber, 3) + "_RGB444_" +
                                    std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".rgb";
     if (p_->doubleLayer) {
@@ -635,7 +639,8 @@ void exportImageAttribute(const std::shared_ptr<Frame>& frame) {
 }
 
 void exportImageGeometry(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate geometry map for frame " + std::to_string(frame->frameId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("EXPORT FILE",
+                                                     "Export intermediate geometry map for frame " + std::to_string(frame->frameId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/09-geometry/GEOMETRY_f" + zeroPad(frame->frameNumber, 3) + "_YUV420_" +
                                    std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".yuv";
     if (p_->doubleLayer) {
@@ -646,7 +651,7 @@ void exportImageGeometry(const std::shared_ptr<Frame>& frame) {
 }
 
 void exportImageAttributeBgFill(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate attribute map after background filling for frame " + std::to_string(frame->frameId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/10-attributeBgFill/ATTRIBUTE-BG-FILL_f" + zeroPad(frame->frameNumber, 3) +
                                    "_RGB444_" + std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".rgb";
@@ -658,7 +663,7 @@ void exportImageAttributeBgFill(const std::shared_ptr<Frame>& frame) {
 }
 
 void exportImageGeometryBgFill(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate geometry map after background filling for frame " + std::to_string(frame->frameId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/11-geometryBgFill/GEOMETRY-BG-FILL_f" + zeroPad(frame->frameNumber, 3) +
                                    "_YUV420_" + std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".yuv";
@@ -670,7 +675,7 @@ void exportImageGeometryBgFill(const std::shared_ptr<Frame>& frame) {
 }
 
 void exportImageAttributeYUV(const std::shared_ptr<Frame>& frame) {
-    Logger::log<LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "EXPORT FILE", "Export intermediate attribute map after YUV conversion for frame " + std::to_string(frame->frameId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/12-attributeYUV/ATTRIBUTE-YUV_f" + zeroPad(frame->frameNumber, 3) +
                                    "_YUV420_" + std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".yuv";
@@ -683,7 +688,8 @@ void exportImageAttributeYUV(const std::shared_ptr<Frame>& frame) {
 
 void exportOccupancyBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const std::vector<uint8_t>& bitstream,
                               const std::string& codecExtension) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate occupancy bitstream for gof " + std::to_string(gof->gofId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("EXPORT FILE",
+                                                     "Export intermediate occupancy bitstream for gof " + std::to_string(gof->gofId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/13-occupancyBistream/OCCUPANCY-BITSTREAM_g" + zeroPad(gof->gofId, 3) +
                                    "_YUV420_" + std::to_string(p_->mapWidth / p_->occupancyMapDSResolution) + "x" +
                                    std::to_string(gof->mapHeightDSGOF) + codecExtension;
@@ -692,7 +698,8 @@ void exportOccupancyBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, cons
 
 void exportAttributeBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const std::vector<uint8_t>& bitstream,
                               const std::string& codecExtension) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate attribute bitstream for gof " + std::to_string(gof->gofId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("EXPORT FILE",
+                                                     "Export intermediate attribute bitstream for gof " + std::to_string(gof->gofId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/14-attributeBistream/ATTRIBUTE-BITSTREAM_g" + zeroPad(gof->gofId, 3) +
                                    "_YUV420_" + std::to_string(p_->mapWidth) + "x" + std::to_string(gof->mapHeightGOF) + codecExtension;
     exportBitstream(outputPath, bitstream);
@@ -700,7 +707,8 @@ void exportAttributeBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, cons
 
 void exportGeometryBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, const std::vector<uint8_t>& bitstream,
                              const std::string& codecExtension) {
-    Logger::log<LogLevel::TRACE>("EXPORT FILE", "Export intermediate geometry bitstream for gof " + std::to_string(gof->gofId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("EXPORT FILE",
+                                                     "Export intermediate geometry bitstream for gof " + std::to_string(gof->gofId) + ".\n");
     const std::string outputPath = p_->intermediateFilesDir + "/15-geometryBistream/GEOMETRY-BITSTREAM_g" + zeroPad(gof->gofId, 3) +
                                    "_YUV420_" + std::to_string(p_->mapWidth) + "x" + std::to_string(gof->mapHeightGOF) + codecExtension;
     exportBitstream(outputPath, bitstream);

@@ -9,4 +9,9 @@ add_library(bitstreamGeneration STATIC
     bitstreamGeneration.cpp
 )
 
+target_link_libraries(bitstreamGeneration
+    PUBLIC
+        uvgutils
+)
+
 target_compile_options(bitstreamGeneration PRIVATE -fPIC)

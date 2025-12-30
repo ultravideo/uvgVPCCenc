@@ -44,7 +44,7 @@
 #include <thread>
 #include <vector>
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
 enum threadqueue_job_state {
     /**
@@ -139,4 +139,4 @@ class ThreadQueue {
 
 std::string jobStateToStr(threadqueue_job_state s);
 
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils

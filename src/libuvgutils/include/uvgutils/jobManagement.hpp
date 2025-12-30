@@ -37,16 +37,16 @@
 #include <unordered_map>
 
 #include "threadqueue.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 
 #define JOBF(gofId, frameId, priority, func, ...) \
-    uvgvpcc_enc::JobManager::make_job(gofId, frameId, priority, std::string(#func), func, ##__VA_ARGS__)
+    uvgutils::JobManager::make_job(gofId, frameId, priority, std::string(#func), func, ##__VA_ARGS__)
 
-#define JOBG(gofId, priority, func, ...) uvgvpcc_enc::JobManager::make_job(gofId, priority, std::string(#func), func, ##__VA_ARGS__)
+#define JOBG(gofId, priority, func, ...) uvgutils::JobManager::make_job(gofId, priority, std::string(#func), func, ##__VA_ARGS__)
 
 #define TO_STRING(x) #x
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
 class jobKey {
    private:
@@ -66,16 +66,16 @@ class jobKey {
 
     bool operator==(const jobKey& other) const;
 };
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils
 
 namespace std {
 template <>
-struct hash<uvgvpcc_enc::jobKey> {
-    size_t operator()(const uvgvpcc_enc::jobKey& key) const;
+struct hash<uvgutils::jobKey> {
+    size_t operator()(const uvgutils::jobKey& key) const;
 };
 }  // namespace std
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
 struct JobManager {
     static std::unique_ptr<ThreadQueue> threadQueue;
@@ -100,7 +100,7 @@ struct JobManager {
 
     static void submitCurrentGOFJobs();
 };
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils
 
 // Include template implementations
 #include "jobManagement.tpp"

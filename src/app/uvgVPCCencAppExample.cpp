@@ -33,19 +33,20 @@
 #include <algorithm>
 #include <array>
 #include <cassert>
+#include <chrono>
 #include <csignal>
 #include <cstddef>
 #include <cstdint>
 #include <cstdio>
 #include <cstdlib>
 #include <exception>
+#include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <iterator>
 #include <memory>
 #include <regex>
 #include <semaphore>
-#include <chrono>
 #include <span>
 #include <sstream>
 #include <stdexcept>
@@ -53,19 +54,19 @@
 #include <thread>
 #include <utility>
 #include <vector>
-#include <filesystem>
 
 #include "../utils/utils.hpp"
 #include "cli.hpp"
 #include "extras/miniply.h"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "../libuvgvpccenc/utils/statsCollector.hpp"
 #include "../libuvgvpccenc/utils/parameters.hpp"
 
 #ifdef ENABLE_V3CRTP
-#include <uvgv3crtp/version.h>
 #include <uvgv3crtp/v3c_api.h>
+#include <uvgv3crtp/version.h>
+
 #include <uvgrtp/util.hh>
 #endif
 
@@ -110,13 +111,13 @@ void create_bytes(uint64_t value, char* dst, size_t len) {
 /// @param frame
 void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& geoBitDepthInput) {
     // uvgVPCCenc currently support only geometry of type unsigned int
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
         "APPLICATION", "Loading frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath + "\n");
-    
-    if(!std::filesystem::is_regular_file(frame->pointCloudPath)) {
+
+    if (!std::filesystem::is_regular_file(frame->pointCloudPath)) {
         throw std::runtime_error("\nThis path does not exist: " + frame->pointCloudPath);
     }
-    
+
     miniply::PLYReader reader(frame->pointCloudPath.c_str());
     if (!reader.valid()) {
         throw std::runtime_error("\nThe miniply reader failed to open " + frame->pointCloudPath);
@@ -170,7 +171,7 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, cons
                      });
 
     if (!isCompliant) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::ERROR>(
+        uvgutils::Logger::log<uvgutils::LogLevel::ERROR>(
             "APPLICATION",
             "Frame " + std::to_string(frame->frameId) + " from " + frame->pointCloudPath +
                 " contains at least one point which does not respect the input voxel size (uvgvpcc_enc::p_->geoBitDepthInput = " +
@@ -200,10 +201,10 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
     bool run = true;
     const size_t totalNbFrames = appParameters.nbFrames * appParameters.nbLoops;
     Retval returnValue = Retval::Running;
-    
+
     // For input frame limiter
-    double lastFrameTimeStamp = 0;    
-    
+    double lastFrameTimeStamp = 0;
+
     // Producer thread that reads input frames.
     while (run) {
         // Signal that all input frames has been load
@@ -222,8 +223,8 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
             snprintf(pointCloudPath.data(), MAX_PATH_SIZE, appParameters.inputPath.c_str(),
                      appParameters.startFrame + (frameId % appParameters.nbFrames));
         if (nbBytes < 0) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
-                                                                   "Error occurred while formatting string storing the point cloud path.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("APPLICATION",
+                                                             "Error occurred while formatting string storing the point cloud path.\n");
             returnValue = Retval::Failure;
         }
         auto frame = std::make_shared<uvgvpcc_enc::Frame>(frameId, appParameters.startFrame + frameId,
@@ -231,17 +232,18 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
         try {
             loadFrameFromPlyFile(frame, args->opts.inputGeoPrecision);
         } catch (const std::runtime_error& e) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
-                "APPLICATION", "Caught exception while loading frame " + std::to_string(frameId) + " from " + frame->pointCloudPath + ": " +
-                                   std::string(e.what()) + "\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("APPLICATION", "Caught exception while loading frame " +
+                                                                                std::to_string(frameId) + " from " + frame->pointCloudPath +
+                                                                                ": " + std::string(e.what()) + "\n");
             returnValue = Retval::Failure;
         }
 
-        if(appParameters.inputFramePerSecondLimiter != 0) {
+        if (appParameters.inputFramePerSecondLimiter != 0) {
             const double targetDelayMs = 1000.0 / static_cast<double>(appParameters.inputFramePerSecondLimiter);
-            const double currentFrameStamp = uvgvpcc_enc::global_timer.elapsed(); //TODO(lf,gg): is it okay to access such library objects from the application?
+            const double currentFrameStamp =
+                uvgutils::global_timer.elapsed();  // TODO(lf,gg): is it okay to access such library objects from the application?
             const double delay = currentFrameStamp - lastFrameTimeStamp;
-            if(delay < targetDelayMs) {
+            if (delay < targetDelayMs) {
                 const double waitMs = targetDelayMs - delay;
                 std::this_thread::sleep_for(std::chrono::milliseconds(static_cast<int>(waitMs)));
                 lastFrameTimeStamp = currentFrameStamp + waitMs;
@@ -249,7 +251,6 @@ void inputReadThread(const std::shared_ptr<input_handler_args>& args) {
                 lastFrameTimeStamp = currentFrameStamp;
             }
         }
-        
 
         // Signal that an item has been produced
         available_input_slot.acquire();
@@ -282,7 +283,7 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
         chunks->io_mutex.lock();
         const uvgvpcc_enc::API::v3c_chunk& chunk = chunks->v3c_chunks.front();
         if (chunk.data == nullptr && chunk.len == 0) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION", "All chunks written to file.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("APPLICATION", "All chunks written to file.\n");
             file.close();
             chunks->io_mutex.unlock();
             break;
@@ -302,8 +303,8 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
             }
         }
 
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("APPLICATION",
-                                                               "Wrote V3C chunk to file, size " + std::to_string(chunk.len) + " bytes.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("APPLICATION",
+                                                         "Wrote V3C chunk to file, size " + std::to_string(chunk.len) + " bytes.\n");
 
         chunks->v3c_chunks.pop();
         chunks->io_mutex.unlock();
@@ -316,12 +317,13 @@ void file_writer(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& o
 /// @param dst_port
 /// @param sdp_output_dir
 // NOLINTNEXTLINE(misc-unused-parameters)
-void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& dst_address, const std::vector<uint16_t>& dst_port, const std::string& sdp_output_dir) {
+void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& dst_address, const std::vector<uint16_t>& dst_port,
+                const std::string& sdp_output_dir) {
 #ifdef ENABLE_V3CRTP
 
     // ******** Print library version info **********
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
-    
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("V3CRTP", "Using uvgV3CRTP lib version " + uvgV3CRTP::get_version() + "\n");
+
     // ******** Create sender state object to manage sending ***********
     //
     // If only one port is given, use it for all V3C unit types. Otherwise, use the given ports in order VPS, AD, OVD, GVD, AVD
@@ -329,33 +331,28 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 
     // Use lambda to pick correct constructor to get correct scope for state object
     uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> state = ([&]() {
-        if (dst_port.size() == 1)
-        {
-          // Set ports to the same value
-          std::fill(std::begin(ports), std::end(ports), dst_port.front());
-          return uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> (uvgV3CRTP::INIT_FLAGS::AD
-                                                            | uvgV3CRTP::INIT_FLAGS::OVD 
-                                                            | uvgV3CRTP::INIT_FLAGS::GVD 
-                                                            | uvgV3CRTP::INIT_FLAGS::AVD 
-                                                            | (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
-                                                              dst_address.c_str(), dst_port.front()  // Receiver address and port
-          );
-        }
-        else
-        {
-          if (sdp_output_dir.empty()) std::copy(dst_port.begin(), dst_port.end(), ports);  // Use all given ports
-          else std::copy(dst_port.begin(), dst_port.end(), std::next(ports));  // Leave first port as 0 if SDP is created
+        if (dst_port.size() == 1) {
+            // Set ports to the same value
+            std::fill(std::begin(ports), std::end(ports), dst_port.front());
+            return uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender>(
+                uvgV3CRTP::INIT_FLAGS::AD | uvgV3CRTP::INIT_FLAGS::OVD | uvgV3CRTP::INIT_FLAGS::GVD | uvgV3CRTP::INIT_FLAGS::AVD |
+                    (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
+                dst_address.c_str(), dst_port.front()                                                    // Receiver address and port
+            );
+        } else {
+            if (sdp_output_dir.empty())
+                std::copy(dst_port.begin(), dst_port.end(), ports);  // Use all given ports
+            else
+                std::copy(dst_port.begin(), dst_port.end(), std::next(ports));  // Leave first port as 0 if SDP is created
 
-          return uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender> (uvgV3CRTP::INIT_FLAGS::AD
-                                                            | uvgV3CRTP::INIT_FLAGS::OVD 
-                                                            | uvgV3CRTP::INIT_FLAGS::GVD 
-                                                            | uvgV3CRTP::INIT_FLAGS::AVD 
-                                                            | (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
-                                                              dst_address.c_str(), ports  // Receiver address and ports
-          );
+            return uvgV3CRTP::V3C_State<uvgV3CRTP::V3C_Sender>(
+                uvgV3CRTP::INIT_FLAGS::AD | uvgV3CRTP::INIT_FLAGS::OVD | uvgV3CRTP::INIT_FLAGS::GVD | uvgV3CRTP::INIT_FLAGS::AVD |
+                    (sdp_output_dir.empty() ? uvgV3CRTP::INIT_FLAGS::VPS : uvgV3CRTP::INIT_FLAGS::NUL),  // Only send VPS if no SDP is created
+                dst_address.c_str(), ports                                                               // Receiver address and ports
+            );
         }
     })();
-    
+
     //
     // *****************************************************************
 
@@ -366,7 +363,6 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
     bool write_sdp = !sdp_output_dir.empty();
 
     while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
-
         if (re_init) {
             state.init_sample_stream(FORCED_V3C_SIZE_PRECISION);  // Use the forced precision for now
             if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
@@ -381,7 +377,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
 
         const uvgvpcc_enc::API::v3c_chunk& chunk = chunks->v3c_chunks.front();
         if (chunk.data == nullptr && chunk.len == 0) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "All chunks sent.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("V3CRTP", "All chunks sent.\n");
             chunks->io_mutex.unlock();
 
             break;
@@ -409,16 +405,14 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
                 {{uvgV3CRTP::V3C_AD, "AD", "application", RTP_FORMAT_ATLAS, "v3c"},
                  {uvgV3CRTP::V3C_OVD, "OVD", "video", video_format, video_codec},
                  {uvgV3CRTP::V3C_GVD, "GVD", "video", video_format, video_codec},
-                 {uvgV3CRTP::V3C_AVD, "AVD", "video", video_format, video_codec}}
-            };
-            static constexpr const char* sdp_template = 
-              "m={1} {2} RTP/AVP {3}\n"
-              "a=rtpmap:{3} {4}/{5}\n"
-              "a=v3cfmtp:sprop-v3c-unit-header={6};sprop-v3c-parameter-set={7}\n ";
-
+                 {uvgV3CRTP::V3C_AVD, "AVD", "video", video_format, video_codec}}};
+            static constexpr const char* sdp_template =
+                "m={1} {2} RTP/AVP {3}\n"
+                "a=rtpmap:{3} {4}/{5}\n"
+                "a=v3cfmtp:sprop-v3c-unit-header={6};sprop-v3c-parameter-set={7}\n ";
 
             if (!std::filesystem::is_directory(sdp_output_dir)) {
-                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+                uvgutils::Logger::log<uvgutils::LogLevel::WARNING>(
                     "V3CRTP", "SDP output directory " + sdp_output_dir + " does not exist, trying to create it.\n");
                 try {
                     std::filesystem::create_directories(sdp_output_dir);
@@ -429,29 +423,35 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
             }
 
             // Get V3C parameter set from current gof
-            auto vps = std::unique_ptr<char, decltype(&free)>( state.get_cur_gof_unit_info_string(uvgV3CRTP::V3C_VPS, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::NONE,
-                                                                                                                      uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64),
+            auto vps = std::unique_ptr<char, decltype(&free)>(
+                state.get_cur_gof_unit_info_string(uvgV3CRTP::V3C_VPS, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::NONE,
+                                                   uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64),
                 &free);
 
             // Write separate SDP for each unit type
-            for ( const auto& [type, type_str, media_name, format, codec] : v3c_to_sdp) {
+            for (const auto& [type, type_str, media_name, format, codec] : v3c_to_sdp) {
                 if (!state.cur_gof_has_unit(type)) continue;  // No such unit in the stream
 
                 const std::string sdp_file = sdp_output_dir + "/V3C_" + type_str + ".sdp";
 
                 // Use current gof to get parameters for SDP
                 size_t header_len = 0;
-                auto unit_header = std::unique_ptr<char, decltype(&free)>(state.get_cur_gof_unit_info_string(type, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64,
-                                                                                                                   uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::NONE, &header_len),
+                auto unit_header = std::unique_ptr<char, decltype(&free)>(
+                    state.get_cur_gof_unit_info_string(type, uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::BASE64,
+                                                       uvgV3CRTP::INFO_FMT::NONE, uvgV3CRTP::INFO_FMT::NONE, &header_len),
                     &free);
 
                 if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK) {
                     throw std::runtime_error(std::string("V3C Sender : Error creating SDP file (message: ") + state.get_error_msg() + ")");
                 }
 
-                const auto sdp = "m=" + media_name + " " + std::to_string(ports[type]) + " RTP/AVP " + std::to_string(format) + "\n"
-                                 "a=rtpmap:" + std::to_string(format) + " " + codec + "/" + std::to_string(uvgV3CRTP::RTP_CLOCK_RATE) + "\n"
-                                 "a=v3cfmtp:sprop-v3c-unit-header=" + std::string(unit_header.get(), header_len - 2) + ";\n  sprop-v3c-parameter-set=" + vps.get();
+                const auto sdp = "m=" + media_name + " " + std::to_string(ports[type]) + " RTP/AVP " + std::to_string(format) +
+                                 "\n"
+                                 "a=rtpmap:" +
+                                 std::to_string(format) + " " + codec + "/" + std::to_string(uvgV3CRTP::RTP_CLOCK_RATE) +
+                                 "\n"
+                                 "a=v3cfmtp:sprop-v3c-unit-header=" +
+                                 std::string(unit_header.get(), header_len - 2) + ";\n  sprop-v3c-parameter-set=" + vps.get();
 
                 // Write the SDP to file
                 std::ofstream sdp_stream(sdp_file);
@@ -460,8 +460,7 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
                 }
                 sdp_stream << sdp;
 
-                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
-                                                                       "Wrote SDP file to " + sdp_file + ".\n");
+                uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("V3CRTP", "Wrote SDP file to " + sdp_file + ".\n");
             }
 
             write_sdp = false;  // Only write once
@@ -470,74 +469,71 @@ void v3c_sender(uvgvpcc_enc::API::v3c_unit_stream* chunks, const std::string& ds
         // Send newly added data
         while (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::OK) {
             // Send gof if full
-            if(state.cur_gof_is_full()) {
+            if (state.cur_gof_is_full()) {
                 uvgV3CRTP::send_gof(&state);
                 state.next_gof();
 
-                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
-                                                                       "Sent one gof " + std::to_string(len) + " bytes.\n");
-            }
-            else
-            {
+                uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("V3CRTP", "Sent one gof " + std::to_string(len) + " bytes.\n");
+            } else {
                 // TODO: track which unit has been sent if sending partially filled gof
-            //    for (uint8_t id = 0; id < uvgV3CRTP::NUM_V3C_UNIT_TYPES; id++) {
-            //    if (!state.cur_gof_has_unit(uvgV3CRTP::V3C_UNIT_TYPE(id))) continue;
+                //    for (uint8_t id = 0; id < uvgV3CRTP::NUM_V3C_UNIT_TYPES; id++) {
+                //    if (!state.cur_gof_has_unit(uvgV3CRTP::V3C_UNIT_TYPE(id))) continue;
 
-            //    // TODO: send side-channel info
+                //    // TODO: send side-channel info
 
-            //    uvgV3CRTP::send_unit(&state, uvgV3CRTP::V3C_UNIT_TYPE(id));
-            //}
-                //state.next_gof();
+                //    uvgV3CRTP::send_unit(&state, uvgV3CRTP::V3C_UNIT_TYPE(id));
+                //}
+                // state.next_gof();
                 break;
             }
             // Get difference from last sleep and sleep if needed
             const auto elapsed_time = std::chrono::high_resolution_clock::now() - last_sleep_time;
             last_sleep_time = std::chrono::high_resolution_clock::now();  // Update last send time
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
-                "Delay since last sending iteration: " + std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count()) + "ms.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+                "V3CRTP", "Delay since last sending iteration: " +
+                              std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>(elapsed_time).count()) + "ms.\n");
         }
-        
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
-                                                               "Processed V3C chunk of size " + std::to_string(len) + " bytes.\n");
+
+        uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("V3CRTP", "Processed V3C chunk of size " + std::to_string(len) + " bytes.\n");
 
         // Check if we should clear the sample stream
         if (state.num_gofs() >= uvgV3CRTP::RECEIVE_BUFFER_SIZE) {
             // Write bitstream info before clearing
             size_t len = 0;
             auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP",
-                                                                   "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "Cleared sample stream after sending " + std::to_string(state.num_gofs()) + " gofs.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("V3CRTP", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+                "V3CRTP", "Cleared sample stream after sending " + std::to_string(state.num_gofs()) + " gofs.\n");
             if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
-                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
-                    "V3CRTP", "Clearing sample stream before EOS, some data may not have been sent.\n");
+                uvgutils::Logger::log<uvgutils::LogLevel::WARNING>("V3CRTP",
+                                                                   "Clearing sample stream before EOS, some data may not have been sent.\n");
             }
             state.clear_sample_stream();
-            re_init = true;  // Need to re-init the state
+            re_init = true;                       // Need to re-init the state
             write_sdp = !sdp_output_dir.empty();  // Write new SDP if needed
         }
 
         if (state.get_error_flag() == uvgV3CRTP::ERROR_TYPE::EOS) {
-            state.reset_error_flag(); //More chunks are added later so reset EOS
+            state.reset_error_flag();  // More chunks are added later so reset EOS
         }
     }
 
     // ******** Print info about sample stream **********
     //
     // Print state and bitstream info
-    //state.print_state(false);
+    // state.print_state(false);
 
-    //std::cout << "Bitstream info: " << std::endl;
-    //state.print_bitstream_info();
+    // std::cout << "Bitstream info: " << std::endl;
+    // state.print_bitstream_info();
 
     size_t len = 0;
     auto info = std::unique_ptr<char, decltype(&free)>(state.get_bitstream_info_string(uvgV3CRTP::INFO_FMT::LOGGING, &len), &free);
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("V3CRTP", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("V3CRTP", "Bitstream info string: \n" + std::string(info.get(), len) + "\n");
     //
     //  **************************************
 
     if (state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::OK && state.get_error_flag() != uvgV3CRTP::ERROR_TYPE::EOS) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>(
             "V3CRTP", std::string("V3C Sender : Sending error (message: ") + state.get_error_msg() + ")\n");
     }
 #else
@@ -580,7 +576,7 @@ void setParameters(const std::string& parametersCommand) {
 /// @param argv Application command line
 /// @return
 int main(const int argc, const char* const argv[]) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "uvgVPCCenc application starts.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::INFO>("APPLICATION", "uvgVPCCenc application starts.\n");
 
     // Parse application parameters //
     cli::opts_t appParameters;
@@ -588,9 +584,9 @@ int main(const int argc, const char* const argv[]) {
     try {
         exitOnParse = cli::opts_parse(appParameters, argc, std::span<const char* const>(argv, argc));
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
-                                                               "An exception was caught during the parsing of the application parameters.\n");
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION", e.what() + std::string("\n"));
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("APPLICATION",
+                                                         "An exception was caught during the parsing of the application parameters.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("APPLICATION", e.what() + std::string("\n"));
         cli::print_usage();
         return EXIT_FAILURE;
     }
@@ -599,11 +595,12 @@ int main(const int argc, const char* const argv[]) {
         return EXIT_SUCCESS;
     }
 
-
     // Verify application configuration //
-    if(!appParameters.outputPath.empty() && !appParameters.dstAddress.empty()) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("APPLICATION",
-    "The application parameters 'outputPath' and 'dstAddress' are both non empty.\nIt seems you are trying to write the output V-PCC bistream in a file as well as sending it with uvgRTP. Currently, uvgVPCCenc does not support both feature at the same time.\n");
+    if (!appParameters.outputPath.empty() && !appParameters.dstAddress.empty()) {
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>(
+            "APPLICATION",
+            "The application parameters 'outputPath' and 'dstAddress' are both non empty.\nIt seems you are trying to write the output V-PCC "
+            "bistream in a file as well as sending it with uvgRTP. Currently, uvgVPCCenc does not support both feature at the same time.\n");
         return EXIT_FAILURE;
     }
 
@@ -616,24 +613,21 @@ int main(const int argc, const char* const argv[]) {
         uvgvpcc_enc::API::setParameter("geometryEncodingNbThread", std::to_string(appParameters.threads));
         uvgvpcc_enc::API::setParameter("attributeEncodingNbThread", std::to_string(appParameters.threads));
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY",
-                                                               "An exception was caught when setting parameters in the application.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("LIBRARY", "An exception was caught when setting parameters in the application.\n");
         return EXIT_FAILURE;
     }
 
     try {
         uvgvpcc_enc::API::initializeEncoder();
     } catch (const std::exception& e) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY",
-                                                               "An exception was caught during the initialization of the encoder.\n");
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>("LIBRARY", e.what() + std::string("\n"));
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("LIBRARY", "An exception was caught during the initialization of the encoder.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("LIBRARY", e.what() + std::string("\n"));
         cli::print_usage();
         return EXIT_FAILURE;
     }
 
-    
-    if(appParameters.dummyRun) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION","Dummy run finished without errors.\n");
+    if (appParameters.dummyRun) {
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("APPLICATION", "Dummy run finished without errors.\n");
         return EXIT_SUCCESS;
     }
 
@@ -649,7 +643,8 @@ int main(const int argc, const char* const argv[]) {
     std::thread v3c_sender_thread;
 
     if (!appParameters.outputPath.empty()) file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
-    if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort, appParameters.sdpOutdir);
+    if (!appParameters.dstAddress.empty())
+        v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort, appParameters.sdpOutdir);
 
     if(uvgvpcc_enc::p_->exportStatistics){
         stats.init(appParameters.nbFrames);
@@ -673,7 +668,7 @@ int main(const int argc, const char* const argv[]) {
             uvgvpcc_enc::API::encodeFrame(currFrame, &output);
         } catch (const std::runtime_error& e) {
             // Only one try and catch block. All exceptions thrown by the library are catched here.
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+            uvgutils::Logger::log<uvgutils::LogLevel::FATAL>(
                 "APPLICATION", "Caught exception using uvgvpcc_enc library: " + std::string(e.what()) + " failed after processing\n");
             return EXIT_FAILURE;
         }
@@ -688,10 +683,10 @@ int main(const int argc, const char* const argv[]) {
     output.io_mutex.unlock();
     output.available_chunks.release();
 
-    if(file_writer_thread.joinable()) file_writer_thread.join();
-    if(v3c_sender_thread.joinable()) v3c_sender_thread.join();
+    if (file_writer_thread.joinable()) file_writer_thread.join();
+    if (v3c_sender_thread.joinable()) v3c_sender_thread.join();
 
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION", "Encoded " + std::to_string(frameRead) + " frames.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::INFO>("APPLICATION", "Encoded " + std::to_string(frameRead) + " frames.\n");
 
     inputTh.join();
     return EXIT_SUCCESS;

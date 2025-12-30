@@ -51,7 +51,7 @@
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
 #include "utils/utils.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
@@ -226,7 +226,7 @@ void allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t
 
 // TODO(lf): Why an integer only implementation is so bad in term of quality degradation? -> Probably because of PCQM
 void RGB444toYUV420(std::vector<uint8_t>& img, const size_t& width, const size_t& height) {
-    Logger::log<LogLevel::TRACE>("MapGeneration", "RGB444toYUV420\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("MapGeneration", "RGB444toYUV420\n");
 
     const size_t imageSize = width * height;
     const size_t imageSizeUV = imageSize >> 2U;
@@ -368,8 +368,7 @@ constexpr std::array<float, 15> g_filter444to420_horizontal = {
 
 constexpr double g_filter444to420_horizontal_shift = 9.0;
 
-inline float downsamplingHorizontal(const std::vector<float>& img, const std::size_t width,
-                                    const std::size_t i0, const std::size_t j0) {
+inline float downsamplingHorizontal(const std::vector<float>& img, const std::size_t width, const std::size_t i0, const std::size_t j0) {
     const float scale = 1.0F / (static_cast<float>(1U << (static_cast<std::size_t>(g_filter444to420_horizontal_shift))));
     const float offset = 0.00000000;
     const std::size_t position = static_cast<std::size_t>(g_filter444to420_horizontal.size() - 1) >> 1U;
@@ -394,8 +393,8 @@ constexpr std::array<float, 16> g_filter444to420_vertical = {
 
 constexpr double g_filter444to420_vertical_shift = 9.0;
 
-inline float downsamplingVertical(const std::vector<float>& img, const std::size_t width,
-                                  const std::size_t height, const std::size_t i0, const std::size_t j0) {
+inline float downsamplingVertical(const std::vector<float>& img, const std::size_t width, const std::size_t height, const std::size_t i0,
+                                  const std::size_t j0) {
     const float offset = 0;
     const float scale = 1.F / (static_cast<float>(1U << (static_cast<std::size_t>(g_filter444to420_vertical_shift))));
     const std::size_t position = static_cast<std::size_t>(g_filter444to420_vertical.size() - 1) >> 1U;
@@ -427,7 +426,7 @@ void downsampling(const std::vector<float>& chroma_in, std::vector<float>& chrom
 }
 
 void RGB444toYUV420TMC2(std::vector<uint8_t>& img, const std::size_t& width, const std::size_t& height) {
-    Logger::log<uvgvpcc_enc::LogLevel::TRACE>("MapGeneration", "RGB444toYUV420TMC2\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("MapGeneration", "RGB444toYUV420TMC2\n");
 
     std::array<std::vector<float>, 3> RGB444;
     std::array<std::vector<float>, 3> YUV444;
@@ -502,7 +501,7 @@ void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>&
 // TODO(lf): we first do YUV420 for all maps, but we might consider YUV400 for geometry and occupancy if Kvazaar can handle it and if the
 // decoder can handle it too. TODO(lf): allocate all the maps of the GOF in one memory allocation ?
 void MapGeneration::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
         gof->mapHeightDSGOF = std::max(gof->mapHeightDSGOF, frame->mapHeightDS);

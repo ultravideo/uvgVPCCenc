@@ -30,50 +30,41 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-/// \file Custom mechanics allowing the retrieving of the Kvazaar logs and their use with the custom uvgVPCCenc log class.
+// Template implementations for JobManager
 
-#include "catchLibLog.hpp"
+namespace {
+template <typename Func, typename... Args>
+std::shared_ptr<uvgutils::Job> make_job_impl(const uvgutils::jobKey key, std::size_t priority, Func&& func, Args&&... args) {
+    uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("JOB FACTORY",
+                                                     key.toString() + " Creating job with priority " + std::to_string(priority) + "\n");
+    auto job = std::make_shared<uvgutils::Job>(key.toString(), priority, std::bind(std::forward<Func>(func), std::forward<Args>(args)...));
 
-#include <cstdarg>
-#include <cstdio>
+    // Add job to appropriate map based on whether it has frameId
+    if (key.getFrameId().has_value()) {
+        if (uvgutils::JobManager::currentFrameJobMap) {
+            uvgutils::JobManager::currentFrameJobMap->emplace(key, job);
+        }
+    } else {
+        if (uvgutils::JobManager::currentGOFJobMap) {
+            uvgutils::JobManager::currentGOFJobMap->emplace(key, job);
+        }
+    }
 
-#include "utils/utils.hpp"
-#include "uvgutils/log.hpp"
+    return job;
+}
+}  // namespace
 
-#if defined(__GNUC__) && !defined(__clang__)
-// For GCC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#elif defined(__clang__)
-// For Clang
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-parameter"
-#endif
+namespace uvgutils {
 
-// NOLINTBEGIN(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay,hicpp-named-parameter,readability-named-parameter,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cert-dcl50-cpp)
-
-int kvazaar_lib_log_callback(FILE*, const char* log_content, ...) {
-    va_list args;
-    va_start(args, log_content);
-    uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("KVAZAAR", uvgutils::Logger::vprintfStrToStdStr(log_content, args));
-    va_end(args);
-    return 0;
+template <typename Func, typename... Args>
+std::shared_ptr<Job> JobManager::make_job(const size_t& gofId, const size_t& frameId, std::size_t priority, std::string funcName, Func&& func,
+                                          Args&&... args) {
+    return make_job_impl(jobKey(gofId, frameId, std::move(funcName)), priority, std::forward<Func>(func), std::forward<Args>(args)...);
 }
 
-/*int uvg266_lib_log_callback(FILE*, const char* log_content, ...) {
-    va_list args;
-    va_start(args, log_content);
-    uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("UVG266", uvgutils::Logger::vprintfStrToStdStr(log_content, args));
-    va_end(args);
-    return 0;
-}*/
+template <typename Func, typename... Args>
+std::shared_ptr<Job> JobManager::make_job(const size_t& gofId, std::size_t priority, std::string funcName, Func&& func, Args&&... args) {
+    return make_job_impl(jobKey(gofId, std::move(funcName)), priority, std::forward<Func>(func), std::forward<Args>(args)...);
+}
 
-// NOLINTEND(cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay,hicpp-named-parameter,readability-named-parameter,cppcoreguidelines-pro-type-vararg,hicpp-vararg,cert-dcl50-cpp)
-
-#if defined(__GNUC__) && !defined(__clang__)
-// For GCC
-#pragma GCC diagnostic pop
-#elif defined(__clang__)
-// For Clang
-#pragma clang diagnostic pop
-#endif
+}  // namespace uvgutils

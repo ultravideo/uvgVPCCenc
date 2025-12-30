@@ -30,41 +30,13 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-// Template implementations for JobManager
+#pragma once
+#include <string>
 
-namespace {
-template <typename Func, typename... Args>
-std::shared_ptr<uvgvpcc_enc::Job> make_job_impl(const uvgvpcc_enc::jobKey key, std::size_t priority, Func&& func, Args&&... args) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("JOB FACTORY",
-                                                           key.toString() + " Creating job with priority " + std::to_string(priority) + "\n");
-    auto job = std::make_shared<uvgvpcc_enc::Job>(key.toString(), priority, std::bind(std::forward<Func>(func), std::forward<Args>(args)...));
-
-    // Add job to appropriate map based on whether it has frameId
-    if (key.getFrameId().has_value()) {
-        if (uvgvpcc_enc::JobManager::currentFrameJobMap) {
-            uvgvpcc_enc::JobManager::currentFrameJobMap->emplace(key, job);
-        }
-    } else {
-        if (uvgvpcc_enc::JobManager::currentGOFJobMap) {
-            uvgvpcc_enc::JobManager::currentGOFJobMap->emplace(key, job);
-        }
-    }
-
-    return job;
-}
-}  // namespace
-
-namespace uvgvpcc_enc {
-
-template <typename Func, typename... Args>
-std::shared_ptr<Job> JobManager::make_job(const size_t& gofId, const size_t& frameId, std::size_t priority, std::string funcName, Func&& func,
-                                          Args&&... args) {
-    return make_job_impl(jobKey(gofId, frameId, std::move(funcName)), priority, std::forward<Func>(func), std::forward<Args>(args)...);
-}
-
-template <typename Func, typename... Args>
-std::shared_ptr<Job> JobManager::make_job(const size_t& gofId, std::size_t priority, std::string funcName, Func&& func, Args&&... args) {
-    return make_job_impl(jobKey(gofId, std::move(funcName)), priority, std::forward<Func>(func), std::forward<Args>(args)...);
-}
-
-}  // namespace uvgvpcc_enc
+// TODO(lf) : verify that all 'uvgutils' follow the exact same writting
+namespace uvgutils {
+std::string get_version();
+size_t get_version_major();
+size_t get_version_minor();
+size_t get_version_patch();
+}  // namespace uvgutils

@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -32,14 +32,15 @@
 
 /// \file Common tools used by the uvgVPCCenc library.
 
-
 #pragma once
 
 #include <array>
 #include <cstdint>
+#include <iomanip>
 #include <limits>
 #include <sstream>
-#include <iomanip>
+
+#include "uvgutils/log.hpp"
 
 namespace uvgvpcc_enc {
 
@@ -51,10 +52,10 @@ const size_t g_valueNotSet = (std::numeric_limits<size_t>::max)();
 
 constexpr size_t INVALID_PATCH_INDEX = std::numeric_limits<size_t>::max();
 constexpr size_t PPI_NON_ASSIGNED = std::numeric_limits<size_t>::max();
-constexpr size_t UNDEFINED_PARENT_PPI = std::numeric_limits<size_t>::max() - 1; //TODO(lf) temp
+constexpr size_t UNDEFINED_PARENT_PPI = std::numeric_limits<size_t>::max() - 1;  // TODO(lf) temp
 
 // Projection Plan Index, 0-5 -> one of the six bounding box plan. 6+ -> used for slicing ppi attribution
-enum class PPI : uint8_t {ppi0,ppi1,ppi2,ppi3,ppi4,ppi5,ppiBlank,notAssigned};
+enum class PPI : uint8_t { ppi0, ppi1, ppi2, ppi3, ppi4, ppi5, ppiBlank, notAssigned };
 
 template <typename T>
 class Vector3 : public std::array<T, 3> {
@@ -62,11 +63,9 @@ class Vector3 : public std::array<T, 3> {
     Vector3() : std::array<T, 3>() {}
     Vector3(T x, T y, T z) : std::array<T, 3>({x, y, z}) {}
     Vector3(std::array<T, 3>& arr) : std::array<T, 3>(arr) {}
-    Vector3(std::array<T, 3>&& arr) : std::array<T, 3>(std::move(arr)) {} 
-    Vector3(const std::array<T, 3>& arr) {
-        std::copy(arr.begin(), arr.end(), this->begin());
-    }   
-    
+    Vector3(std::array<T, 3>&& arr) : std::array<T, 3>(std::move(arr)) {}
+    Vector3(const std::array<T, 3>& arr) { std::copy(arr.begin(), arr.end(), this->begin()); }
+
     template <typename U>
     Vector3<T> operator+(const Vector3<U>& other) const {
         return {(*this)[0] + other[0], (*this)[1] + other[1], (*this)[2] + other[2]};
@@ -109,6 +108,6 @@ inline std::string zeroPad(size_t value, size_t width) {
 // Round the given number to the nearest bigger multiple.
 // equivalent to : return = ceil(numberF/multipleF) * multiple;
 // Examples : roundUp(7,8) = 8;  roundUp(17,8) = 24;
-inline size_t roundUp(const size_t& number, const size_t& multiple) { return (number + multiple - 1) & -multiple;}
+inline size_t roundUp(const size_t& number, const size_t& multiple) { return (number + multiple - 1) & -multiple; }
 
-} // uvgvpcc_enc namespace
+}  // namespace uvgvpcc_enc

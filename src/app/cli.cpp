@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -33,17 +33,18 @@
 #include "cli.hpp"
 
 // NOLINTBEGIN(misc-include-cleaner)
-#include "extras/getopt.h"
 #include <cstddef>
 #include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <regex>
 #include <span>
+#include <sstream>
 #include <stdexcept>
 #include <string>
-#include <sstream>
-#include "uvgvpcc/log.hpp"
+
+#include "extras/getopt.h"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/version.hpp"
 
 namespace cli {
@@ -66,8 +67,7 @@ const std::array<struct option, 15> long_options{{{"input", required_argument, n
                                                   {"dst-address", required_argument, nullptr, 0},
                                                   {"dst-port", required_argument, nullptr, 0},
                                                   {"sdp-outdir", required_argument, nullptr, 0},
-                                                  {"input-fps-limiter", required_argument, nullptr, 0}
-}};
+                                                  {"input-fps-limiter", required_argument, nullptr, 0}}};
 
 /**
  * \brief Try to detect voxel size from file name automatically
@@ -209,7 +209,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         } else if (name == "input-fps-limiter") {
             opts.inputFramePerSecondLimiter = std::stoi(optarg);
         } else {
-            //TODO(lf): throw error ?
+            // TODO(lf): throw error ?
         }
     }
 
@@ -231,29 +231,34 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
     // Check that the number of ports is valid
     if (!opts.dstAddress.empty()) {
         if (opts.sdpOutdir.empty() && opts.dstPort.size() != 1 && opts.dstPort.size() != 5) {
-            throw std::runtime_error("Input error: When using rtp streaming, either one port or five ports should be specified (one for each of the V3C layers).");
+            throw std::runtime_error(
+                "Input error: When using rtp streaming, either one port or five ports should be specified (one for each of the V3C layers).");
         }
         if (!opts.sdpOutdir.empty() && opts.dstPort.size() != 1 && opts.dstPort.size() != 4) {
-            throw std::runtime_error("Input error: When using rtp streaming with sdp output, one or four ports should be specified (one for each of the V3C layers except VPS).");
+            throw std::runtime_error(
+                "Input error: When using rtp streaming with sdp output, one or four ports should be specified (one for each of the V3C "
+                "layers except VPS).");
         }
     }
 
     if (opts.inputGeoPrecision == 0) {
-        
         opts.inputGeoPrecision = select_voxel_size_auto(opts.inputPath);
         if (opts.inputGeoPrecision == 0) {
-            throw std::runtime_error("Input geometry precision is not manually set by the application and it is not detected from the file name. The geometry precision (the library parameter 'geoBitDepthInput', a.k.a voxel size) is a parameter needed by the encoder. It should be set in the application using function 'uvgvpcc_enc::API::setParameter()'.\n");
+            throw std::runtime_error(
+                "Input geometry precision is not manually set by the application and it is not detected from the file name. The geometry "
+                "precision (the library parameter 'geoBitDepthInput', a.k.a voxel size) is a parameter needed by the encoder. It should be "
+                "set in the application using function 'uvgvpcc_enc::API::setParameter()'.\n");
         }
-        // else 
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION",
-            "The input geometry precision is not manually set by the application but it is detected from file name: " + std::to_string(opts.inputGeoPrecision) + ".\n");
-    
+        // else
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>(
+            "APPLICATION", "The input geometry precision is not manually set by the application but it is detected from file name: " +
+                               std::to_string(opts.inputGeoPrecision) + ".\n");
     }
 
     if (opts.nbFrames == 0) {
         opts.nbFrames = select_frame_count_auto(opts.inputPath);
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION",
-                                 "Detected frame count from file name: " + std::to_string(opts.nbFrames) + ".\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("APPLICATION",
+                                                        "Detected frame count from file name: " + std::to_string(opts.nbFrames) + ".\n");
         if (opts.nbFrames == 0) {
             throw std::runtime_error("Input error: Frame count is zero");
         }
@@ -261,8 +266,8 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
 
     if (opts.startFrame == std::numeric_limits<size_t>::max()) {
         opts.startFrame = select_start_frame_auto(opts.inputPath);
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("APPLICATION",
-                                 "Detected start frame from file name: " + std::to_string(opts.startFrame) + ".\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("APPLICATION",
+                                                        "Detected start frame from file name: " + std::to_string(opts.startFrame) + ".\n");
         if (opts.startFrame == std::numeric_limits<size_t>::max()) {
             throw std::runtime_error("Input error: Frame count is zero");
         }
@@ -272,21 +277,21 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
 }
 
 /// @brief Print the default usage of the application.
-/// @param  
+/// @param
 void print_usage(void) {
     std::cout << "usage: uvpVPCCenc -i <input> -n <frame number> -o <output>\n"
               << "       --help for more information" << std::endl;
 }
 
 /// @brief Print the version of the uvgVPCCenc library.
-/// @param  
+/// @param
 void print_version(void) { std::cout << "uvgVPCC " << uvgvpcc_enc::get_version() << std::endl; }
 
 /// @brief Print the help message of the application.
-/// @param  
+/// @param
 void print_help(void) {
     std::cout << "Usage: uvpVPCCenc -i <input> -n <frame number> -o <output>\n\n";
-                 /* Word wrap to this width to stay under 80 characters (including ") *************/
+    /* Word wrap to this width to stay under 80 characters (including ") *************/
     std::cout << "Options:\n";
     std::cout << "  -i, --input <file>           Input filename\n";
     std::cout << "  -o, --output <file>          Output filename\n";
@@ -301,8 +306,10 @@ void print_help(void) {
     std::cout << "      --version                Show version information\n";
 #ifdef ENABLE_V3CRTP
     std::cout << "      --dst-address <IP>       Destination IP address for an rtp stream\n";
-    std::cout << "      --dst-port <number-list> Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 numbers (4 if --sdp-outdir is set)\n";
-    std::cout << "      --sdp - outdir<dir>      Destination directory where out-of-band info is written in the SDP-format. Disables VPS sending over RTP\n";
+    std::cout << "      --dst-port <number-list> Destination port or ports (comma separated) for an rtp stream. Should specify either 1 or 5 "
+                 "numbers (4 if --sdp-outdir is set)\n";
+    std::cout << "      --sdp - outdir<dir>      Destination directory where out-of-band info is written in the SDP-format. Disables VPS "
+                 "sending over RTP\n";
 #endif
     std::cout << "\nDescription:\n";
     std::cout << "  This tool encodes point cloud video frames using the uvgVPCCenc codec\n";

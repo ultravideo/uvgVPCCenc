@@ -30,7 +30,7 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-#include "jobManagement.hpp"
+#include "uvgutils/jobManagement.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -41,56 +41,55 @@
 #include <unordered_map>
 #include <utility>
 
-#include "threadqueue.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
+#include "uvgutils/threadqueue.hpp"
 
 namespace {
-std::shared_ptr<uvgvpcc_enc::Job> getJob_impl(const uvgvpcc_enc::jobKey& key) {
-    std::shared_ptr<uvgvpcc_enc::Job> job = nullptr;
-
+std::shared_ptr<uvgutils::Job> getJob_impl(const uvgutils::jobKey& key) {
+    std::shared_ptr<uvgutils::Job> job = nullptr;
     // Check if it's a frame job or GOF job
     if (key.getFrameId().has_value()) {
         // Check current frame jobs first
-        if (uvgvpcc_enc::JobManager::currentFrameJobMap) {
-            auto it = uvgvpcc_enc::JobManager::currentFrameJobMap->find(key);
-            if (it != uvgvpcc_enc::JobManager::currentFrameJobMap->end()) {
+        if (uvgutils::JobManager::currentFrameJobMap) {
+            auto it = uvgutils::JobManager::currentFrameJobMap->find(key);
+            if (it != uvgutils::JobManager::currentFrameJobMap->end()) {
                 job = it->second;
             }
         }
         // Check previous frame jobs if not found
-        if (!job && uvgvpcc_enc::JobManager::previousFrameJobMap) {
-            auto it = uvgvpcc_enc::JobManager::previousFrameJobMap->find(key);
-            if (it != uvgvpcc_enc::JobManager::previousFrameJobMap->end()) {
+        if (!job && uvgutils::JobManager::previousFrameJobMap) {
+            auto it = uvgutils::JobManager::previousFrameJobMap->find(key);
+            if (it != uvgutils::JobManager::previousFrameJobMap->end()) {
                 job = it->second;
             }
         }
     } else {
         // Check current GOF jobs first
-        if (uvgvpcc_enc::JobManager::currentGOFJobMap) {
-            auto it = uvgvpcc_enc::JobManager::currentGOFJobMap->find(key);
-            if (it != uvgvpcc_enc::JobManager::currentGOFJobMap->end()) {
+        if (uvgutils::JobManager::currentGOFJobMap) {
+            auto it = uvgutils::JobManager::currentGOFJobMap->find(key);
+            if (it != uvgutils::JobManager::currentGOFJobMap->end()) {
                 job = it->second;
             }
         }
         // Check previous GOF jobs if not found
-        if (!job && uvgvpcc_enc::JobManager::previousGOFJobMap) {
-            auto it = uvgvpcc_enc::JobManager::previousGOFJobMap->find(key);
-            if (it != uvgvpcc_enc::JobManager::previousGOFJobMap->end()) {
+        if (!job && uvgutils::JobManager::previousGOFJobMap) {
+            auto it = uvgutils::JobManager::previousGOFJobMap->find(key);
+            if (it != uvgutils::JobManager::previousGOFJobMap->end()) {
                 job = it->second;
             }
         }
     }
 
     if (job) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("JOB FACTORY", key.toString() + " Job found\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("JOB FACTORY", key.toString() + " Job found\n");
         return job;
     }
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("JOB FACTORY", key.toString() + " Job not found\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::WARNING>("JOB FACTORY", key.toString() + " Job not found\n");
     return nullptr;
 }
 }  // namespace
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
 // Static member definitions
 std::unique_ptr<ThreadQueue> JobManager::threadQueue = nullptr;
@@ -162,11 +161,11 @@ void JobManager::submitCurrentGOFJobs() {
     currentGOFJobMap = std::make_unique<std::unordered_map<jobKey, std::shared_ptr<Job>>>();
 }
 
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils
 
 // Hash function implementation
 namespace std {
-size_t hash<uvgvpcc_enc::jobKey>::operator()(const uvgvpcc_enc::jobKey& key) const {
+size_t hash<uvgutils::jobKey>::operator()(const uvgutils::jobKey& key) const {
     const size_t h1 = std::hash<size_t>{}(key.getGofId());
     const size_t h2 = key.getFrameId().has_value() ? std::hash<size_t>{}(key.getFrameId().value()) : 0;
     const size_t h3 = std::hash<std::string>{}(key.getFuncName());

@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -32,6 +32,7 @@
 
 #include "gof.hpp"
 
+#include <cstdint>
 #include <cstring>
 #include <memory>
 #include <new>
@@ -41,10 +42,9 @@
 
 #include "bitstream_common.hpp"
 #include "bitstream_util.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "video_sub_bitstream.hpp"
-#include <cstdint>
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays)
 
@@ -132,8 +132,8 @@ void v3c_gof::write_v3c_chunk(uvgvpcc_enc::API::v3c_unit_stream* out) {
     out->io_mutex.lock();
     out->v3c_chunks.push(std::move(new_chunk));
     out->io_mutex.unlock();
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("BITSTREAM GENERATION",
-                             "New V3C chunk created, " + std::to_string(out->v3c_chunks.size()) + " chunk(s) in buffer. \n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+        "BITSTREAM GENERATION", "New V3C chunk created, " + std::to_string(out->v3c_chunks.size()) + " chunk(s) in buffer. \n");
 }
 
 void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const std::vector<nal_info>& gvd_nals,
@@ -183,7 +183,7 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
 
         // V3C_OVD unit size
         size_t current_v3c_ovd_unit_size = 4;  // V3C header
-        if (k == 0) {                               // First OVD unit, so copy also parameter sets AND SEI prefix
+        if (k == 0) {                          // First OVD unit, so copy also parameter sets AND SEI prefix
             for (size_t n = 0; n < 4; n++) {
                 current_v3c_ovd_unit_size += 4 + ovd_nals.at(n).size;
             }
@@ -216,7 +216,7 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
 
         // V3C_GVD size
         size_t current_v3c_gvd_unit_size = 4;  // V3C header
-        if (k == 0) {                               // First GVD unit, so copy also parameter sets AND SEI prefix
+        if (k == 0) {                          // First GVD unit, so copy also parameter sets AND SEI prefix
             for (size_t n = 0; n < 4; n++) {
                 current_v3c_gvd_unit_size += 4 + gvd_nals.at(n).size;
             }
@@ -255,7 +255,7 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
 
         // V3C_AVD size
         size_t current_v3c_avd_unit_size = 4;  // V3C header
-        if (k == 0) {                               // First AVD unit, so copy also parameter sets AND SEI prefix
+        if (k == 0) {                          // First AVD unit, so copy also parameter sets AND SEI prefix
             for (size_t n = 0; n < 4; n++) {
                 current_v3c_avd_unit_size += 4 + avd_nals.at(n).size;
             }
@@ -318,8 +318,8 @@ void v3c_gof::write_v3c_ld_chunk(const std::vector<nal_info>& ovd_nals, const st
     out->io_mutex.lock();
     out->v3c_chunks.push(std::move(new_chunk));
     out->io_mutex.unlock();
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("BITSTREAM GENERATION",
-                             "New V3C LD chunk created, " + std::to_string(out->v3c_chunks.size()) + " chunk(s) in buffer. \n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(
+        "BITSTREAM GENERATION", "New V3C LD chunk created, " + std::to_string(out->v3c_chunks.size()) + " chunk(s) in buffer. \n");
 }
 
 // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast,cppcoreguidelines-owning-memory,cppcoreguidelines-avoid-c-arrays,hicpp-avoid-c-arrays)

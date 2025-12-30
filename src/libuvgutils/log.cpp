@@ -32,7 +32,7 @@
 
 /// \file Custom logging class that enables fine-tuning of the log level and retrieval of Kvazaar's own logs.
 
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 
 // NOLINTNEXTLINE(hicpp-deprecated-headers)
 #include <stdio.h>  // Needed for vasprintf
@@ -46,7 +46,7 @@
 #include <stdexcept>
 #include <string>
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
 namespace {
 
@@ -121,7 +121,7 @@ std::string Logger::printfStrToStdStr(const char* fmt, ...) {
     va_list args;
     va_start(args, fmt);
     if (vasprintf(&str, fmt, args) == -1 || str == nullptr) {
-        uvgvpcc_enc::Logger::log<LogLevel::ERROR>("LOGGER", "vasprintf error in printfStrToStdStr function.\n");
+        uvgutils::Logger::log<LogLevel::ERROR>("LOGGER", "vasprintf error in printfStrToStdStr function.\n");
         if (errorsAreFatal_) throw std::runtime_error("");
     }
     va_end(args);
@@ -133,7 +133,7 @@ std::string Logger::printfStrToStdStr(const char* fmt, ...) {
 std::string Logger::vprintfStrToStdStr(const char* fmt, va_list args) {
     char* str = nullptr;
     if (vasprintf(&str, fmt, args) == -1 || str == nullptr) {
-        uvgvpcc_enc::Logger::log<LogLevel::ERROR>("LOGGER", "vasprintf error in vprintfStrToStdStr function.\n");
+        uvgutils::Logger::log<LogLevel::ERROR>("LOGGER", "vasprintf error in vprintfStrToStdStr function.\n");
         if (errorsAreFatal_) throw std::runtime_error("");
     }
     std::string result(str);
@@ -142,4 +142,4 @@ std::string Logger::vprintfStrToStdStr(const char* fmt, va_list args) {
 }
 // NOLINTEND(cppcoreguidelines-pro-type-vararg,hicpp-vararg,cert-dcl50-cpp,cppcoreguidelines-pro-bounds-array-to-pointer-decay,hicpp-no-array-decay,cppcoreguidelines-owning-memory,cppcoreguidelines-no-malloc,hicpp-no-malloc)
 
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils

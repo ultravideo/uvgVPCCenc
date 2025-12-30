@@ -3,21 +3,21 @@
  *
  * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
- * 
+ *
  * Redistribution and use in source and binary forms, with or without modification,
  * are permitted provided that the following conditions are met:
- * 
+ *
  * * Redistributions of source code must retain the above copyright notice, this
  *   list of conditions and the following disclaimer.
- * 
+ *
  * * Redistributions in binary form must reproduce the above copyright notice, this
  *   list of conditions and the following disclaimer in the documentation and/or
  *   other materials provided with the distribution.
- * 
+ *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
  *   contributors may be used to endorse or promote products derived from
  *   this software without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  * WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -38,14 +38,14 @@
 #include <cstdarg>
 #include <iomanip>
 #include <iostream>
-#include <string>
 #include <mutex>
+#include <string>
 
 #ifndef UVG_LOG_LEVEL
 #define UVG_LOG_LEVEL LogLevel::DEBUG
 #endif
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
 enum class LogLevel { FATAL, ERROR, WARNING, INFO, PROFILING, TRACE, DEBUG };
 constexpr LogLevel COMPILETIME_LOG_LEVEL = UVG_LOG_LEVEL;
@@ -82,9 +82,12 @@ class Logger {
     static LogLevel logLevel;
     static bool errorsAreFatal_;
     static std::ostream* outputStream_;
-
-
 };
+
+template <LogLevel LEVEL>
+inline void log(const std::string& context, const std::string& message) {
+    Logger::log<LEVEL>(context, message);
+}
 
 class Timer {
    public:
@@ -106,4 +109,4 @@ class Timer {
 
 static Timer global_timer;
 
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils

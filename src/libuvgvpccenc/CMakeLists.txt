@@ -35,8 +35,8 @@ target_link_libraries(uvgvpccenc
     mapGenerationLibrary
     utilsLibrary
     kdLibrary
-    logLibrary
     miniplyLibrary
+    uvgutils
 )
 
 # Include directories for headers

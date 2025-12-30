@@ -38,22 +38,21 @@
 #include <array>
 #include <cassert>
 #include <cstddef>
+#include <cstdlib>
 #include <memory>
 #include <string>
 #include <vector>
-
-#include <cstdlib>
 
 #include "normalComputation.hpp"
 #include "normalOrientation.hpp"
 #include "patchGeneration/kdTree.hpp"
 #include "patchSegmentation.hpp"
 #include "ppiSegmenter.hpp"
+#include "slicingComputation.hpp"
 #include "utils/parameters.hpp"
 #include "utils/utils.hpp"
-#include "slicingComputation.hpp"
 #include "utilsPatchGeneration.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "../utils/statsCollector.hpp"
 
@@ -62,7 +61,7 @@ using namespace uvgvpcc_enc;
 // TODO(lf): nearestNeighborCount should be static
 void PatchGeneration::computePointsNNList(std::vector<std::vector<size_t>>& pointsNNList,
                                           const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const size_t& nnCount) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION", "computePointsNNList.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "computePointsNNList.\n");
 
     KdTree const kdTree(p_->kdTreeMaxLeafSize, pointsGeometry);
 
@@ -80,7 +79,7 @@ void PatchGeneration::computePointsNNList(std::vector<std::vector<size_t>>& poin
 namespace {
 inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::vector<size_t>& pointsPPIs,
                                     const std::vector<size_t>& pointsIdToVoxelId) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION", "Apply voxel data to points.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Apply voxel data to points.\n");    
     for (size_t pointIndex = 0; pointIndex < pointsIdToVoxelId.size(); ++pointIndex) {
         pointsPPIs[pointIndex] = voxelsPPIs[pointsIdToVoxelId[pointIndex]];
     }
@@ -89,9 +88,9 @@ inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::
 
 // NOLINTNEXTLINE(performance-unnecessary-value-param) : lf Need copy for shared pointer
 void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> frame) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                                                           "Generate patches for frame " + std::to_string(frame->frameId) + ".\n");
-    
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION",
+                                                     "Generate patches for frame " + std::to_string(frame->frameId) + ".\n");
+
     
     // todo(mf): add the condition for export intermediates files
     if(p_->exportStatistics){
@@ -118,13 +117,12 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
 
     std::vector<size_t> voxelsPPIs(voxelizedPointsGeometry.size(),PPI_NON_ASSIGNED);
 
-    if(p_->activateSlicing) {
+    if (p_->activateSlicing) {
         slicingComputation::ppiAssignationSlicing(frame, voxelizedPointsGeometry, voxelsPPIs);
     } else {
         // kdtree init and knn searches //
         std::vector<std::vector<size_t>> pointsNNList;
-        computePointsNNList( pointsNNList, voxelizedPointsGeometry,
-            std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
+        computePointsNNList(pointsNNList, voxelizedPointsGeometry, std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
 
         // Normal computation & orientation //
         std::vector<uvgvpcc_enc::Vector3<double>> pointsNormal(voxelizedPointsGeometry.size());
@@ -134,9 +132,8 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
         // Projection Plane Index Segmentation //
         PPISegmenter ppiSegmenter(voxelizedPointsGeometry, pointsNormal);
         ppiSegmenter.initialSegmentation(frame, voxelsPPIs, frame->frameId);
-        ppiSegmenter.refineSegmentation(frame, voxelsPPIs, frame->frameId);        
+        ppiSegmenter.refineSegmentation(frame, voxelsPPIs, frame->frameId);
     }
-
 
     // "De-voxelization"
     std::vector<size_t> pointsPPIsBuffer;

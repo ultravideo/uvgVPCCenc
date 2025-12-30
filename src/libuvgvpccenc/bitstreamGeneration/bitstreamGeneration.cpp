@@ -36,18 +36,18 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdint>
+#include <iomanip>
 #include <memory>
+#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
-#include <sstream>
-#include <iomanip>
 
 #include "atlas_context.hpp"
 #include "bitstream_common.hpp"
 #include "gof.hpp"
 #include "utils/parameters.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "video_sub_bitstream.hpp"
 #include "vps.hpp"
@@ -59,13 +59,8 @@ using namespace uvgvpcc_enc;
 
 void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_enc::GOF>& gofUVG, const uvgvpcc_enc::Parameters& paramUVG,
                                                 uvgvpcc_enc::API::v3c_unit_stream* output) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
-        "BITSTREAM GENERATION", "GOF " + std::to_string(gofUVG->gofId) + " : Create V3C GOF bitstream using uvgVPCC.\n");
-    
-
-
-
-
+    uvgutils::Logger::log<uvgutils::LogLevel::INFO>("BITSTREAM GENERATION",
+                                                    "GOF " + std::to_string(gofUVG->gofId) + " : Create V3C GOF bitstream using uvgVPCC.\n");
 
     v3c_gof gof(gofUVG->gofId);
     gof.set_n_frames(gofUVG->nbFrames);
@@ -151,21 +146,22 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
 
     if (paramUVG.displayBitstreamGenerationFps) {
         static double lastStampJobCreateV3CGOFBitstream = 0.0;
-        const double currentStampJobCreateV3CGOFBitstream = global_timer.elapsed();
+        const double currentStampJobCreateV3CGOFBitstream = uvgutils::global_timer.elapsed();
         const double ms = currentStampJobCreateV3CGOFBitstream - lastStampJobCreateV3CGOFBitstream;
         double fps = (static_cast<double>(gofUVG->nbFrames) * 1000.0) / ms;
         std::ostringstream msStream;
         msStream << std::fixed << std::setprecision(1) << ms;
-        std::string msStr = msStream.str();    
+        std::string msStr = msStream.str();
         fps = std::round(fps * 10.0) / 10.0;
         std::ostringstream fpsStream;
         fpsStream << std::fixed << std::setprecision(1) << fps;
         std::string fpsStr = fpsStream.str();
         lastStampJobCreateV3CGOFBitstream = currentStampJobCreateV3CGOFBitstream;
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
-            "BITSTREAM GENERATION", "GOF " + std::to_string(gofUVG->gofId) + " : Delay since last createV3CGOFBitstream: " + msStr + "ms, GOF with " + std::to_string(gofUVG->nbFrames) + " frames => " + fpsStr + "fps\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>(
+            "BITSTREAM GENERATION", "GOF " + std::to_string(gofUVG->gofId) + " : Delay since last createV3CGOFBitstream: " + msStr +
+                                        "ms, GOF with " + std::to_string(gofUVG->nbFrames) + " frames => " + fpsStr + "fps\n");
     }
-    
+
     output->available_chunks.release();
 
     if(uvgvpcc_enc::p_->exportStatistics){

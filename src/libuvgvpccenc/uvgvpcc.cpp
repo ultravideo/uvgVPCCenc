@@ -57,11 +57,10 @@
 #include "patchGeneration/utilsPatchGeneration.hpp"
 #include "patchPacking/patchPacking.hpp"
 #include "utils/fileExport.hpp"
-#include "utils/jobManagement.hpp"
 #include "utils/parameters.hpp"
 #include "utils/preset.hpp"
-#include "utils/threadqueue.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/jobManagement.hpp"
+#include "uvgutils/log.hpp"
 
 namespace uvgvpcc_enc {
 
@@ -77,12 +76,12 @@ void createDirectory(const std::string& path) {
     std::filesystem::path dirPath(path);
     if (!std::filesystem::exists(dirPath)) {
         if (std::filesystem::create_directory(dirPath)) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("UTILS", "Directory created: " + path + ".\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("UTILS", "Directory created: " + path + ".\n");
         } else {
             throw std::runtime_error("Failed to create directory: " + path);
         }
     } else {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("UTILS", "Directory already exists: " + path + ".\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("UTILS", "Directory already exists: " + path + ".\n");
     }
 }
 
@@ -94,41 +93,40 @@ struct ThreadHandler {
 ThreadHandler g_threadHandler;
 
 void initializeStaticParameters() {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize static parameters.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("API", "Initialize static parameters.\n");
     // Job::setExecutionMethod(p_->timerLog);
     MapEncoding::initializeStaticParameters();
 }
 
 void initializeStaticFunctionPointers() {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize static function pointers.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("API", "Initialize static function pointers.\n");
     MapEncoding::initializeEncoderPointers();
 }
 
 void verifyConfig() {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("VERIFY CONFIG", "Verify the parameter configuration.\n");
-    if (p_->timerLog && Logger::getLogLevel() < LogLevel::PROFILING) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("VERIFY CONFIG", "Verify the parameter configuration.\n");
+    if (p_->timerLog && uvgutils::Logger::getLogLevel() < uvgutils::LogLevel::PROFILING) {
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>(
             "VERIFY CONFIG", "The parameter 'timerLog' has been set to 'True' but the current 'logLevel' (" + p_->logLevel +
                                  ") does not display profiling information. Consider switching to at least logLevel=PROFILING.\n");
     }
 
     if (!((p_->occupancyEncoderName == "Kvazaar" && p_->geometryEncoderName == "Kvazaar" && p_->attributeEncoderName == "Kvazaar"))) {
-        #if LINK_FFMPEG
+#if LINK_FFMPEG
         if (p_->occupancyEncoderName == "FFmpeg" || p_->geometryEncoderName == "FFmpeg" || p_->attributeEncoderName == "FFmpeg") {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
-                "VERIFY CONFIG",
-                "FFmpeg is an experimental 2D encoder for uvgVPCC. Use at your own risk.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::WARNING>("VERIFY CONFIG",
+                                                               "FFmpeg is an experimental 2D encoder for uvgVPCC. Use at your own risk.\n");
         } else {
-        #endif
+#endif
             throw std::runtime_error(
                 "A single 2D encoder is currently supported : 'Kvazaar'. Here are the values used : occupancy encoder: '" +
                 p_->occupancyEncoderName + "',  geometry encoder: '" + p_->geometryEncoderName + "', attribute encoder: '" +
                 p_->attributeEncoderName +
                 "'. Moreover, you have to use the same 2D encoder for all maps (occupancy, geometry and attribute). This is due to the V3C "
                 "parameter 'CodecGroupIdc' that operate at GOF level. (Notice that a modification in vps.cpp could solve this issue).");
-        #if LINK_FFMPEG
+#if LINK_FFMPEG
         }
-        #endif
+#endif
     }
 
     if (p_->sizeGOF > p_->maxConcurrentFrames) {
@@ -144,15 +142,15 @@ void verifyConfig() {
     }
 
     if (p_->gpaTresholdIoU == 0.F) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("VERIFY CONFIG", "The parameter 'gpaTresholdIoU' has been set to " +
-                                                                                      std::to_string(p_->gpaTresholdIoU) +
-                                                                                      ". This means that all patches will be matched.");
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>("VERIFY CONFIG", "The parameter 'gpaTresholdIoU' has been set to " +
+                                                                                std::to_string(p_->gpaTresholdIoU) +
+                                                                                ". This means that all patches will be matched.");
     }
 
     if (p_->gpaTresholdIoU == 1.F) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>("VERIFY CONFIG", "The parameter 'gpaTresholdIoU' has been set to " +
-                                                                                      std::to_string(p_->gpaTresholdIoU) +
-                                                                                      ". This means that no patches will be matched.");
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>("VERIFY CONFIG", "The parameter 'gpaTresholdIoU' has been set to " +
+                                                                                std::to_string(p_->gpaTresholdIoU) +
+                                                                                ". This means that no patches will be matched.");
     }
 
     if (p_->sizeGOP2DEncoding != 8 && p_->sizeGOP2DEncoding != 16) {
@@ -165,7 +163,7 @@ void verifyConfig() {
     }
 
     if ((p_->geometryEncodingMode == "RA" || p_->attributeEncodingMode == "RA") && !p_->interPatchPacking) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>(
             "VERIFY CONFIG",
             "You choose to encode the geometry or attribute maps using Random Acess mode. However, you didn't activate "
             "the inter patch packing. ('interPatchPacking=false')\n");
@@ -217,7 +215,7 @@ void verifyConfig() {
     }
 
     if (p_->intraFramePeriod != 64) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>(
             "VERIFY CONFIG",
             "It seems that you are modifying the parameter 'intraFramePeriod'. Currently, one Kvazaar instance is spawn for each uvgVPCCenc "
             "GOF. Thus, the intraFramePeriod parameter is indirectly constrained and will have no impact if set to a value higher than the "
@@ -243,18 +241,22 @@ void verifyConfig() {
     }
 
     if (p_->refineSegmentationMaxNNVoxelDistanceLUT > adjacentPointsSearch.size()) {
-        throw std::runtime_error("The refineSegmentationMaxNNVoxelDistanceLUT (" + std::to_string(p_->refineSegmentationMaxNNVoxelDistanceLUT) +
-            ") needs to be smaller or equal to the size of the adjacentPointsSearch array (" + std::to_string(adjacentPointsSearch.size()) + ").");
+        throw std::runtime_error("The refineSegmentationMaxNNVoxelDistanceLUT (" +
+                                 std::to_string(p_->refineSegmentationMaxNNVoxelDistanceLUT) +
+                                 ") needs to be smaller or equal to the size of the adjacentPointsSearch array (" +
+                                 std::to_string(adjacentPointsSearch.size()) + ").");
     }
 
     if (p_->lowDelayBitstream && !p_->encoderInfoSEI) {
-        throw std::runtime_error("Low delay bitstream (lowDelayBitstream=true) is an experimental feature. It needs the library parameter 'encoderInfoSEI=true' to work properly.");  
+        throw std::runtime_error(
+            "Low delay bitstream (lowDelayBitstream=true) is an experimental feature. It needs the library parameter 'encoderInfoSEI=true' "
+            "to work properly.");
     }
 
     if (p_->lowDelayBitstream && p_->encoderInfoSEI) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::WARNING>(
-            "VERIFY CONFIG",
-            "Low delay bitstream (lowDelayBitstream=true) is an experimental feature. The generated bitstream will probably not be decoded by TMC2.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>("VERIFY CONFIG",
+                                                           "Low delay bitstream (lowDelayBitstream=true) is an experimental feature. "
+                                                           "The generated bitstream will probably not be decoded by TMC2.\n");
     }
 }
 
@@ -266,18 +268,18 @@ void setInputGeoPrecision() {
 
     // geoBitDepthInput has been defined by the application
     setParameterValue("geoBitDepthInput", geoBitDepthInputIt->second, false);
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API",
-                                                          "The geoBitDepthInput is set to '" + std::to_string(p_->geoBitDepthInput) + "'.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API",
+                                                    "The geoBitDepthInput is set to '" + std::to_string(p_->geoBitDepthInput) + "'.\n");
 }
 
 void setPreset() {
     auto presetNameIt = apiInputParameters.find("presetName");
     if (presetNameIt != apiInputParameters.end()) {  // presetName has been defined by the application
         setParameterValue("presetName", presetNameIt->second, false);
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API", "The presetName is set to '" + p_->presetName + "'.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API", "The presetName is set to '" + p_->presetName + "'.\n");
     } else {  // presetName is not defined by the application. Use the default preset name.
         setParameterValue("presetName", "fast", false);
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API", "The presetName is set by default to '" + p_->presetName + "'.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API", "The presetName is set by default to '" + p_->presetName + "'.\n");
     }
     applyPreset(param);
 }
@@ -293,7 +295,7 @@ void setRate() {
                 setParameterValue("attributeEncodingQp", matches[2], false);
                 setParameterValue("occupancyMapDSResolution", matches[3], false);
             } catch (const std::invalid_argument& e) {
-                uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+                uvgutils::Logger::log<uvgutils::LogLevel::FATAL>(
                     "LIBRARY", "A problem occured when assigning the values from the 'rate' parameter. Here is the full match: '" +
                                    matches[0].str() + "'\n");
                 throw;
@@ -304,18 +306,18 @@ void setRate() {
                 "'. The expected format is the following: '[geometryQP]-[attributeQP]-[occupancyResolution]' Here is a correct usage: "
                 "'rate=16-22-2'.");
         }
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API", "The rate used is '" + rateIt->second + "'.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API", "The rate used is '" + rateIt->second + "'.\n");
     } else {  // The rate is not set by the application. Use the default rate which is rate=16-22-2 (R5)
         try {
             setParameterValue("geometryEncodingQp", "16", false);
             setParameterValue("attributeEncodingQp", "22", false);
             setParameterValue("occupancyMapDSResolution", "2", false);
         } catch (const std::invalid_argument& e) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
-                "API", "A problem occured when assigning the values from the 'rate' parameter.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("API",
+                                                             "A problem occured when assigning the values from the 'rate' parameter.\n");
             throw;
         }
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>(
             "API", "The rate is not defined in the library command line. The default rate used is '16-22-2'.\n");
     }
 }
@@ -327,27 +329,27 @@ void setLogParameters() {
         setParameterValue("errorsAreFatal", errorsAreFatalIt->second, false);
         defaultErrorsAreFatalValue = false;
     } else {  // errorsAreFatal default value
-        setParameterValue("errorsAreFatal", std::to_string(errorsAreFatalDefaultValue), false);
+        setParameterValue("errorsAreFatal", std::to_string(uvgutils::errorsAreFatalDefaultValue), false);
         defaultErrorsAreFatalValue = true;
     }
-    uvgvpcc_enc::Logger::setErrorsAreFatal(p_->errorsAreFatal);
+    uvgutils::Logger::setErrorsAreFatal(p_->errorsAreFatal);
 
     auto logLevelIt = apiInputParameters.find("logLevel");
     if (logLevelIt != apiInputParameters.end()) {  // logLevel has been defined by the application
         setParameterValue("logLevel", logLevelIt->second, false);
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API", "The logLevel is set to '" + p_->logLevel + "'.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API", "The logLevel is set to '" + p_->logLevel + "'.\n");
     } else {  // logLevel default value
-        setParameterValue("logLevel", LogLevelStr[static_cast<size_t>(logLevelDefaultValue)], false);
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API", "The logLevel is set by default to '" + p_->logLevel + "'.\n");
+        setParameterValue("logLevel", uvgutils::LogLevelStr[static_cast<size_t>(uvgutils::logLevelDefaultValue)], false);
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API", "The logLevel is set by default to '" + p_->logLevel + "'.\n");
     }
-    uvgvpcc_enc::Logger::setLogLevel(static_cast<LogLevel>(
-        std::distance(std::begin(LogLevelStr), std::find(std::begin(LogLevelStr), std::end(LogLevelStr), p_->logLevel))));
+    uvgutils::Logger::setLogLevel(static_cast<uvgutils::LogLevel>(std::distance(
+        std::begin(uvgutils::LogLevelStr), std::find(std::begin(uvgutils::LogLevelStr), std::end(uvgutils::LogLevelStr), p_->logLevel))));
 
     if (defaultErrorsAreFatalValue) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>(
             "API", "The parameter 'errorsAreFatal' is set by default to '" + std::string(p_->errorsAreFatal ? "True" : "False") + "'.\n");
     } else {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>(
             "API", "The parameter 'errorsAreFatal' is set to '" + std::string(p_->errorsAreFatal ? "True" : "False") + "'.\n");
     }
 }
@@ -369,12 +371,12 @@ void setMode() {
             setParameterValue("attributeEncodingMode", modeValue, false);
             setParameterValue("interPatchPacking", std::to_string(modeValue == "RA"), false);
         } catch (const std::invalid_argument& e) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+            uvgutils::Logger::log<uvgutils::LogLevel::FATAL>(
                 "LIBRARY",
                 "A problem occured when assigning the values from the 'mode' parameter. Here is the mode value: '" + modeValue + "'\n");
             throw;
         }
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API", "The encoding mode used is '" + modeValue + "'.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API", "The encoding mode used is '" + modeValue + "'.\n");
     } else {
         // The mode is not defined in the lib command. Use the default mode which is mode=RA
         modeValue = "RA";
@@ -384,21 +386,21 @@ void setMode() {
             setParameterValue("attributeEncodingMode", modeValue, false);
             setParameterValue("interPatchPacking", std::to_string(modeValue == "RA"), false);
         } catch (const std::invalid_argument& e) {
-            uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
-                "API", "A problem occured when assigning the values from the 'mode' parameter.\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::FATAL>("API",
+                                                             "A problem occured when assigning the values from the 'mode' parameter.\n");
             throw;
         }
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>(
             "API", "The mode is not defined in the library command line. The default mode used is 'RA'.\n");
     }
 }
 
-void updateParametersForSlicing(const size_t distLUT, const size_t NNCount, const double lambda, const size_t refineIteration){
+void updateParametersForSlicing(const size_t distLUT, const size_t NNCount, const double lambda, const size_t refineIteration) {
     setParameterValue("refineSegmentationMaxNNVoxelDistanceLUT", std::to_string(distLUT), true);
     setParameterValue("refineSegmentationMaxNNTotalPointCount", std::to_string(NNCount), true);
     setParameterValue("refineSegmentationLambda", std::to_string(lambda), true);
     setParameterValue("refineSegmentationIterationCount", std::to_string(refineIteration), true);
-    }
+}
 
 // TODO(lf)check in debug mode for example if rate and occupancyMapDSResolution are both in the lib command line TODO(lf)a warning
 void parseUvgvpccParameters() {
@@ -419,52 +421,50 @@ void parseUvgvpccParameters() {
         setParameterValue(paramPair.first, paramPair.second, false);
     }
     //  Change the Refine Segmentation parameters for the Slicing Algorithm
-    if(p_->activateSlicing) {
-        updateParametersForSlicing(p_->slicingRefineSegmentationMaxNNVoxelDistanceLUT,
-                                   p_->slicingRefineSegmentationMaxNNTotalPointCount,
-                                   p_->slicingRefineSegmentationLambda,
-                                   p_->slicingRefineSegmentationIterationCount);
+    if (p_->activateSlicing) {
+        updateParametersForSlicing(p_->slicingRefineSegmentationMaxNNVoxelDistanceLUT, p_->slicingRefineSegmentationMaxNNTotalPointCount,
+                                   p_->slicingRefineSegmentationLambda, p_->slicingRefineSegmentationIterationCount);
     }
 
     const std::string detectedThreadNumber = std::to_string(std::thread::hardware_concurrency());
     if (p_->nbThreadPCPart == 0) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API",
-                                                              "'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud "
-                                                              "part of uvgVPCC is then the detected number of threads: " +
-                                                                  detectedThreadNumber + "\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API",
+                                                        "'nbThreadPCPart' is set to 0. The number of thread used for the Point Cloud "
+                                                        "part of uvgVPCC is then the detected number of threads: " +
+                                                            detectedThreadNumber + "\n");
         setParameterValue("nbThreadPCPart", detectedThreadNumber, false);
     }
     if (p_->maxConcurrentFrames == 0) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>("API",
-                                                              "'maxConcurrentFrames' is set to 0. The maximum number of frame processed in "
-                                                              "parallel by uvgVPCC is then the four times GOF size: " +
-                                                                  std::to_string(4 * p_->sizeGOF) + "\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API",
+                                                        "'maxConcurrentFrames' is set to 0. The maximum number of frame processed in "
+                                                        "parallel by uvgVPCC is then the four times GOF size: " +
+                                                            std::to_string(4 * p_->sizeGOF) + "\n");
         setParameterValue("maxConcurrentFrames", std::to_string(4 * p_->sizeGOF), false);
     }
     if (p_->occupancyEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API",
-                                                               "'occupancyEncodingNbThread' is set to 0. The number of thread used for the "
-                                                               "occcupancy video 2D encoding is then the detected number of threads: " +
-                                                                   detectedThreadNumber + "\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("API",
+                                                         "'occupancyEncodingNbThread' is set to 0. The number of thread used for the "
+                                                         "occcupancy video 2D encoding is then the detected number of threads: " +
+                                                             detectedThreadNumber + "\n");
         setParameterValue("occupancyEncodingNbThread", detectedThreadNumber, false);
     }
     if (p_->geometryEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API",
-                                                               "'geometryEncodingNbThread' is set to 0. The number of thread used for the "
-                                                               "geometry video 2D encoding is then the detected number of threads: " +
-                                                                   detectedThreadNumber + "\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("API",
+                                                         "'geometryEncodingNbThread' is set to 0. The number of thread used for the "
+                                                         "geometry video 2D encoding is then the detected number of threads: " +
+                                                             detectedThreadNumber + "\n");
         setParameterValue("geometryEncodingNbThread", detectedThreadNumber, false);
     }
     if (p_->attributeEncodingNbThread == 0) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API",
-                                                               "'attributeEncodingNbThread' is set to 0. The number of thread used for the "
-                                                               "attribute video 2D encoding is then the detected number of threads: " +
-                                                                   detectedThreadNumber + "\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("API",
+                                                         "'attributeEncodingNbThread' is set to 0. The number of thread used for the "
+                                                         "attribute video 2D encoding is then the detected number of threads: " +
+                                                             detectedThreadNumber + "\n");
         setParameterValue("attributeEncodingNbThread", detectedThreadNumber, false);
     }
 
     if (p_->exportIntermediateFiles && p_->intermediateFilesDirTimeStamp) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>(
+        uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>(
             "API", "'intermediateFilesDirTimeStamp' is true, so a time stamp is added to the 'intermediateFilesDir' path.\n");
 
         std::time_t now = std::time(nullptr);
@@ -485,8 +485,8 @@ void parseUvgvpccParameters() {
 }
 
 static void initializeContext() {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize context.\n");
-    JobManager::initThreadQueue(p_->nbThreadPCPart);
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("API", "Initialize context.\n");
+    uvgutils::JobManager::initThreadQueue(p_->nbThreadPCPart);
     g_threadHandler.gofId = 0;
 }
 
@@ -495,22 +495,20 @@ static void initializeContext() {
 const Parameters* p_ = &param;
 
 void Frame::printInfo() const {
-    Logger::log<LogLevel::DEBUG>("FRAME-INFO", "Frame " + std::to_string(frameId) + " :\n" + "\tPath: " + pointCloudPath + "\n" +
-                                                   "\tFrame Number: " + std::to_string(frameNumber) + "\n" +
-                                                   "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
-                                                   "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n" +
-                                                   "\tpatchList size: " + std::to_string(patchList.size()) + "\n" +
-                                                   "\toccupancyMapDS size: " + std::to_string(occupancyMapDS.size()) + "\n" +
-                                                   "\tgeometryMapL1 size: " + std::to_string(geometryMapL1.size()) + "\n" +
-                                                   "\tgeometryMapL2 size: " + std::to_string(geometryMapL2.size()) + "\n" +
-                                                   "\tattributeMapL1 size: " + std::to_string(attributeMapL1.size()) + "\n" +
-                                                   "\tattributeMapL2 size: " + std::to_string(attributeMapL2.size()) + "\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>(
+        "FRAME-INFO", "Frame " + std::to_string(frameId) + " :\n" + "\tPath: " + pointCloudPath + "\n" + "\tFrame Number: " +
+                          std::to_string(frameNumber) + "\n" + "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
+                          "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n" + "\tpatchList size: " +
+                          std::to_string(patchList.size()) + "\n" + "\toccupancyMapDS size: " + std::to_string(occupancyMapDS.size()) + "\n" +
+                          "\tgeometryMapL1 size: " + std::to_string(geometryMapL1.size()) + "\n" + "\tgeometryMapL2 size: " +
+                          std::to_string(geometryMapL2.size()) + "\n" + "\tattributeMapL1 size: " + std::to_string(attributeMapL1.size()) +
+                          "\n" + "\tattributeMapL2 size: " + std::to_string(attributeMapL2.size()) + "\n");
 }
 
 /// @brief Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given configuration is valid. Initialize
 /// static parameters and function pointers.
 void API::initializeEncoder() {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("API", "Initialize the encoder.\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("API", "Initialize the encoder.\n");
     uvgvpcc_enc::initializeParameterMap(param);
     parseUvgvpccParameters();
     if (errorInAPI && p_->errorsAreFatal)
@@ -531,14 +529,14 @@ void API::initializeEncoder() {
 /// @param parameterValue The value of the parameter written as a string.
 void API::setParameter(const std::string& parameterName, const std::string& parameterValue) {
     if (initializationDone) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::FATAL>(
+        uvgutils::Logger::log<uvgutils::LogLevel::FATAL>(
             "API", "The API function 'setParameter' can't be called after the API function 'initializeEncoder'.\n");
         throw std::runtime_error("");
     }
     if (apiInputParameters.find(parameterName) != apiInputParameters.end()) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::ERROR>("API", "The parameter '" + parameterName +
-                                                                          "' has already been set. The value used is: '" +
-                                                                          apiInputParameters.at(parameterName) + "'.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::ERROR>("API", "The parameter '" + parameterName +
+                                                                    "' has already been set. The value used is: '" +
+                                                                    apiInputParameters.at(parameterName) + "'.\n");
         errorInAPI = true;
     }
     apiInputParameters.emplace(parameterName, parameterValue);
@@ -555,13 +553,13 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     conccurentFrameSem->acquire();
     frame->conccurentFrameSem = conccurentFrameSem;
 
-    Logger::log<LogLevel::TRACE>("API", "Encoding frame " + std::to_string(frame->frameId) + "\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("API", "Encoding frame " + std::to_string(frame->frameId) + "\n");
     if (frame == nullptr) {
-        Logger::log<LogLevel::ERROR>("API", "The frame is null.\n");
+        uvgutils::Logger::log<uvgutils::LogLevel::ERROR>("API", "The frame is null.\n");
         if (p_->errorsAreFatal) throw std::runtime_error("");
     }
-    std::shared_ptr<Job> initGOFMG = nullptr;
-    std::shared_ptr<Job> encodeGOF = nullptr;
+    std::shared_ptr<uvgutils::Job> initGOFMG = nullptr;
+    std::shared_ptr<uvgutils::Job> encodeGOF = nullptr;
 
     if (frame->frameId % p_->sizeGOF == 0) {
         // The current frame is the first of its GOF. Create all GOF related jobs.
@@ -570,7 +568,7 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
         g_threadHandler.currentGOF->nbFrames = 0;
         g_threadHandler.currentGOF->mapHeightGOF = p_->minimumMapHeight;
         g_threadHandler.currentGOF->mapHeightDSGOF = p_->minimumMapHeight / p_->occupancyMapDSResolution;
-        std::shared_ptr<Job> ppJob = nullptr;
+        std::shared_ptr<uvgutils::Job> ppJob = nullptr;
         if (p_->interPatchPacking) {
             ppJob = JOBG(g_threadHandler.currentGOF->gofId, 3, PatchPacking::gofPatchPacking, g_threadHandler.currentGOF);
             // TODO(lf): add a new priority level ?
@@ -587,11 +585,11 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
         bsJob->addDependency(encodeGOF);
         if (g_threadHandler.currentGOF->gofId > 0) {
             bsJob->addDependency(
-                JobManager::getJob(g_threadHandler.currentGOF->gofId - 1, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
+                uvgutils::JobManager::getJob(g_threadHandler.currentGOF->gofId - 1, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
         }
     } else {
-        initGOFMG = JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapGeneration::initGOFMapGeneration));
-        encodeGOF = JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapEncoding::encodeGOFMaps));
+        initGOFMG = uvgutils::JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapGeneration::initGOFMapGeneration));
+        encodeGOF = uvgutils::JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(MapEncoding::encodeGOFMaps));
     }
 
     g_threadHandler.currentGOF->frames.push_back(frame);
@@ -600,7 +598,7 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     auto patchGen = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 0, PatchGeneration::generateFramePatches, frame);
 
     if (p_->interPatchPacking) {
-        JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(PatchPacking::gofPatchPacking))->addDependency(patchGen);
+        uvgutils::JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(PatchPacking::gofPatchPacking))->addDependency(patchGen);
     } else {
         auto patchPack = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 1, PatchPacking::frameIntraPatchPacking, frame, nullptr);
 
@@ -613,9 +611,9 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     mapGen->addDependency(initGOFMG);
     encodeGOF->addDependency(mapGen);
 
-    JobManager::submitCurrentFrameJobs();
+    uvgutils::JobManager::submitCurrentFrameJobs();
     if (g_threadHandler.currentGOF->nbFrames == p_->sizeGOF) {
-        JobManager::submitCurrentGOFJobs();
+        uvgutils::JobManager::submitCurrentGOFJobs();
     }
 }
 
@@ -623,13 +621,13 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
 void API::emptyFrameQueue() {
     if (g_threadHandler.currentGOF != nullptr) {
         if (g_threadHandler.currentGOF->nbFrames < p_->sizeGOF) {
-            JobManager::submitCurrentGOFJobs();
+            uvgutils::JobManager::submitCurrentGOFJobs();
         }
-        JobManager::threadQueue->waitForJob(
-            JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
+        uvgutils::JobManager::threadQueue->waitForJob(
+            uvgutils::JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(BitstreamGeneration::createV3CGOFBitstream)));
     }
 }
 
 /// @brief Insure a proper end of the encoder execution.
-void API::stopEncoder() { JobManager::threadQueue->stop(); }
+void API::stopEncoder() { uvgutils::JobManager::threadQueue->stop(); }
 }  // namespace uvgvpcc_enc

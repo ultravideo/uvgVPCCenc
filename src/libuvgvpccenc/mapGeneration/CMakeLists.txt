@@ -9,6 +9,11 @@ add_library(mapGenerationLibrary STATIC
     bgFillAttribute.cpp
 )
 
+target_link_libraries(mapGenerationLibrary
+    PUBLIC
+        uvgutils
+)
+
 # Include directories for headers
 # target_include_directories(mapGenerationLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

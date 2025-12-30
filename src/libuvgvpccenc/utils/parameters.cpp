@@ -48,7 +48,7 @@
 #include <unordered_map>
 #include <vector>
 
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 
 namespace uvgvpcc_enc {
 
@@ -152,7 +152,7 @@ void initializeParameterMap(Parameters& param) {
         {"doubleLayer", {BOOL, "", &param.doubleLayer}},
         {"logLevel",
          {STRING,
-          std::accumulate(std::next(std::begin(LogLevelStr)), std::end(LogLevelStr), LogLevelStr[0],
+          std::accumulate(std::next(std::begin(uvgutils::LogLevelStr)), std::end(uvgutils::LogLevelStr), uvgutils::LogLevelStr[0],
                           [](const std::string& a, const std::string& b) { return a + "," + b; }),
           &param.logLevel}},
         {"errorsAreFatal", {BOOL, "", &param.errorsAreFatal}},
@@ -172,7 +172,6 @@ void initializeParameterMap(Parameters& param) {
         // ___ Slicing Algorithm ___ //
         {"activateSlicing", {BOOL, "", &param.activateSlicing}},
 
-        
         // ___ KdTree ___ //
         {"kdTreeMaxLeafSize", {UINT, "", &param.kdTreeMaxLeafSize}},
 
@@ -227,18 +226,17 @@ void initializeParameterMap(Parameters& param) {
 
         
 
-
         // ___ 2D encoding parameters ___ //
         {"sizeGOP2DEncoding", {UINT, "8,16", &param.sizeGOP2DEncoding}},
         {"intraFramePeriod", {UINT, "", &param.intraFramePeriod}},
         {"encoderInfoSEI", {BOOL, "", &param.encoderInfoSEI}},
 
-        // Occupancy map
-        #if LINK_FFMPEG
+// Occupancy map
+#if LINK_FFMPEG
         {"occupancyEncoderName", {STRING, "Kvazaar,FFmpeg", &param.occupancyEncoderName}},
-        #else
+#else
         {"occupancyEncoderName", {STRING, "Kvazaar", &param.occupancyEncoderName}},
-        #endif
+#endif
         {"occupancyEncodingIsLossless", {BOOL, "", &param.occupancyEncodingIsLossless}},
         {"occupancyEncodingMode", {STRING, "AI,RA", &param.occupancyEncodingMode}},
         {"occupancyEncodingFormat", {STRING, "YUV420", &param.occupancyEncodingFormat}},
@@ -248,18 +246,18 @@ void initializeParameterMap(Parameters& param) {
          {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.occupancyEncodingPreset}},
         {"omRefinementTreshold2", {UINT, "1,2,3,4", &param.omRefinementTreshold2}},
         {"omRefinementTreshold4", {UINT, "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16", &param.omRefinementTreshold4}},
-        #if LINK_FFMPEG
+#if LINK_FFMPEG
         {"occupancyFFmpegCodecName", {STRING, "", &param.occupancyFFmpegCodecName}},
         {"occupancyFFmpegCodecOptions", {STRING, "", &param.occupancyFFmpegCodecOptions}},
         {"occupancyFFmpegCodecParams", {STRING, "", &param.occupancyFFmpegCodecParams}},
-        #endif
+#endif
 
-        // Geometry map
-        #if LINK_FFMPEG
+// Geometry map
+#if LINK_FFMPEG
         {"geometryEncoderName", {STRING, "Kvazaar,FFmpeg", &param.geometryEncoderName}},
-        #else
+#else
         {"geometryEncoderName", {STRING, "Kvazaar", &param.geometryEncoderName}},
-        #endif
+#endif
         {"geometryEncodingIsLossless", {BOOL, "", &param.geometryEncodingIsLossless}},
         {"geometryEncodingMode", {STRING, "AI,RA", &param.geometryEncodingMode}},
         {"geometryEncodingFormat", {STRING, "YUV420", &param.geometryEncodingFormat}},
@@ -267,18 +265,18 @@ void initializeParameterMap(Parameters& param) {
         {"geometryEncodingQp", {UINT, "", &param.geometryEncodingQp}},
         {"geometryEncodingPreset",
          {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.geometryEncodingPreset}},
-         #if LINK_FFMPEG
+#if LINK_FFMPEG
         {"geometryFFmpegCodecName", {STRING, "", &param.geometryFFmpegCodecName}},
         {"geometryFFmpegCodecOptions", {STRING, "", &param.geometryFFmpegCodecOptions}},
         {"geometryFFmpegCodecParams", {STRING, "", &param.geometryFFmpegCodecParams}},
-        #endif
+#endif
 
-        // Attribute map
-        #if LINK_FFMPEG
+// Attribute map
+#if LINK_FFMPEG
         {"attributeEncoderName", {STRING, "Kvazaar,FFmpeg", &param.attributeEncoderName}},
-        #else
+#else
         {"attributeEncoderName", {STRING, "Kvazaar", &param.attributeEncoderName}},
-        #endif
+#endif
         {"attributeEncodingIsLossless", {BOOL, "", &param.attributeEncodingIsLossless}},
         {"attributeEncodingMode", {STRING, "AI,RA", &param.attributeEncodingMode}},
         {"attributeEncodingFormat", {STRING, "YUV420", &param.attributeEncodingFormat}},
@@ -286,11 +284,11 @@ void initializeParameterMap(Parameters& param) {
         {"attributeEncodingQp", {UINT, "", &param.attributeEncodingQp}},
         {"attributeEncodingPreset",
          {STRING, "ultrafast,superfast,veryfast,faster,fast,medium,slow,slower,veryslow", &param.attributeEncodingPreset}},
-         #if LINK_FFMPEG
+#if LINK_FFMPEG
         {"attributeFFmpegCodecName", {STRING, "", &param.attributeFFmpegCodecName}},
         {"attributeFFmpegCodecOptions", {STRING, "", &param.attributeFFmpegCodecOptions}},
         {"attributeFFmpegCodecParams", {STRING, "", &param.attributeFFmpegCodecParams}},
-        #endif
+#endif
 
         // ___ Bitstream generation ___ //
         {"displayBitstreamGenerationFps", {BOOL, "", &param.displayBitstreamGenerationFps}},
@@ -339,7 +337,7 @@ std::string suggestClosestString(const std::string& inputStr) {
 }  // anonymous namespace
 
 void setParameterValue(const std::string& parameterName, const std::string& parameterValue, const bool& fromPreset) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::DEBUG>("API", "Set parameter value: " + parameterName + " -> " + parameterValue + "\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>("API", "Set parameter value: " + parameterName + " -> " + parameterValue + "\n");
 
     if (!parameterMap.contains(parameterName)) {
         throw std::invalid_argument(std::string(fromPreset ? "[PRESET] " : "") + "The parameter '" + parameterName +
@@ -389,7 +387,7 @@ void setParameterValue(const std::string& parameterName, const std::string& para
     if (fromPreset) {
         paramInfo.inPreset = true;
     } else if (paramInfo.inPreset) {
-        uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::INFO>(
+        uvgutils::Logger::log<uvgutils::LogLevel::INFO>(
             "API", "The value assigned to parameter '" + parameterName + "' overwrite the preset value.\n");
     }
 }

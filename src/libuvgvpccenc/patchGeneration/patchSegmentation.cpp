@@ -49,7 +49,7 @@
 #include "utils/parameters.hpp"
 #include "utils/utils.hpp"
 #include "utilsPatchGeneration.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "utils/statsCollector.hpp"
 
@@ -395,8 +395,7 @@ template <size_t Ppi>
 inline void createPatch(Patch& patch, const ConnectedComponent& cc, const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                         std::vector<bool>& pointIsInAPatchNewPerf, robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
                         robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                                                           "Create patch for frame " + std::to_string(frame->frameId) + "\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Create patch for frame " + std::to_string(frame->frameId) + "\n");
     constexpr size_t normalAxis = getPatchNormalAxis<Ppi>();
     constexpr size_t tangentAxis = getPatchTangentAxis<Ppi>();
     constexpr size_t bitangentAxis = getPatchBitangentAxis<Ppi>();
@@ -450,8 +449,8 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,
                                       const std::vector<size_t>& pointsPPIs,
                                       std::array<robin_hood::unordered_map<size_t, size_t>, 6>& mapList,
                                       std::vector<ConnectedComponent>& connectedComponents) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                                                           "Create connected components for frame " + std::to_string(frame->frameId) + "\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION",
+                                                     "Create connected components for frame " + std::to_string(frame->frameId) + "\n");
     for (size_t seedIndexNewPerf = 0; seedIndexNewPerf < pointIsInAPatchNewPerf.size(); ++seedIndexNewPerf) {
         if (pointIsInAPatchNewPerf[seedIndexNewPerf]) continue;
         if constexpr (!FirstIteration) {
@@ -477,8 +476,8 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,
 }  // Anonymous namespace
 
 void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs) {
-    uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
-                                                           "Patch segmentation of frame " + std::to_string(frame->frameId) + "\n");
+    uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION",
+                                                     "Patch segmentation of frame " + std::to_string(frame->frameId) + "\n");
 
     const size_t pointCount = frame->pointsGeometry.size();
     frame->patchList.reserve(256);
@@ -493,7 +492,7 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         const auto& point = frame->pointsGeometry[ptIndex];
         const size_t pointLocation1D = point[0] + (point[1] << p_->geoBitDepthInput) + (point[2] << (p_->geoBitDepthInput * 2));
         assert(pointsPPIs[ptIndex] < 6);
-        mapList[pointsPPIs[ptIndex]].emplace(pointLocation1D,ptIndex);
+        mapList[pointsPPIs[ptIndex]].emplace(pointLocation1D, ptIndex);
     }
 
     robin_hood::unordered_set<size_t> resamplePointSetLocation1D;

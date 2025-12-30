@@ -32,7 +32,7 @@
 
 /// \file Custom thread pool implementation based on the Kvazaar own implementation.
 
-#include "threadqueue.hpp"
+#include "uvgutils/threadqueue.hpp"
 
 #include <algorithm>
 #include <cassert>
@@ -43,9 +43,9 @@
 #include <mutex>
 #include <string>
 
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
 std::string jobStateToStr(threadqueue_job_state s) {
     const std::map<threadqueue_job_state, std::string> stateStr{
@@ -219,4 +219,4 @@ void ThreadQueue::workerThread() {
     }
 }
 
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils

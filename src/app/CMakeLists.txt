@@ -22,6 +22,7 @@ add_executable(uvgVPCCenc
 target_compile_options(miniplyLibrary PRIVATE -fPIC)
 target_compile_options(getoptLibrary PRIVATE -fPIC)
 
+target_link_libraries(uvgVPCCenc PRIVATE uvgutils)
 target_link_libraries(uvgVPCCenc PRIVATE uvgvpccenc)
 
 # Add uvgV3CRTP to link targets if enabled

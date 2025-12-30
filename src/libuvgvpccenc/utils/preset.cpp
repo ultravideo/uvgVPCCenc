@@ -38,7 +38,7 @@
 #include <vector>
 
 #include "parameters.hpp"
-#include "uvgvpcc/log.hpp"
+#include "uvgutils/log.hpp"
 
 namespace uvgvpcc_enc {
 
@@ -332,8 +332,8 @@ void applyPresetCommon(const Parameters& param) {
             }
             break;
         default:
-            Logger::log<LogLevel::ERROR>("LIBRARY INTERFACE", "In applyPresetCommon(), the geoBitDepthInput correspond to no preset: " +
-                                                                  std::to_string(param.geoBitDepthInput) + ".\n");
+            uvgutils::Logger::log<uvgutils::LogLevel::ERROR>("LIBRARY INTERFACE", "In applyPresetCommon(), the geoBitDepthInput correspond to no preset: " +
+                                                                    std::to_string(param.geoBitDepthInput) + ".\n");
             throw std::runtime_error("uvgVPCC log of type ERROR");
     }
 
@@ -361,7 +361,7 @@ void applyPreset(Parameters& param) {
             setParameterValue("geoBitDepthVoxelized", std::to_string(param.geoBitDepthInput), true);
             setParameterValue("geoBitDepthRefineSegmentation", std::to_string(param.geoBitDepthInput - 1), true);
         }
-        Logger::log<LogLevel::WARNING>(
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>(
             "LIBRARY INTERFACE",
             "uvgVPCCenc can support most of the point cloud voxel sizes (or input bit depths). However, it is tested only for voxel 9, 10 "
             "and 11. Strange things may happened. The presets are tuned for those voxel sizes only.\n The current voxel size is: " +
@@ -389,7 +389,7 @@ void applyPreset(Parameters& param) {
         setParameterValue("mapWidth", scaledSize, true);
         setParameterValue("minimumMapHeight", scaledSize, true);
 
-        Logger::log<LogLevel::WARNING>(
+        uvgutils::Logger::log<uvgutils::LogLevel::WARNING>(
             "LIBRARY INTERFACE",
             "uvgVPCCenc can support most of the point cloud voxel sizes (or input bit depths). However, it is tested only for voxel 9, 10 "
             "and 11. Strange things may happened. The presets are tuned for those voxel sizes only.\n The current voxel size is: " +

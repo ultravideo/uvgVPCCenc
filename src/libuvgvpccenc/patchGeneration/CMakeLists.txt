@@ -4,6 +4,11 @@ add_library(kdLibrary STATIC
     kdTree.cpp
 )
 
+target_link_libraries(kdLibrary
+    PUBLIC
+        uvgutils
+)
+
 set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_DEFAULT}")
 
 # Define the library
@@ -14,6 +19,11 @@ add_library(patchGenerationLibrary STATIC
     ppiSegmenter.cpp
     patchSegmentation.cpp
     slicingComputation.cpp
+)
+
+target_link_libraries(patchGenerationLibrary
+    PUBLIC
+        uvgutils
 )
 
 # Include directories for headers

@@ -27,6 +27,11 @@ add_library(catchLibLogLibrary STATIC
     catchLibLog.cpp
 )
 
+target_link_libraries(catchLibLogLibrary
+    PUBLIC
+        uvgutils
+)
+
 set(CMAKE_CXX_CLANG_TIDY "${CLANG_TIDY_DEFAULT}")
 
 # Set the default build libraries
@@ -53,6 +58,11 @@ endif()
 # Define the library
 add_library(mapEncodingLibrary STATIC
     ${LIB_SOURCES}
+)
+
+target_link_libraries(mapEncodingLibrary
+    PUBLIC
+        uvgutils
 )
 
 if(FFMPEG_LIBS)

@@ -7,6 +7,11 @@ add_library(patchPackingLibrary STATIC
     patchPacking.cpp
 )
 
+target_link_libraries(patchPackingLibrary
+    PUBLIC
+        uvgutils
+)
+
 # Include directories for headers
 # target_include_directories(patchPackingLibrary PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
