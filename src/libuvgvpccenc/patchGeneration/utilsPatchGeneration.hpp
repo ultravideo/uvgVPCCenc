@@ -42,7 +42,8 @@
 #include <vector>
 
 #include "robin_hood.h"
-#include "utils/utils.hpp"
+#include "utils/constants.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgutils/log.hpp"
 
 
@@ -50,7 +51,7 @@ using namespace uvgvpcc_enc;
 
 // TODO(lf): how to handle this type of lut table variable ?
 // NOLINTNEXTLINE(cert-err58-cpp)
-static const std::array<std::vector<Vector3<int32_t>>, 9> adjacentPointsSearch = {{
+static const std::array<std::vector<uvgutils::VectorN<int32_t, 3>>, 9> adjacentPointsSearch = {{
     // Adjacent shift for squared distance 1
     {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}},
     // Adjacent shift for squared distance 2
@@ -99,7 +100,7 @@ static const std::array<std::vector<Vector3<int32_t>>, 9> adjacentPointsSearch =
      {-1, -2, 2}, {-1, -2, -2}, {-2, 2, 1}, {-2, 2, -1}, {-2, 1, 2}, {-2, 1, -2}, {-2, -1, 2}, {-2, -1, -2}, {-2, -2, 1}, {-2, -2, -1}},
 }};
 
-const std::array<Vector3<uint8_t>, 114> patchColors = {{
+const std::array<uvgutils::VectorN<uint8_t, 3>, 114> patchColors = {{
     // Red color is for points not being part of a patch before the 2D projection.
     {139, 0, 0},     {165, 42, 42},   {178, 34, 34},   {220, 20, 60},   {255, 99, 71},   {255, 127, 80},  {205, 92, 92},   {240, 128, 128},
     {233, 150, 122}, {250, 128, 114}, {255, 160, 122}, {255, 69, 0},    {255, 140, 0},   {255, 165, 0},   {255, 215, 0},   {184, 134, 11},
@@ -126,7 +127,7 @@ inline double dotProduct(const std::array<T, 3>& arr1, const std::array<TT, 3>& 
 // Hash function for vector3
 template <typename T>
 struct vector3Hash {
-    size_t operator()(const Vector3<T>& vector) const {
+    size_t operator()(const uvgutils::VectorN<T, 3>& vector) const {
         std::hash<T> hasher;
         size_t hash = 0;
         for (const auto& elem : vector) {
@@ -176,8 +177,8 @@ struct vector3Hash {
 // activated, the refined segmentation is applying a second voxelization step. The created voxelized point cloud is then the result of two
 // voxelizations.
 inline void voxelization(
-    const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,
-    std::vector<Vector3<typeGeometryInput>>& voxelizedPointsGeometry,
+    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
+    std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& voxelizedPointsGeometry,
     std::vector<size_t>& pointsIdToVoxelId,
     const size_t inputBitResolution,
     const size_t outputBitResolution
@@ -193,13 +194,13 @@ inline void voxelization(
     const size_t approximateVoxelCount = 1U << (outputBitResolution * 2U);
     voxelizedPointsGeometry.reserve(approximateVoxelCount);
 
-    robin_hood::unordered_map<Vector3<typeGeometryInput>, size_t, vector3Hash<typeGeometryInput>> voxelCoordToVoxelIndex;
+    robin_hood::unordered_map<uvgutils::VectorN<typeGeometryInput, 3>, size_t, vector3Hash<typeGeometryInput>> voxelCoordToVoxelIndex;
     voxelCoordToVoxelIndex.reserve(approximateVoxelCount);
     size_t voxelIndex = 0;
     for (size_t inputPointIndex = 0; inputPointIndex < inputPointsGeometry.size(); ++inputPointIndex) {
-        const Vector3<typeGeometryInput> & inputPoint = inputPointsGeometry[inputPointIndex];
+        const uvgutils::VectorN<typeGeometryInput, 3> & inputPoint = inputPointsGeometry[inputPointIndex];
 
-        Vector3<typeGeometryInput> voxCoord{static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[0]) >> shift),
+        uvgutils::VectorN<typeGeometryInput, 3> voxCoord{static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[0]) >> shift),
                                             static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[1]) >> shift),
                                             static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[2]) >> shift)};
 

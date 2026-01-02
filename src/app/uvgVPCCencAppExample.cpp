@@ -55,10 +55,11 @@
 #include <utility>
 #include <vector>
 
-#include "../utils/utils.hpp"
+#include "../utils/constants.hpp"
 #include "cli.hpp"
 #include "extras/miniply.h"
 #include "uvgutils/log.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "../libuvgvpccenc/utils/statsCollector.hpp"
 #include "../libuvgvpccenc/utils/parameters.hpp"
@@ -164,11 +165,10 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, cons
     frame->printInfo();
 
     // Check if the point coordinates respect the voxel size
-    const bool isCompliant =
-        !std::any_of(frame->pointsGeometry.begin(), frame->pointsGeometry.end(),
-                     [geoBitDepthInput](const uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>& point) {
-                         return (point[0] >> geoBitDepthInput) | (point[1] >> geoBitDepthInput) | (point[2] >> geoBitDepthInput);
-                     });
+    const bool isCompliant = !std::any_of(
+        frame->pointsGeometry.begin(), frame->pointsGeometry.end(), [geoBitDepthInput](const uvgutils::VectorN<uvgvpcc_enc::typeGeometryInput, 3>& point) {
+            return (point[0] >> geoBitDepthInput) | (point[1] >> geoBitDepthInput) | (point[2] >> geoBitDepthInput);
+        });
 
     if (!isCompliant) {
         uvgutils::Logger::log<uvgutils::LogLevel::ERROR>(
@@ -177,8 +177,8 @@ void loadFrameFromPlyFile(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, cons
                 " contains at least one point which does not respect the input voxel size (uvgvpcc_enc::p_->geoBitDepthInput = " +
                 std::to_string(geoBitDepthInput) + "). Maximum value is 2^" + std::to_string(geoBitDepthInput) +
                 "-1. All faulty points will not be processed.\n");
-        std::vector<uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>> pointsGeometryTmp;
-        std::vector<uvgvpcc_enc::Vector3<uint8_t>> pointsAttributeTmp;
+        std::vector<uvgutils::VectorN<uvgvpcc_enc::typeGeometryInput, 3>> pointsGeometryTmp;
+        std::vector<uvgutils::VectorN<uint8_t, 3>> pointsAttributeTmp;
         pointsGeometryTmp.reserve(frame->pointsGeometry.size());
         pointsAttributeTmp.reserve(frame->pointsGeometry.size());
 

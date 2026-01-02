@@ -45,7 +45,8 @@
 #include <vector>
 
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
+#include "utils/constants.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 

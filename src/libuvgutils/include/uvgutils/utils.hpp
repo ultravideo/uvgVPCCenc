@@ -35,63 +35,68 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 #include <cstdint>
 #include <iomanip>
 #include <limits>
 #include <sstream>
 
-#include "uvgutils/log.hpp"
+#include "log.hpp"
 
-namespace uvgvpcc_enc {
+namespace uvgutils {
 
-using typeGeometryInput = uint16_t;
-
-const typeGeometryInput g_infiniteDepth = (std::numeric_limits<typeGeometryInput>::max)();  // TODO(lf)be sure it is well sync with type geo
-const size_t g_infinitenumber = (std::numeric_limits<size_t>::max)();
-const size_t g_valueNotSet = (std::numeric_limits<size_t>::max)();
-
-constexpr size_t INVALID_PATCH_INDEX = std::numeric_limits<size_t>::max();
-constexpr size_t PPI_NON_ASSIGNED = std::numeric_limits<size_t>::max();
-constexpr size_t UNDEFINED_PARENT_PPI = std::numeric_limits<size_t>::max() - 1;  // TODO(lf) temp
-
-// Projection Plan Index, 0-5 -> one of the six bounding box plan. 6+ -> used for slicing ppi attribution
-enum class PPI : uint8_t { ppi0, ppi1, ppi2, ppi3, ppi4, ppi5, ppiBlank, notAssigned };
-
-template <typename T>
-class Vector3 : public std::array<T, 3> {
+template <typename T, size_t N>
+class VectorN : public std::array<T, N> {
    public:
-    Vector3() : std::array<T, 3>() {}
-    Vector3(T x, T y, T z) : std::array<T, 3>({x, y, z}) {}
-    Vector3(std::array<T, 3>& arr) : std::array<T, 3>(arr) {}
-    Vector3(std::array<T, 3>&& arr) : std::array<T, 3>(std::move(arr)) {}
-    Vector3(const std::array<T, 3>& arr) { std::copy(arr.begin(), arr.end(), this->begin()); }
-
+    VectorN() : std::array<T, N>() {}
+    VectorN(T x, T y, T z) : std::array<T, 3>({x, y, z}) {}
+    VectorN(std::array<T, N>& arr) : std::array<T, N>(arr) {}
+    VectorN(std::array<T, N>&& arr) : std::array<T, N>(std::move(arr)) {}
+    VectorN(const std::array<T, N>& arr) { std::copy(arr.begin(), arr.end(), this->begin()); }
     template <typename U>
-    Vector3<T> operator+(const Vector3<U>& other) const {
-        return {(*this)[0] + other[0], (*this)[1] + other[1], (*this)[2] + other[2]};
+    VectorN<T, N> operator+(const VectorN<U, N>& other) const {
+        VectorN<T, N> result;
+        for (size_t i = 0; i < N; ++i) {
+            result[i] = (*this)[i] + other[i];
+        }
+        return result;
     }
 
     template <typename U>
-    Vector3<T> operator-(const Vector3<U>& other) const {
-        return {(*this)[0] - other[0], (*this)[1] - other[1], (*this)[2] - other[2]};
+    VectorN<T, N> operator-(const VectorN<U, N>& other) const {
+        VectorN<T, N> result;
+        for (size_t i = 0; i < N; ++i) {
+            result[i] = (*this)[i] - other[i];
+        }
+        return result;
     }
 
-    Vector3<double> operator-(const Vector3<double>& other) const {
-        return {(*this)[0] - other[0], (*this)[1] - other[1], (*this)[2] - other[2]};
+    VectorN<double, N> operator-(const VectorN<double, N>& other) const {
+        VectorN<double, N> result;
+        for (size_t i = 0; i < N; ++i) {
+            result[i] = (*this)[i] - other[i];
+        }
+        return result;
     }
 
-    Vector3<T> operator-() const { return {-(*this)[0], -(*this)[1], -(*this)[2]}; }
+    VectorN<T, N> operator-() const {
+        VectorN<T, N> result;
+        for (size_t i = 0; i < N; ++i) {
+            result[i] = -(*this)[i];
+        }
+        return result;
+    }
 
     template <typename U>
-    Vector3<T>& operator+=(const Vector3<U>& other) {
-        (*this)[0] += other[0];
-        (*this)[1] += other[1];
-        (*this)[2] += other[2];
+    VectorN<T, N>& operator+=(const VectorN<U, N>& other) {
+        for (size_t i = 0; i < N; ++i) {
+            (*this)[i] += other[i];
+        }
         return *this;
     }
 
     template <typename U>
-    Vector3<T>& operator/=(const U& val) {
+    VectorN<T, N>& operator/=(const U& val) {
         (*this)[0] /= val;
         (*this)[1] /= val;
         (*this)[2] /= val;
@@ -110,4 +115,4 @@ inline std::string zeroPad(size_t value, size_t width) {
 // Examples : roundUp(7,8) = 8;  roundUp(17,8) = 24;
 inline size_t roundUp(const size_t& number, const size_t& multiple) { return (number + multiple - 1) & -multiple; }
 
-}  // namespace uvgvpcc_enc
+}  // namespace uvgutils

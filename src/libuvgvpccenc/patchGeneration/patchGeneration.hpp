@@ -43,5 +43,5 @@ class PatchGeneration {
    private:
     
     static void computePointsNNList(std::vector<std::vector<size_t>>& pointsNNList,
-                                    const std::vector<uvgvpcc_enc::Vector3<uvgvpcc_enc::typeGeometryInput>>& pointsGeometry, const size_t& nnCount);
+                                    const std::vector<uvgutils::VectorN<uvgvpcc_enc::typeGeometryInput, 3>>& pointsGeometry, const size_t& nnCount);
 };

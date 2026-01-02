@@ -45,11 +45,12 @@
 #include <vector>
 
 #include "robin_hood.h"
+#include "utils/constants.hpp"
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
 #include "utilsPatchGeneration.hpp"
 #include "uvgutils/log.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "utils/statsCollector.hpp"
 
@@ -100,16 +101,15 @@ struct ConnectedComponent {
     }
 };
 
-inline size_t location1DFromPoint(const Vector3<typeGeometryInput> point) {
+inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3> point) {
     return point[0] + (point[1] << p_->geoBitDepthInput) + (point[2] << (p_->geoBitDepthInput * 2));
 }
 
-// TODO(lf) : using bettername for Vector3
-inline bool findNeighborSeed(const uvgvpcc_enc::Vector3<typeGeometryInput>& ptSeed,
+inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed,
                              const robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
     for (size_t dist = 0; dist < p_->maxAllowedDist2RawPointsDetection; ++dist) {
         for (const auto& shift : adjacentPointsSearch[dist]) {
-            uvgvpcc_enc::Vector3<typeGeometryInput> pointAdj;
+            uvgutils::VectorN<typeGeometryInput, 3> pointAdj;
             pointAdj[0] = ptSeed[0] + shift[0];
             pointAdj[1] = ptSeed[1] + shift[1];
             pointAdj[2] = ptSeed[2] + shift[2];
@@ -124,7 +124,8 @@ inline bool findNeighborSeed(const uvgvpcc_enc::Vector3<typeGeometryInput>& ptSe
 
 inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& seedIndexNewPerf,
                                      std::vector<bool>& pointIsInAPatchNewPerf, ConnectedComponent& cc,
-                                     robin_hood::unordered_map<size_t, size_t>& mapLocation1D, const Vector3<typeGeometryInput>& ptSeed) {
+                                     robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
+                                     const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed) {
     cc.points.push_back(seedIndexNewPerf);
     pointIsInAPatchNewPerf[seedIndexNewPerf] = true;
     mapLocation1D.erase(location1DFromPoint(ptSeed));
@@ -146,7 +147,7 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
 
         for (size_t dist = 0; dist < p_->patchSegmentationMaxPropagationDistance; ++dist) {
             for (const auto& shift : adjacentPointsSearch[dist]) {
-                uvgvpcc_enc::Vector3<typeGeometryInput> adjPt = {
+                uvgutils::VectorN<typeGeometryInput, 3> adjPt = {
                     static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(pt[0]) + static_cast<typeGeometryInput>(shift[0])),
                     static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(pt[1]) + static_cast<typeGeometryInput>(shift[1])),
                     static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(pt[2]) + static_cast<typeGeometryInput>(shift[2]))};
@@ -253,7 +254,7 @@ inline int getMinD(const std::vector<typeGeometryInput>& peakPerBlock) {
     if constexpr (ProjectionMode) {
         auto maxIt = std::max_element(peakPerBlock.begin(), peakPerBlock.end());
         const typeGeometryInput maxVal = (maxIt != peakPerBlock.end()) ? *maxIt : 0;
-        return static_cast<int>(roundUp(maxVal, minLevel));
+        return static_cast<int>(uvgutils::roundUp(maxVal, minLevel));
     } else {
         auto minIt = std::min_element(peakPerBlock.begin(), peakPerBlock.end());
         const typeGeometryInput minVal = (minIt != peakPerBlock.end()) ? *minIt : g_infiniteDepth;
@@ -414,8 +415,8 @@ inline void createPatch(Patch& patch, const ConnectedComponent& cc, const std::s
     patch.posV_ = cc.minV;
     patch.widthInOccBlk_ = width / dsRes + 1;
     patch.heightInOccBlk_ = height / dsRes + 1;
-    patch.widthInPixel_ = roundUp(width + 1, dsRes);
-    patch.heightInPixel_ = roundUp(height + 1, dsRes);
+    patch.widthInPixel_ = uvgutils::roundUp(width + 1, dsRes);
+    patch.heightInPixel_ = uvgutils::roundUp(height + 1, dsRes);
 
     const size_t patchSize = patch.widthInPixel_ * patch.heightInPixel_;
     patch.patchOccupancyMap_.assign(patchSize, 0);
@@ -457,7 +458,7 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,
             if (!pointCanBeASeedNewPerf[seedIndexNewPerf]) continue;
         }
 
-        const Vector3<typeGeometryInput> ptSeed = frame->pointsGeometry[seedIndexNewPerf];
+        const uvgutils::VectorN<typeGeometryInput, 3> ptSeed = frame->pointsGeometry[seedIndexNewPerf];
         if constexpr (!FirstIteration) {
             // Find a correct seed point to start a connected component
             if (findNeighborSeed(ptSeed, resamplePointSetLocation1D)) {
@@ -544,7 +545,7 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
 
     if(p_->exportStatistics){
         size_t numberOfLostPointPS = 0;
-        std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
+        std::vector<uvgutils::VectorN<uint8_t, 3>> attributes(frame->pointsGeometry.size());
         std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
         for (const auto& patch : frame->patchList) {
             const auto color = patchColors[patch.patchIndex_ % patchColors.size()];

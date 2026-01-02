@@ -37,7 +37,6 @@
 #include <cstdarg>
 #include <cstdio>
 
-#include "utils/utils.hpp"
 #include "uvgutils/log.hpp"
 
 #if defined(__GNUC__) && !defined(__clang__)

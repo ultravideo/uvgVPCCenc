@@ -54,7 +54,8 @@
 #include "robin_hood.h"
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
+#include "utils/constants.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
@@ -263,7 +264,7 @@ struct MapSearch {
     robin_hood::unordered_flat_map<size_t, size_t> pos1DToIndexSlicePointsNotInASubsliceYet;
     std::vector<size_t> currentSubsliceChildPos1D;
 
-    MapSearch(const std::vector<size_t>& slice, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
+    MapSearch(const std::vector<size_t>& slice, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry) {
         pos1DToIndexSlicePointsNotInASubsliceYet.reserve(slice.size());
         currentSubsliceChildPos1D.reserve(slice.size());
 
@@ -436,7 +437,7 @@ inline bool compareBestCandidateAndStartingScores(const Point2D& bestCandidatePo
 }
 
 template <const std::array<size_t, 2>& axis>
-inline void sortSlice(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, std::vector<size_t>& slice) {
+inline void sortSlice(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, std::vector<size_t>& slice) {
     std::sort(slice.begin(), slice.end(), [&](const size_t& a, const size_t& b) {
         // if (pointsGeometry[a][axis[0]] == pointsGeometry[b][axis[0]]) {
         // Allow consistency
@@ -486,7 +487,7 @@ void subsliceWeaving(
     const size_t subsliceStartingPointIndexPG,  // Point geometry (global shared indexing) index of the starting point in the subslice
     const Point2D& startingPoint2D,
     const std::vector<size_t>& slice,  // Slice containing the point indices in PG
-    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, robin_hood::unordered_map<size_t, size_t>& childToParentAxis,
+    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, robin_hood::unordered_map<size_t, size_t>& childToParentAxis,
     std::vector<bool>& isInASubslice,           // Flags to track which slice points are already in a subslice
     std::vector<size_t>& parentOrderedIndexPG,  // Ordered list of parents (global indices)
     std::vector<PPI>& parentOrderedPPIs,        // Ordered list of PPIs corresponding to parents
@@ -585,7 +586,7 @@ void subsliceWeaving(
 }
 
 template <const std::array<size_t, 2>& axis>
-void sliceWeaving(const std::vector<size_t>& slice, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+void sliceWeaving(const std::vector<size_t>& slice, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                   robin_hood::unordered_map<size_t, size_t>& childToParentAxis, std::vector<PPI>& pointPPIsAxis, const size_t& frameId) {
     const size_t sliceSize = slice.size();
     int startingPointIndexSlice = -1;
@@ -678,7 +679,7 @@ void childPPIAttribution(const robin_hood::unordered_map<size_t, size_t>& childT
     }
 }
 
-void createSlices(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+void createSlices(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                   std::vector<std::optional<std::vector<size_t>>>& levelToSliceX,
                   std::vector<std::optional<std::vector<size_t>>>& levelToSliceY,
                   std::vector<std::optional<std::vector<size_t>>>& levelToSliceZ) {
@@ -716,8 +717,8 @@ void createSlices(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& po
 
 template <const std::array<size_t, 2>& axis>
 void createTempPointCloudForSlicingExportation(const std::shared_ptr<Frame>& frame,
-                                               const std::vector<Vector3<typeGeometryInput>>& pointsGeometry) {
-    std::vector<Vector3<uint8_t>> attributes(pointsGeometry.size());
+                                               const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry) {
+    std::vector<uvgutils::VectorN<uint8_t, 3>> attributes(pointsGeometry.size());
     typeGeometryInput currentAxisLevel = {};
     typeGeometryInput previousAxisLevel = std::numeric_limits<typeGeometryInput>::max();
     size_t countSubslicePerSlice = 0;
@@ -769,7 +770,7 @@ void createTempPointCloudForSlicingExportation(const std::shared_ptr<Frame>& fra
 
 template <const std::array<size_t, 2>& axis>
 inline void axisSlicesWeaving(std::vector<std::optional<std::vector<size_t>>>& levelToSlice,
-                              const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+                              const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                               robin_hood::unordered_map<size_t, size_t>& childToParent, std::vector<PPI>& pointPPIsAxis,
                               const size_t& frameId) {
     childToParent.reserve(pointsGeometry.size());
@@ -785,7 +786,7 @@ inline void axisSlicesWeaving(std::vector<std::optional<std::vector<size_t>>>& l
 // TODO(lf): use PPI type everywhere
 
 // Set the normal for weighted points
-inline Vector3<double> ppiToNormal(const PPI& ppi) {
+inline uvgutils::VectorN<double, 3> ppiToNormal(const PPI& ppi) {
     switch (ppi) {
         case PPI::ppi0:
             return {1.0, 0.0, 0.0};  // normal[0] =  1.0; break;
@@ -806,7 +807,7 @@ inline Vector3<double> ppiToNormal(const PPI& ppi) {
     return {0.0, 0.0, 0.0};
 }
 
-inline size_t getParentPpi(const PPI& ppiX, const PPI& ppiY, const PPI& ppiZ, const size_t& nAttributions, Vector3<double>& normal) {
+inline size_t getParentPpi(const PPI& ppiX, const PPI& ppiY, const PPI& ppiZ, const size_t& nAttributions, uvgutils::VectorN<double, 3>& normal) {
     if (nAttributions == 1) return UNDEFINED_PARENT_PPI;
 
     // If two axes agree → choose that PPI and mark point as weighted (unity normal)
@@ -870,7 +871,7 @@ inline size_t getUndefinedParentPpi(const std::vector<size_t>& pointPPIs, const 
 
 // TODO(lf): in the end handle all memory swap etc...
 void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
-                                   const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+                                   const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                                    const std::vector<PPI>& pointPPIsX, const std::vector<PPI>& pointPPIsY, const std::vector<PPI>& pointPPIsZ,
                                    const robin_hood::unordered_map<size_t, size_t>& childToParentX,
                                    const robin_hood::unordered_map<size_t, size_t>& childToParentY,
@@ -891,8 +892,8 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     // 2) After refinement, children inherit PPI from their parents.
 
     std::vector<size_t> parentPointsPPIs(nbPoints);
-    std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>> parentPointsGeometry(nbPoints);
-    std::vector<uvgvpcc_enc::Vector3<double>> parentPointsNormal(nbPoints, {{0.0, 0.0, 0.0}});
+    std::vector<uvgutils::VectorN<typeGeometryInput, 3>> parentPointsGeometry(nbPoints);
+    std::vector<uvgutils::VectorN<double, 3>> parentPointsNormal(nbPoints, {{0.0, 0.0, 0.0}});
     std::vector<size_t> parentPointsIndexInPG(nbPoints);
 
     size_t sizeParentSublist = 0;  // For refine segmentation parent sublist data structure creation
@@ -966,7 +967,7 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
 }
 
 void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
-                                   const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+                                   const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                                    const std::vector<PPI>& pointPPIsX, const std::vector<PPI>& pointPPIsY, const std::vector<PPI>& pointPPIsZ,
                                    const robin_hood::unordered_map<size_t, size_t>& childToParentX,
                                    const robin_hood::unordered_map<size_t, size_t>& childToParentY,
@@ -982,7 +983,7 @@ void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     //  - Non-weighted: no strong agreement or undefined PPI → normal (0,0,0)
     // Child points always have normal (0,0,0).
 
-    std::vector<uvgvpcc_enc::Vector3<double>> pointsNormal(nbPoints);
+    std::vector<uvgutils::VectorN<double, 3>> pointsNormal(nbPoints);
     for (int ptIndexPG = 0; ptIndexPG < nbPoints; ++ptIndexPG) {
         const PPI ppiX = pointPPIsX[ptIndexPG];
         const PPI ppiY = pointPPIsY[ptIndexPG];
@@ -1026,7 +1027,7 @@ void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
 }  // anonymous namespace
 
 void ppiAssignationSlicing(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
-                           const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, std::vector<size_t>& pointPPIs) {
+                           const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, std::vector<size_t>& pointPPIs) {
     // Create the 2D slices for each axis.
     const size_t nbMaxSlices = (1U << p_->geoBitDepthVoxelized);
     std::vector<std::optional<std::vector<size_t>>> levelToSliceX(nbMaxSlices);

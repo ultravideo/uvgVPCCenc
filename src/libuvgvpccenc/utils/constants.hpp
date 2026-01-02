@@ -30,28 +30,31 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-/// \file Interface between uvgVPCCenc and the external nanoflann library.
+/// \file Common tools used by the uvgVPCCenc library.
 
 #pragma once
 
-#include "nanoflann.hpp"
-#include "utils/constants.hpp"
+#include <array>
+#include <cstdint>
+#include <iomanip>
+#include <limits>
+#include <sstream>
+
 #include "uvgutils/utils.hpp"
 
-using namespace uvgvpcc_enc;
+namespace uvgvpcc_enc {
 
-using nanoflannAdaptorType =
-    KDTreeVectorOfVectorsAdaptor<std::vector<uvgutils::VectorN<typeGeometryInput, 3>>, double, 3, nanoflann::metric_L2_Simple, size_t>;
+using typeGeometryInput = uint16_t;
 
-class KdTree {
-   public:
-    KdTree(const size_t& kdTreeMaxLeafSize, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry);
-    void knn(const uvgutils::VectorN<typeGeometryInput, 3>& queryPoint, const size_t nnCount, std::vector<size_t>& nnIndices) const;
-    void knnDist(const uvgutils::VectorN<typeGeometryInput, 3>& queryPoint, const size_t nnCount, std::vector<int16_t>& out_dists_sqr) const;
+const typeGeometryInput g_infiniteDepth = (std::numeric_limits<typeGeometryInput>::max)();  // TODO(lf)be sure it is well sync with type geo
+const size_t g_infinitenumber = (std::numeric_limits<size_t>::max)();
+const size_t g_valueNotSet = (std::numeric_limits<size_t>::max)();
 
-    /*void knnRadius(const uvgutils::VectorN<typeGeometryInput, 3>& queryPoint, const int16_t maxNNCount, const uint16_t radius,
-                    std::vector<size_t>& nnIndices) const;*/
+constexpr size_t INVALID_PATCH_INDEX = std::numeric_limits<size_t>::max();
+constexpr size_t PPI_NON_ASSIGNED = std::numeric_limits<size_t>::max();
+constexpr size_t UNDEFINED_PARENT_PPI = std::numeric_limits<size_t>::max() - 1;  // TODO(lf) temp
 
-   private:
-    std::unique_ptr<nanoflannAdaptorType> const index_;
-};
+// Projection Plan Index, 0-5 -> one of the six bounding box plan. 6+ -> used for slicing ppi attribution
+enum class PPI : uint8_t { ppi0, ppi1, ppi2, ppi3, ppi4, ppi5, ppiBlank, notAssigned };
+
+}  // namespace uvgvpcc_enc

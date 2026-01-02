@@ -50,9 +50,9 @@
 #include "ppiSegmenter.hpp"
 #include "slicingComputation.hpp"
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
 #include "utilsPatchGeneration.hpp"
 #include "uvgutils/log.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "../utils/statsCollector.hpp"
 
@@ -60,7 +60,7 @@ using namespace uvgvpcc_enc;
 
 // TODO(lf): nearestNeighborCount should be static
 void PatchGeneration::computePointsNNList(std::vector<std::vector<size_t>>& pointsNNList,
-                                          const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry, const size_t& nnCount) {
+                                          const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, const size_t& nnCount) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "computePointsNNList.\n");
 
     KdTree const kdTree(p_->kdTreeMaxLeafSize, pointsGeometry);
@@ -101,8 +101,8 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     // Voxelization //
     assert(p_->geoBitDepthInput >= p_->geoBitDepthVoxelized);
     const bool useVoxelization = p_->geoBitDepthInput != p_->geoBitDepthVoxelized;
-    std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>> voxelizedGeometryBuffer;
-    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& voxelizedPointsGeometry =
+    std::vector<uvgutils::VectorN<typeGeometryInput, 3>> voxelizedGeometryBuffer;
+    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& voxelizedPointsGeometry =
     useVoxelization ? voxelizedGeometryBuffer : frame->pointsGeometry;
     std::vector<size_t> pointsIdToVoxelId;
 
@@ -125,7 +125,7 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
         computePointsNNList(pointsNNList, voxelizedPointsGeometry, std::max(p_->normalComputationKnnCount, p_->normalOrientationKnnCount));
 
         // Normal computation & orientation //
-        std::vector<uvgvpcc_enc::Vector3<double>> pointsNormal(voxelizedPointsGeometry.size());
+        std::vector<uvgutils::VectorN<double, 3>> pointsNormal(voxelizedPointsGeometry.size());
         NormalComputation::computeNormals(frame, pointsNormal, voxelizedPointsGeometry, pointsNNList);
         NormalOrientation::orientNormals(frame, pointsNormal, voxelizedPointsGeometry, pointsNNList);
 
@@ -158,6 +158,6 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
         return std::max(patchA.widthInPixel_, patchA.heightInPixel_) > std::max(patchB.widthInPixel_, patchB.heightInPixel_);
     });
 
-    std::vector<Vector3<typeGeometryInput>>().swap(frame->pointsGeometry);  // Release memory
+    std::vector<uvgutils::VectorN<typeGeometryInput, 3>>().swap(frame->pointsGeometry);  // Release memory
     // TODO(lf): try using noexcept to improve performance
 }

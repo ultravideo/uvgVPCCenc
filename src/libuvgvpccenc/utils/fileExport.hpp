@@ -37,14 +37,15 @@
 #include <string>
 #include <vector>
 
-#include "utils/utils.hpp"
+#include "utils/constants.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
 
 namespace FileExport {
 
-const std::array<Vector3<uint8_t>, 10> ppiColors = {{
+const std::array<uvgutils::VectorN<uint8_t, 3>, 10> ppiColors = {{
     {91, 91, 91},    // Charcoal Gray
     {0, 102, 51},    // Forest Green
     {153, 0, 0},     // Rich Crimson
@@ -60,17 +61,17 @@ const std::array<Vector3<uint8_t>, 10> ppiColors = {{
 void cleanIntermediateFiles();
 
 // Patch generation
-void exportPointCloudNormalComputation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
-                                       std::vector<Vector3<double>>& normals);
-void exportPointCloudNormalOrientation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
-                                       std::vector<Vector3<double>>& normals);
-void exportPointCloudInitialSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
+void exportPointCloudNormalComputation(const std::shared_ptr<Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
+                                       std::vector<uvgutils::VectorN<double, 3>>& normals);
+void exportPointCloudNormalOrientation(const std::shared_ptr<Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
+                                       std::vector<uvgutils::VectorN<double, 3>>& normals);
+void exportPointCloudInitialSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                                          const std::vector<size_t>& pointsPPIs);
-void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,const std::vector<Vector3<uint8_t>>& attributes,
+void exportPointCloudSubslices(const std::shared_ptr<Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,const std::vector<uvgutils::VectorN<uint8_t, 3>>& attributes,
                                        const std::string& axisStr);
-void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
+void exportPointCloudPPIAttributionSlicing(const std::shared_ptr<Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                                         const std::vector<size_t>& pointsPPIs);
-void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
+void exportPointCloudRefineSegmentation(const std::shared_ptr<Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                                         const std::vector<size_t>& pointsPPIs);
 void exportPointCloudPatchSegmentationColor(const std::shared_ptr<Frame>& frame);
 void exportPointCloudPatchSegmentationBorder(const std::shared_ptr<Frame>& frame);

@@ -44,8 +44,9 @@
 #include <algorithm>
 #include <unordered_map>
 
-#include "../utils/utils.hpp"
 #include "../utils/parameters.hpp"
+#include "../utils/constants.hpp"
+#include "uvgutils/utils.hpp"
 
 /// \file Main file of the uvgVPCCenc library that defines the main structures (GOF, frame, patch) and the API.
 
@@ -178,8 +179,8 @@ struct Frame {
     std::string pointCloudPath;
 
     size_t pointCount;
-    std::vector<Vector3<typeGeometryInput>> pointsGeometry;
-    std::vector<Vector3<uint8_t>> pointsAttribute;
+    std::vector<uvgutils::VectorN<typeGeometryInput, 3>> pointsGeometry;
+    std::vector<uvgutils::VectorN<uint8_t, 3>> pointsAttribute;
 
     std::vector<Patch> patchList;
 

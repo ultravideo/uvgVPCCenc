@@ -50,8 +50,8 @@
 #include "bgFillGeometry.hpp"
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
 #include "uvgutils/log.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
@@ -494,7 +494,7 @@ void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>&
     if (p_->exportIntermediateFiles) {
         FileExport::exportImageAttributeYUV(frame);
     }
-    std::vector<Vector3<uint8_t>>().swap(frame->pointsAttribute);  // Release memory TODO(lf):can be done early
+    std::vector<uvgutils::VectorN<uint8_t, 3>>().swap(frame->pointsAttribute);  // Release memory TODO(lf):can be done early
 }
 
 // TODO(lf): for L2, find a way to make a copy write only the changing value between both map (same comment for geometry)
@@ -507,7 +507,7 @@ void MapGeneration::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>
         gof->mapHeightDSGOF = std::max(gof->mapHeightDSGOF, frame->mapHeightDS);
     }
 
-    gof->mapHeightDSGOF = roundUp(gof->mapHeightDSGOF, static_cast<size_t>(8));
+    gof->mapHeightDSGOF = uvgutils::roundUp(gof->mapHeightDSGOF, static_cast<size_t>(8));
 
     gof->mapHeightGOF = gof->mapHeightDSGOF * p_->occupancyMapDSResolution;
 

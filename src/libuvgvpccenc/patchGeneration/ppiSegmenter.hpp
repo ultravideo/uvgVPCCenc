@@ -37,7 +37,8 @@
 #include <cstdint>
 #include <vector>
 #include "patchGeneration/robin_hood.h"
-#include "utils/utils.hpp"
+#include "utils/constants.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
@@ -66,14 +67,14 @@ struct VoxelAttribute {
 
 class PPISegmenter {
    public:
-    PPISegmenter(const std::vector<Vector3<typeGeometryInput>>& pointsGeometry,
-                 const std::vector<Vector3<double>>& pointsNormals);
+    PPISegmenter(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
+                 const std::vector<uvgutils::VectorN<double, 3>>& pointsNormals);
 
     void initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId);
     void refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId);
 
    private:
-    static void voxelizationWithBitArray(const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,
+    static void voxelizationWithBitArray(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
                                          std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
                                          std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);                                         
 
@@ -97,8 +98,8 @@ class PPISegmenter {
     static inline void updateVoxelAttribute(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
                                                       const std::vector<size_t>& pointsPPIs);
     
-    const std::vector<Vector3<double>>& pointsNormals_;
-    const std::vector<Vector3<typeGeometryInput>>& pointsGeometry_;
+    const std::vector<uvgutils::VectorN<double, 3>>& pointsNormals_;
+    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry_;
     const typeGeometryInput geoMax_;
     const typeGeometryInput geoRange_;
 };

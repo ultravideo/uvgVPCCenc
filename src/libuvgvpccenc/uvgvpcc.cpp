@@ -180,38 +180,41 @@ void verifyConfig() {
             "The occupancy maps should not be encoded in lossy mode. (At least, this is a very dangerous things to try.)");
     }
 
-    if (roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution) != p_->minimumMapHeight ||
-        roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8) != p_->minimumMapHeight / p_->occupancyMapDSResolution) {
+    if (uvgutils::roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution) != p_->minimumMapHeight ||
+        uvgutils::roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8) != p_->minimumMapHeight / p_->occupancyMapDSResolution) {
         throw std::runtime_error(
             "To avoid a padding operation in Kvazaar, all the 2D maps (including the occupancy map) need to have width and height being "
             "multiple of 8.\nThe parameter "
             "minimumMapHeight is set to: " +
             std::to_string(p_->minimumMapHeight) + "\nThe parameter occupancyMapDSResolution (OM block size) is set to: " +
             std::to_string(p_->occupancyMapDSResolution) + "\nMap height is multiple of OM block size ? " +
-            ((roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution) == p_->minimumMapHeight) ? "YES" : "NO") +
+            ((uvgutils::roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution) == p_->minimumMapHeight) ? "YES" : "NO") +
             "\nOccupancy map height is multiple of 8 ? " +
-            ((roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8) == p_->minimumMapHeight / p_->occupancyMapDSResolution)
+            ((uvgutils::roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8) ==
+              p_->minimumMapHeight / p_->occupancyMapDSResolution)
                  ? "YES"
                  : "NO") +
             "\n" + "\nNearest possible map height value : " +
-            std::to_string(std::max(roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution),
-                                    p_->occupancyMapDSResolution * roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8))));
+            std::to_string(
+                std::max(uvgutils::roundUp(p_->minimumMapHeight, p_->occupancyMapDSResolution),
+                         p_->occupancyMapDSResolution * uvgutils::roundUp(p_->minimumMapHeight / p_->occupancyMapDSResolution, 8))));
     }
 
-    if (roundUp(p_->mapWidth, p_->occupancyMapDSResolution) != p_->mapWidth ||
-        roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8) != p_->mapWidth / p_->occupancyMapDSResolution) {
+    if (uvgutils::roundUp(p_->mapWidth, p_->occupancyMapDSResolution) != p_->mapWidth ||
+        uvgutils::roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8) != p_->mapWidth / p_->occupancyMapDSResolution) {
         throw std::runtime_error(
             "To avoid a padding operation in Kvazaar, all the 2D maps (including the occupancy map) need to have width and height being "
             "multiple of 8.\nThe parameter "
             "mapWidth is set to: " +
             std::to_string(p_->mapWidth) + "\nThe parameter occupancyMapDSResolution (OM block size) is set to: " +
             std::to_string(p_->occupancyMapDSResolution) + "\nMap width is multiple of OM block size ? " +
-            ((roundUp(p_->mapWidth, p_->occupancyMapDSResolution) == p_->mapWidth) ? "YES" : "NO") +
+            ((uvgutils::roundUp(p_->mapWidth, p_->occupancyMapDSResolution) == p_->mapWidth) ? "YES" : "NO") +
             "\nOccupancy map width is multiple of 8 ? " +
-            ((roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8) == p_->mapWidth / p_->occupancyMapDSResolution) ? "YES" : "NO") +
+            ((uvgutils::roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8) == p_->mapWidth / p_->occupancyMapDSResolution) ? "YES"
+                                                                                                                                : "NO") +
             "\nMap width recommanded value : " +
-            std::to_string(
-                std::max(roundUp(p_->mapWidth, p_->occupancyMapDSResolution), roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8))));
+            std::to_string(std::max(uvgutils::roundUp(p_->mapWidth, p_->occupancyMapDSResolution),
+                                    uvgutils::roundUp(p_->mapWidth / p_->occupancyMapDSResolution, 8))));
     }
 
     if (p_->intraFramePeriod != 64) {

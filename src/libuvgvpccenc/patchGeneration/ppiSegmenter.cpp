@@ -44,7 +44,8 @@
 #include "robin_hood.h"
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
+#include "utils/constants.hpp"
+#include "uvgutils/utils.hpp"
 #include "utilsPatchGeneration.hpp"
 #include "uvgutils/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
@@ -52,14 +53,14 @@
 
 using namespace uvgvpcc_enc;
 
-PPISegmenter::PPISegmenter(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                           const std::vector<uvgvpcc_enc::Vector3<double>>& pointsNormals)
+PPISegmenter::PPISegmenter(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
+                           const std::vector<uvgutils::VectorN<double, 3>>& pointsNormals)
     : pointsNormals_(pointsNormals),
       pointsGeometry_(pointsGeometry),
       geoMax_([&]() {
           // lambda function to initialise the const variable geoMax_
           typeGeometryInput geoMax = pointsGeometry_[0][0];
-          for (const uvgvpcc_enc::Vector3<typeGeometryInput>& point : pointsGeometry_) {
+          for (const uvgutils::VectorN<typeGeometryInput, 3>& point : pointsGeometry_) {
               geoMax = std::max(geoMax, point[0]);
               geoMax = std::max(geoMax, point[1]);
               geoMax = std::max(geoMax, point[2]);
@@ -85,7 +86,7 @@ void PPISegmenter::initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>
                                        const size_t& frameId) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Initial segmentation of frame " + std::to_string(frameId) + "\n");
     for (size_t ptIndex = 0; ptIndex < pointsPPIs.size(); ++ptIndex) {
-        const uvgvpcc_enc::Vector3<double>& pointNormal = pointsNormals_[ptIndex];
+        const uvgutils::VectorN<double, 3>& pointNormal = pointsNormals_[ptIndex];
 
         size_t ppi = 0;  // TODO(lf): check if we don't call too many time array element in other for loops and use temp value like here
         double bestScore = dotProduct(pointNormal, p_->projectionPlaneOrientations[0]);
@@ -212,7 +213,7 @@ inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, cons
     }
 }
 
-void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& inputPointsGeometry,
+void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
                                             std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
                                             std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels) {
     const size_t voxelizationShift =
@@ -233,7 +234,7 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgvpcc_enc::Vecto
 
     size_t vox_id = 0;
     for (size_t point_idx = 0; point_idx < inputPointsGeometry.size(); ++point_idx) {
-        const uvgvpcc_enc::Vector3<typeGeometryInput>& inputPoint = inputPointsGeometry[point_idx];
+        const uvgutils::VectorN<typeGeometryInput, 3>& inputPoint = inputPointsGeometry[point_idx];
 
         const size_t vx = inputPoint[0] >> voxelizationShift;
         const size_t vy = inputPoint[1] >> voxelizationShift;
@@ -284,7 +285,7 @@ void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxel
         const typeGeometryInput y = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
         const typeGeometryInput x = cur_pos_1D & bitMask;
 
-        const uvgvpcc_enc::Vector3<typeGeometryInput> currentPoint = {x, y, z};
+        const uvgutils::VectorN<typeGeometryInput, 3> currentPoint = {x, y, z};
 
         // TODO(lf): find a way to directly add cur_pos_1D and pointAdjLocation1D, and then check if it is a valid point without extracting
         // the x y and z values
@@ -292,7 +293,7 @@ void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxel
         const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
         for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
             for (const auto& shift : adjacentPointsSearch[dist]) {
-                uvgvpcc_enc::Vector3<typeGeometryInput> pointAdj;
+                uvgutils::VectorN<typeGeometryInput, 3> pointAdj;
                 // TODO(lf): to discuss and verify : pointAdj need to be in signed type as the shift can generate negative values.
                 // However, such negative values, in usigned type, will be higher than the max treshold (the max boundary of the
                 // grid). By using this bit overflow, we divide by two the number of check (we don't check if the shifted point is

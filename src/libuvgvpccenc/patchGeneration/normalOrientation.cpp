@@ -44,9 +44,9 @@
 
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
 #include "utilsPatchGeneration.hpp"
 #include "uvgutils/log.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
@@ -69,8 +69,8 @@ struct WeightedEdge {
 };
 
 namespace {
-void addNeighborsSeed(const std::vector<uvgvpcc_enc::Vector3<double>>& normals, const size_t currentIdx,
-                      const std::vector<std::vector<size_t>>& pointsNNList, uvgvpcc_enc::Vector3<double>& accumulatedNormals,
+void addNeighborsSeed(const std::vector<uvgutils::VectorN<double, 3>>& normals, const size_t currentIdx,
+                      const std::vector<std::vector<size_t>>& pointsNNList, uvgutils::VectorN<double, 3>& accumulatedNormals,
                       size_t& numberOfNormals, const size_t nnCount, const std::vector<bool>& visited,
                       std::priority_queue<WeightedEdge>& edges) {
     // warning : we use the hypothesis that the knn search always return the query point as the first indexed point (index=0). This query
@@ -87,7 +87,7 @@ void addNeighborsSeed(const std::vector<uvgvpcc_enc::Vector3<double>>& normals, 
     }
 }
 
-void addNeighbors(const std::vector<uvgvpcc_enc::Vector3<double>>& normals, const size_t currentIdx,
+void addNeighbors(const std::vector<uvgutils::VectorN<double, 3>>& normals, const size_t currentIdx,
                   const std::vector<std::vector<size_t>>& pointsNNList, const size_t nnCount, const std::vector<bool>& visited,
                   std::priority_queue<WeightedEdge>& edges) {
     // warning : we use the hypothesis that the knn search always return the query point as the first indexed point (index=0). This query
@@ -101,8 +101,8 @@ void addNeighbors(const std::vector<uvgvpcc_enc::Vector3<double>>& normals, cons
 }
 }  // anonymous namespace
 
-void orientNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
-                   const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+void orientNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgutils::VectorN<double, 3>>& normals,
+                   const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                    const std::vector<std::vector<size_t>>& pointsNNList) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION",
                                                      "Normal orientation of frame " + std::to_string(frame->frameId) + "\n");
@@ -118,13 +118,13 @@ void orientNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector
         }
         visited[ptIndex] = true;
         size_t numberOfNormals = 0;
-        uvgvpcc_enc::Vector3<double> accumulatedNormals = {0.0, 0.0, 0.0};
+        uvgutils::VectorN<double, 3> accumulatedNormals = {0.0, 0.0, 0.0};
         addNeighborsSeed(normals, ptIndex, pointsNNList, accumulatedNormals, numberOfNormals, p_->normalOrientationKnnCount, visited, edges);
 
         if (numberOfNormals == 0U) {
             // No already visited surrounding points. Serve as seed. Always the first point. Can also be other points when the whole point
             // cloud is discontinued (the basketball for example)
-            const uvgvpcc_enc::Vector3<double> viewPoint{0, 0, 0};
+            const uvgutils::VectorN<double, 3> viewPoint{0, 0, 0};
             accumulatedNormals = (viewPoint - pointsGeometry[ptIndex]);
         }
 

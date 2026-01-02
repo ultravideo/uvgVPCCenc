@@ -44,17 +44,17 @@
 
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
-#include "utils/utils.hpp"
 #include "uvgutils/log.hpp"
+#include "uvgutils/utils.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
 
 using namespace uvgvpcc_enc;
 
 namespace {
 
-void computeCovMat(std::array<uvgvpcc_enc::Vector3<double>, 3>& covMat, const uvgvpcc_enc::Vector3<double>& bary, const size_t nnCount,
-                   const std::vector<size_t>& nnIndices, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry) {
-    uvgvpcc_enc::Vector3<double> pt;
+void computeCovMat(std::array<uvgutils::VectorN<double, 3>, 3>& covMat, const uvgutils::VectorN<double, 3>& bary, const size_t nnCount,
+                   const std::vector<size_t>& nnIndices, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry) {
+    uvgutils::VectorN<double, 3> pt;
     for (size_t i = 0; i < nnCount; ++i) {
         pt = pointsGeometry[nnIndices[i]] - bary;
 
@@ -85,14 +85,14 @@ void computeCovMat(std::array<uvgvpcc_enc::Vector3<double>, 3>& covMat, const uv
 // returns Q and D such that
 // Diagonal matrix D = QT * A * Q;  and  A = Q*D*QT
 // NOLINTBEGIN(cppcoreguidelines-init-variables)
-void diagonalize(const std::array<uvgvpcc_enc::Vector3<double>, 3>& A, std::array<uvgvpcc_enc::Vector3<double>, 3>& Q,
-                 std::array<uvgvpcc_enc::Vector3<double>, 3>& D) {
+void diagonalize(const std::array<uvgutils::VectorN<double, 3>, 3>& A, std::array<uvgutils::VectorN<double, 3>, 3>& Q,
+                 std::array<uvgutils::VectorN<double, 3>, 3>& D) {
     const size_t maxsteps = p_->normalComputationMaxDiagonalStep;
-    uvgvpcc_enc::Vector3<double> o;
-    uvgvpcc_enc::Vector3<double> m;
+    uvgutils::VectorN<double, 3> o;
+    uvgutils::VectorN<double, 3> m;
     std::array<double, 4> q{0.0, 0.0, 0.0, 1.0};
     std::array<double, 4> jr{0.0, 0.0, 0.0, 0.0};
-    std::array<uvgvpcc_enc::Vector3<double>, 3> AQ;
+    std::array<uvgutils::VectorN<double, 3>, 3> AQ;
 
     // static int uval = 1;
 
@@ -182,22 +182,22 @@ void diagonalize(const std::array<uvgvpcc_enc::Vector3<double>, 3>& A, std::arra
 }
 // NOLINTEND(cppcoreguidelines-init-variables)
 
-void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
-                   const uvgvpcc_enc::Vector3<typeGeometryInput>& point, const std::vector<size_t>& pointNn, const size_t nnCount) {
-    uvgvpcc_enc::Vector3<double> bary{static_cast<double>(point[0]), static_cast<double>(point[1]), static_cast<double>(point[2])};
+void computeNormal(uvgutils::VectorN<double, 3>& normal, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
+                   const uvgutils::VectorN<typeGeometryInput, 3>& point, const std::vector<size_t>& pointNn, const size_t nnCount) {
+    uvgutils::VectorN<double, 3> bary{static_cast<double>(point[0]), static_cast<double>(point[1]), static_cast<double>(point[2])};
     for (size_t i = 1; i < nnCount; ++i) {  // The first point return by the KNN is the query point. It is the initial value of bary.
         bary += pointsGeometry[pointNn[i]];
     }
     bary /= nnCount;
 
-    std::array<uvgvpcc_enc::Vector3<double>, 3> covMat = {uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
-                                                          uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0),
-                                                          uvgvpcc_enc::Vector3<double>(0.0, 0.0, 0.0)};
+    std::array<uvgutils::VectorN<double, 3>, 3> covMat = {uvgutils::VectorN<double, 3>(0.0, 0.0, 0.0),
+                                                          uvgutils::VectorN<double, 3>(0.0, 0.0, 0.0),
+                                                          uvgutils::VectorN<double, 3>(0.0, 0.0, 0.0)};
 
     computeCovMat(covMat, bary, nnCount, pointNn, pointsGeometry);
 
-    std::array<uvgvpcc_enc::Vector3<double>, 3> Q;
-    std::array<uvgvpcc_enc::Vector3<double>, 3> D;
+    std::array<uvgutils::VectorN<double, 3>, 3> Q;
+    std::array<uvgutils::VectorN<double, 3>, 3> D;
     diagonalize(covMat, Q, D);
 
     D[0][0] = fabs(D[0][0]);
@@ -223,8 +223,8 @@ void computeNormal(uvgvpcc_enc::Vector3<double>& normal, const std::vector<uvgvp
 
 namespace NormalComputation {
 
-void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgvpcc_enc::Vector3<double>>& normals,
-                    const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry,
+void computeNormals(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<uvgutils::VectorN<double, 3>>& normals,
+                    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                     const std::vector<std::vector<size_t>>& pointsNNList) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Compute normals of frame " + std::to_string(frame->frameId) + "\n");
     assert(p_->normalComputationKnnCount <= pointsGeometry.size());

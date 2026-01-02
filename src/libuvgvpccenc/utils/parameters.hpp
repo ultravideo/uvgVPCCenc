@@ -38,7 +38,7 @@
 #include <string>
 #include <vector>
 
-#include "utils.hpp"
+#include "uvgutils/utils.hpp"
 
 namespace uvgvpcc_enc {
 
@@ -72,7 +72,7 @@ struct Parameters {
     size_t geoBitDepthVoxelized;  // voxelizedGeometryBitDepth3D         // grid-based segmentation
 
     // ___ Slicing Algorithm ___ //
-    bool activateSlicing = false; // Boolean to activate the slicing algorithm or run the original algorithm
+    bool activateSlicing = false;  // Boolean to activate the slicing algorithm or run the original algorithm
 
     // ___ KdTree ___ //
     size_t kdTreeMaxLeafSize = 10;  // TODO(lf)deprecated no ? (as there are other parameterrs for it, for each kdtree case)
@@ -85,7 +85,7 @@ struct Parameters {
     size_t normalOrientationKnnCount = 4;
 
     // PPI segmentation //
-    const std::vector<Vector3<double>> projectionPlaneOrientations = {
+    const std::vector<uvgutils::VectorN<double, 3>> projectionPlaneOrientations = {
         {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}, {-1.0, 0.0, 0.0}, {0.0, -1.0, 0.0}, {0.0, 0.0, -1.0}}};
     const size_t projectionPlaneCount = 6;  // TODO(lf): move out from parameters ?
 
@@ -154,10 +154,9 @@ struct Parameters {
     std::string occupancyEncodingPreset;
     size_t omRefinementTreshold2;
     size_t omRefinementTreshold4;
-    std::string occupancyFFmpegCodecName; // Name of the codec as specified in ffmpeg documentation
+    std::string occupancyFFmpegCodecName;  // Name of the codec as specified in ffmpeg documentation
     std::string occupancyFFmpegCodecOptions;
     std::string occupancyFFmpegCodecParams;
-
 
     // Geometry map
     std::string geometryEncoderName = "Kvazaar";
@@ -168,10 +167,9 @@ struct Parameters {
         0;  // 0 by default means that this variable will have for value during execution the actual number of detected threads
     size_t geometryEncodingQp;
     std::string geometryEncodingPreset;
-    std::string geometryFFmpegCodecName; // Name of the codec as specified in ffmpeg documentation
+    std::string geometryFFmpegCodecName;  // Name of the codec as specified in ffmpeg documentation
     std::string geometryFFmpegCodecOptions;
     std::string geometryFFmpegCodecParams;
-
 
     // Attribute map
     std::string attributeEncoderName = "Kvazaar";
@@ -182,7 +180,7 @@ struct Parameters {
         0;  // 0 by default means that this variable will have for value during execution the actual number of detected threads
     size_t attributeEncodingQp;
     std::string attributeEncodingPreset;
-    std::string attributeFFmpegCodecName; // Name of the codec as specified in ffmpeg documentation
+    std::string attributeFFmpegCodecName;  // Name of the codec as specified in ffmpeg documentation
     std::string attributeFFmpegCodecOptions;
     std::string attributeFFmpegCodecParams;
 

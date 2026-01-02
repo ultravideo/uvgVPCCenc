@@ -39,10 +39,10 @@
 // TODO(lf): the NN indices return the index of the query point, so only 15nn instead of 16 or at least useless computation somewhere ? Start
 // iterating at 1 instead of 1 ?
 
-KdTree::KdTree(const size_t& kdTreeMaxLeafSize, const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& pointsGeometry)
+KdTree::KdTree(const size_t& kdTreeMaxLeafSize, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry)
     : index_(std::make_unique<nanoflannAdaptorType>(3 /*dim*/, pointsGeometry, kdTreeMaxLeafSize /* max leaf */)) {}
 
-void KdTree::knn(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const size_t nnCount,
+void KdTree::knn(const uvgutils::VectorN<typeGeometryInput, 3>& queryPoint, const size_t nnCount,
                  std::vector<size_t>& nnIndices) const {
     std::vector<int16_t> out_dists_sqr(nnCount);
     nanoflann::KNNResultSet<int16_t, size_t, size_t> resultSet(nnCount);
@@ -54,7 +54,7 @@ void KdTree::knn(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, cons
 
 // TODO(lf)check with tmc2 if squared or not distance is necessary (should change power 2 the parameter instead of computing square root of
 // every distance)
-void KdTree::knnDist(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const size_t nnCount,
+void KdTree::knnDist(const uvgutils::VectorN<typeGeometryInput, 3>& queryPoint, const size_t nnCount,
                      std::vector<int16_t>& out_dists_sqr) const {
     std::vector<size_t> nnIndices(nnCount);
     nanoflann::KNNResultSet<int16_t, size_t, size_t> resultSet(nnCount);
@@ -65,7 +65,7 @@ void KdTree::knnDist(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, 
 }
 
 
-/* void KdTree::knnRadius(const uvgvpcc_enc::Vector3<typeGeometryInput>& queryPoint, const int16_t maxNNCount, const uint16_t radius,
+/* void KdTree::knnRadius(const uvgutils::VectorN<typeGeometryInput, 3>& queryPoint, const int16_t maxNNCount, const uint16_t radius,
                        std::vector<size_t>& nnIndices) const {
     std::vector<int16_t> out_dists_sqr(maxNNCount);
     nanoflann::KNNResultSet<int16_t, uint32_t, uint8_t> resultSet(maxNNCount);
