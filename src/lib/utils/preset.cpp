@@ -67,9 +67,9 @@ Preset preset_vox9_fast = {
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "12"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "32"},
     {"slicingRefineSegmentationLambda", "3.5"},
-    {"slicingRefineSegmentationIterationCount", "1"},
+    {"slicingRefineSegmentationIterationCount", "3"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},  // TODO(lf)-PRESET: subjective quality and performance only
@@ -151,9 +151,9 @@ Preset preset_vox10_fast = {
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "16"},
-    {"slicingRefineSegmentationLambda", "4"},
-    {"slicingRefineSegmentationIterationCount", "2"},
+    {"slicingRefineSegmentationMaxNNTotalPointCount", "32"},
+    {"slicingRefineSegmentationLambda", "3.5"},
+    {"slicingRefineSegmentationIterationCount", "3"},
 
     // ___ Patch generation ___ //   (patch segmentation)
     {"minPointCountPerCC", "16"},
