@@ -48,6 +48,7 @@
 #include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
+#include "utils/statsCollector.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -383,6 +384,13 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
     voxelizationWithBitArray(pointsGeometry_, occFlagArray, voxelIdxMap, filledVoxels, pointListInVoxels);
 
     const size_t voxelCount = filledVoxels.size();
+
+    // if export files
+    if(p_->exportStatistics){
+        // stats.setNumberOfVoxelsRS(frame->frameId, voxelCount);
+        stats.collectData(frame->frameId, DataId::NumberOfVoxelsRS, voxelCount);
+    }
+
     std::vector<VoxelAttribute> voxAttributeList(voxelCount, VoxelAttribute(p_->projectionPlaneCount));
     std::vector<std::vector<size_t>> ADJ_List(voxelCount);   // large    // This is voxNeighborsList
     std::vector<std::vector<size_t>> IDEV_List(voxelCount);  // small    // This is voxAdjacentsList
@@ -395,12 +403,16 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
 
     // TODO(lf): in the for loop over all voxel, we access a lot of list to get the related voxel element. Why not TODO(lf)a structure voxel
     // with everything at the same memory location and so reduce memory call ?
+
     for (size_t iter = 0; iter < p_->refineSegmentationIterationCount; ++iter) {
+        // todo(mf):how to make the declaration only if we export files
         for (size_t voxelIndex = 0; voxelIndex < voxelCount; ++voxelIndex) {
             // TODO(lf): should we use a stack of voxel index instead of a for loop with a lot of if(true) ?
             const VoxClass& voxClass = voxAttributeList[voxelIndex].voxClass_;
-
             if (voxClass == VoxClass::NO_EDGE) {
+                if(p_->exportStatistics){
+                    stats.collectData(frame->frameId, DataId::SkippedVoxels, iter);
+                }
                 continue;  // This voxel has been marked as NE-V before the current iteration //
             }
 
@@ -412,8 +424,33 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
             }
 
             // The voxel is not NE-V, so it is D-EV or IDE-V and its points PPI can be refined //
-            refinePointsPPIs(pointsPPIs, pointListInVoxels[voxelIndex], voxWeightList[voxelIndex], voxExtendedScore);
-            voxAttributeList[voxelIndex].updateFlag_ = true;
+            if(p_->exportStatistics){
+                std::vector<size_t> previousPointsPPI = pointsPPIs;
+                refinePointsPPIs(pointsPPIs, pointListInVoxels[voxelIndex], voxWeightList[voxelIndex], voxExtendedScore);
+                voxAttributeList[voxelIndex].updateFlag_ = true;
+                for(size_t i = 0 ; i < pointsPPIs.size() ; ++i){
+                    if(previousPointsPPI[i] != pointsPPIs[i]){
+                        stats.collectData(frame->frameId, DataId::PpiChange, iter);
+                    }
+                }
+            }
+            else{
+                refinePointsPPIs(pointsPPIs, pointListInVoxels[voxelIndex], voxWeightList[voxelIndex], voxExtendedScore);
+                voxAttributeList[voxelIndex].updateFlag_ = true;
+            }
+            
+            // if export files
+            if(p_->exportStatistics){
+                for(size_t i = 0 ; i < pointListInVoxels[voxelIndex].size() ; ++i){
+                    stats.collectData(frame->frameId, DataId::ScoreComputations, iter);
+                }
+                switch (voxAttributeList[voxelIndex].voxClass_){
+                    case VoxClass::NO_EDGE:               stats.collectData(frame->frameId, DataId::NoEdge_R,       iter); break;
+                    case VoxClass::INDIRECT_EDGE:         stats.collectData(frame->frameId, DataId::IndirectEdge_R, iter); break;
+                    case VoxClass::S_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::SingleEdge_R,   iter); break;
+                    case VoxClass::M_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::MultiEdge_R,    iter); break;
+                }
+            }
         }
 
         // Update voxel classification and scores if points PPI inside have changed during the iteration //
@@ -425,6 +462,19 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
             voxAttributeList[voxelIndex].updateFlag_ = false;
             std::fill(voxAttributeList[voxelIndex].voxScore_.begin(), voxAttributeList[voxelIndex].voxScore_.end(), 0);
             updateVoxelAttribute(voxAttributeList[voxelIndex], pointListInVoxels[voxelIndex], pointsPPIs);
+        }
+        // if export files 
+        // Compute de number of changes of classification
+        if(p_->exportStatistics){
+            for(auto& voxel : voxAttributeList){
+                VoxClass VC = voxel.voxClass_;
+                switch (VC) {
+                    case VoxClass::NO_EDGE:               stats.collectData(frame->frameId, DataId::NoEdge,       iter); break;
+                    case VoxClass::INDIRECT_EDGE:         stats.collectData(frame->frameId, DataId::IndirectEdge, iter); break;
+                    case VoxClass::S_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::SingleEdge,   iter); break;
+                    case VoxClass::M_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::MultiEdge,    iter); break;
+                }
+            }
         }
     }
 

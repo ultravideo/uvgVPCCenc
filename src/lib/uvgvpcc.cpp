@@ -236,6 +236,12 @@ void verifyConfig() {
             "(intermediateFilesDir parameter is empty).");
     }
 
+    if (p_->exportStatistics && p_->statisticsDir.empty()) {
+        throw std::runtime_error(
+            "Statistics need to be exported (exportStatistics=true) but no statistics files directory has been set "
+            "(statisticsDir parameter is empty).");
+    }
+
     if (p_->refineSegmentationMaxNNVoxelDistanceLUT > adjacentPointsSearch.size()) {
         throw std::runtime_error("The refineSegmentationMaxNNVoxelDistanceLUT (" + std::to_string(p_->refineSegmentationMaxNNVoxelDistanceLUT) +
             ") needs to be smaller or equal to the size of the adjacentPointsSearch array (" + std::to_string(adjacentPointsSearch.size()) + ").");

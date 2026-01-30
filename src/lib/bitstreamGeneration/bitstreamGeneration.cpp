@@ -51,6 +51,7 @@
 #include "uvgvpcc/uvgvpcc.hpp"
 #include "video_sub_bitstream.hpp"
 #include "vps.hpp"
+#include "../utils/statsCollector.hpp"
 
 /// \file Entry point for the whole bitstream generation process.
 
@@ -167,5 +168,7 @@ void BitstreamGeneration::createV3CGOFBitstream(const std::shared_ptr<uvgvpcc_en
     
     output->available_chunks.release();
 
-
+    if(uvgvpcc_enc::p_->exportStatistics){
+        stats.writeToFile(uvgvpcc_enc::p_->statisticsDir + "Statistics.json", gofUVG->gofId);
+    }
 }

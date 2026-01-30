@@ -145,6 +145,7 @@ void initializeParameterMap(Parameters& param) {
         {"geoBitDepthInput", {UINT, "", &param.geoBitDepthInput}},
         {"presetName", {STRING, "fast,slow", &param.presetName}},
         {"intermediateFilesDir", {STRING, "", &param.intermediateFilesDir}},
+        {"statisticsDir", {STRING, "", &param.statisticsDir}},
         {"sizeGOF", {UINT, "8,16", &param.sizeGOF}},  // TODO(lf)merge both gof size param ?
         {"nbThreadPCPart", {UINT, "", &param.nbThreadPCPart}},
         {"maxConcurrentFrames", {UINT, "", &param.maxConcurrentFrames}},
@@ -158,6 +159,7 @@ void initializeParameterMap(Parameters& param) {
 
         // ___ Debug parameters ___ //
         {"exportIntermediateFiles", {BOOL, "", &param.exportIntermediateFiles}},
+        {"exportStatistics", {BOOL, "", &param.exportStatistics}},
         {"intermediateFilesDirTimeStamp", {BOOL, "", &param.intermediateFilesDirTimeStamp}},
         {"timerLog", {BOOL, "", &param.timerLog}},
 

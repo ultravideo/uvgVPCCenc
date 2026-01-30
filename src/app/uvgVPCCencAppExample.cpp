@@ -60,6 +60,8 @@
 #include "extras/miniply.h"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
+#include "../lib/utils/statsCollector.hpp"
+#include "../lib/utils/parameters.hpp"
 
 #ifdef ENABLE_V3CRTP
 #include <uvgv3crtp/version.h>
@@ -646,9 +648,12 @@ int main(const int argc, const char* const argv[]) {
     std::thread file_writer_thread;
     std::thread v3c_sender_thread;
 
-
     if (!appParameters.outputPath.empty()) file_writer_thread = std::thread(file_writer, &output, appParameters.outputPath);
     if (!appParameters.dstAddress.empty()) v3c_sender_thread = std::thread(v3c_sender, &output, appParameters.dstAddress, appParameters.dstPort, appParameters.sdpOutdir);
+
+    if(uvgvpcc_enc::p_->exportStatistics){
+        stats.init(appParameters.nbFrames);
+    }
 
     // Main loop of the application, feeding one frame to the encoder at each iteration
     for (;;) {

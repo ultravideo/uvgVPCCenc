@@ -59,8 +59,10 @@ struct Parameters {
 
     // ___ Debug parameters ___ //
     bool exportIntermediateFiles = false;
+    bool exportStatistics = false;
     bool intermediateFilesDirTimeStamp = true;
     std::string intermediateFilesDir;
+    std::string statisticsDir;
     bool timerLog = false;  // TODO(lf): remove and activate it if loglevel is profiling
 
     // ___ Activate or not some features ___ //

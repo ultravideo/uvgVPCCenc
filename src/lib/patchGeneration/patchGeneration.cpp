@@ -54,6 +54,7 @@
 #include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
+#include "../utils/statsCollector.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -93,6 +94,12 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
                                                            "Generate patches for frame " + std::to_string(frame->frameId) + ".\n");
     assert(p_->geoBitDepthInput >= p_->geoBitDepthVoxelized);
 
+    // todo(mf): add the condition for export intermediates files
+    if(p_->exportStatistics){
+        // stats.setGeometrySize(frame->frameId, frame->pointsGeometry.size());
+        stats.collectData(frame->frameId, DataId::NumberOfPoints, frame->pointsGeometry.size());
+    }
+
     // Voxelization //
     const bool useVoxelization = p_->geoBitDepthInput != p_->geoBitDepthVoxelized;
     std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>> voxelizedGeometryBuffer;
@@ -102,6 +109,11 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
 
     if (useVoxelization) {
         voxelization(frame->pointsGeometry, voxelizedGeometryBuffer, voxelIdToPointsId, p_->geoBitDepthInput, p_->geoBitDepthVoxelized);
+    }
+
+    if(p_->exportStatistics){
+        // stats.setNumberOfVoxels(frame->frameId, voxelizedPointsGeometry.size());
+        stats.collectData(frame->frameId, DataId::NumberOfVoxels, voxelizedPointsGeometry.size());
     }
 
     std::vector<size_t> voxelsPPIs(voxelizedPointsGeometry.size(),PPI_NON_ASSIGNED);
@@ -137,6 +149,11 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
 
     // Patch segmentation //
     PatchSegmentation::patchSegmentation(frame, pointsPPIs);
+
+    if(p_->exportStatistics){
+        // stats.setNumberOfPatches(frame->frameId, frame->patchList.size());
+        stats.collectData(frame->frameId, DataId::NumberOfPatches, frame->patchList.size());
+    }
 
     // Sort patches //
     // Sort patches from the biggest to the smallest // // TODO(lf): might be better to use area ?

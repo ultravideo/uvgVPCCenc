@@ -9,6 +9,7 @@ add_library(utilsLibrary STATIC
     parameters.cpp
     fileExport.cpp
     jobManagement.cpp
+    statsCollector.cpp
 )
 
 add_library(logLibrary STATIC

@@ -51,6 +51,7 @@
 #include "utilsPatchGeneration.hpp"
 #include "uvgvpcc/log.hpp"
 #include "uvgvpcc/uvgvpcc.hpp"
+#include "utils/statsCollector.hpp"
 
 using namespace uvgvpcc_enc;
 
@@ -540,6 +541,43 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         connectedComponents.clear();
         createConnectedComponents<false>(pointIsInAPatchNewPerf, pointCanBeASeedNewPerf, frame, resamplePointSetLocation1D, pointsPPIs,
                                          mapList, connectedComponents);
+    }
+
+    if(p_->exportStatistics){
+        size_t numberOfLostPointPS = 0;
+        std::vector<Vector3<uint8_t>> attributes(frame->pointsGeometry.size());
+        std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
+        for (const auto& patch : frame->patchList) {
+            const auto color = patchColors[patch.patchIndex_ % patchColors.size()];
+            for (size_t v = 0; v < patch.heightInPixel_; ++v) {
+                for (size_t u = 0; u < patch.widthInPixel_; ++u) {
+                    const size_t pos = v * patch.widthInPixel_ + u;
+                    const typeGeometryInput depth = patch.depthL1_[pos];
+                    if (depth == g_infiniteDepth) {
+                        if (p_->doubleLayer) {
+                            assert(patch.depthL2_[pos] == g_infiniteDepth);
+                        }
+                        continue;
+                    }
+                    const size_t ptIndexL1 = patch.depthPCidxL1_[pos];
+                    attributes[ptIndexL1] = color;
+                    pointColored[ptIndexL1] = true;
+
+                    if (!p_->doubleLayer) continue;
+                    const size_t ptIndexL2 = patch.depthPCidxL2_[pos];
+                    if (ptIndexL1 == ptIndexL2) continue;
+                    attributes[ptIndexL2] = color;
+                    pointColored[ptIndexL2] = true;
+                }
+            }
+        }
+        for (int i = 0; i < frame->pointsGeometry.size(); ++i) {
+            if (pointColored[i]) continue;
+            // Points that are not within a patch are colored in red
+            numberOfLostPointPS++;
+        }
+        // stats.setNumberOfLostPoints(frame->frameId, numberOfLostPointPS);
+        stats.collectData(frame->frameId, DataId::NumberOfLostPoints, numberOfLostPointPS);
     }
 
     if (p_->exportIntermediateFiles) {
