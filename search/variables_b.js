@@ -17,5 +17,7 @@ var searchData=
   ['minimummapheight_14',['minimumMapHeight',['../structuvgvpcc__enc_1_1Parameters.html#a95a27b332c0d4a95cdfb38d1e787c261',1,'uvgvpcc_enc::Parameters']]],
   ['minlevel_15',['minLevel',['../structuvgvpcc__enc_1_1Parameters.html#a4f64f8f2a3ef17061d05e00ef8f2837a',1,'uvgvpcc_enc::Parameters']]],
   ['minpointcountpercc_16',['minPointCountPerCC',['../structuvgvpcc__enc_1_1Parameters.html#ab63ac0bb47863688d5820caad62f6871',1,'uvgvpcc_enc::Parameters']]],
-  ['mtx_5f_17',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
+  ['mtx_5f_17',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]],
+  ['multiedge_18',['MultiEdge',['../structuvgVPCCencStats.html#a0c00dc4ee9601682201a898f19878c05',1,'uvgVPCCencStats']]],
+  ['multiedge_5fr_19',['MultiEdge_R',['../structuvgVPCCencStats.html#a9fdc1bb42a285c4460a0919ce132dd60',1,'uvgVPCCencStats']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['encoder_5ftype_0',['ENCODER_TYPE',['../abstract2DMapEncoder_8hpp.html#a1b74a587d70be7153895572ded560de4',1,'abstract2DMapEncoder.hpp']]]
+  ['dataid_0',['DataId',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3',1,'statsCollector.hpp']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['kdtreesingleindexadaptorflags_0',['KDTreeSingleIndexAdaptorFlags',['../group__param__grp.html#ga514edb9f2a1fb99ebe5b564ad45ab966',1,'nanoflann']]]
+  ['encoder_5ftype_0',['ENCODER_TYPE',['../abstract2DMapEncoder_8hpp.html#a1b74a587d70be7153895572ded560de4',1,'abstract2DMapEncoder.hpp']]]
 ];

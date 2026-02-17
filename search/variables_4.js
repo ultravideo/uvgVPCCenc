@@ -8,5 +8,6 @@ var searchData=
   ['eps_5',['eps',['../structnanoflann_1_1SearchParameters.html#ad6fed78b662e89d55999f660f9fd4eae',1,'nanoflann::SearchParameters']]],
   ['errorsarefatal_6',['errorsAreFatal',['../structuvgvpcc__enc_1_1Parameters.html#a78a730a20d93ad2c6a3f5ca79918b6ff',1,'uvgvpcc_enc::Parameters']]],
   ['errorsarefataldefaultvalue_7',['errorsAreFatalDefaultValue',['../namespaceuvgvpcc__enc.html#ac8b0770e8efb2f751e424cb4cdc9946e',1,'uvgvpcc_enc']]],
-  ['exportintermediatefiles_8',['exportIntermediateFiles',['../structuvgvpcc__enc_1_1Parameters.html#a80e9d57a9715ed2685a968c91d79291b',1,'uvgvpcc_enc::Parameters']]]
+  ['exportintermediatefiles_8',['exportIntermediateFiles',['../structuvgvpcc__enc_1_1Parameters.html#a80e9d57a9715ed2685a968c91d79291b',1,'uvgvpcc_enc::Parameters']]],
+  ['exportstatistics_9',['exportStatistics',['../structuvgvpcc__enc_1_1Parameters.html#aa9fbe1eb2a45e2231e3b3a28f385da3c',1,'uvgvpcc_enc::Parameters']]]
 ];

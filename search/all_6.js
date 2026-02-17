@@ -60,8 +60,9 @@ var searchData=
   ['exportpointcloudppiattributionslicing_57',['exportPointCloudPPIAttributionSlicing',['../namespaceFileExport.html#af97c60c1293687b5cf50fc553f0902b8',1,'FileExport']]],
   ['exportpointcloudrefinesegmentation_58',['exportPointCloudRefineSegmentation',['../namespaceFileExport.html#abb3934fea49bd8651d8498d236496bb8',1,'FileExport']]],
   ['exportpointcloudsubslices_59',['exportPointCloudSubslices',['../namespaceFileExport.html#a0fd74d198831b276f3faff9169ff618d',1,'FileExport']]],
-  ['extract_5flist_5fproperty_60',['extract_list_property',['../classminiply_1_1PLYReader.html#a2c71e492c56ebee22a9011c76cad0ae9',1,'miniply::PLYReader']]],
-  ['extract_5fproperties_61',['extract_properties',['../classminiply_1_1PLYReader.html#a567b0c1b1aa8ee95da31305f8a0703dc',1,'miniply::PLYReader']]],
-  ['extract_5fproperties_5fwith_5fstride_62',['extract_properties_with_stride',['../classminiply_1_1PLYReader.html#acb9146f0176d6d12701f1e71126a4ee2',1,'miniply::PLYReader']]],
-  ['extract_5ftriangles_63',['extract_triangles',['../classminiply_1_1PLYReader.html#aa51b5c6344acb425b1b5d36c98a8f698',1,'miniply::PLYReader']]]
+  ['exportstatistics_60',['exportStatistics',['../structuvgvpcc__enc_1_1Parameters.html#aa9fbe1eb2a45e2231e3b3a28f385da3c',1,'uvgvpcc_enc::Parameters']]],
+  ['extract_5flist_5fproperty_61',['extract_list_property',['../classminiply_1_1PLYReader.html#a2c71e492c56ebee22a9011c76cad0ae9',1,'miniply::PLYReader']]],
+  ['extract_5fproperties_62',['extract_properties',['../classminiply_1_1PLYReader.html#a567b0c1b1aa8ee95da31305f8a0703dc',1,'miniply::PLYReader']]],
+  ['extract_5fproperties_5fwith_5fstride_63',['extract_properties_with_stride',['../classminiply_1_1PLYReader.html#acb9146f0176d6d12701f1e71126a4ee2',1,'miniply::PLYReader']]],
+  ['extract_5ftriangles_64',['extract_triangles',['../classminiply_1_1PLYReader.html#aa51b5c6344acb425b1b5d36c98a8f698',1,'miniply::PLYReader']]]
 ];

@@ -65,6 +65,13 @@ var searchData=
   ['nal_5funspec_5f63_62',['NAL_UNSPEC_63',['../bitstream__common_8hpp.html#aa4d6ea389bb570277d1a098faf18bd04acc2b0772cdb96819b4822c7d1d886591',1,'bitstream_common.hpp']]],
   ['nal_5fv3c_5faud_63',['NAL_V3C_AUD',['../bitstream__common_8hpp.html#aa4d6ea389bb570277d1a098faf18bd04a71bc7e34da992ea9694c8209ba4657d6',1,'bitstream_common.hpp']]],
   ['no_5fedge_64',['NO_EDGE',['../ppiSegmenter_8hpp.html#a0d28d3ba3f42ec77cba289dae8c76f9aa38a74ee0f8764437c5fce05a7b4964e1',1,'ppiSegmenter.hpp']]],
-  ['none_65',['none',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea6adf97f83acf6453d4a6a4b1070f3754',1,'miniply::None'],['../group__param__grp.html#gga514edb9f2a1fb99ebe5b564ad45ab966a6adf97f83acf6453d4a6a4b1070f3754',1,'nanoflann::None']]],
-  ['notassigned_66',['notAssigned',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa62e4219a088967e824d2d1716eedb8e3',1,'uvgvpcc_enc']]]
+  ['noedge_65',['NoEdge',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a2bc7e5539e7fdc190220d0bf7909130f',1,'statsCollector.hpp']]],
+  ['noedge_5fr_66',['NoEdge_R',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a183d33df1e535da8bff09a8940f05a33',1,'statsCollector.hpp']]],
+  ['none_67',['none',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea6adf97f83acf6453d4a6a4b1070f3754',1,'miniply::None'],['../group__param__grp.html#gga514edb9f2a1fb99ebe5b564ad45ab966a6adf97f83acf6453d4a6a4b1070f3754',1,'nanoflann::None']]],
+  ['notassigned_68',['notAssigned',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa62e4219a088967e824d2d1716eedb8e3',1,'uvgvpcc_enc']]],
+  ['numberoflostpoints_69',['NumberOfLostPoints',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a55868b8ea0dad4b9141533ac191a2761',1,'statsCollector.hpp']]],
+  ['numberofpatches_70',['NumberOfPatches',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a8e323cbe40bfb1fa7f6d3e0b4fc12cf1',1,'statsCollector.hpp']]],
+  ['numberofpoints_71',['NumberOfPoints',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a38600d7fb1ccb3e7ee12b901540b4f7d',1,'statsCollector.hpp']]],
+  ['numberofvoxels_72',['NumberOfVoxels',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3aff601273764d6fb7a54f324bc5f4a4e0',1,'statsCollector.hpp']]],
+  ['numberofvoxelsrs_73',['NumberOfVoxelsRS',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a3bf1c2c7811320219308383d61b74e10',1,'statsCollector.hpp']]]
 ];

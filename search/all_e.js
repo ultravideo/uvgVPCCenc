@@ -49,5 +49,7 @@ var searchData=
   ['miniply_2eh_46',['miniply.h',['../miniply_8h.html',1,'']]],
   ['minlevel_47',['minLevel',['../structuvgvpcc__enc_1_1Parameters.html#a4f64f8f2a3ef17061d05e00ef8f2837a',1,'uvgvpcc_enc::Parameters']]],
   ['minpointcountpercc_48',['minPointCountPerCC',['../structuvgvpcc__enc_1_1Parameters.html#ab63ac0bb47863688d5820caad62f6871',1,'uvgvpcc_enc::Parameters']]],
-  ['mtx_5f_49',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]]
+  ['mtx_5f_49',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]],
+  ['multiedge_50',['multiedge',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3ad794d1f85b92c53f8bbeef353a4b9e12',1,'MultiEdge:&#160;statsCollector.hpp'],['../structuvgVPCCencStats.html#a0c00dc4ee9601682201a898f19878c05',1,'uvgVPCCencStats::MultiEdge']]],
+  ['multiedge_5fr_51',['multiedge_r',['../structuvgVPCCencStats.html#a9fdc1bb42a285c4460a0919ce132dd60',1,'uvgVPCCencStats::MultiEdge_R'],['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a92e0753a73c63cdf07f048a5a8bd7234',1,'MultiEdge_R:&#160;statsCollector.hpp']]]
 ];

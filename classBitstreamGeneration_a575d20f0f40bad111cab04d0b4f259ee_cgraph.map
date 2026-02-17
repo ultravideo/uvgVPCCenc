@@ -1,27 +1,29 @@
 <map id="BitstreamGeneration::createV3CGOFBitstream" name="BitstreamGeneration::createV3CGOFBitstream">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,236,195,276"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,260,195,300"/>
 <area shape="rect" id="Node000002" href="$classv3c__gof.html#a6a107d849bed5cacedc55fe98f0772c1" title=" " alt="" coords="260,5,433,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,235,127,197,156,148,194,98,241,55,250,49,253,54,244,59,198,102,161,151,132,199,113,237"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,258,124,216,153,161,192,104,215,78,241,55,249,50,252,54,244,59,219,82,196,108,157,164,129,218,111,260"/>
 <area shape="rect" id="Node000003" href="$classv3c__gof.html#a263296629443aa4ac7dcf7f7e7884389" title=" " alt="" coords="249,70,444,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="113,234,164,169,200,134,241,104,254,98,257,103,244,109,203,138,168,173,117,237"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,258,130,224,159,183,197,140,241,104,252,98,255,103,244,109,200,144,163,186,134,227,114,261"/>
 <area shape="rect" id="Node000004" href="$classv3c__gof.html#a899ad52a9837759feead70e5af99da94" title=" " alt="" coords="249,119,444,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="122,234,175,193,207,172,242,154,260,146,262,151,244,158,210,176,178,197,126,238"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="116,258,169,206,203,177,241,154,257,147,259,152,244,158,206,182,172,209,120,262"/>
 <area shape="rect" id="Node000005" href="$classv3c__gof.html#a418e29be967d58974050ead4ec90c227" title=" " alt="" coords="249,169,444,194"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="152,233,242,203,272,195,273,200,243,208,154,238"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="133,257,183,229,242,203,265,195,267,200,244,208,185,234,135,262"/>
 <area shape="rect" id="Node000006" href="$classv3c__gof.html#abe8c31a1393a898d71178cb79a687893" title=" " alt="" coords="265,218,429,243"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="195,244,250,238,251,243,195,249"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="194,258,269,243,270,249,196,264"/>
 <area shape="rect" id="Node000007" href="$video__sub__bitstream_8cpp.html#ae8d99b3cf0d33016153819e640104529" title=" " alt="" coords="243,267,451,293"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="195,263,229,266,229,271,195,268"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="195,277,229,277,229,283,195,283"/>
 <area shape="rect" id="Node000008" href="$classv3c__gof.html#a3723017afa8250c6b0b50f6f56016389" title=" " alt="" coords="263,317,431,342"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="158,273,243,301,278,311,276,316,242,307,156,279"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="196,296,270,311,269,317,194,302"/>
 <area shape="rect" id="Node000009" href="$classv3c__gof.html#ad967970c96fcd07a7c38bae799989a4b" title=" " alt="" coords="265,367,428,407"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="128,274,180,313,244,351,263,359,260,364,241,356,177,317,124,278"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="137,298,187,324,244,351,266,360,264,365,242,356,185,329,135,302"/>
 <area shape="rect" id="Node000010" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="275,431,418,471"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="116,275,166,344,203,383,244,416,264,427,261,432,241,421,199,387,162,348,111,278"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="118,298,170,357,205,389,244,416,264,426,261,431,241,421,202,393,166,360,114,302"/>
 <area shape="rect" id="Node000019" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="275,495,418,535"/>
-<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="111,275,128,318,157,374,195,431,218,458,244,481,264,493,261,497,241,485,215,461,191,434,152,376,124,320,106,277"/>
+<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="112,299,131,338,160,387,198,437,244,481,264,492,261,496,241,485,194,441,156,390,127,341,108,302"/>
+<area shape="rect" id="Node000021" href="$classStatsCollector.html#a5cd74edd61d2b8c4fb9c5471d00eba64" title=" " alt="" coords="251,559,442,585"/>
+<area shape="poly" id="edge26_Node000001_Node000021" title=" " alt="" coords="108,299,123,349,150,416,190,486,215,517,244,545,254,551,251,556,241,549,211,521,185,489,145,419,118,351,103,301"/>
 <area shape="rect" id="Node000011" href="$bitstream__util_8cpp.html#ac69c20ee312c7d90392e8a6b3b06341a" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="507,552,661,592"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="420,464,452,480,468,495,477,510,486,524,500,538,509,543,506,548,497,542,482,527,473,512,464,498,449,485,417,469"/>
+<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="419,464,452,480,468,495,477,509,486,523,500,537,511,543,508,548,497,541,482,526,473,512,464,498,449,485,417,469"/>
 <area shape="rect" id="Node000013" href="$bitstream__util_8cpp.html#a3bdf77ac9496bba79a46c840a4042550" title=" " alt="" coords="499,354,669,379"/>
 <area shape="poly" id="edge12_Node000010_Node000013" title=" " alt="" coords="417,429,450,416,473,402,498,388,516,381,518,386,500,393,476,407,452,421,419,434"/>
 <area shape="rect" id="Node000015" href="$bitstream__util_8cpp.html#a6ad7f5421e391ce3552b43f2c387ad59" title=" " alt="" coords="512,453,656,478"/>
@@ -43,5 +45,5 @@
 <area shape="poly" id="edge23_Node000019_Node000016" title=" " alt="" coords="417,495,449,480,463,470,473,459,482,449,497,438,511,431,513,436,500,442,486,452,477,463,467,474,452,485,419,500"/>
 <area shape="poly" id="edge25_Node000019_Node000018" title=" " alt="" coords="418,512,498,512,498,517,418,517"/>
 <area shape="rect" id="Node000020" href="$bitstream__util_8cpp.html#ad3c9546517d2a78df0a17d9cd426ac17" title=" " alt="" coords="509,616,659,656"/>
-<area shape="poly" id="edge24_Node000019_Node000020" title=" " alt="" coords="380,532,435,566,500,602,515,608,512,613,497,606,432,571,377,537"/>
+<area shape="poly" id="edge24_Node000019_Node000020" title=" " alt="" coords="420,529,452,546,468,560,477,574,486,588,500,602,509,607,506,612,497,606,482,592,473,577,464,563,449,550,417,534"/>
 </map>

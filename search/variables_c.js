@@ -9,9 +9,16 @@ var searchData=
   ['nbthreadpcpart_6',['nbThreadPCPart',['../structuvgvpcc__enc_1_1Parameters.html#ad2d892eefb6c56a4783367d0f74f1e34',1,'uvgvpcc_enc::Parameters']]],
   ['next_7',['next',['../structuvg__data__chunk.html#adcd3419bd6117ca850bc75094d8f3f24',1,'uvg_data_chunk']]],
   ['node_5ftype_8',['node_type',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#ad538b900e0f959fdc0555456981b8224',1,'nanoflann::KDTreeBaseClass::Node']]],
-  ['normalaxis_5f_9',['normalAxis_',['../structuvgvpcc__enc_1_1Patch.html#a7b684b2dd8f681462d6d5bec505c0fa8',1,'uvgvpcc_enc::Patch']]],
-  ['normalcomputationknncount_10',['normalComputationKnnCount',['../structuvgvpcc__enc_1_1Parameters.html#a999eef62897adaa2d69936c1958f6f0d',1,'uvgvpcc_enc::Parameters']]],
-  ['normalcomputationmaxdiagonalstep_11',['normalComputationMaxDiagonalStep',['../structuvgvpcc__enc_1_1Parameters.html#a21488c083546be1faad7f941fe2ca517',1,'uvgvpcc_enc::Parameters']]],
-  ['normalorientationknncount_12',['normalOrientationKnnCount',['../structuvgvpcc__enc_1_1Parameters.html#ae3cae6490d536e1e26ba158b685349de',1,'uvgvpcc_enc::Parameters']]],
-  ['num_5fref_5fentries_13',['num_ref_entries',['../structref__list__struct.html#a6885d566bf2e1a2d5720decd4769b341',1,'ref_list_struct']]]
+  ['noedge_9',['NoEdge',['../structuvgVPCCencStats.html#a22066fa81add114d7d18e7f512805688',1,'uvgVPCCencStats']]],
+  ['noedge_5fr_10',['NoEdge_R',['../structuvgVPCCencStats.html#adde120dd68035e9a4474897e3f974c52',1,'uvgVPCCencStats']]],
+  ['normalaxis_5f_11',['normalAxis_',['../structuvgvpcc__enc_1_1Patch.html#a7b684b2dd8f681462d6d5bec505c0fa8',1,'uvgvpcc_enc::Patch']]],
+  ['normalcomputationknncount_12',['normalComputationKnnCount',['../structuvgvpcc__enc_1_1Parameters.html#a999eef62897adaa2d69936c1958f6f0d',1,'uvgvpcc_enc::Parameters']]],
+  ['normalcomputationmaxdiagonalstep_13',['normalComputationMaxDiagonalStep',['../structuvgvpcc__enc_1_1Parameters.html#a21488c083546be1faad7f941fe2ca517',1,'uvgvpcc_enc::Parameters']]],
+  ['normalorientationknncount_14',['normalOrientationKnnCount',['../structuvgvpcc__enc_1_1Parameters.html#ae3cae6490d536e1e26ba158b685349de',1,'uvgvpcc_enc::Parameters']]],
+  ['num_5fref_5fentries_15',['num_ref_entries',['../structref__list__struct.html#a6885d566bf2e1a2d5720decd4769b341',1,'ref_list_struct']]],
+  ['numberoflostpoints_16',['numberOfLostPoints',['../structuvgVPCCencStats.html#aeb01e2bba6929c3fec27d23dae242c3b',1,'uvgVPCCencStats']]],
+  ['numberofpatches_17',['numberOfPatches',['../structuvgVPCCencStats.html#a96255a0ff89311000a19fbe46a5c0eee',1,'uvgVPCCencStats']]],
+  ['numberofpoints_18',['NumberOfPoints',['../structuvgVPCCencStats.html#a8e8220d0ba7c3044250098a242839e31',1,'uvgVPCCencStats']]],
+  ['numberofvoxels_19',['numberOfVoxels',['../structuvgVPCCencStats.html#a51a1eca56ba1500d2d7c766b1b571b28',1,'uvgVPCCencStats']]],
+  ['numberofvoxelsrs_20',['numberOfVoxelsRS',['../structuvgVPCCencStats.html#a21a6cc069a7a271885956cfad3b007ea',1,'uvgVPCCencStats']]]
 ];
