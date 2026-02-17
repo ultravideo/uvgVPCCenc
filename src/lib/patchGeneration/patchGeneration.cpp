@@ -35,6 +35,7 @@
 #include "patchGeneration.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cassert>
 #include <cstddef>
 #include <memory>
@@ -78,12 +79,10 @@ void PatchGeneration::computePointsNNList(std::vector<std::vector<size_t>>& poin
 // voxel coords and finding the voxel PPI through a map(voxelCoord, voxelPPI)
 namespace {
 inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::vector<size_t>& pointsPPIs,
-                                    const std::vector<std::vector<size_t>>& voxelIdToPointsId) {
+                                    const std::vector<size_t>& pointsIdToVoxelId) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION", "Apply voxel data to points.\n");
-    for (size_t voxelIndex = 0; voxelIndex < voxelIdToPointsId.size(); ++voxelIndex) {
-        for (size_t pointIndex = 0; pointIndex < voxelIdToPointsId[voxelIndex].size(); ++pointIndex) {
-            pointsPPIs[voxelIdToPointsId[voxelIndex][pointIndex]] = voxelsPPIs[voxelIndex];
-        }
+    for (size_t pointIndex = 0; pointIndex < pointsIdToVoxelId.size(); ++pointIndex) {
+        pointsPPIs[pointIndex] = voxelsPPIs[pointsIdToVoxelId[pointIndex]];
     }
 }
 }  // anonymous namespace
@@ -92,8 +91,8 @@ inline void applyVoxelsDataToPoints(const std::vector<size_t>& voxelsPPIs, std::
 void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> frame) {
     uvgvpcc_enc::Logger::log<uvgvpcc_enc::LogLevel::TRACE>("PATCH GENERATION",
                                                            "Generate patches for frame " + std::to_string(frame->frameId) + ".\n");
-    assert(p_->geoBitDepthInput >= p_->geoBitDepthVoxelized);
-
+    
+    
     // todo(mf): add the condition for export intermediates files
     if(p_->exportStatistics){
         // stats.setGeometrySize(frame->frameId, frame->pointsGeometry.size());
@@ -101,14 +100,15 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     }
 
     // Voxelization //
+    assert(p_->geoBitDepthInput >= p_->geoBitDepthVoxelized);
     const bool useVoxelization = p_->geoBitDepthInput != p_->geoBitDepthVoxelized;
     std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>> voxelizedGeometryBuffer;
-    std::vector<std::vector<size_t>> voxelIdToPointsId;
     const std::vector<uvgvpcc_enc::Vector3<typeGeometryInput>>& voxelizedPointsGeometry =
-        useVoxelization ? voxelizedGeometryBuffer : frame->pointsGeometry;
+    useVoxelization ? voxelizedGeometryBuffer : frame->pointsGeometry;
+    std::vector<size_t> pointsIdToVoxelId;
 
     if (useVoxelization) {
-        voxelization(frame->pointsGeometry, voxelizedGeometryBuffer, voxelIdToPointsId, p_->geoBitDepthInput, p_->geoBitDepthVoxelized);
+        voxelization(frame->pointsGeometry, voxelizedGeometryBuffer, pointsIdToVoxelId, p_->geoBitDepthInput, p_->geoBitDepthVoxelized);
     }
 
     if(p_->exportStatistics){
@@ -141,10 +141,9 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     // "De-voxelization"
     std::vector<size_t> pointsPPIsBuffer;
     const std::vector<size_t>& pointsPPIs = useVoxelization ? pointsPPIsBuffer : voxelsPPIs;
-
     if (useVoxelization) {
         pointsPPIsBuffer.resize(frame->pointsGeometry.size());
-        applyVoxelsDataToPoints(voxelsPPIs, pointsPPIsBuffer, voxelIdToPointsId);
+        applyVoxelsDataToPoints(voxelsPPIs, pointsPPIsBuffer, pointsIdToVoxelId);
     }
 
     // Patch segmentation //

@@ -37,6 +37,7 @@
 #include <sys/types.h>
 #include "utils/utils.hpp"
 #include "uvgvpcc/log.hpp"
+#include <cstddef>
 #include <cstdint>
 #include <fstream>
 #include <vector>
@@ -165,25 +166,22 @@ struct vector3Hash {
 inline void voxelization(
     const std::vector<Vector3<typeGeometryInput>>& inputPointsGeometry,
     std::vector<Vector3<typeGeometryInput>>& voxelizedPointsGeometry,
-    std::vector<std::vector<size_t>>& voxelIdToPointsId,
+    std::vector<size_t>& pointsIdToVoxelId,
     const size_t inputBitResolution,
-    const size_t outputBitResolution) 
+    const size_t outputBitResolution
+) 
 {
     Logger::log<LogLevel::TRACE>("PATCH GENERATION",
         "Voxelization from " + std::to_string(inputBitResolution) + " to " + std::to_string(outputBitResolution) + " bits of resolution.\n");
-
-    const size_t voxelizationShift = inputBitResolution - outputBitResolution;
-    const typeGeometryInput shift = static_cast<typeGeometryInput>(voxelizationShift);
-
+    pointsIdToVoxelId.resize(inputPointsGeometry.size());
+    const typeGeometryInput shift = static_cast<typeGeometryInput>(inputBitResolution - outputBitResolution);
     const size_t approximateVoxelCount = 1U << (outputBitResolution * 2U);
     voxelizedPointsGeometry.reserve(approximateVoxelCount);
-    voxelIdToPointsId.reserve(approximateVoxelCount);
 
     robin_hood::unordered_map<Vector3<typeGeometryInput>, size_t, vector3Hash<typeGeometryInput>> voxelCoordToVoxelIndex;
     voxelCoordToVoxelIndex.reserve(approximateVoxelCount);
-
-    const size_t inputSize = inputPointsGeometry.size();
-    for (size_t inputPointIndex = 0; inputPointIndex < inputSize; ++inputPointIndex) {
+    size_t voxelIndex = 0;
+    for (size_t inputPointIndex = 0; inputPointIndex < inputPointsGeometry.size(); ++inputPointIndex) {
         const Vector3<typeGeometryInput> & inputPoint = inputPointsGeometry[inputPointIndex];
 
         Vector3<typeGeometryInput> voxCoord{
@@ -192,14 +190,11 @@ inline void voxelization(
             static_cast<typeGeometryInput>(static_cast<uint32_t>(inputPoint[2]) >> shift)
         };
 
-        size_t voxelIndex = voxelizedPointsGeometry.size();
         auto [it, inserted] = voxelCoordToVoxelIndex.try_emplace(voxCoord, voxelIndex);
         if (inserted) {
             voxelizedPointsGeometry.emplace_back(voxCoord);
-            voxelIdToPointsId.emplace_back();
-            voxelIdToPointsId.back().reserve(16);
+            voxelIndex++;
         }
-
-        voxelIdToPointsId[it->second].push_back(inputPointIndex);
+        pointsIdToVoxelId[inputPointIndex] = voxelCoordToVoxelIndex[voxCoord];
     }
 }
