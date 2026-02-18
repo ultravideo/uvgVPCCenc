@@ -202,7 +202,9 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
                                                          "Intra pack patches of frame " + std::to_string(frame->frameId) + ".\n");
     }
 
-
+    if(!p_->dynamicMapHeight) {
+        assert(frame->mapHeight == p_->minimumMapHeight);
+    }
     frame->occupancyMap.resize(p_->mapWidth * frame->mapHeight, 0);
 
     // If the inter patch packing mode is deactivated, the intra patch packing is done over all frame patches. Thus, the patchListSpan
@@ -218,13 +220,21 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
     for (auto& patch : patchList) {
         for (;;) {
             locationFound = findPatchLocation(mapHeightTemp, maxPatchHeight, patch, frame->occupancyMap);
-            if (locationFound) {
+            if (locationFound || !p_->dynamicMapHeight) {
                 break;
             }
             mapHeightTemp *= 2;
             frame->occupancyMap.resize(p_->mapWidth * mapHeightTemp);
         }
-        assert(locationFound);
+        
+        if (!locationFound) {
+            assert(!p_->dynamicMapHeight);
+            uvgutils::Logger::log<uvgutils::LogLevel::WARNING>("PATCH PACKING",
+                "A patch was not packed and is therefore discared! This is due to dynamicMapHeight being off and the minimumMapHeight being too small. Frame " + std::to_string(frame->frameId) + ", patch " + std::to_string(patch.patchIndex_) + ".\n");            
+            patch.isDiscarded = true;
+                continue;
+        }
+
 
         // Update the occupancy map by adding the current patch at its found location //
         if (!patch.axisSwap_) {
@@ -253,9 +263,14 @@ void PatchPacking::frameIntraPatchPacking(const std::shared_ptr<uvgvpcc_enc::Fra
             }
         }
     }
-
-    frame->mapHeight = std::max(frame->mapHeight, maxPatchHeight);
-    frame->mapHeightDS = frame->mapHeight / p_->occupancyMapDSResolution;
+    
+    if (p_->dynamicMapHeight) {
+        frame->mapHeight = std::max(frame->mapHeight, maxPatchHeight);
+        frame->mapHeightDS = frame->mapHeight / p_->occupancyMapDSResolution;
+    } else {
+        assert(frame->mapHeight == p_->minimumMapHeight);
+        assert(maxPatchHeight <= p_->minimumMapHeight);
+    }
 }
 
 // Patch placement and indirect occupancy map generation using union patch information for the matched patch //
@@ -266,7 +281,11 @@ void PatchPacking::frameInterPatchPacking(const std::vector<uvgvpcc_enc::Patch>&
 
     // Iterate over all patches of the frame that are matched with a union match //
     for (auto& patch : *matchedPatchList) {
+        if(!p_->dynamicMapHeight) {
+            assert(patch.unionPatchReferenceIdx != INVALID_PATCH_INDEX);
+        }
         const auto& linkedMegaPatch = unionPatches[patch.unionPatchReferenceIdx];
+        
         patch.omDSPosX_ =
             linkedMegaPatch.omDSPosX_;  // TODO(lf): might be nice to center the matched patch within the boundary of the union patch
         patch.omDSPosY_ = linkedMegaPatch.omDSPosY_;
@@ -377,11 +396,6 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
         // No inter packing if the GOF is composed of a single frame
         // Basic intra packing method
         std::span<uvgvpcc_enc::Patch> patchList(firstFrame->patchList);
-
-        // firstFrame->mapHeight = p_->minimumMapHeight; 
-        // firstFrame->mapHeightDS = firstFrame->mapHeight / p_->occupancyMapDSResolution; 
-        firstFrame->occupancyMap.resize(p_->mapWidth * firstFrame->mapHeight, 0);
-        
         uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH PACKING",
                                                          "Intra pack patches of frame " + std::to_string(firstFrame->frameId) +
                                                              " as it is the only frame within the GOF " + std::to_string(gof->gofId) + ".\n");
@@ -438,7 +452,7 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
         unionPatch.patchOccupancyMap_.resize(unionPatch.widthInPixel_ * unionPatch.heightInPixel_, 1);
     }
 
-    const size_t nbUnionPatch = unionPatches.size();
+    size_t nbUnionPatch = unionPatches.size();
 
     // Sort the union patches by size
     std::sort(unionPatches.begin(), unionPatches.end(), [](const uvgvpcc_enc::Patch& patchA, const uvgvpcc_enc::Patch& patchB) {
@@ -450,10 +464,6 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
 
     std::span<uvgvpcc_enc::Patch> unionPatchList(unionPatches);
 
-    // firstFrame->mapHeight = p_->minimumMapHeight; 
-    // firstFrame->mapHeightDS = firstFrame->mapHeight / p_->occupancyMapDSResolution; 
-    firstFrame->occupancyMap.resize(p_->mapWidth * firstFrame->mapHeight, 0);
-    
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH PACKING",
                                                      "Intra pack patches of the union patches of GOF " + std::to_string(gof->gofId) + ".\n");
     frameIntraPatchPacking(firstFrame, &unionPatchList);
@@ -478,13 +488,25 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
     for (auto& frame : gof->frames) {
         std::vector<uvgvpcc_enc::Patch> newOrder;
         for (const auto& unionPatch : unionPatches) {
-            for (const auto& patch : frame->patchList) {
-                if (patch.unionPatchReferenceIdx == unionPatch.patchIndex_) {
-                    newOrder.push_back(patch);
-                    break;
+            if(!p_->dynamicMapHeight && unionPatch.isDiscarded) {
+                for (auto& patch : frame->patchList) {
+                    if (patch.unionPatchReferenceIdx == unionPatch.patchIndex_) {
+                        patch.unionPatchReferenceIdx = INVALID_PATCH_INDEX;
+                        patch.isLinkToAMegaPatch = false;
+                        break;
+                    }
+                }
+            } else {
+                for (const auto& patch : frame->patchList) {
+                    if (patch.unionPatchReferenceIdx == unionPatch.patchIndex_) {
+                        newOrder.push_back(patch);
+                        break;
+                    }
                 }
             }
+
         }
+
 
         // Now all matched patches has been pushed, push the non-matched patches, that are already sorted by size.
         for (const auto& patch : frame->patchList) {
@@ -496,6 +518,13 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
     }  // TODO(lf): use only index, and made two list of index to the patchList, for matched and non matched -> nop, indeed save at which
        // index we jump from matched to non matched. Then, give to the inter and intra packing function a section of the vector
     // TODO(lf)the previus sorting can be done in place !!!! by sorting only a section of the vector, the first one, with the matched patch.
+
+    if(!p_->dynamicMapHeight) {
+        nbUnionPatch = 0;
+        for(auto& unionPatch : unionPatches ) {
+            if(!unionPatch.isDiscarded) ++nbUnionPatch;
+        }
+    }
 
     // Undo the sorting of the union matches so that their patch id (which is also the unionPatchReferenceIdx for the patch link to it)
     // corresponds to its location in the unionPatches vector.
@@ -509,18 +538,22 @@ void PatchPacking::gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof)
         // limit map height has been exceeded during the union patches packing, all new occupancy map of the gof will be allocated using the
         // new map height, not the default minimum limit height.
 
-        frame->mapHeight = firstFrame->mapHeight; 
-        frame->mapHeightDS = firstFrame->mapHeight / p_->occupancyMapDSResolution; 
-        frame->occupancyMap.resize(p_->mapWidth * firstFrame->mapHeight, 0);
-
-
-        
+        if(p_->dynamicMapHeight) {
+            frame->mapHeight = firstFrame->mapHeight; 
+            frame->mapHeightDS = firstFrame->mapHeight / p_->occupancyMapDSResolution; 
+        } else {
+            assert(frame->mapHeight == p_->minimumMapHeight);
+            assert(frame->mapHeightDS == p_->minimumMapHeight / p_->occupancyMapDSResolution);
+        }
+        frame->occupancyMap.resize(p_->mapWidth * frame->mapHeight, 0);
+            
         // Separate in two the frame patch list to distinguish the matched and non-matched patches. This symbolic or superficial, no impact on
         // memory.
         std::span<uvgvpcc_enc::Patch> matchedPatches(frame->patchList.begin(),
                                                      frame->patchList.begin() + static_cast<std::ptrdiff_t>(nbUnionPatch));
         std::span<uvgvpcc_enc::Patch> nonMatchedPatches(frame->patchList.begin() + static_cast<std::ptrdiff_t>(nbUnionPatch),
                                                         frame->patchList.end());
+                                                        
         frameInterPatchPacking(unionPatches, frame, &matchedPatches);
 
         uvgutils::Logger::log<uvgutils::LogLevel::TRACE>(

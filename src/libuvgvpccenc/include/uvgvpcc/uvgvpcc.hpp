@@ -105,9 +105,10 @@ struct Patch {
     // Store not the id but the position in the list of patch of the best reference patch in the previous frame. Notice that even if
     // the current patch is not matched, a reference patch id is still found. Then, this reference id will be used to check if the
     // iou treshold is respected or not, then indicating if this patch is matched or not.
-    bool isMatched_ = false;  // This patch match with a patch from the previous frame (the iou treshold is respected).
     bool isLinkToAMegaPatch = false;
     size_t unionPatchReferenceIdx = INVALID_PATCH_INDEX;
+
+    bool isDiscarded = false; // If dynamicMapHeight=false et minimumMapHeight=??? is too small, then some patch can't be packed. There are then discarded (they will not be encoded).
 
     void setAxis(size_t normalAxis, size_t tangentAxis, size_t bitangentAxis, bool projectionMode) {
         normalAxis_ = normalAxis;

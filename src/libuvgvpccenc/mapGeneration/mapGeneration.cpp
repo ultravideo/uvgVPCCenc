@@ -198,6 +198,10 @@ void allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t
     // empty/not used by the decoder/do not cary any usefull information.
 
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
+    
+    if (p_->dynamicMapHeight) {
+        assert(gofMapsHeight == p_->minimumMapHeight);
+    }
 
     // The occupancy map already exist and might already have the correct size.
 
@@ -456,6 +460,16 @@ void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>&
         FileExport::exportImageOccupancyDS(frame);
     }
 
+    if(!p_->dynamicMapHeight) {
+        frame->patchList.erase(
+            std::remove_if(frame->patchList.begin(),
+                        frame->patchList.end(),
+                        [](const Patch& patch) {
+                            return patch.isDiscarded;
+                        }),
+            frame->patchList.end());
+    }
+
     // Geometry and attribute map generation //
     writePatches(frame, frame->mapHeight);
 
@@ -503,15 +517,19 @@ void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>&
 void MapGeneration::initGOFMapGeneration(const std::shared_ptr<uvgvpcc_enc::GOF>& gof) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("MAP GENERATION", "Initialize maps of GOF " + std::to_string(gof->gofId) + ".\n");
 
+    if (!p_->dynamicMapHeight) {
+        gof->mapHeightGOF = gof->frames[0]->mapHeight;
+        gof->mapHeightDSGOF = gof->frames[0]->mapHeightDS;
+        return;
+    }
+
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
         gof->mapHeightDSGOF = std::max(gof->mapHeightDSGOF, frame->mapHeightDS);
     }
-
     gof->mapHeightDSGOF = uvgutils::roundUp(gof->mapHeightDSGOF, static_cast<size_t>(8));
-
     gof->mapHeightGOF = gof->mapHeightDSGOF * p_->occupancyMapDSResolution;
-
     for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
         frame->mapHeight = gof->mapHeightGOF;
     }
+    
 }
