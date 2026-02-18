@@ -45,6 +45,7 @@
 #include <unordered_map>
 
 #include "../utils/utils.hpp"
+#include "../utils/parameters.hpp"
 
 /// \file Main file of the uvgVPCCenc library that defines the main structures (GOF, frame, patch) and the API.
 
@@ -195,7 +196,7 @@ struct Frame {
     std::vector<uint8_t> attributeMapL2;
 
     Frame(const size_t& frameId, const size_t& frameNumber, const std::string& pointCloudPath)
-        : frameId(frameId), frameNumber(frameNumber), pointCloudPath(pointCloudPath), pointCount(0) {}
+        : frameId(frameId), frameNumber(frameNumber), pointCloudPath(pointCloudPath), pointCount(0), mapHeight(p_->minimumMapHeight), mapHeightDS(p_->minimumMapHeight / p_->occupancyMapDSResolution) {}
     ~Frame() {
         if (conccurentFrameSem) {
             conccurentFrameSem->release();

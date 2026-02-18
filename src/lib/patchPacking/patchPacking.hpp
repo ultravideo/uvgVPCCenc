@@ -67,7 +67,6 @@ class PatchPacking {
     static void frameInterPatchPacking(const std::vector<uvgvpcc_enc::Patch>& unionPatches, const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                                        std::span<uvgvpcc_enc::Patch>* matchedPatchList);
 
-    static void allocateDefaultOccupancyMap(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t mapHeight);
     static void gofPatchPacking(const std::shared_ptr<uvgvpcc_enc::GOF>& gof);
 
    private:

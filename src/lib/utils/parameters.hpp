@@ -135,8 +135,8 @@ struct Parameters {
     size_t blockSizeBBPE = 8;
     bool useTmc2YuvDownscaling = false;
     bool mapGenerationFillEmptyBlock = true;
-
-
+    bool dynamicMapHeight = true;
+    
     // ___ 2D encoding parameters ___ //
     size_t sizeGOP2DEncoding;
     size_t intraFramePeriod = 64;  // TODO(lf): Not useful yet as a new 2D encoder is created for each GOF. (64 is default Kvazaar value. In

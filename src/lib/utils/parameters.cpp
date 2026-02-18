@@ -223,6 +223,9 @@ void initializeParameterMap(Parameters& param) {
         {"blockSizeBBPE", {UINT, "0,1,2,4,8,16,32,64,128", &param.blockSizeBBPE}},
         {"useTmc2YuvDownscaling", {BOOL, "", &param.useTmc2YuvDownscaling}},
         {"mapGenerationFillEmptyBlock", {BOOL, "", &param.mapGenerationFillEmptyBlock}},
+        {"dynamicMapHeight", {BOOL, "", &param.dynamicMapHeight}},
+
+        
 
 
         // ___ 2D encoding parameters ___ //

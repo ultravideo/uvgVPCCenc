@@ -602,12 +602,9 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     if (p_->interPatchPacking) {
         JobManager::getJob(g_threadHandler.currentGOF->gofId, TO_STRING(PatchPacking::gofPatchPacking))->addDependency(patchGen);
     } else {
-        auto occAlloc = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 1, PatchPacking::allocateDefaultOccupancyMap, frame,
-                             p_->minimumMapHeight);
         auto patchPack = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 1, PatchPacking::frameIntraPatchPacking, frame, nullptr);
 
-        occAlloc->addDependency(patchGen);
-        patchPack->addDependency(occAlloc);
+        patchPack->addDependency(patchGen);
         initGOFMG->addDependency(patchPack);
     }
 
