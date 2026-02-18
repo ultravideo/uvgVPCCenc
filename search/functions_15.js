@@ -8,7 +8,7 @@ var searchData=
   ['version_5fmajor_5',['version_major',['../classminiply_1_1PLYReader.html#a60a487035ec2d0eea2e5161704646782',1,'miniply::PLYReader']]],
   ['version_5fminor_6',['version_minor',['../classminiply_1_1PLYReader.html#aa8012c12ecb83b0a4f8bb903a20c0c4c',1,'miniply::PLYReader']]],
   ['voxelattribute_7',['VoxelAttribute',['../structVoxelAttribute.html#a2d98508ba369958a440f8f3294498ee0',1,'VoxelAttribute']]],
-  ['voxelization_8',['voxelization',['../utilsPatchGeneration_8hpp.html#a1e33592d61eabca8b87655fb1cf3c737',1,'utilsPatchGeneration.hpp']]],
+  ['voxelization_8',['voxelization',['../utilsPatchGeneration_8hpp.html#ad301e22bc2ea2855db471068224f34be',1,'utilsPatchGeneration.hpp']]],
   ['vprintfstrtostdstr_9',['vprintfStrToStdStr',['../classuvgvpcc__enc_1_1Logger.html#ac9681a9cbe3ddd401d9f6163e762b788',1,'uvgvpcc_enc::Logger']]],
   ['vps_10',['vps',['../classvps.html#a29fe65de7f42f439695ddf4d985f77c6',1,'vps']]]
 ];

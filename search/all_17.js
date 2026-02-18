@@ -36,7 +36,7 @@ var searchData=
   ['voxclass_33',['VoxClass',['../ppiSegmenter_8hpp.html#a0d28d3ba3f42ec77cba289dae8c76f9a',1,'ppiSegmenter.hpp']]],
   ['voxclass_5f_34',['voxClass_',['../structVoxelAttribute.html#aaca598aa577b7a1c2133207e357e3a64',1,'VoxelAttribute']]],
   ['voxelattribute_35',['voxelattribute',['../structVoxelAttribute.html#a2d98508ba369958a440f8f3294498ee0',1,'VoxelAttribute::VoxelAttribute()'],['../structVoxelAttribute.html',1,'VoxelAttribute']]],
-  ['voxelization_36',['voxelization',['../utilsPatchGeneration_8hpp.html#a1e33592d61eabca8b87655fb1cf3c737',1,'utilsPatchGeneration.hpp']]],
+  ['voxelization_36',['voxelization',['../utilsPatchGeneration_8hpp.html#ad301e22bc2ea2855db471068224f34be',1,'utilsPatchGeneration.hpp']]],
   ['voxppi_5f_37',['voxPPI_',['../structVoxelAttribute.html#a76b9cd5ba6552e64dd8f7f87d1413794',1,'VoxelAttribute']]],
   ['voxscore_5f_38',['voxScore_',['../structVoxelAttribute.html#a67be1a2a991d0e51b2e36aa6d3277016',1,'VoxelAttribute']]],
   ['vprintfstrtostdstr_39',['vprintfStrToStdStr',['../classuvgvpcc__enc_1_1Logger.html#ac9681a9cbe3ddd401d9f6163e762b788',1,'uvgvpcc_enc::Logger']]],

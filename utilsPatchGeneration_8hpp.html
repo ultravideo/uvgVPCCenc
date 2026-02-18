@@ -84,6 +84,7 @@ $(function() {
 <div class="textblock"><code>#include &lt;sys/types.h&gt;</code><br />
 <code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils/utils.hpp</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="log_8hpp_source.html">uvgvpcc/log.hpp</a>&quot;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
@@ -112,8 +113,8 @@ Functions</h2></td></tr>
 <tr class="memitem:a254e1f999f13aa89c65618b5cd6f707e" id="r_a254e1f999f13aa89c65618b5cd6f707e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT &gt; </td></tr>
 <tr class="memitem:a254e1f999f13aa89c65618b5cd6f707e"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e">dotProduct</a> (const std::array&lt; T, 3 &gt; &amp;arr1, const std::array&lt; TT, 3 &gt; &amp;arr2)</td></tr>
 <tr class="separator:a254e1f999f13aa89c65618b5cd6f707e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e33592d61eabca8b87655fb1cf3c737" id="r_a1e33592d61eabca8b87655fb1cf3c737"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a1e33592d61eabca8b87655fb1cf3c737">voxelization</a> (const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;inputPointsGeometry, std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;voxelizedPointsGeometry, std::vector&lt; std::vector&lt; size_t &gt; &gt; &amp;voxelIdToPointsId, const size_t inputBitResolution, const size_t outputBitResolution)</td></tr>
-<tr class="separator:a1e33592d61eabca8b87655fb1cf3c737"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad301e22bc2ea2855db471068224f34be" id="r_ad301e22bc2ea2855db471068224f34be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#ad301e22bc2ea2855db471068224f34be">voxelization</a> (const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;inputPointsGeometry, std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;voxelizedPointsGeometry, std::vector&lt; size_t &gt; &amp;pointsIdToVoxelId, const size_t inputBitResolution, const size_t outputBitResolution)</td></tr>
+<tr class="separator:ad301e22bc2ea2855db471068224f34be"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
@@ -164,8 +165,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a1e33592d61eabca8b87655fb1cf3c737" name="a1e33592d61eabca8b87655fb1cf3c737"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e33592d61eabca8b87655fb1cf3c737">&#9670;&#160;</a></span>voxelization()</h2>
+<a id="ad301e22bc2ea2855db471068224f34be" name="ad301e22bc2ea2855db471068224f34be"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad301e22bc2ea2855db471068224f34be">&#9670;&#160;</a></span>voxelization()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -188,8 +189,8 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; std::vector&lt; size_t &gt; &gt; &amp;&#160;</td>
-          <td class="paramname"><em>voxelIdToPointsId</em>, </td>
+          <td class="paramtype">std::vector&lt; size_t &gt; &amp;&#160;</td>
+          <td class="paramname"><em>pointsIdToVoxelId</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -218,12 +219,12 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_a1e33592d61eabca8b87655fb1cf3c737_cgraph.svg" width="314" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_ad301e22bc2ea2855db471068224f34be_cgraph.svg" width="314" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_a1e33592d61eabca8b87655fb1cf3c737_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_ad301e22bc2ea2855db471068224f34be_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
