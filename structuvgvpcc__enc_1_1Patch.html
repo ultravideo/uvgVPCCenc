@@ -150,12 +150,12 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a8e0322de56b28446366e8e52c051f362"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70765fd0c38585cbb5c0c82ca91b2ed0" id="r_a70765fd0c38585cbb5c0c82ca91b2ed0"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Patch.html#a70765fd0c38585cbb5c0c82ca91b2ed0">bestMatchIdx</a> = <a class="el" href="namespaceuvgvpcc__enc.html#a797bca72259bfe178c1a2eb9c3daba9a">INVALID_PATCH_INDEX</a></td></tr>
 <tr class="separator:a70765fd0c38585cbb5c0c82ca91b2ed0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a95ab368b3ce3a375d65602d056518085" id="r_a95ab368b3ce3a375d65602d056518085"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Patch.html#a95ab368b3ce3a375d65602d056518085">isMatched_</a> = false</td></tr>
-<tr class="separator:a95ab368b3ce3a375d65602d056518085"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09a79c07f1b8696833ea037c5bf91069" id="r_a09a79c07f1b8696833ea037c5bf91069"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Patch.html#a09a79c07f1b8696833ea037c5bf91069">isLinkToAMegaPatch</a> = false</td></tr>
 <tr class="separator:a09a79c07f1b8696833ea037c5bf91069"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac260789cd30f365db87905b240e39a12" id="r_ac260789cd30f365db87905b240e39a12"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Patch.html#ac260789cd30f365db87905b240e39a12">unionPatchReferenceIdx</a> = <a class="el" href="namespaceuvgvpcc__enc.html#a797bca72259bfe178c1a2eb9c3daba9a">INVALID_PATCH_INDEX</a></td></tr>
 <tr class="separator:ac260789cd30f365db87905b240e39a12"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac78be9b6cd9faa6d63b5dea8d7ced5bb" id="r_ac78be9b6cd9faa6d63b5dea8d7ced5bb"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Patch.html#ac78be9b6cd9faa6d63b5dea8d7ced5bb">isDiscarded</a> = false</td></tr>
+<tr class="separator:ac78be9b6cd9faa6d63b5dea8d7ced5bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="ad24dc23eb86f57f9cc5bdbb9f54e668a" name="ad24dc23eb86f57f9cc5bdbb9f54e668a"></a>
@@ -408,6 +408,20 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
+<a id="ac78be9b6cd9faa6d63b5dea8d7ced5bb" name="ac78be9b6cd9faa6d63b5dea8d7ced5bb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac78be9b6cd9faa6d63b5dea8d7ced5bb">&#9670;&#160;</a></span>isDiscarded</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool uvgvpcc_enc::Patch::isDiscarded = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
 <a id="a09a79c07f1b8696833ea037c5bf91069" name="a09a79c07f1b8696833ea037c5bf91069"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a09a79c07f1b8696833ea037c5bf91069">&#9670;&#160;</a></span>isLinkToAMegaPatch</h2>
 
@@ -416,20 +430,6 @@ Here is the call graph for this function:</div>
       <table class="memname">
         <tr>
           <td class="memname">bool uvgvpcc_enc::Patch::isLinkToAMegaPatch = false</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a id="a95ab368b3ce3a375d65602d056518085" name="a95ab368b3ce3a375d65602d056518085"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a95ab368b3ce3a375d65602d056518085">&#9670;&#160;</a></span>isMatched_</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool uvgvpcc_enc::Patch::isMatched_ = false</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -661,7 +661,7 @@ Here is the call graph for this function:</div>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/lib/include/uvgvpcc/<a class="el" href="uvgvpcc_8hpp_source.html">uvgvpcc.hpp</a></li>
+<li>src/libuvgvpccenc/include/uvgvpcc/<a class="el" href="uvgvpcc_8hpp_source.html">uvgvpcc.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

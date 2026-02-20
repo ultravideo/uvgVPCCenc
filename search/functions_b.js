@@ -8,5 +8,5 @@ var searchData=
   ['load_5ftree_5',['load_tree',['../classnanoflann_1_1KDTreeBaseClass.html#a55c45ff5c7cacd8c85e49eaba258566c',1,'nanoflann::KDTreeBaseClass']]],
   ['load_5fvalue_6',['load_value',['../group__loadsave__grp.html#ga0e46446b869ab24cc7217bd799b5e11d',1,'nanoflann::load_value(std::istream &amp;stream, T &amp;value)'],['../group__loadsave__grp.html#gab17a4bc99128fe5246e377f502dc7d46',1,'nanoflann::load_value(std::istream &amp;stream, std::vector&lt; T &gt; &amp;value)']]],
   ['loadindex_7',['loadindex',['../classnanoflann_1_1KDTreeBaseClass.html#a9decc1015f7982fe084337f3c5e6a974',1,'nanoflann::KDTreeBaseClass::loadIndex()'],['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#a6af02698ac7865aa3bd6574301388855',1,'nanoflann::KDTreeSingleIndexAdaptor::loadIndex()'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#aba0f17989f4ba925b6b3f4c930235f63',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::loadIndex()']]],
-  ['log_8',['log',['../classuvgvpcc__enc_1_1Logger.html#a2f924c7f703ab5f4fad85ab1bc2b85aa',1,'uvgvpcc_enc::Logger']]]
+  ['log_8',['log',['../classuvgutils_1_1Logger.html#a97701a9f1c72fd59808cd2a0de8ddaa2',1,'uvgutils::Logger::log()'],['../namespaceuvgutils.html#a23ce6b582fdbb41460330991a1be8d31',1,'uvgutils::log()']]]
 ];

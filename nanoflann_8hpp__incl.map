@@ -1,11 +1,11 @@
-<map id="src/lib/patchGeneration/nanoflann.hpp" name="src/lib/patchGeneration/nanoflann.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="561,5,735,45"/>
+<map id="src/libuvgvpccenc/patchGeneration/nanoflann.hpp" name="src/libuvgvpccenc/patchGeneration/nanoflann.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="523,5,773,45"/>
 <area shape="rect" id="Node000002" title=" " alt="" coords="5,93,91,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="562,38,357,60,104,96,104,91,356,55,561,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="523,42,330,64,104,96,104,91,329,59,522,36"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="115,93,171,119"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="562,38,391,60,185,96,184,91,390,55,561,33"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="523,43,365,64,185,96,184,91,364,59,522,37"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="195,93,261,119"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="561,43,431,65,276,96,275,90,430,60,561,38"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="531,48,275,96,274,91,530,43"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="285,93,355,119"/>
 <area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="569,48,369,96,368,90,568,43"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="379,93,442,119"/>
@@ -23,9 +23,9 @@
 <area shape="rect" id="Node000012" title=" " alt="" coords="931,93,1007,119"/>
 <area shape="poly" id="edge11_Node000001_Node000012" title=" " alt="" coords="726,43,918,90,917,95,724,48"/>
 <area shape="rect" id="Node000013" title=" " alt="" coords="1031,93,1118,119"/>
-<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="735,39,1018,90,1017,96,734,44"/>
+<area shape="poly" id="edge12_Node000001_Node000013" title=" " alt="" coords="757,43,1018,90,1017,96,756,48"/>
 <area shape="rect" id="Node000014" title=" " alt="" coords="1143,93,1257,119"/>
-<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="735,35,1130,91,1129,96,734,41"/>
+<area shape="poly" id="edge13_Node000001_Node000014" title=" " alt="" coords="774,41,1130,91,1129,96,773,46"/>
 <area shape="rect" id="Node000015" title=" " alt="" coords="1282,93,1345,119"/>
-<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="735,29,972,50,1118,67,1269,91,1268,96,1118,73,971,55,735,35"/>
+<area shape="poly" id="edge14_Node000001_Node000015" title=" " alt="" coords="774,32,1000,53,1133,70,1269,91,1268,96,1132,75,1000,58,773,37"/>
 </map>

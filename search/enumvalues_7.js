@@ -19,6 +19,6 @@ var searchData=
   ['indirect_5fedge_16',['INDIRECT_EDGE',['../ppiSegmenter_8hpp.html#a0d28d3ba3f42ec77cba289dae8c76f9aa65b769e144d69965fbc4623d218f5482',1,'ppiSegmenter.hpp']]],
   ['indirectedge_17',['IndirectEdge',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3af22d74bf12ac67bd3f11f5f44f7dc839',1,'statsCollector.hpp']]],
   ['indirectedge_5fr_18',['IndirectEdge_R',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a0237ed8875f5be8159aae2d6a77a989b',1,'statsCollector.hpp']]],
-  ['info_19',['INFO',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a551b723eafd6a31d444fcb2f5920fbd3',1,'uvgvpcc_enc']]],
-  ['int_20',['int',['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a431584040676fade50c17b5a2b7da0bd',1,'uvgvpcc_enc::INT'],['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea1686a6c336b71b36d77354cea19a8b52',1,'miniply::Int']]]
+  ['info_19',['INFO',['../namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7da551b723eafd6a31d444fcb2f5920fbd3',1,'uvgutils']]],
+  ['int_20',['int',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea1686a6c336b71b36d77354cea19a8b52',1,'miniply::Int'],['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a431584040676fade50c17b5a2b7da0bd',1,'uvgvpcc_enc::INT']]]
 ];

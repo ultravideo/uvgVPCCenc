@@ -1,9 +1,9 @@
 var searchData=
 [
   ['w_0',['w',['../structPointCloud__Quat_1_1Point.html#a5cf713da6707a8548256cb6955aeefce',1,'PointCloud_Quat::Point']]],
-  ['wait_1',['wait',['../classuvgvpcc__enc_1_1Job.html#add9a45cf44f945b2af55c9a94dd856c9',1,'uvgvpcc_enc::Job']]],
-  ['waitforjob_2',['waitForJob',['../classuvgvpcc__enc_1_1ThreadQueue.html#aca5ac34dc02ce359e244defbb4edb8f9',1,'uvgvpcc_enc::ThreadQueue']]],
-  ['warning_3',['WARNING',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a059e9861e0400dfbe05c98a841f3f96b',1,'uvgvpcc_enc']]],
+  ['wait_1',['wait',['../classuvgutils_1_1Job.html#a322db1b1d2cf7c783f0edca1a0abba33',1,'uvgutils::Job']]],
+  ['waitforjob_2',['waitForJob',['../classuvgutils_1_1ThreadQueue.html#af6255d8dee66f1c1c64f2309a0f61899',1,'uvgutils::ThreadQueue']]],
+  ['warning_3',['WARNING',['../namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7da059e9861e0400dfbe05c98a841f3f96b',1,'uvgutils']]],
   ['wastedmemory_4',['wastedMemory',['../classnanoflann_1_1PooledAllocator.html#a733a428738269c0a6d099dd975aa20a0',1,'nanoflann::PooledAllocator']]],
   ['weight_5f_5',['weight_',['../structNormalOrientation_1_1WeightedEdge.html#ac282903e6603d8e590341b8d26f5651f',1,'NormalOrientation::WeightedEdge']]],
   ['weightededge_6',['weightededge',['../structNormalOrientation_1_1WeightedEdge.html',1,'NormalOrientation::WeightedEdge'],['../structNormalOrientation_1_1WeightedEdge.html#a83af420df97f586749626aca1ff8e0b5',1,'NormalOrientation::WeightedEdge::WeightedEdge()']]],

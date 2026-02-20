@@ -1,8 +1,8 @@
 <map id="nanoflann::KNNResultSet::init" name="nanoflann::KNNResultSet::init">
 <area shape="rect" id="Node000001" title=" " alt="" coords="276,105,461,145"/>
-<area shape="rect" id="Node000002" href="$classKdTree.html#abda5d691d40dd38ddec3fbe8b1dc6fec" title=" " alt="" coords="67,5,166,31"/>
+<area shape="rect" id="Node000002" href="$classKdTree.html#ae3fa20e77d0294978ca988e8db51c5d2" title=" " alt="" coords="67,5,166,31"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="327,99,280,70,227,44,165,28,167,22,229,40,283,66,330,94"/>
-<area shape="rect" id="Node000003" href="$classKdTree.html#a7cfa5e81fddad527ee2130715c082ccc" title=" " alt="" coords="55,55,179,80"/>
+<area shape="rect" id="Node000003" href="$classKdTree.html#a2b721a8a88544c7fb154e2885308151e" title=" " alt="" coords="55,55,179,80"/>
 <area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="266,104,173,83,174,77,268,99"/>
 <area shape="rect" id="Node000004" href="$classnanoflann_1_1KDTreeSingleIndexAdaptor.html#a91702dc033060e6eaa1ab951c1824b02" title=" " alt="" coords="9,105,225,145"/>
 <area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="263,127,225,127,225,122,263,122"/>

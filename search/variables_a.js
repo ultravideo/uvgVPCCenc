@@ -10,7 +10,7 @@ var searchData=
   ['log2quantizersizex_7',['log2QuantizerSizeX',['../structuvgvpcc__enc_1_1Parameters.html#a2f93061ac401a72abf93d03c79f7c174',1,'uvgvpcc_enc::Parameters']]],
   ['log2quantizersizey_8',['log2QuantizerSizeY',['../structuvgvpcc__enc_1_1Parameters.html#a3cddd7ec1a6a6b634ba18cd19b916d75',1,'uvgvpcc_enc::Parameters']]],
   ['loglevel_9',['logLevel',['../structuvgvpcc__enc_1_1Parameters.html#a0c01000c8756e0d955e9d57da4f863a6',1,'uvgvpcc_enc::Parameters']]],
-  ['logleveldefaultvalue_10',['logLevelDefaultValue',['../namespaceuvgvpcc__enc.html#a4c574046ce45fc13445374e96bb99186',1,'uvgvpcc_enc']]],
+  ['logleveldefaultvalue_10',['logLevelDefaultValue',['../namespaceuvgutils.html#a0a76a9c494b0c833262263059767664b',1,'uvgutils']]],
   ['low_11',['low',['../structnanoflann_1_1KDTreeBaseClass_1_1Interval.html#a75c5eb8ad6655399a320ab2347ba68e5',1,'nanoflann::KDTreeBaseClass::Interval']]],
   ['lowdelaybitstream_12',['lowDelayBitstream',['../structuvgvpcc__enc_1_1Parameters.html#acc95ab30c9b3e6a51b9d1161793e5fc7',1,'uvgvpcc_enc::Parameters']]],
   ['lr_13',['lr',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#ac0c16fb175aa8bc7559e5e1dd803432f',1,'nanoflann::KDTreeBaseClass::Node']]]

@@ -1,7 +1,7 @@
-<map id="src/lib/mapGeneration/bgFillGeometry.hpp" name="src/lib/mapGeneration/bgFillGeometry.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="100,5,267,45"/>
-<area shape="rect" id="Node000002" href="$bgFillGeometry_8cpp.html" title=" " alt="" coords="5,93,172,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="154,57,111,95,108,91,150,53"/>
-<area shape="rect" id="Node000003" href="$mapGeneration_8cpp.html" title=" " alt="" coords="196,93,363,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="217,53,260,91,256,95,213,57"/>
+<map id="src/libuvgvpccenc/mapGeneration/bgFillGeometry.hpp" name="src/libuvgvpccenc/mapGeneration/bgFillGeometry.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="139,5,381,45"/>
+<area shape="rect" id="Node000002" href="$bgFillGeometry_8cpp.html" title=" " alt="" coords="5,93,248,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="220,55,158,95,155,91,218,51"/>
+<area shape="rect" id="Node000003" href="$mapGeneration_8cpp.html" title=" " alt="" coords="272,93,515,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="302,51,365,91,362,95,300,55"/>
 </map>

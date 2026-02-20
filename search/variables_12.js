@@ -2,7 +2,7 @@ var searchData=
 [
   ['tangentaxis_5f_0',['tangentAxis_',['../structuvgvpcc__enc_1_1Patch.html#aa3b535e4200aa6f0a2431a7ebcd7e4f7',1,'uvgvpcc_enc::Patch']]],
   ['theta_1',['theta',['../structPointCloud__Orient_1_1Point.html#a94ab0276b2e3cb6c9bd11ce2708f06d0',1,'PointCloud_Orient::Point']]],
-  ['threadqueue_2',['threadQueue',['../structuvgvpcc__enc_1_1JobManager.html#a3aee9139900c29e4390d378d186d9b25',1,'uvgvpcc_enc::JobManager']]],
+  ['threadqueue_2',['threadQueue',['../structuvgutils_1_1JobManager.html#aa674bbbbaca70448fb64c1aa7f4db04a',1,'uvgutils::JobManager']]],
   ['threads_3',['threads',['../structcli_1_1opts__t.html#af37434bb408a128a91363d3dc2ecba69',1,'cli::opts_t']]],
   ['timerlog_4',['timerLog',['../structuvgvpcc__enc_1_1Parameters.html#a7daa08aa4174583dc3921a56a1a83b97',1,'uvgvpcc_enc::Parameters']]],
   ['treecount_5f_5',['treeCount_',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a2f805b760e60bd0ff24fd1fafe05e7fe',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],

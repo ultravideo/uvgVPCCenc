@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['wait_0',['wait',['../classuvgvpcc__enc_1_1Job.html#add9a45cf44f945b2af55c9a94dd856c9',1,'uvgvpcc_enc::Job']]],
-  ['waitforjob_1',['waitForJob',['../classuvgvpcc__enc_1_1ThreadQueue.html#aca5ac34dc02ce359e244defbb4edb8f9',1,'uvgvpcc_enc::ThreadQueue']]],
+  ['wait_0',['wait',['../classuvgutils_1_1Job.html#a322db1b1d2cf7c783f0edca1a0abba33',1,'uvgutils::Job']]],
+  ['waitforjob_1',['waitForJob',['../classuvgutils_1_1ThreadQueue.html#af6255d8dee66f1c1c64f2309a0f61899',1,'uvgutils::ThreadQueue']]],
   ['weightededge_2',['WeightedEdge',['../structNormalOrientation_1_1WeightedEdge.html#a83af420df97f586749626aca1ff8e0b5',1,'NormalOrientation::WeightedEdge']]],
   ['worst_5fitem_3',['worst_item',['../classnanoflann_1_1RadiusResultSet.html#a80e0073dfa2bfac39ce9fc50cf56a03f',1,'nanoflann::RadiusResultSet']]],
   ['worstdist_4',['worstdist',['../classnanoflann_1_1KNNResultSet.html#acf08622d02ee431bb04120afd76409c8',1,'nanoflann::KNNResultSet::worstDist()'],['../classnanoflann_1_1RKNNResultSet.html#afef97a9847eeb2bbef4afeed00806bda',1,'nanoflann::RKNNResultSet::worstDist()'],['../classnanoflann_1_1RadiusResultSet.html#a54df1902b1609123fdf0d7e52ba531a1',1,'nanoflann::RadiusResultSet::worstDist()']]],

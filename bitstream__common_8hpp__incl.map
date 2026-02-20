@@ -1,5 +1,5 @@
-<map id="src/lib/bitstreamGeneration/bitstream_common.hpp" name="src/lib/bitstreamGeneration/bitstream_common.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,205,45"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="72,93,139,119"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="108,46,108,79,103,79,103,46"/>
+<map id="src/libuvgvpccenc/bitstreamGeneration/bitstream_common.hpp" name="src/libuvgvpccenc/bitstreamGeneration/bitstream_common.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,5,259,45"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="99,93,165,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="135,46,135,79,129,79,129,46"/>
 </map>

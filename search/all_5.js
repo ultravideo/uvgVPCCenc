@@ -6,9 +6,9 @@ var searchData=
   ['dataset_5f_3',['dataset_',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a578a31c35dae687d538df2fc3902fb46',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::dataset_'],['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#ab71a9a8dfac484f3bada92c99f2bc810',1,'nanoflann::KDTreeSingleIndexAdaptor::dataset_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#a42aa7719e96d0a9e0c9804fc7e81b576',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::dataset_']]],
   ['dataset_5fget_4',['dataset_get',['../classnanoflann_1_1KDTreeBaseClass.html#ae324dc4d48301be5a7b5ff3072603883',1,'nanoflann::KDTreeBaseClass']]],
   ['deallocate_5',['deallocate',['../classrobin__hood_1_1detail_1_1BulkPoolAllocator.html#a41fb702a7bc3ee48662bf5bf84403e3e',1,'robin_hood::detail::BulkPoolAllocator']]],
-  ['debug_6',['DEBUG',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3adc30ec20708ef7b0f641ef78b7880a15',1,'uvgvpcc_enc']]],
+  ['debug_6',['DEBUG',['../namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7dadc30ec20708ef7b0f641ef78b7880a15',1,'uvgutils']]],
   ['dependencies_7',['Dependencies',['../index.html#autotoc_md3',1,'']]],
-  ['dependencies_5f_8',['dependencies_',['../classuvgvpcc__enc_1_1Job.html#afe312258d6a3139c1d1407e1ca68b2b4',1,'uvgvpcc_enc::Job']]],
+  ['dependencies_5f_8',['dependencies_',['../classuvgutils_1_1Job.html#af8e18424f6f6b44e356e3ba8dae6fb19',1,'uvgutils::Job']]],
   ['depthl1_5f_9',['depthL1_',['../structuvgvpcc__enc_1_1Patch.html#a947a565cb0b525a8e51a534a99befca6',1,'uvgvpcc_enc::Patch']]],
   ['depthl2_5f_10',['depthL2_',['../structuvgvpcc__enc_1_1Patch.html#a2b269c18df2263ac884099d8aec0f148',1,'uvgvpcc_enc::Patch']]],
   ['depthpcidxl1_5f_11',['depthPCidxL1_',['../structuvgvpcc__enc_1_1Patch.html#a9c6a98da0a656bf5bf182926bf4f7efe',1,'uvgvpcc_enc::Patch']]],
@@ -36,5 +36,6 @@ var searchData=
   ['dstaddress_33',['dstAddress',['../structcli_1_1opts__t.html#af695285723b9204d8e751889ef95ae0f',1,'cli::opts_t']]],
   ['dstport_34',['dstPort',['../structcli_1_1opts__t.html#a23703595958615622f735d6e204e6b30',1,'cli::opts_t']]],
   ['dummyrun_35',['dummyRun',['../structcli_1_1opts__t.html#ad57b5bb0a69b9668f3b7ad3281e389ae',1,'cli::opts_t']]],
-  ['dump_5fmem_5fusage_36',['dump_mem_usage',['../nanoflann_8hpp.html#a3f609a0177ca23982c3b7bb084b23d01',1,'nanoflann.hpp']]]
+  ['dump_5fmem_5fusage_36',['dump_mem_usage',['../nanoflann_8hpp.html#a3f609a0177ca23982c3b7bb084b23d01',1,'nanoflann.hpp']]],
+  ['dynamicmapheight_37',['dynamicMapHeight',['../structuvgvpcc__enc_1_1Parameters.html#adaeb04b514128ce09399a8a5116eea08',1,'uvgvpcc_enc::Parameters']]]
 ];

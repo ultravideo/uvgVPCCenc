@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>uvgVPCCenc: src/lib/utils/utils.hpp File Reference</title>
+<title>uvgVPCCenc: src/libuvgutils/include/uvgutils/utils.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,90 +70,53 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c85d3e3c5052e9ad9ce18c6863244a25.html">lib</a></li><li class="navelem"><a class="el" href="dir_87d18a4dc5174905bfd7d2dc734defe6.html">utils</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a622c5bdfd738cd0e4990bbfd2314a8c.html">libuvgutils</a></li><li class="navelem"><a class="el" href="dir_1f5e88591cab0c9d019545205b768d1a.html">include</a></li><li class="navelem"><a class="el" href="dir_5980b2cb0cac27293b3f6d385a139817.html">uvgutils</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#typedef-members">Typedefs</a> &#124;
-<a href="#enum-members">Enumerations</a> &#124;
-<a href="#func-members">Functions</a> &#124;
-<a href="#var-members">Variables</a>  </div>
+<a href="#func-members">Functions</a>  </div>
   <div class="headertitle"><div class="title">utils.hpp File Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;array&gt;</code><br />
+<code>#include &lt;cstddef&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
+<code>#include &lt;iomanip&gt;</code><br />
 <code>#include &lt;limits&gt;</code><br />
 <code>#include &lt;sstream&gt;</code><br />
-<code>#include &lt;iomanip&gt;</code><br />
+<code>#include &quot;<a class="el" href="log_8hpp_source.html">log.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for utils.hpp:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utils_8hpp__incl.svg" width="438" height="110"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utils_8hpp__incl.svg" width="100%" height="448"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utils_8hpp__dep__incl.svg" width="100%" height="591"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utils_8hpp__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="utils_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3&lt; T &gt;</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN&lt; T, N &gt;</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceuvgvpcc__enc" id="r_namespaceuvgvpcc__enc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html">uvgvpcc_enc</a></td></tr>
+<tr class="memitem:namespaceuvgutils" id="r_namespaceuvgutils"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html">uvgutils</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
-Typedefs</h2></td></tr>
-<tr class="memitem:aa57c25323a3e0431ab72477c855be165" id="r_aa57c25323a3e0431ab72477c855be165"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">uvgvpcc_enc::typeGeometryInput</a> = uint16_t</td></tr>
-<tr class="separator:aa57c25323a3e0431ab72477c855be165"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:a438ef88972527efe2497ebae7692e6ca" id="r_a438ef88972527efe2497ebae7692e6ca"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6ca">uvgvpcc_enc::PPI</a> : uint8_t { <br />
-&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa114e2017e2c4fe3312f1106000ecf769">uvgvpcc_enc::ppi0</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa5d1e37283e93ac35e46268e042f545cf">uvgvpcc_enc::ppi1</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caaa6da940dd43af255382a97a8a6924438">uvgvpcc_enc::ppi2</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa9d1ae4f98aadf0a06200c2aa7413018a">uvgvpcc_enc::ppi3</a>
-, <br />
-&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa98e774ae15b2c7f6d12098e55e4372ba">uvgvpcc_enc::ppi4</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa1793df69f4e3d1a0c902ceb9282980ef">uvgvpcc_enc::ppi5</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa1ed52b123196a56bea8601a0d40bb00f">uvgvpcc_enc::ppiBlank</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa62e4219a088967e824d2d1716eedb8e3">uvgvpcc_enc::notAssigned</a>
-<br />
- }</td></tr>
-<tr class="separator:a438ef88972527efe2497ebae7692e6ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:a69b2cb991ff48de10ff75bc3c0582a54" id="r_a69b2cb991ff48de10ff75bc3c0582a54"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a69b2cb991ff48de10ff75bc3c0582a54">uvgvpcc_enc::zeroPad</a> (size_t value, size_t width)</td></tr>
-<tr class="separator:a69b2cb991ff48de10ff75bc3c0582a54"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a735c39eb14ded23670bac21df7dc8189" id="r_a735c39eb14ded23670bac21df7dc8189"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a735c39eb14ded23670bac21df7dc8189">uvgvpcc_enc::roundUp</a> (const size_t &amp;number, const size_t &amp;multiple)</td></tr>
-<tr class="separator:a735c39eb14ded23670bac21df7dc8189"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
-Variables</h2></td></tr>
-<tr class="memitem:af9ec55ef847b82862a80e0b13061a4a5" id="r_af9ec55ef847b82862a80e0b13061a4a5"><td class="memItemLeft" align="right" valign="top">const <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#af9ec55ef847b82862a80e0b13061a4a5">uvgvpcc_enc::g_infiniteDepth</a> = (std::numeric_limits&lt;<a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>&gt;::max)()</td></tr>
-<tr class="separator:af9ec55ef847b82862a80e0b13061a4a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adbad6d6d97255ba41e3fe306c2a8ce24" id="r_adbad6d6d97255ba41e3fe306c2a8ce24"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#adbad6d6d97255ba41e3fe306c2a8ce24">uvgvpcc_enc::g_infinitenumber</a> = (std::numeric_limits&lt;size_t&gt;::max)()</td></tr>
-<tr class="separator:adbad6d6d97255ba41e3fe306c2a8ce24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9fe9d69f62a01755abc270a9df1fbda" id="r_af9fe9d69f62a01755abc270a9df1fbda"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#af9fe9d69f62a01755abc270a9df1fbda">uvgvpcc_enc::g_valueNotSet</a> = (std::numeric_limits&lt;size_t&gt;::max)()</td></tr>
-<tr class="separator:af9fe9d69f62a01755abc270a9df1fbda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a797bca72259bfe178c1a2eb9c3daba9a" id="r_a797bca72259bfe178c1a2eb9c3daba9a"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a797bca72259bfe178c1a2eb9c3daba9a">uvgvpcc_enc::INVALID_PATCH_INDEX</a> = std::numeric_limits&lt;size_t&gt;::max()</td></tr>
-<tr class="separator:a797bca72259bfe178c1a2eb9c3daba9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a8d1a7ebd03bcc96e3589a502892d1c" id="r_a7a8d1a7ebd03bcc96e3589a502892d1c"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a7a8d1a7ebd03bcc96e3589a502892d1c">uvgvpcc_enc::PPI_NON_ASSIGNED</a> = std::numeric_limits&lt;size_t&gt;::max()</td></tr>
-<tr class="separator:a7a8d1a7ebd03bcc96e3589a502892d1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa17cbc0840fc950afb824b87e98b68b5" id="r_aa17cbc0840fc950afb824b87e98b68b5"><td class="memItemLeft" align="right" valign="top">constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#aa17cbc0840fc950afb824b87e98b68b5">uvgvpcc_enc::UNDEFINED_PARENT_PPI</a> = std::numeric_limits&lt;size_t&gt;::max() - 1</td></tr>
-<tr class="separator:aa17cbc0840fc950afb824b87e98b68b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0abc693a4c9342061a1247ee333c53eb" id="r_a0abc693a4c9342061a1247ee333c53eb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#a0abc693a4c9342061a1247ee333c53eb">uvgutils::zeroPad</a> (size_t value, size_t width)</td></tr>
+<tr class="separator:a0abc693a4c9342061a1247ee333c53eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa31c2e63fb27a196b33fbbd58a1ceab9" id="r_aa31c2e63fb27a196b33fbbd58a1ceab9"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#aa31c2e63fb27a196b33fbbd58a1ceab9">uvgutils::roundUp</a> (const size_t &amp;number, const size_t &amp;multiple)</td></tr>
+<tr class="separator:aa31c2e63fb27a196b33fbbd58a1ceab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 </div><!-- contents -->
 <!-- start footer part -->

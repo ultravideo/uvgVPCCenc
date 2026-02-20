@@ -1,25 +1,25 @@
-<map id="src/lib/bitstreamGeneration/bitstream_util.hpp" name="src/lib/bitstreamGeneration/bitstream_util.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="485,5,685,45"/>
-<area shape="rect" id="Node000002" href="$atlas__context_8cpp.html" title=" " alt="" coords="5,181,205,221"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="472,37,387,45,299,57,223,74,193,84,171,96,150,114,134,137,114,182,109,180,129,135,146,111,168,91,191,79,221,69,298,52,386,40,471,31"/>
-<area shape="rect" id="Node000003" href="$atlas__context_8hpp.html" title=" " alt="" coords="181,93,381,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="506,52,349,96,347,91,504,47"/>
-<area shape="rect" id="Node000006" href="$gof_8cpp.html" title=" " alt="" coords="597,269,797,309"/>
-<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="636,50,671,73,709,103,743,138,769,180,775,201,769,222,751,250,728,271,724,267,747,246,764,220,769,201,764,182,739,142,705,107,668,77,633,55"/>
-<area shape="rect" id="Node000007" href="$bitstream__util_8cpp.html" title=" " alt="" coords="829,93,1029,133"/>
-<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="675,46,855,91,853,96,673,51"/>
-<area shape="rect" id="Node000008" href="$vps_8cpp.html" title=" " alt="" coords="555,181,755,221"/>
-<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="611,55,632,92,647,139,655,181,650,182,642,141,627,94,606,58"/>
-<area shape="rect" id="Node000009" href="$vps_8hpp.html" title=" " alt="" coords="417,93,617,133"/>
-<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="564,58,534,95,530,91,560,55"/>
-<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="232,142,145,184,143,179,229,137"/>
-<area shape="rect" id="Node000004" href="$bitstreamGeneration_8cpp.html" title=" " alt="" coords="280,269,480,309"/>
-<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="270,147,263,184,264,203,270,220,295,247,326,267,323,271,291,252,266,223,259,204,258,183,265,146"/>
-<area shape="rect" id="Node000005" href="$gof_8hpp.html" title=" " alt="" coords="280,181,480,221"/>
-<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="315,140,360,179,356,183,312,144"/>
-<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="383,235,383,269,377,269,377,235"/>
-<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="464,222,629,267,627,272,462,228"/>
-<area shape="poly" id="edge12_Node000009_Node000004" title=" " alt="" coords="519,148,512,186,494,223,465,251,431,272,428,267,462,247,490,220,507,184,514,147"/>
-<area shape="poly" id="edge13_Node000009_Node000005" title=" " alt="" coords="477,143,411,184,409,179,474,139"/>
-<area shape="poly" id="edge14_Node000009_Node000008" title=" " alt="" coords="561,139,626,179,623,184,558,143"/>
+<map id="src/libuvgvpccenc/bitstreamGeneration/bitstream_util.hpp" name="src/libuvgvpccenc/bitstreamGeneration/bitstream_util.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="497,5,714,45"/>
+<area shape="rect" id="Node000002" href="$atlas__context_8cpp.html" title=" " alt="" coords="5,181,219,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="483,36,395,44,304,56,225,73,195,84,172,95,153,114,137,137,119,182,114,180,133,135,148,111,169,91,193,79,224,68,303,51,394,39,483,31"/>
+<area shape="rect" id="Node000003" href="$atlas__context_8hpp.html" title=" " alt="" coords="183,93,398,133"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="524,52,360,96,359,91,522,46"/>
+<area shape="rect" id="Node000006" href="$gof_8cpp.html" title=" " alt="" coords="632,269,837,309"/>
+<area shape="poly" id="edge9_Node000001_Node000006" title=" " alt="" coords="657,50,694,73,732,102,766,138,793,180,798,201,793,222,778,249,759,271,755,267,774,246,788,220,793,201,788,182,762,142,728,106,690,77,654,54"/>
+<area shape="rect" id="Node000007" href="$bitstream__util_8cpp.html" title=" " alt="" coords="853,93,1069,133"/>
+<area shape="poly" id="edge8_Node000001_Node000007" title=" " alt="" coords="697,46,884,91,883,96,696,51"/>
+<area shape="rect" id="Node000008" href="$vps_8cpp.html" title=" " alt="" coords="573,181,779,221"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="631,55,653,92,668,139,676,181,671,182,663,141,648,94,627,58"/>
+<area shape="rect" id="Node000009" href="$vps_8hpp.html" title=" " alt="" coords="433,93,639,133"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="583,58,553,95,549,91,579,55"/>
+<area shape="poly" id="edge3_Node000003_Node000002" title=" " alt="" coords="240,142,152,184,150,179,238,137"/>
+<area shape="rect" id="Node000004" href="$bitstreamGeneration_8cpp.html" title=" " alt="" coords="266,269,526,309"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="281,147,275,184,277,203,284,220,308,247,340,267,338,271,305,252,279,223,272,204,270,184,276,146"/>
+<area shape="rect" id="Node000005" href="$gof_8hpp.html" title=" " alt="" coords="293,181,499,221"/>
+<area shape="poly" id="edge5_Node000003_Node000005" title=" " alt="" coords="326,140,374,179,371,183,323,144"/>
+<area shape="poly" id="edge6_Node000005_Node000004" title=" " alt="" coords="399,235,399,269,393,269,393,235"/>
+<area shape="poly" id="edge7_Node000005_Node000006" title=" " alt="" coords="484,222,661,267,660,272,483,227"/>
+<area shape="poly" id="edge12_Node000009_Node000004" title=" " alt="" coords="538,148,530,186,513,223,483,251,448,272,446,267,480,247,509,220,525,184,532,147"/>
+<area shape="poly" id="edge13_Node000009_Node000005" title=" " alt="" coords="495,143,428,184,425,179,492,138"/>
+<area shape="poly" id="edge14_Node000009_Node000008" title=" " alt="" coords="580,138,647,179,644,184,577,143"/>
 </map>

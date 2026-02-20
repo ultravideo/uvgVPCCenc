@@ -1,0 +1,14 @@
+<map id="uvgutils::Timer::elapsed" name="uvgutils::Timer::elapsed">
+<area shape="rect" id="Node000001" title=" " alt="" coords="633,74,812,99"/>
+<area shape="rect" id="Node000002" href="$classBitstreamGeneration.html#a575d20f0f40bad111cab04d0b4f259ee" title=" " alt="" coords="389,37,579,77"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="619,77,579,72,579,66,620,71"/>
+<area shape="rect" id="Node000006" href="$classuvgutils_1_1Timer.html#af4837c616d4fd49bade1a9896b7641a7" title=" " alt="" coords="383,102,585,127"/>
+<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="620,101,586,105,585,100,620,96"/>
+<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc_1_1API.html#a75dacaf2d79b4a549ecb2a91ae8a6105" title="This function is called when all frames to be processed have been sent to the encoder...." alt="" coords="108,5,335,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="375,47,335,42,335,36,376,42"/>
+<area shape="rect" id="Node000005" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="126,69,317,109"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="376,73,317,80,317,75,375,68"/>
+<area shape="rect" id="Node000004" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,45,60,70"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="95,50,61,55,60,50,94,44"/>
+<area shape="poly" id="edge5_Node000005_Node000004" title=" " alt="" coords="112,73,60,64,61,59,113,68"/>
+</map>

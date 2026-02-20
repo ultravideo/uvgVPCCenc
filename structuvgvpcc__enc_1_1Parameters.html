@@ -132,8 +132,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a21488c083546be1faad7f941fe2ca517"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3cae6490d536e1e26ba158b685349de" id="r_ae3cae6490d536e1e26ba158b685349de"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#ae3cae6490d536e1e26ba158b685349de">normalOrientationKnnCount</a> = 4</td></tr>
 <tr class="separator:ae3cae6490d536e1e26ba158b685349de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1c609d8f423799b939766f69912090c" id="r_ab1c609d8f423799b939766f69912090c"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#ab1c609d8f423799b939766f69912090c">projectionPlaneOrientations</a></td></tr>
-<tr class="separator:ab1c609d8f423799b939766f69912090c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34f66495f957bed5025808282cebfb33" id="r_a34f66495f957bed5025808282cebfb33"><td class="memItemLeft" align="right" valign="top">const std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; double, 3 &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#a34f66495f957bed5025808282cebfb33">projectionPlaneOrientations</a></td></tr>
+<tr class="separator:a34f66495f957bed5025808282cebfb33"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a97988185d2aafbb88887be57adf41e7a" id="r_a97988185d2aafbb88887be57adf41e7a"><td class="memItemLeft" align="right" valign="top">const size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#a97988185d2aafbb88887be57adf41e7a">projectionPlaneCount</a> = 6</td></tr>
 <tr class="separator:a97988185d2aafbb88887be57adf41e7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af96a7b92e93ce7affadc45d590f2edcd" id="r_af96a7b92e93ce7affadc45d590f2edcd"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#af96a7b92e93ce7affadc45d590f2edcd">geoBitDepthRefineSegmentation</a></td></tr>
@@ -198,6 +198,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a7cfd4b3b9a41342b1cd718d8edbc5d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28df900f3e1aa139c399ed998c3a904c" id="r_a28df900f3e1aa139c399ed998c3a904c"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#a28df900f3e1aa139c399ed998c3a904c">mapGenerationFillEmptyBlock</a> = true</td></tr>
 <tr class="separator:a28df900f3e1aa139c399ed998c3a904c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adaeb04b514128ce09399a8a5116eea08" id="r_adaeb04b514128ce09399a8a5116eea08"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#adaeb04b514128ce09399a8a5116eea08">dynamicMapHeight</a> = true</td></tr>
+<tr class="separator:adaeb04b514128ce09399a8a5116eea08"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a67e73137a28d4272820da5d7c012f8e3" id="r_a67e73137a28d4272820da5d7c012f8e3"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#a67e73137a28d4272820da5d7c012f8e3">sizeGOP2DEncoding</a></td></tr>
 <tr class="separator:a67e73137a28d4272820da5d7c012f8e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7fb33f63d3f7bdf8c057cfb12f8e7f22" id="r_a7fb33f63d3f7bdf8c057cfb12f8e7f22"><td class="memItemLeft" align="right" valign="top">size_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structuvgvpcc__enc_1_1Parameters.html#a7fb33f63d3f7bdf8c057cfb12f8e7f22">intraFramePeriod</a> = 64</td></tr>
@@ -492,6 +494,20 @@ Public Attributes</h2></td></tr>
       <table class="memname">
         <tr>
           <td class="memname">bool uvgvpcc_enc::Parameters::doubleLayer = true</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="adaeb04b514128ce09399a8a5116eea08" name="adaeb04b514128ce09399a8a5116eea08"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adaeb04b514128ce09399a8a5116eea08">&#9670;&#160;</a></span>dynamicMapHeight</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool uvgvpcc_enc::Parameters::dynamicMapHeight = true</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1286,14 +1302,14 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
-<a id="ab1c609d8f423799b939766f69912090c" name="ab1c609d8f423799b939766f69912090c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab1c609d8f423799b939766f69912090c">&#9670;&#160;</a></span>projectionPlaneOrientations</h2>
+<a id="a34f66495f957bed5025808282cebfb33" name="a34f66495f957bed5025808282cebfb33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34f66495f957bed5025808282cebfb33">&#9670;&#160;</a></span>projectionPlaneOrientations</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const std::vector&lt;<a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt;double&gt; &gt; uvgvpcc_enc::Parameters::projectionPlaneOrientations</td>
+          <td class="memname">const std::vector&lt;<a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt;double, 3&gt; &gt; uvgvpcc_enc::Parameters::projectionPlaneOrientations</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -1541,7 +1557,7 @@ Public Attributes</h2></td></tr>
 </div>
 </div>
 <hr/>The documentation for this struct was generated from the following file:<ul>
-<li>src/lib/utils/<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a></li>
+<li>src/libuvgvpccenc/utils/<a class="el" href="parameters_8hpp_source.html">parameters.hpp</a></li>
 </ul>
 </div><!-- contents -->
 <!-- start footer part -->

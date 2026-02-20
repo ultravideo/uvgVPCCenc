@@ -10,7 +10,7 @@ var searchData=
   ['refinesegmentationmaxnnvoxeldistancelut_7',['refineSegmentationMaxNNVoxelDistanceLUT',['../structuvgvpcc__enc_1_1Parameters.html#a0e4b7f5480f14212c3797d65855f4a18',1,'uvgvpcc_enc::Parameters']]],
   ['refs_8',['refs',['../structatlas__tile__header.html#a06a2245a704d17daaa1ffede3c300df8',1,'atlas_tile_header']]],
   ['removedpoints_5f_9',['removedPoints_',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a61dbbca97a882ebcfbb0e18d33033386',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor']]],
-  ['reversedependencies_5f_10',['reverseDependencies_',['../classuvgvpcc__enc_1_1Job.html#ab9a16d87d9c2dbaec347ad91f636ab83',1,'uvgvpcc_enc::Job']]],
+  ['reversedependencies_5f_10',['reverseDependencies_',['../classuvgutils_1_1Job.html#a2cfeb72894a4dac74dd10ee7186f3381',1,'uvgutils::Job']]],
   ['right_11',['right',['../structnanoflann_1_1KDTreeBaseClass_1_1Node.html#aa3c0e043ad01bb01dc45c1a3b3b46829',1,'nanoflann::KDTreeBaseClass::Node']]],
   ['root_5fbbox_5f_12',['root_bbox_',['../classnanoflann_1_1KDTreeBaseClass.html#a9f89305d43e68ff67d7e42b324ddd2e6',1,'nanoflann::KDTreeBaseClass']]],
   ['root_5fnode_5f_13',['root_node_',['../classnanoflann_1_1KDTreeBaseClass.html#a0d9f7c2b7fddcc129c7eca50705942a8',1,'nanoflann::KDTreeBaseClass']]],

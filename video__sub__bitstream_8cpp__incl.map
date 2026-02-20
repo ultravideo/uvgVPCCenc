@@ -1,11 +1,11 @@
-<map id="src/lib/bitstreamGeneration/video_sub_bitstream.cpp" name="src/lib/bitstreamGeneration/video_sub_bitstream.cpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="277,5,477,45"/>
+<map id="src/libuvgvpccenc/bitstreamGeneration/video_sub_bitstream.cpp" name="src/libuvgvpccenc/bitstreamGeneration/video_sub_bitstream.cpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="247,5,508,45"/>
 <area shape="rect" id="Node000002" href="$video__sub__bitstream_8hpp.html" title=" " alt="" coords="80,93,267,119"/>
 <area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="329,48,217,91,215,86,328,43"/>
 <area shape="rect" id="Node000003" title=" " alt="" coords="5,167,72,192"/>
-<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="277,38,213,47,149,59,94,75,74,85,59,95,50,108,44,122,40,153,35,152,39,121,45,105,55,91,71,80,92,70,147,54,212,42,277,33"/>
+<area shape="poly" id="edge6_Node000001_Node000003" title=" " alt="" coords="247,42,134,63,89,78,59,95,50,108,44,122,40,153,35,152,39,121,45,105,56,91,86,73,133,58,246,37"/>
 <area shape="rect" id="Node000004" title=" " alt="" coords="100,167,159,192"/>
-<area shape="poly" id="edge11_Node000001_Node000004" title=" " alt="" coords="277,37,215,46,153,58,101,74,83,84,70,95,65,110,71,126,84,142,101,157,98,161,80,146,66,129,60,110,66,92,80,80,99,69,152,53,214,41,277,32"/>
+<area shape="poly" id="edge11_Node000001_Node000004" title=" " alt="" coords="247,41,191,50,139,62,96,77,70,95,65,110,71,126,84,142,101,157,98,161,80,146,66,129,60,110,66,92,94,72,137,56,190,45,246,36"/>
 <area shape="rect" id="Node000005" title=" " alt="" coords="186,167,249,192"/>
 <area shape="poly" id="edge12_Node000001_Node000005" title=" " alt="" coords="359,48,241,159,238,155,355,44"/>
 <area shape="rect" id="Node000006" title=" " alt="" coords="342,93,413,119"/>

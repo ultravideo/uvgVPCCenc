@@ -1,0 +1,50 @@
+<map id="src/libuvgvpccenc/utils/constants.hpp" name="src/libuvgvpccenc/utils/constants.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="1035,5,1205,45"/>
+<area shape="rect" id="Node000002" href="$kdTree_8hpp.html" title=" " alt="" coords="280,93,531,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="1021,41,532,100,531,94,1021,36"/>
+<area shape="rect" id="Node000005" href="$patchSegmentation_8cpp.html" title=" " alt="" coords="1352,181,1603,221"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="1220,43,1286,63,1352,91,1385,111,1415,135,1462,179,1458,183,1411,139,1381,116,1349,96,1284,68,1218,48"/>
+<area shape="rect" id="Node000006" href="$ppiSegmenter_8cpp.html" title=" " alt="" coords="829,181,1080,221"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="1095,57,975,183,971,179,1091,54"/>
+<area shape="rect" id="Node000007" href="$ppiSegmenter_8hpp.html" title=" " alt="" coords="727,93,977,133"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="1049,52,911,96,910,91,1047,47"/>
+<area shape="rect" id="Node000008" href="$slicingComputation_8cpp.html" title=" " alt="" coords="555,181,805,221"/>
+<area shape="poly" id="edge10_Node000001_Node000008" title=" " alt="" coords="1021,34,935,41,846,53,767,71,738,82,716,95,701,114,691,137,683,181,678,180,686,136,696,112,713,91,735,78,766,66,845,48,935,36,1021,29"/>
+<area shape="rect" id="Node000009" href="$utilsPatchGeneration_8hpp.html" title=" " alt="" coords="1088,93,1339,133"/>
+<area shape="poly" id="edge11_Node000001_Node000009" title=" " alt="" coords="1153,53,1194,91,1191,95,1149,57"/>
+<area shape="rect" id="Node000012" href="$patchPacking_8cpp.html" title=" " alt="" coords="1862,93,2090,133"/>
+<area shape="poly" id="edge17_Node000001_Node000012" title=" " alt="" coords="1219,31,1503,55,1850,91,1862,92,1861,98,1849,96,1502,60,1219,37"/>
+<area shape="rect" id="Node000013" href="$fileExport_8hpp.html" title=" " alt="" coords="1667,93,1837,133"/>
+<area shape="poly" id="edge18_Node000001_Node000013" title=" " alt="" coords="1220,37,1667,98,1666,103,1219,43"/>
+<area shape="rect" id="Node000003" href="$kdTree_8cpp.html" title=" " alt="" coords="5,181,256,221"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,140,192,184,190,179,331,135"/>
+<area shape="rect" id="Node000004" href="$patchGeneration_8cpp.html" title=" " alt="" coords="280,181,531,221"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="408,147,408,181,403,181,403,147"/>
+<area shape="poly" id="edge7_Node000007_Node000004" title=" " alt="" coords="741,139,504,184,503,179,740,133"/>
+<area shape="poly" id="edge8_Node000007_Node000006" title=" " alt="" coords="887,140,934,179,930,183,884,144"/>
+<area shape="poly" id="edge9_Node000007_Node000008" title=" " alt="" coords="803,142,719,184,716,179,801,137"/>
+<area shape="poly" id="edge13_Node000009_Node000004" title=" " alt="" coords="1075,130,827,153,543,184,531,185,530,180,542,179,826,148,1074,124"/>
+<area shape="poly" id="edge14_Node000009_Node000005" title=" " alt="" coords="1285,135,1420,179,1419,184,1283,140"/>
+<area shape="poly" id="edge15_Node000009_Node000006" title=" " alt="" coords="1144,140,1012,184,1010,179,1143,135"/>
+<area shape="rect" id="Node000010" href="$normalOrientation_8cpp.html" title=" " alt="" coords="1627,181,1877,221"/>
+<area shape="poly" id="edge12_Node000009_Node000010" title=" " alt="" coords="1345,133,1634,179,1634,184,1345,138"/>
+<area shape="rect" id="Node000011" href="$uvgvpcc_8cpp.html" title=" " alt="" coords="1105,189,1327,214"/>
+<area shape="poly" id="edge16_Node000009_Node000011" title=" " alt="" coords="1217,147,1218,188,1213,188,1212,147"/>
+<area shape="poly" id="edge25_Node000013_Node000005" title=" " alt="" coords="1679,140,1538,184,1537,179,1678,135"/>
+<area shape="poly" id="edge26_Node000013_Node000006" title=" " alt="" coords="1653,126,1399,151,1092,184,1080,185,1080,180,1092,179,1398,145,1653,121"/>
+<area shape="poly" id="edge27_Node000013_Node000008" title=" " alt="" coords="1653,122,1285,145,1052,162,818,184,806,185,805,180,817,179,1052,157,1285,139,1653,117"/>
+<area shape="poly" id="edge24_Node000013_Node000010" title=" " alt="" coords="1755,147,1755,181,1749,181,1749,147"/>
+<area shape="poly" id="edge29_Node000013_Node000011" title=" " alt="" coords="1654,133,1288,191,1287,186,1653,128"/>
+<area shape="rect" id="Node000014" href="$bitstream__util_8cpp.html" title=" " alt="" coords="2637,181,2853,221"/>
+<area shape="poly" id="edge19_Node000013_Node000014" title=" " alt="" coords="1851,131,2070,151,2240,157,2410,162,2626,179,2637,180,2637,185,2625,184,2410,167,2240,162,2069,156,1851,136"/>
+<area shape="rect" id="Node000015" href="$encoderFFmpeg_8cpp.html" title=" " alt="" coords="2878,181,3109,221"/>
+<area shape="poly" id="edge20_Node000013_Node000015" title=" " alt="" coords="1851,131,2006,146,2137,154,2360,158,2583,160,2713,166,2866,179,2878,180,2878,185,2865,184,2712,172,2582,166,2360,163,2137,159,2005,151,1851,136"/>
+<area shape="rect" id="Node000016" href="$encoderKvazaar_8cpp.html" title=" " alt="" coords="3133,181,3363,221"/>
+<area shape="poly" id="edge21_Node000013_Node000016" title=" " alt="" coords="1851,130,2045,148,2209,157,2353,160,2488,159,2767,158,2930,164,3122,179,3133,180,3132,185,3121,184,2929,170,2766,164,2488,164,2353,165,2209,162,2044,154,1851,136"/>
+<area shape="rect" id="Node000017" href="$mapGeneration_8cpp.html" title=" " alt="" coords="1901,181,2144,221"/>
+<area shape="poly" id="edge22_Node000013_Node000017" title=" " alt="" coords="1825,135,1964,179,1963,184,1824,140"/>
+<area shape="rect" id="Node000018" href="$normalComputation_8cpp.html" title=" " alt="" coords="2168,181,2419,221"/>
+<area shape="poly" id="edge23_Node000013_Node000018" title=" " alt="" coords="1851,131,2168,180,2167,185,1850,136"/>
+<area shape="rect" id="Node000019" href="$fileExport_8cpp.html" title=" " alt="" coords="2443,181,2613,221"/>
+<area shape="poly" id="edge28_Node000013_Node000019" title=" " alt="" coords="1851,131,2015,148,2143,154,2270,161,2431,179,2443,180,2442,186,2430,184,2270,167,2143,160,2015,153,1850,136"/>
+</map>

@@ -1,7 +1,0 @@
-<map id="uvgvpcc_enc::JobManager::submitCurrentFrameJobs" name="uvgvpcc_enc::JobManager::submitCurrentFrameJobs">
-<area shape="rect" id="Node000001" title=" " alt="" coords="347,5,537,45"/>
-<area shape="rect" id="Node000002" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,5,299,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="333,28,299,28,299,23,333,23"/>
-<area shape="rect" id="Node000003" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,13,60,38"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
-</map>

@@ -33,5 +33,5 @@ var searchData=
   ['ppi5_30',['ppi5',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa1793df69f4e3d1a0c902ceb9282980ef',1,'uvgvpcc_enc']]],
   ['ppiblank_31',['ppiBlank',['../namespaceuvgvpcc__enc.html#a438ef88972527efe2497ebae7692e6caa1ed52b123196a56bea8601a0d40bb00f',1,'uvgvpcc_enc']]],
   ['ppichange_32',['PpiChange',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3afe6e2187794c8f62f149a44e47ba003c',1,'statsCollector.hpp']]],
-  ['profiling_33',['PROFILING',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3ad4e245e32ce1419d1a8ffa7dc85d1790',1,'uvgvpcc_enc']]]
+  ['profiling_33',['PROFILING',['../namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7dad4e245e32ce1419d1a8ffa7dc85d1790',1,'uvgutils']]]
 ];

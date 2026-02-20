@@ -1,49 +1,51 @@
 <map id="BitstreamGeneration::createV3CGOFBitstream" name="BitstreamGeneration::createV3CGOFBitstream">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,260,195,300"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,285,195,325"/>
 <area shape="rect" id="Node000002" href="$classv3c__gof.html#a6a107d849bed5cacedc55fe98f0772c1" title=" " alt="" coords="260,5,433,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="106,258,124,216,153,161,192,104,215,78,241,55,249,50,252,54,244,59,219,82,196,108,157,164,129,218,111,260"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,284,121,238,149,176,188,111,213,81,241,55,248,50,251,55,244,59,217,85,193,114,153,178,126,240,110,286"/>
 <area shape="rect" id="Node000003" href="$classv3c__gof.html#a263296629443aa4ac7dcf7f7e7884389" title=" " alt="" coords="249,70,444,95"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="110,258,130,224,159,183,197,140,241,104,252,98,255,103,244,109,200,144,163,186,134,227,114,261"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="107,284,126,246,155,197,193,147,216,124,241,104,251,98,254,103,244,109,220,128,197,150,159,200,131,248,112,286"/>
 <area shape="rect" id="Node000004" href="$classv3c__gof.html#a899ad52a9837759feead70e5af99da94" title=" " alt="" coords="249,119,444,145"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="116,258,169,206,203,177,241,154,257,147,259,152,244,158,206,182,172,209,120,262"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="113,283,164,219,200,183,241,154,254,147,257,152,244,158,203,187,168,222,117,286"/>
 <area shape="rect" id="Node000005" href="$classv3c__gof.html#a418e29be967d58974050ead4ec90c227" title=" " alt="" coords="249,169,444,194"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="133,257,183,229,242,203,265,195,267,200,244,208,185,234,135,262"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="122,283,175,242,207,221,242,203,260,196,262,201,244,208,210,226,178,247,126,287"/>
 <area shape="rect" id="Node000006" href="$classv3c__gof.html#abe8c31a1393a898d71178cb79a687893" title=" " alt="" coords="265,218,429,243"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="194,258,269,243,270,249,196,264"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="152,283,242,252,272,244,273,249,243,257,154,288"/>
 <area shape="rect" id="Node000007" href="$video__sub__bitstream_8cpp.html#ae8d99b3cf0d33016153819e640104529" title=" " alt="" coords="243,267,451,293"/>
-<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="195,277,229,277,229,283,195,283"/>
-<area shape="rect" id="Node000008" href="$classv3c__gof.html#a3723017afa8250c6b0b50f6f56016389" title=" " alt="" coords="263,317,431,342"/>
-<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="196,296,270,311,269,317,194,302"/>
-<area shape="rect" id="Node000009" href="$classv3c__gof.html#ad967970c96fcd07a7c38bae799989a4b" title=" " alt="" coords="265,367,428,407"/>
-<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="137,298,187,324,244,351,266,360,264,365,242,356,185,329,135,302"/>
-<area shape="rect" id="Node000010" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="275,431,418,471"/>
-<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="118,298,170,357,205,389,244,416,264,426,261,431,241,421,202,393,166,360,114,302"/>
-<area shape="rect" id="Node000019" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="275,495,418,535"/>
-<area shape="poly" id="edge19_Node000001_Node000019" title=" " alt="" coords="112,299,131,338,160,387,198,437,244,481,264,492,261,496,241,485,194,441,156,390,127,341,108,302"/>
-<area shape="rect" id="Node000021" href="$classStatsCollector.html#a5cd74edd61d2b8c4fb9c5471d00eba64" title=" " alt="" coords="251,559,442,585"/>
-<area shape="poly" id="edge26_Node000001_Node000021" title=" " alt="" coords="108,299,123,349,150,416,190,486,215,517,244,545,254,551,251,556,241,549,211,521,185,489,145,419,118,351,103,301"/>
-<area shape="rect" id="Node000011" href="$bitstream__util_8cpp.html#ac69c20ee312c7d90392e8a6b3b06341a" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="507,552,661,592"/>
-<area shape="poly" id="edge10_Node000010_Node000011" title=" " alt="" coords="419,464,452,480,468,495,477,509,486,523,500,537,511,543,508,548,497,541,482,526,473,512,464,498,449,485,417,469"/>
-<area shape="rect" id="Node000013" href="$bitstream__util_8cpp.html#a3bdf77ac9496bba79a46c840a4042550" title=" " alt="" coords="499,354,669,379"/>
-<area shape="poly" id="edge12_Node000010_Node000013" title=" " alt="" coords="417,429,450,416,473,402,498,388,516,381,518,386,500,393,476,407,452,421,419,434"/>
-<area shape="rect" id="Node000015" href="$bitstream__util_8cpp.html#a6ad7f5421e391ce3552b43f2c387ad59" title=" " alt="" coords="512,453,656,478"/>
-<area shape="poly" id="edge14_Node000010_Node000015" title=" " alt="" coords="419,452,499,457,498,463,418,458"/>
-<area shape="rect" id="Node000016" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="512,403,656,429"/>
-<area shape="poly" id="edge15_Node000010_Node000016" title=" " alt="" coords="418,438,498,426,499,431,419,443"/>
-<area shape="rect" id="Node000018" href="$bitstream__util_8cpp.html#aa11755e3025221790473c013345959ab" title=" " alt="" coords="512,502,656,527"/>
-<area shape="poly" id="edge18_Node000010_Node000018" title=" " alt="" coords="419,467,524,496,522,501,418,472"/>
-<area shape="rect" id="Node000012" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="951,501,1105,541"/>
-<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="661,561,937,529,937,534,662,566"/>
-<area shape="rect" id="Node000014" href="$bitstream__util_8cpp.html#a9f9ae794155176e68c744fa3f2ed57cd" title=" " alt="" coords="735,347,885,387"/>
-<area shape="poly" id="edge13_Node000013_Node000014" title=" " alt="" coords="670,364,722,364,722,369,670,369"/>
-<area shape="rect" id="Node000017" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="717,435,903,461"/>
-<area shape="poly" id="edge16_Node000016_Node000017" title=" " alt="" coords="657,424,707,431,706,436,656,429"/>
-<area shape="poly" id="edge17_Node000017_Node000012" title=" " alt="" coords="850,458,956,494,954,499,848,463"/>
-<area shape="poly" id="edge20_Node000019_Node000011" title=" " alt="" coords="419,529,494,548,493,553,418,534"/>
-<area shape="poly" id="edge21_Node000019_Node000013" title=" " alt="" coords="417,499,449,481,466,459,472,436,479,412,497,389,504,384,507,388,501,393,483,414,477,437,470,461,452,485,419,503"/>
-<area shape="poly" id="edge22_Node000019_Node000015" title=" " alt="" coords="418,497,508,478,509,483,419,502"/>
-<area shape="poly" id="edge23_Node000019_Node000016" title=" " alt="" coords="417,495,449,480,463,470,473,459,482,449,497,438,511,431,513,436,500,442,486,452,477,463,467,474,452,485,419,500"/>
-<area shape="poly" id="edge25_Node000019_Node000018" title=" " alt="" coords="418,512,498,512,498,517,418,517"/>
-<area shape="rect" id="Node000020" href="$bitstream__util_8cpp.html#ad3c9546517d2a78df0a17d9cd426ac17" title=" " alt="" coords="509,616,659,656"/>
-<area shape="poly" id="edge24_Node000019_Node000020" title=" " alt="" coords="420,529,452,546,468,560,477,574,486,588,500,602,509,607,506,612,497,606,482,592,473,577,464,563,449,550,417,534"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="195,293,229,289,229,295,195,298"/>
+<area shape="rect" id="Node000008" href="$classuvgutils_1_1Timer.html#a2bd72dd0f3cdfaefceb1cd3f319198fb" title=" " alt="" coords="257,317,436,342"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="195,312,244,317,243,322,195,317"/>
+<area shape="rect" id="Node000009" href="$classv3c__gof.html#a3723017afa8250c6b0b50f6f56016389" title=" " alt="" coords="263,366,431,391"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="158,323,243,351,278,360,276,365,242,356,156,328"/>
+<area shape="rect" id="Node000010" href="$classv3c__gof.html#ad967970c96fcd07a7c38bae799989a4b" title=" " alt="" coords="265,416,428,456"/>
+<area shape="poly" id="edge9_Node000001_Node000010" title=" " alt="" coords="128,323,180,362,244,400,263,409,260,414,241,405,177,366,124,328"/>
+<area shape="rect" id="Node000011" href="$classv3c__gof.html#a7623e830a39058987eaea7f9ff65bf72" title=" " alt="" coords="275,480,418,520"/>
+<area shape="poly" id="edge10_Node000001_Node000011" title=" " alt="" coords="116,324,166,394,203,432,244,466,264,476,261,481,241,470,199,436,162,397,111,327"/>
+<area shape="rect" id="Node000020" href="$classv3c__gof.html#a16c6c5414ca72ba7a33ab15981c7b40c" title=" " alt="" coords="275,544,418,584"/>
+<area shape="poly" id="edge20_Node000001_Node000020" title=" " alt="" coords="111,325,128,368,157,423,195,481,218,507,244,530,264,542,261,547,241,534,215,511,191,484,152,426,124,370,106,327"/>
+<area shape="rect" id="Node000022" href="$classStatsCollector.html#a5cd74edd61d2b8c4fb9c5471d00eba64" title=" " alt="" coords="251,609,442,634"/>
+<area shape="poly" id="edge27_Node000001_Node000022" title=" " alt="" coords="108,325,121,379,147,452,165,491,187,529,213,564,244,594,254,600,251,605,241,598,209,567,182,532,160,494,142,454,116,381,102,326"/>
+<area shape="rect" id="Node000012" href="$bitstream__util_8cpp.html#ac69c20ee312c7d90392e8a6b3b06341a" title="Copy array of bytes to a byte&#45;aligned bitstream." alt="" coords="507,601,661,641"/>
+<area shape="poly" id="edge11_Node000011_Node000012" title=" " alt="" coords="419,514,452,530,468,544,477,558,486,572,500,586,511,593,508,597,497,590,482,575,473,561,464,547,449,534,417,519"/>
+<area shape="rect" id="Node000014" href="$bitstream__util_8cpp.html#a3bdf77ac9496bba79a46c840a4042550" title=" " alt="" coords="499,403,669,429"/>
+<area shape="poly" id="edge13_Node000011_Node000014" title=" " alt="" coords="417,478,450,466,473,452,498,438,516,430,518,435,500,442,476,456,452,470,419,483"/>
+<area shape="rect" id="Node000016" href="$bitstream__util_8cpp.html#a6ad7f5421e391ce3552b43f2c387ad59" title=" " alt="" coords="512,502,656,527"/>
+<area shape="poly" id="edge15_Node000011_Node000016" title=" " alt="" coords="419,502,499,507,498,512,418,507"/>
+<area shape="rect" id="Node000017" href="$bitstream__util_8cpp.html#a0e5e61b87281454f22e12f063c0bbeb6" title=" " alt="" coords="512,453,656,478"/>
+<area shape="poly" id="edge16_Node000011_Node000017" title=" " alt="" coords="418,487,498,475,499,480,419,492"/>
+<area shape="rect" id="Node000019" href="$bitstream__util_8cpp.html#aa11755e3025221790473c013345959ab" title=" " alt="" coords="512,551,656,577"/>
+<area shape="poly" id="edge19_Node000011_Node000019" title=" " alt="" coords="419,517,524,545,522,550,418,522"/>
+<area shape="rect" id="Node000013" href="$bitstream__util_8cpp.html#a7b8aab2d25c86997e6d1462e4cbcd30f" title=" " alt="" coords="951,551,1105,591"/>
+<area shape="poly" id="edge12_Node000012_Node000013" title=" " alt="" coords="661,610,937,578,937,584,662,615"/>
+<area shape="rect" id="Node000015" href="$bitstream__util_8cpp.html#a9f9ae794155176e68c744fa3f2ed57cd" title=" " alt="" coords="735,396,885,436"/>
+<area shape="poly" id="edge14_Node000014_Node000015" title=" " alt="" coords="670,413,722,413,722,419,670,419"/>
+<area shape="rect" id="Node000018" href="$bitstream__util_8cpp.html#a7cf378cfbd682b58c16948ad8935d7bc" title="Write a byte to bitstream." alt="" coords="717,485,903,510"/>
+<area shape="poly" id="edge17_Node000017_Node000018" title=" " alt="" coords="657,473,707,480,706,485,656,478"/>
+<area shape="poly" id="edge18_Node000018_Node000013" title=" " alt="" coords="850,508,956,544,954,549,848,513"/>
+<area shape="poly" id="edge21_Node000020_Node000012" title=" " alt="" coords="419,579,494,597,493,602,418,584"/>
+<area shape="poly" id="edge22_Node000020_Node000014" title=" " alt="" coords="417,548,449,530,466,508,472,485,479,461,497,438,504,433,507,437,501,442,483,464,477,487,470,510,452,534,419,553"/>
+<area shape="poly" id="edge23_Node000020_Node000016" title=" " alt="" coords="418,547,508,528,509,533,419,552"/>
+<area shape="poly" id="edge24_Node000020_Node000017" title=" " alt="" coords="417,544,449,530,463,519,473,509,482,498,497,487,511,480,513,485,500,492,486,502,477,512,467,523,452,534,419,549"/>
+<area shape="poly" id="edge26_Node000020_Node000019" title=" " alt="" coords="418,561,498,561,498,567,418,567"/>
+<area shape="rect" id="Node000021" href="$bitstream__util_8cpp.html#ad3c9546517d2a78df0a17d9cd426ac17" title=" " alt="" coords="509,665,659,705"/>
+<area shape="poly" id="edge25_Node000020_Node000021" title=" " alt="" coords="420,579,452,595,468,609,477,624,486,637,500,651,509,657,506,661,497,655,482,641,473,627,464,613,449,600,417,583"/>
 </map>

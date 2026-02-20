@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>uvgVPCCenc: src/lib/include/uvgvpcc/log.hpp File Reference</title>
+<title>uvgVPCCenc: src/libuvgutils/include/uvgutils/log.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c85d3e3c5052e9ad9ce18c6863244a25.html">lib</a></li><li class="navelem"><a class="el" href="dir_a6de617209e7dfe1dba6aa99bb75c990.html">include</a></li><li class="navelem"><a class="el" href="dir_38a126e63a3c3d4efaccad297323f896.html">uvgvpcc</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_a622c5bdfd738cd0e4990bbfd2314a8c.html">libuvgutils</a></li><li class="navelem"><a class="el" href="dir_1f5e88591cab0c9d019545205b768d1a.html">include</a></li><li class="navelem"><a class="el" href="dir_5980b2cb0cac27293b3f6d385a139817.html">uvgutils</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -79,6 +79,7 @@ $(function() {
 <a href="#namespaces">Namespaces</a> &#124;
 <a href="#define-members">Macros</a> &#124;
 <a href="#enum-members">Enumerations</a> &#124;
+<a href="#func-members">Functions</a> &#124;
 <a href="#var-members">Variables</a>  </div>
   <div class="headertitle"><div class="title">log.hpp File Reference</div></div>
 </div><!--header-->
@@ -87,8 +88,8 @@ $(function() {
 <code>#include &lt;cstdarg&gt;</code><br />
 <code>#include &lt;iomanip&gt;</code><br />
 <code>#include &lt;iostream&gt;</code><br />
-<code>#include &lt;string&gt;</code><br />
 <code>#include &lt;mutex&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for log.hpp:</div>
 <div class="dyncontent">
@@ -97,21 +98,21 @@ Include dependency graph for log.hpp:</div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="log_8hpp__dep__incl.svg" width="100%" height="470"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="log_8hpp__dep__incl.svg" width="100%" height="600"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div>
 <p><a href="log_8hpp_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Classes</h2></td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Logger.html">uvgvpcc_enc::Logger</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgutils_1_1Logger.html">uvgutils::Logger</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgvpcc__enc_1_1Timer.html">uvgvpcc_enc::Timer</a></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classuvgutils_1_1Timer.html">uvgutils::Timer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="namespaces" name="namespaces"></a>
 Namespaces</h2></td></tr>
-<tr class="memitem:namespaceuvgvpcc__enc" id="r_namespaceuvgvpcc__enc"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html">uvgvpcc_enc</a></td></tr>
+<tr class="memitem:namespaceuvgutils" id="r_namespaceuvgutils"><td class="memItemLeft" align="right" valign="top">namespace &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html">uvgutils</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
@@ -121,29 +122,35 @@ Macros</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
 Enumerations</h2></td></tr>
-<tr class="memitem:af55456acddf9a104316f01ddb4e646d3" id="r_af55456acddf9a104316f01ddb4e646d3"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3">uvgvpcc_enc::LogLevel</a> { <br />
-&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a19da7170bea36556dde582519795f3fc">uvgvpcc_enc::FATAL</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3abb1ca97ec761fc37101737ba0aa2e7c5">uvgvpcc_enc::ERROR</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a059e9861e0400dfbe05c98a841f3f96b">uvgvpcc_enc::WARNING</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a551b723eafd6a31d444fcb2f5920fbd3">uvgvpcc_enc::INFO</a>
+<tr class="memitem:af527d264e2f0277159b52e943f27eb7d" id="r_af527d264e2f0277159b52e943f27eb7d"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7d">uvgutils::LogLevel</a> { <br />
+&#160;&#160;<a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7da19da7170bea36556dde582519795f3fc">uvgutils::FATAL</a>
+, <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7dabb1ca97ec761fc37101737ba0aa2e7c5">uvgutils::ERROR</a>
+, <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7da059e9861e0400dfbe05c98a841f3f96b">uvgutils::WARNING</a>
+, <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7da551b723eafd6a31d444fcb2f5920fbd3">uvgutils::INFO</a>
 , <br />
-&#160;&#160;<a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3ad4e245e32ce1419d1a8ffa7dc85d1790">uvgvpcc_enc::PROFILING</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a2d3e4144aa384b18849ab9a8abad74d6">uvgvpcc_enc::TRACE</a>
-, <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3adc30ec20708ef7b0f641ef78b7880a15">uvgvpcc_enc::DEBUG</a>
+&#160;&#160;<a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7dad4e245e32ce1419d1a8ffa7dc85d1790">uvgutils::PROFILING</a>
+, <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7da2d3e4144aa384b18849ab9a8abad74d6">uvgutils::TRACE</a>
+, <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7dadc30ec20708ef7b0f641ef78b7880a15">uvgutils::DEBUG</a>
 <br />
  }</td></tr>
-<tr class="separator:af55456acddf9a104316f01ddb4e646d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:af527d264e2f0277159b52e943f27eb7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Functions</h2></td></tr>
+<tr class="memitem:a23ce6b582fdbb41460330991a1be8d31" id="r_a23ce6b582fdbb41460330991a1be8d31"><td class="memTemplParams" colspan="2">template&lt;<a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7d">LogLevel</a> LEVEL&gt; </td></tr>
+<tr class="memitem:a23ce6b582fdbb41460330991a1be8d31"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#a23ce6b582fdbb41460330991a1be8d31">uvgutils::log</a> (const std::string &amp;context, const std::string &amp;message)</td></tr>
+<tr class="separator:a23ce6b582fdbb41460330991a1be8d31"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a64e751fbbb55525a1ce2e9e0f16ab111" id="r_a64e751fbbb55525a1ce2e9e0f16ab111"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3">LogLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a64e751fbbb55525a1ce2e9e0f16ab111">uvgvpcc_enc::COMPILETIME_LOG_LEVEL</a> = <a class="el" href="log_8hpp.html#ac5fd994dfcf2861c3e6e318991fc4625">UVG_LOG_LEVEL</a></td></tr>
-<tr class="separator:a64e751fbbb55525a1ce2e9e0f16ab111"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac8b0770e8efb2f751e424cb4cdc9946e" id="r_ac8b0770e8efb2f751e424cb4cdc9946e"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#ac8b0770e8efb2f751e424cb4cdc9946e">uvgvpcc_enc::errorsAreFatalDefaultValue</a> = true</td></tr>
-<tr class="separator:ac8b0770e8efb2f751e424cb4cdc9946e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c574046ce45fc13445374e96bb99186" id="r_a4c574046ce45fc13445374e96bb99186"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3">LogLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#a4c574046ce45fc13445374e96bb99186">uvgvpcc_enc::logLevelDefaultValue</a> = <a class="el" href="namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3a551b723eafd6a31d444fcb2f5920fbd3">LogLevel::INFO</a></td></tr>
-<tr class="separator:a4c574046ce45fc13445374e96bb99186"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad624be4ca9fa92882740c0089ae956e4" id="r_ad624be4ca9fa92882740c0089ae956e4"><td class="memItemLeft" align="right" valign="top">constexpr std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgvpcc__enc.html#ad624be4ca9fa92882740c0089ae956e4">uvgvpcc_enc::outputDefaultValue</a> = &amp;std::cerr</td></tr>
-<tr class="separator:ad624be4ca9fa92882740c0089ae956e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa755f6269ddacc54f50d20a17a9fe4db" id="r_aa755f6269ddacc54f50d20a17a9fe4db"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7d">LogLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#aa755f6269ddacc54f50d20a17a9fe4db">uvgutils::COMPILETIME_LOG_LEVEL</a> = <a class="el" href="log_8hpp.html#ac5fd994dfcf2861c3e6e318991fc4625">UVG_LOG_LEVEL</a></td></tr>
+<tr class="separator:aa755f6269ddacc54f50d20a17a9fe4db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a963485360d17adce028b0c91ba0dc619" id="r_a963485360d17adce028b0c91ba0dc619"><td class="memItemLeft" align="right" valign="top">constexpr bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#a963485360d17adce028b0c91ba0dc619">uvgutils::errorsAreFatalDefaultValue</a> = true</td></tr>
+<tr class="separator:a963485360d17adce028b0c91ba0dc619"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a76a9c494b0c833262263059767664b" id="r_a0a76a9c494b0c833262263059767664b"><td class="memItemLeft" align="right" valign="top">constexpr <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7d">LogLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#a0a76a9c494b0c833262263059767664b">uvgutils::logLevelDefaultValue</a> = <a class="el" href="namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7da551b723eafd6a31d444fcb2f5920fbd3">LogLevel::INFO</a></td></tr>
+<tr class="separator:a0a76a9c494b0c833262263059767664b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1323eab36f93822507fe13d5bd5cab11" id="r_a1323eab36f93822507fe13d5bd5cab11"><td class="memItemLeft" align="right" valign="top">constexpr std::ostream *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceuvgutils.html#a1323eab36f93822507fe13d5bd5cab11">uvgutils::outputDefaultValue</a> = &amp;std::cerr</td></tr>
+<tr class="separator:a1323eab36f93822507fe13d5bd5cab11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Macro Definition Documentation</h2>
 <a id="ac5fd994dfcf2861c3e6e318991fc4625" name="ac5fd994dfcf2861c3e6e318991fc4625"></a>

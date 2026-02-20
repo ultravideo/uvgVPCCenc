@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['loglevel_0',['LogLevel',['../namespaceuvgvpcc__enc.html#af55456acddf9a104316f01ddb4e646d3',1,'uvgvpcc_enc']]]
+  ['loglevel_0',['LogLevel',['../namespaceuvgutils.html#af527d264e2f0277159b52e943f27eb7d',1,'uvgutils']]]
 ];

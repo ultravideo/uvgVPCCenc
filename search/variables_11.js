@@ -22,7 +22,7 @@ var searchData=
   ['st_5fref_5fatlas_5fframe_5fflag_19',['st_ref_atlas_frame_flag',['../structref__list__struct.html#a44489fc56a6a93e0520f37028a0742f6',1,'ref_list_struct']]],
   ['start_5f_20',['start_',['../structNormalOrientation_1_1WeightedEdge.html#a6739dbc87f8e327836fc9eee32d61c60',1,'NormalOrientation::WeightedEdge']]],
   ['startframe_21',['startFrame',['../structcli_1_1opts__t.html#aae1580c59c4c9aaeaffcb3284a562c15',1,'cli::opts_t']]],
-  ['state_5f_22',['state_',['../classuvgvpcc__enc_1_1Job.html#aec5917340ff9f7fd544a52be050dcb4b',1,'uvgvpcc_enc::Job']]],
+  ['state_5f_22',['state_',['../classuvgutils_1_1Job.html#aa221822880a468a8bfa22e547cc01bc0',1,'uvgutils::Job']]],
   ['statisticsdir_23',['statisticsDir',['../structuvgvpcc__enc_1_1Parameters.html#a58a2b5482caaa1af7330d7b75edb7d25',1,'uvgvpcc_enc::Parameters']]],
   ['stats_24',['stats',['../statsCollector_8cpp.html#ac4993c2d35c7be00a7212312a165014a',1,'stats:&#160;statsCollector.cpp'],['../statsCollector_8hpp.html#ac4993c2d35c7be00a7212312a165014a',1,'stats:&#160;statsCollector.cpp']]],
   ['stats_5f_25',['stats_',['../classStatsCollector.html#aa0c15f4a1bc2c9e8b5a42808a67b9837',1,'StatsCollector']]],

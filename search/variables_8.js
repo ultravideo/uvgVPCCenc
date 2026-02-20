@@ -21,6 +21,6 @@ var searchData=
   ['is_5fmap_18',['is_map',['../classrobin__hood_1_1detail_1_1Table.html#a0c2d258850afd0923b137fef79235bd6',1,'robin_hood::detail::Table']]],
   ['is_5fset_19',['is_set',['../classrobin__hood_1_1detail_1_1Table.html#af0a05809764dcc1f5601019d9a1f7905',1,'robin_hood::detail::Table']]],
   ['is_5ftransparent_20',['is_transparent',['../classrobin__hood_1_1detail_1_1Table.html#aefd4c2c18703cec7e07d846fae64e2a9',1,'robin_hood::detail::Table']]],
-  ['islinktoamegapatch_21',['isLinkToAMegaPatch',['../structuvgvpcc__enc_1_1Patch.html#a09a79c07f1b8696833ea037c5bf91069',1,'uvgvpcc_enc::Patch']]],
-  ['ismatched_5f_22',['isMatched_',['../structuvgvpcc__enc_1_1Patch.html#a95ab368b3ce3a375d65602d056518085',1,'uvgvpcc_enc::Patch']]]
+  ['isdiscarded_21',['isDiscarded',['../structuvgvpcc__enc_1_1Patch.html#ac78be9b6cd9faa6d63b5dea8d7ced5bb',1,'uvgvpcc_enc::Patch']]],
+  ['islinktoamegapatch_22',['isLinkToAMegaPatch',['../structuvgvpcc__enc_1_1Patch.html#a09a79c07f1b8696833ea037c5bf91069',1,'uvgvpcc_enc::Patch']]]
 ];

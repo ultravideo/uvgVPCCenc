@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>uvgVPCCenc: src/lib/patchGeneration/utilsPatchGeneration.hpp File Reference</title>
+<title>uvgVPCCenc: src/libuvgvpccenc/patchGeneration/utilsPatchGeneration.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c85d3e3c5052e9ad9ce18c6863244a25.html">lib</a></li><li class="navelem"><a class="el" href="dir_162bc35208f30672811e47a7919aed40.html">patchGeneration</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_ecc1da70cf6a1beb95498706df8e6909.html">libuvgvpccenc</a></li><li class="navelem"><a class="el" href="dir_d2ba98c9ffd9b7f188bc8ddaba5db254.html">patchGeneration</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -82,18 +82,18 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;sys/types.h&gt;</code><br />
-<code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils/utils.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="log_8hpp_source.html">uvgvpcc/log.hpp</a>&quot;</code><br />
-<code>#include &lt;cstddef&gt;</code><br />
+<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
 <code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &quot;<a class="el" href="robin__hood_8h_source.html">robin_hood.h</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="constants_8hpp_source.html">utils/constants.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="utils_8hpp_source.html">uvgutils/utils.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="log_8hpp_source.html">uvgutils/log.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for utilsPatchGeneration.hpp:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp__incl.svg" width="100%" height="448"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp__incl.svg" width="100%" height="558"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
@@ -113,13 +113,13 @@ Functions</h2></td></tr>
 <tr class="memitem:a254e1f999f13aa89c65618b5cd6f707e" id="r_a254e1f999f13aa89c65618b5cd6f707e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT &gt; </td></tr>
 <tr class="memitem:a254e1f999f13aa89c65618b5cd6f707e"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e">dotProduct</a> (const std::array&lt; T, 3 &gt; &amp;arr1, const std::array&lt; TT, 3 &gt; &amp;arr2)</td></tr>
 <tr class="separator:a254e1f999f13aa89c65618b5cd6f707e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad301e22bc2ea2855db471068224f34be" id="r_ad301e22bc2ea2855db471068224f34be"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#ad301e22bc2ea2855db471068224f34be">voxelization</a> (const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;inputPointsGeometry, std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;voxelizedPointsGeometry, std::vector&lt; size_t &gt; &amp;pointsIdToVoxelId, const size_t inputBitResolution, const size_t outputBitResolution)</td></tr>
-<tr class="separator:ad301e22bc2ea2855db471068224f34be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab18bfceeb4a48a9bd18002f5dfa76bea" id="r_ab18bfceeb4a48a9bd18002f5dfa76bea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#ab18bfceeb4a48a9bd18002f5dfa76bea">voxelization</a> (const std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &gt; &amp;inputPointsGeometry, std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &gt; &amp;voxelizedPointsGeometry, std::vector&lt; size_t &gt; &amp;pointsIdToVoxelId, const size_t inputBitResolution, const size_t outputBitResolution)</td></tr>
+<tr class="separator:ab18bfceeb4a48a9bd18002f5dfa76bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
 Variables</h2></td></tr>
-<tr class="memitem:a5815d7724caa272f2ada1248e9585cba" id="r_a5815d7724caa272f2ada1248e9585cba"><td class="memItemLeft" align="right" valign="top">const std::array&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; uint8_t &gt;, 114 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a5815d7724caa272f2ada1248e9585cba">patchColors</a></td></tr>
-<tr class="separator:a5815d7724caa272f2ada1248e9585cba"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a55c3b815998c208f3d1488090d15dec8" id="r_a55c3b815998c208f3d1488090d15dec8"><td class="memItemLeft" align="right" valign="top">const std::array&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; uint8_t, 3 &gt;, 114 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a55c3b815998c208f3d1488090d15dec8">patchColors</a></td></tr>
+<tr class="separator:a55c3b815998c208f3d1488090d15dec8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
 <a id="a254e1f999f13aa89c65618b5cd6f707e" name="a254e1f999f13aa89c65618b5cd6f707e"></a>
@@ -165,8 +165,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ad301e22bc2ea2855db471068224f34be" name="ad301e22bc2ea2855db471068224f34be"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad301e22bc2ea2855db471068224f34be">&#9670;&#160;</a></span>voxelization()</h2>
+<a id="ab18bfceeb4a48a9bd18002f5dfa76bea" name="ab18bfceeb4a48a9bd18002f5dfa76bea"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab18bfceeb4a48a9bd18002f5dfa76bea">&#9670;&#160;</a></span>voxelization()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -177,13 +177,13 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void voxelization </td>
           <td>(</td>
-          <td class="paramtype">const std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>inputPointsGeometry</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt; &amp;&#160;</td>
+          <td class="paramtype">std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &gt; &amp;&#160;</td>
           <td class="paramname"><em>voxelizedPointsGeometry</em>, </td>
         </tr>
         <tr>
@@ -219,31 +219,45 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_ad301e22bc2ea2855db471068224f34be_cgraph.svg" width="314" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_ab18bfceeb4a48a9bd18002f5dfa76bea_cgraph.svg" width="314" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_ad301e22bc2ea2855db471068224f34be_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_ab18bfceeb4a48a9bd18002f5dfa76bea_icgraph.svg" width="100%" height="300"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 
 </div>
 </div>
 <h2 class="groupheader">Variable Documentation</h2>
-<a id="a5815d7724caa272f2ada1248e9585cba" name="a5815d7724caa272f2ada1248e9585cba"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5815d7724caa272f2ada1248e9585cba">&#9670;&#160;</a></span>patchColors</h2>
+<a id="a55c3b815998c208f3d1488090d15dec8" name="a55c3b815998c208f3d1488090d15dec8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a55c3b815998c208f3d1488090d15dec8">&#9670;&#160;</a></span>patchColors</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">const std::array&lt;<a class="el" href="classuvgvpcc__enc_1_1Vector3.html">Vector3</a>&lt;uint8_t&gt;, 114&gt; patchColors</td>
+          <td class="memname">const std::array&lt;<a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt;uint8_t, 3&gt;, 114&gt; patchColors</td>
         </tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">= {{</div>
 <div class="line">    </div>
-<div class="line">{139,0,0},{165,42,42},{178,34,34},{220,20,60},{255,99,71},{255,127,80},{205,92,92},{240,128,128},{233,150,122},{250,128,114},{255,160,122},{255,69,0},{255,140,0},{255,165,0},{255,215,0},{184,134,11},{218,165,32},{238,232,170},{189,183,107},{240,230,140},{255,255,0},{32,178,170},{0,128,128},{0,139,139},{0,255,255},{0,255,255},{224,255,255},{0,206,209},{72,209,204},{175,238,238},{176,224,230},{95,158,160},{70,130,180},{100,149,237},{0,191,255},{30,144,255},{173,216,230},{135,206,235},{135,206,250},{25,25,112},{0,0,128},{0,0,139},{0,0,205},{0,0,255},{65,105,225},{138,43,226},{75,0,130},{72,61,139},{106,90,205},{123,104,238},{147,112,219},{139,0,139},{148,0,211},{153,50,204},{186,85,211},{128,0,128},{216,191,216},{221,160,221},{238,130,238},{255,0,255},{218,112,214},{199,21,133},{219,112,147},{255,20,147},{255,105,180},{255,182,193},{255,192,203},{250,235,215},{245,245,220},{255,228,196},{255,235,205},{245,222,179},{255,248,220},{255,250,205},{250,250,210},{255,255,224},{139,69,19},{160,82,45},{210,105,30},{205,133,63},{244,164,96},{222,184,135},{210,180,140},{188,143,143},{255,228,181},{255,222,173},{255,218,185},{255,228,225},{255,240,245},{250,240,230},{253,245,230},{255,239,213},{255,245,238},{245,255,250},{112,128,144},{119,136,153},{176,196,222},{230,230,250},{255,250,240},{240,248,255},{248,248,255},{240,255,240},{255,255,240},{240,255,255},{255,250,250},{0,0,0},{105,105,105},{128,128,128},{169,169,169},{192,192,192},{211,211,211},{220,220,220},{245,245,245},{255,255,255},</div>
+<div class="line">    {139, 0, 0},     {165, 42, 42},   {178, 34, 34},   {220, 20, 60},   {255, 99, 71},   {255, 127, 80},  {205, 92, 92},   {240, 128, 128},</div>
+<div class="line">    {233, 150, 122}, {250, 128, 114}, {255, 160, 122}, {255, 69, 0},    {255, 140, 0},   {255, 165, 0},   {255, 215, 0},   {184, 134, 11},</div>
+<div class="line">    {218, 165, 32},  {238, 232, 170}, {189, 183, 107}, {240, 230, 140}, {255, 255, 0},   {32, 178, 170},  {0, 128, 128},   {0, 139, 139},</div>
+<div class="line">    {0, 255, 255},   {0, 255, 255},   {224, 255, 255}, {0, 206, 209},   {72, 209, 204},  {175, 238, 238}, {176, 224, 230}, {95, 158, 160},</div>
+<div class="line">    {70, 130, 180},  {100, 149, 237}, {0, 191, 255},   {30, 144, 255},  {173, 216, 230}, {135, 206, 235}, {135, 206, 250}, {25, 25, 112},</div>
+<div class="line">    {0, 0, 128},     {0, 0, 139},     {0, 0, 205},     {0, 0, 255},     {65, 105, 225},  {138, 43, 226},  {75, 0, 130},    {72, 61, 139},</div>
+<div class="line">    {106, 90, 205},  {123, 104, 238}, {147, 112, 219}, {139, 0, 139},   {148, 0, 211},   {153, 50, 204},  {186, 85, 211},  {128, 0, 128},</div>
+<div class="line">    {216, 191, 216}, {221, 160, 221}, {238, 130, 238}, {255, 0, 255},   {218, 112, 214}, {199, 21, 133},  {219, 112, 147}, {255, 20, 147},</div>
+<div class="line">    {255, 105, 180}, {255, 182, 193}, {255, 192, 203}, {250, 235, 215}, {245, 245, 220}, {255, 228, 196}, {255, 235, 205}, {245, 222, 179},</div>
+<div class="line">    {255, 248, 220}, {255, 250, 205}, {250, 250, 210}, {255, 255, 224}, {139, 69, 19},   {160, 82, 45},   {210, 105, 30},  {205, 133, 63},</div>
+<div class="line">    {244, 164, 96},  {222, 184, 135}, {210, 180, 140}, {188, 143, 143}, {255, 228, 181}, {255, 222, 173}, {255, 218, 185}, {255, 228, 225},</div>
+<div class="line">    {255, 240, 245}, {250, 240, 230}, {253, 245, 230}, {255, 239, 213}, {255, 245, 238}, {245, 255, 250}, {112, 128, 144}, {119, 136, 153},</div>
+<div class="line">    {176, 196, 222}, {230, 230, 250}, {255, 250, 240}, {240, 248, 255}, {248, 248, 255}, {240, 255, 240}, {255, 255, 240}, {240, 255, 255},</div>
+<div class="line">    {255, 250, 250}, {0, 0, 0},       {105, 105, 105}, {128, 128, 128}, {169, 169, 169}, {192, 192, 192}, {211, 211, 211}, {220, 220, 220},</div>
+<div class="line">    {245, 245, 245}, {255, 255, 255},</div>
 <div class="line">}}</div>
 </div><!-- fragment -->
 </div>

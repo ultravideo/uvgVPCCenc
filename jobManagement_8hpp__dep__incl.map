@@ -1,7 +1,7 @@
-<map id="src/lib/utils/jobManagement.hpp" name="src/lib/utils/jobManagement.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="112,5,343,31"/>
-<area shape="rect" id="Node000002" href="$jobManagement_8cpp.html" title=" " alt="" coords="5,79,236,104"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="200,40,140,81,137,76,198,36"/>
-<area shape="rect" id="Node000003" href="$uvgvpcc_8cpp.html" title=" " alt="" coords="261,79,407,104"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="257,36,318,76,315,81,254,40"/>
+<map id="src/libuvgutils/include/uvgutils/jobManagement.hpp" name="src/libuvgutils/include/uvgutils/jobManagement.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="153,5,369,45"/>
+<area shape="rect" id="Node000002" href="$jobManagement_8cpp.html" title=" " alt="" coords="5,93,256,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="219,55,151,95,148,91,217,50"/>
+<area shape="rect" id="Node000003" href="$uvgvpcc_8cpp.html" title=" " alt="" coords="281,93,503,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="306,50,374,91,371,95,303,55"/>
 </map>

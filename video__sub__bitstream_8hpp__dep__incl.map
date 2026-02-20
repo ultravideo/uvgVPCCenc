@@ -1,13 +1,13 @@
-<map id="src/lib/bitstreamGeneration/video_sub_bitstream.hpp" name="src/lib/bitstreamGeneration/video_sub_bitstream.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="185,5,385,45"/>
-<area shape="rect" id="Node000002" href="$bitstreamGeneration_8cpp.html" title=" " alt="" coords="5,181,205,221"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="173,48,137,67,108,95,98,115,96,138,102,181,97,182,91,138,93,114,103,92,133,62,171,43"/>
-<area shape="rect" id="Node000003" href="$gof_8cpp.html" title=" " alt="" coords="241,181,441,221"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="312,55,332,92,342,140,344,181,339,181,337,141,327,94,307,58"/>
-<area shape="rect" id="Node000004" href="$gof_8hpp.html" title=" " alt="" coords="117,93,317,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="264,58,234,95,230,91,260,55"/>
-<area shape="rect" id="Node000005" href="$video__sub__bitstream_8cpp.html" title=" " alt="" coords="392,93,592,133"/>
-<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="344,48,448,91,446,96,342,53"/>
-<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="183,144,132,183,129,179,180,140"/>
-<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="258,139,315,179,312,183,255,143"/>
+<map id="src/libuvgvpccenc/bitstreamGeneration/video_sub_bitstream.hpp" name="src/libuvgvpccenc/bitstreamGeneration/video_sub_bitstream.hpp">
+<area shape="rect" id="Node000001" title=" " alt="" coords="203,5,465,45"/>
+<area shape="rect" id="Node000002" href="$bitstreamGeneration_8cpp.html" title=" " alt="" coords="5,181,265,221"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="212,53,179,70,152,95,141,115,135,138,135,181,130,181,130,138,136,113,148,92,176,66,209,48"/>
+<area shape="rect" id="Node000003" href="$gof_8cpp.html" title=" " alt="" coords="295,181,501,221"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="361,56,382,92,395,140,400,181,394,182,389,141,377,94,356,58"/>
+<area shape="rect" id="Node000004" href="$gof_8hpp.html" title=" " alt="" coords="162,93,367,133"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="312,58,282,95,278,91,308,55"/>
+<area shape="rect" id="Node000005" href="$video__sub__bitstream_8cpp.html" title=" " alt="" coords="442,93,703,133"/>
+<area shape="poly" id="edge6_Node000001_Node000005" title=" " alt="" coords="400,48,521,91,520,96,399,53"/>
+<area shape="poly" id="edge4_Node000004_Node000002" title=" " alt="" coords="226,144,165,183,162,179,223,139"/>
+<area shape="poly" id="edge5_Node000004_Node000003" title=" " alt="" coords="307,139,370,179,367,183,304,143"/>
 </map>

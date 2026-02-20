@@ -31,7 +31,7 @@
 <!-- Node2 -->
 <g id="Node000002" class="node">
 <title>Node2</title>
-<g id="a_Node000002"><a xlink:href="classKdTree.html#abda5d691d40dd38ddec3fbe8b1dc6fec" target="_top" xlink:title=" ">
+<g id="a_Node000002"><a xlink:href="classKdTree.html#ae3fa20e77d0294978ca988e8db51c5d2" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="120.5,-200.5 46.5,-200.5 46.5,-181.5 120.5,-181.5 120.5,-200.5"/>
 <text text-anchor="middle" x="83.5" y="-188.5" font-family="Helvetica,sans-Serif" font-size="10.00">KdTree::knn</text>
 </a>
@@ -49,7 +49,7 @@
 <!-- Node3 -->
 <g id="Node000003" class="node">
 <title>Node3</title>
-<g id="a_Node000003"><a xlink:href="classKdTree.html#a7cfa5e81fddad527ee2130715c082ccc" target="_top" xlink:title=" ">
+<g id="a_Node000003"><a xlink:href="classKdTree.html#a2b721a8a88544c7fb154e2885308151e" target="_top" xlink:title=" ">
 <polygon fill="white" stroke="#666666" points="130,-163.5 37,-163.5 37,-144.5 130,-144.5 130,-163.5"/>
 <text text-anchor="middle" x="83.5" y="-151.5" font-family="Helvetica,sans-Serif" font-size="10.00">KdTree::knnDist</text>
 </a>

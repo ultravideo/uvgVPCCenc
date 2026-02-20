@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=11"/>
 <meta name="generator" content="Doxygen 1.9.8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>uvgVPCCenc: src/lib/patchGeneration/kdTree.hpp File Reference</title>
+<title>uvgVPCCenc: src/libuvgvpccenc/patchGeneration/kdTree.hpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -70,7 +70,7 @@ $(function() {
 
 <div id="nav-path" class="navpath">
   <ul>
-<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_c85d3e3c5052e9ad9ce18c6863244a25.html">lib</a></li><li class="navelem"><a class="el" href="dir_162bc35208f30672811e47a7919aed40.html">patchGeneration</a></li>  </ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_ecc1da70cf6a1beb95498706df8e6909.html">libuvgvpccenc</a></li><li class="navelem"><a class="el" href="dir_d2ba98c9ffd9b7f188bc8ddaba5db254.html">patchGeneration</a></li>  </ul>
 </div>
 </div><!-- top -->
 <div class="header">
@@ -81,16 +81,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="nanoflann_8hpp_source.html">nanoflann.hpp</a>&quot;</code><br />
-<code>#include &quot;<a class="el" href="utils_8hpp_source.html">utils/utils.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="constants_8hpp_source.html">utils/constants.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="utils_8hpp_source.html">uvgutils/utils.hpp</a>&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for kdTree.hpp:</div>
 <div class="dyncontent">
-<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="kdTree_8hpp__incl.svg" width="100%" height="448"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
+<div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="kdTree_8hpp__incl.svg" width="100%" height="558"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
-<div class="center"><iframe scrolling="no" frameborder="0" src="kdTree_8hpp__dep__incl.svg" width="382" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
+<div class="center"><iframe scrolling="no" frameborder="0" src="kdTree_8hpp__dep__incl.svg" width="536" height="139"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div>
 </div>
 </div>
 <p><a href="kdTree_8hpp_source.html">Go to the source code of this file.</a></p>
@@ -102,18 +103,18 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
 Typedefs</h2></td></tr>
-<tr class="memitem:a07d04b35dbb86de50c8828a349d814e0" id="r_a07d04b35dbb86de50c8828a349d814e0"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdTree_8hpp.html#a07d04b35dbb86de50c8828a349d814e0">nanoflannAdaptorType</a> = <a class="el" href="structKDTreeVectorOfVectorsAdaptor.html">KDTreeVectorOfVectorsAdaptor</a>&lt; std::vector&lt; <a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a> &gt; &gt;, double, 3, <a class="el" href="structnanoflann_1_1metric__L2__Simple.html">nanoflann::metric_L2_Simple</a>, size_t &gt;</td></tr>
-<tr class="separator:a07d04b35dbb86de50c8828a349d814e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4caf6f2edf2b998b8966497850f2a8c3" id="r_a4caf6f2edf2b998b8966497850f2a8c3"><td class="memItemLeft" align="right" valign="top">using&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="kdTree_8hpp.html#a4caf6f2edf2b998b8966497850f2a8c3">nanoflannAdaptorType</a> = <a class="el" href="structKDTreeVectorOfVectorsAdaptor.html">KDTreeVectorOfVectorsAdaptor</a>&lt; std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &gt;, double, 3, <a class="el" href="structnanoflann_1_1metric__L2__Simple.html">nanoflann::metric_L2_Simple</a>, size_t &gt;</td></tr>
+<tr class="separator:a4caf6f2edf2b998b8966497850f2a8c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Typedef Documentation</h2>
-<a id="a07d04b35dbb86de50c8828a349d814e0" name="a07d04b35dbb86de50c8828a349d814e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a07d04b35dbb86de50c8828a349d814e0">&#9670;&#160;</a></span>nanoflannAdaptorType</h2>
+<a id="a4caf6f2edf2b998b8966497850f2a8c3" name="a4caf6f2edf2b998b8966497850f2a8c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4caf6f2edf2b998b8966497850f2a8c3">&#9670;&#160;</a></span>nanoflannAdaptorType</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">using <a class="el" href="kdTree_8hpp.html#a07d04b35dbb86de50c8828a349d814e0">nanoflannAdaptorType</a> =  <a class="el" href="structKDTreeVectorOfVectorsAdaptor.html">KDTreeVectorOfVectorsAdaptor</a>&lt;std::vector&lt;<a class="el" href="classuvgvpcc__enc_1_1Vector3.html">uvgvpcc_enc::Vector3</a>&lt;<a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>&gt; &gt;, double, 3, <a class="el" href="structnanoflann_1_1metric__L2__Simple.html">nanoflann::metric_L2_Simple</a>, size_t&gt;</td>
+          <td class="memname">using <a class="el" href="kdTree_8hpp.html#a4caf6f2edf2b998b8966497850f2a8c3">nanoflannAdaptorType</a> =  <a class="el" href="structKDTreeVectorOfVectorsAdaptor.html">KDTreeVectorOfVectorsAdaptor</a>&lt;std::vector&lt;<a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt;<a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3&gt; &gt;, double, 3, <a class="el" href="structnanoflann_1_1metric__L2__Simple.html">nanoflann::metric_L2_Simple</a>, size_t&gt;</td>
         </tr>
       </table>
 </div><div class="memdoc">

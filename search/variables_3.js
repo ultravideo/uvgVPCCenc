@@ -3,7 +3,7 @@ var searchData=
   ['data_0',['data',['../structbitstream__t.html#a26a20a6e5c1e7db50528d2daacba4469',1,'bitstream_t::data'],['../structuvgvpcc__enc_1_1API_1_1v3c__chunk.html#a80779ffe30a2e51047ab6a67249b7cf4',1,'uvgvpcc_enc::API::v3c_chunk::data'],['../structuvg__data__chunk.html#a98f9a3244625532adfbafc557c4e445d',1,'uvg_data_chunk::data']]],
   ['data_5fsource_1',['data_source',['../structnanoflann_1_1L1__Adaptor.html#a3c1f1d03b9a638e55dda2f06ddb58bc7',1,'nanoflann::L1_Adaptor::data_source'],['../structnanoflann_1_1L2__Adaptor.html#af976595b2ba5fc8ce269dd90ab54dabf',1,'nanoflann::L2_Adaptor::data_source'],['../structnanoflann_1_1L2__Simple__Adaptor.html#a01613b2b80938f37ecca68218f9a1f2d',1,'nanoflann::L2_Simple_Adaptor::data_source'],['../structnanoflann_1_1SO2__Adaptor.html#a1c5092b561ad1e580de71340a701a3af',1,'nanoflann::SO2_Adaptor::data_source']]],
   ['dataset_5f_2',['dataset_',['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html#ab71a9a8dfac484f3bada92c99f2bc810',1,'nanoflann::KDTreeSingleIndexAdaptor::dataset_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html#a42aa7719e96d0a9e0c9804fc7e81b576',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor_::dataset_'],['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html#a578a31c35dae687d538df2fc3902fb46',1,'nanoflann::KDTreeSingleIndexDynamicAdaptor::dataset_']]],
-  ['dependencies_5f_3',['dependencies_',['../classuvgvpcc__enc_1_1Job.html#afe312258d6a3139c1d1407e1ca68b2b4',1,'uvgvpcc_enc::Job']]],
+  ['dependencies_5f_3',['dependencies_',['../classuvgutils_1_1Job.html#af8e18424f6f6b44e356e3ba8dae6fb19',1,'uvgutils::Job']]],
   ['depthl1_5f_4',['depthL1_',['../structuvgvpcc__enc_1_1Patch.html#a947a565cb0b525a8e51a534a99befca6',1,'uvgvpcc_enc::Patch']]],
   ['depthl2_5f_5',['depthL2_',['../structuvgvpcc__enc_1_1Patch.html#a2b269c18df2263ac884099d8aec0f148',1,'uvgvpcc_enc::Patch']]],
   ['depthpcidxl1_5f_6',['depthPCidxL1_',['../structuvgvpcc__enc_1_1Patch.html#a9c6a98da0a656bf5bf182926bf4f7efe',1,'uvgvpcc_enc::Patch']]],
@@ -19,5 +19,6 @@ var searchData=
   ['doublelayer_16',['doubleLayer',['../structuvgvpcc__enc_1_1Parameters.html#aae636549f46cbf81f22c604e6fc84501',1,'uvgvpcc_enc::Parameters']]],
   ['dstaddress_17',['dstAddress',['../structcli_1_1opts__t.html#af695285723b9204d8e751889ef95ae0f',1,'cli::opts_t']]],
   ['dstport_18',['dstPort',['../structcli_1_1opts__t.html#a23703595958615622f735d6e204e6b30',1,'cli::opts_t']]],
-  ['dummyrun_19',['dummyRun',['../structcli_1_1opts__t.html#ad57b5bb0a69b9668f3b7ad3281e389ae',1,'cli::opts_t']]]
+  ['dummyrun_19',['dummyRun',['../structcli_1_1opts__t.html#ad57b5bb0a69b9668f3b7ad3281e389ae',1,'cli::opts_t']]],
+  ['dynamicmapheight_20',['dynamicMapHeight',['../structuvgvpcc__enc_1_1Parameters.html#adaeb04b514128ce09399a8a5116eea08',1,'uvgvpcc_enc::Parameters']]]
 ];

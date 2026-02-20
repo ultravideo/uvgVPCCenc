@@ -1,9 +1,7 @@
 <map id="PatchPacking::gofPatchPacking" name="PatchPacking::gofPatchPacking">
-<area shape="rect" id="Node000001" title=" " alt="" coords="5,77,227,102"/>
-<area shape="rect" id="Node000002" href="$classPatchPacking.html#a52deb9540d234496e20ef760ecc0dd54" title=" " alt="" coords="275,5,489,45"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="169,74,284,46,286,51,171,79"/>
-<area shape="rect" id="Node000003" href="$classPatchPacking.html#a1f7d7e56508922503b11cbe49d4d21ba" title=" " alt="" coords="290,69,474,109"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="227,87,276,87,276,92,227,92"/>
-<area shape="rect" id="Node000004" href="$classPatchPacking.html#ae18c38bf6f8d8681f7bc4020eb8146c3" title=" " alt="" coords="290,133,474,173"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="171,100,286,128,284,133,169,105"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,45,227,70"/>
+<area shape="rect" id="Node000002" href="$classPatchPacking.html#a1f7d7e56508922503b11cbe49d4d21ba" title=" " alt="" coords="275,5,459,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="215,42,260,36,261,41,216,47"/>
+<area shape="rect" id="Node000003" href="$classPatchPacking.html#ae18c38bf6f8d8681f7bc4020eb8146c3" title=" " alt="" coords="275,69,459,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="216,67,261,73,260,78,215,73"/>
 </map>

@@ -8,7 +8,7 @@ var searchData=
   ['major_20performance_20boosts_20in_20non_20video_20encoding_20tasks_5',['Encoding speed comparison: Major performance boosts in non-video encoding tasks',['../index.html#autotoc_md24',1,'']]],
   ['make_5findex_5fsequence_6',['make_index_sequence',['../namespacerobin__hood_1_1ROBIN__HOOD__STD.html#a8d1fbcb04a33c06ade536eede095976a',1,'robin_hood::ROBIN_HOOD_STD']]],
   ['make_5finteger_5fsequence_7',['make_integer_sequence',['../namespacerobin__hood_1_1ROBIN__HOOD__STD.html#a204e9a44dc0bd7384ba568422dda846e',1,'robin_hood::ROBIN_HOOD_STD']]],
-  ['make_5fjob_8',['make_job',['../structuvgvpcc__enc_1_1JobManager.html#a3d7405fc7bf3a24148d7108464dbdca7',1,'uvgvpcc_enc::JobManager::make_job(const size_t &amp;gofId, std::size_t priority, std::string funcName, Func &amp;&amp;func, Args &amp;&amp;... args)'],['../structuvgvpcc__enc_1_1JobManager.html#a5083fbe89d5e57feb28d4b53b8da7f12',1,'uvgvpcc_enc::JobManager::make_job(const size_t &amp;gofId, const size_t &amp;frameId, std::size_t priority, std::string funcName, Func &amp;&amp;func, Args &amp;&amp;... args)']]],
+  ['make_5fjob_8',['make_job',['../structuvgutils_1_1JobManager.html#a79c643599c97b893edd2734f0f3fa620',1,'uvgutils::JobManager::make_job(const size_t &amp;gofId, std::size_t priority, std::string funcName, Func &amp;&amp;func, Args &amp;&amp;... args)'],['../structuvgutils_1_1JobManager.html#a358577db9fa5e1805d3cf0f15fa643a6',1,'uvgutils::JobManager::make_job(const size_t &amp;gofId, const size_t &amp;frameId, std::size_t priority, std::string funcName, Func &amp;&amp;func, Args &amp;&amp;... args)']]],
   ['malloc_9',['malloc',['../classnanoflann_1_1PooledAllocator.html#a70e9ae9508a1aa2f81ffb851116378aa',1,'nanoflann::PooledAllocator']]],
   ['mapencoding_10',['MapEncoding',['../namespaceMapEncoding.html',1,'']]],
   ['mapencoding_2ecpp_11',['mapEncoding.cpp',['../mapEncoding_8cpp.html',1,'']]],
@@ -49,7 +49,7 @@ var searchData=
   ['miniply_2eh_46',['miniply.h',['../miniply_8h.html',1,'']]],
   ['minlevel_47',['minLevel',['../structuvgvpcc__enc_1_1Parameters.html#a4f64f8f2a3ef17061d05e00ef8f2837a',1,'uvgvpcc_enc::Parameters']]],
   ['minpointcountpercc_48',['minPointCountPerCC',['../structuvgvpcc__enc_1_1Parameters.html#ab63ac0bb47863688d5820caad62f6871',1,'uvgvpcc_enc::Parameters']]],
-  ['mtx_5f_49',['mtx_',['../classuvgvpcc__enc_1_1Job.html#aa78f33b97cee88b7b160f71da81dce81',1,'uvgvpcc_enc::Job']]],
+  ['mtx_5f_49',['mtx_',['../classuvgutils_1_1Job.html#a802912ae39196671f0e6ea17de8a6b43',1,'uvgutils::Job']]],
   ['multiedge_50',['multiedge',['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3ad794d1f85b92c53f8bbeef353a4b9e12',1,'MultiEdge:&#160;statsCollector.hpp'],['../structuvgVPCCencStats.html#a0c00dc4ee9601682201a898f19878c05',1,'uvgVPCCencStats::MultiEdge']]],
   ['multiedge_5fr_51',['multiedge_r',['../structuvgVPCCencStats.html#a9fdc1bb42a285c4460a0919ce132dd60',1,'uvgVPCCencStats::MultiEdge_R'],['../statsCollector_8hpp.html#af6688161228b34d1f9a62b334b4e79e3a92e0753a73c63cdf07f048a5a8bd7234',1,'MultiEdge_R:&#160;statsCollector.hpp']]]
 ];
