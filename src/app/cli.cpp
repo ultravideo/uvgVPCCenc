@@ -124,6 +124,23 @@ size_t select_start_frame_auto(std::string& file_name) {
 }
 }  // anonymous namespace
 
+size_t stringToInt(const std::string s) {
+    try {
+        return static_cast<size_t>(std::stoi(s));
+    } catch (const std::invalid_argument&) {
+        throw std::runtime_error("Input error: Invalid argument, expected a number but got: " + s);
+    } catch (const std::out_of_range&) {
+        throw std::runtime_error("Input error: Value out of range: " + s);
+    }
+}
+
+size_t stringToInt(const char* c) {
+    if (c == nullptr) {
+        throw std::runtime_error("A null pointer was passed to stringToInt. This may indicate an invalid command-line option (for example, a long option written with a single dash such as '-frames' instead of '--frames').");
+    }
+    return stringToInt(std::string(c));
+}
+
 /// @brief Parse command line options
 /// @return True if the execution should end (for exemple if the flag --help is used).
 bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* const>& args) {
@@ -158,31 +175,31 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             }
             opts.outputPath = optarg;
         } else if (name == "geo-precision") {
-            opts.inputGeoPrecision = std::stoi(optarg);
+            opts.inputGeoPrecision = stringToInt(optarg);
             if (opts.inputGeoPrecision == 0) {
                 throw std::runtime_error("Input error: Geometry precision is set to zero");
             }
         } else if (name == "frames") {
-            opts.nbFrames = std::stoi(optarg);
+            opts.nbFrames = stringToInt(optarg);
             if (opts.nbFrames == 0) {
                 throw std::runtime_error("Input error: Frame count is zero");
             }
         } else if (name == "start-frame") {
-            opts.startFrame = std::stoi(optarg);
+            opts.startFrame = stringToInt(optarg);
         } else if (name == "threads") {
-            if (std::stoi(optarg) < 0) {
+            if (stringToInt(optarg) < 0) {
                 throw std::runtime_error("Input error: Given thread count should positive (threads=0 to leave it in auto).");
             }
-            opts.threads = std::stoi(optarg);
+            opts.threads = stringToInt(optarg);
         } else if (name == "uvgvpcc") {
             opts.uvgvpccParametersString = optarg;
         } else if (name == "loop-input") {
-            opts.nbLoops = std::stoi(optarg);
+            opts.nbLoops = stringToInt(optarg);
         } else if (name == "version") {
             cli::print_version();
             return true;
         } else if (name == "dummy-run") {
-            opts.dummyRun = static_cast<bool>(std::stoi(optarg));
+            opts.dummyRun = static_cast<bool>(stringToInt(optarg));
         } else if (name == "help") {
             cli::print_help();
             return true;
@@ -193,7 +210,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
             std::string tmp;
             while (std::getline(port_list, tmp, ',')) {
                 try {
-                    const int port = std::stoi(tmp);
+                    const int port = stringToInt(tmp);
                     if (port < 0 || port > 65535) {
                         throw std::runtime_error("Input error: Given port number is out of range (0-65535).");
                     }
@@ -207,7 +224,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
         } else if (name == "sdp-outdir") {
             opts.sdpOutdir = optarg;
         } else if (name == "input-fps-limiter") {
-            opts.inputFramePerSecondLimiter = std::stoi(optarg);
+            opts.inputFramePerSecondLimiter = stringToInt(optarg);
         } else {
             // TODO(lf): throw error ?
         }
@@ -215,7 +232,7 @@ bool opts_parse(cli::opts_t& opts, const int& argc, const std::span<const char* 
 
     // Check for extra arguments.
     if (args.size() - optind > 0) {
-        throw std::runtime_error("Input error: Extra argument found: " + std::string(args[optind]) + ".");
+        throw std::runtime_error("Input error: A space might be missing in the command line or extra argument has been added: " + std::string(args[optind]) + ".");
     }
 
     // Check that the required files were defined
