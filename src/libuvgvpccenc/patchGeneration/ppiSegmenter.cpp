@@ -78,7 +78,7 @@ PPISegmenter::PPISegmenter(const std::vector<uvgutils::VectorN<typeGeometryInput
       }()) {}
 
 VoxelAttribute::VoxelAttribute(const size_t projectionPlaneCount_)
-    : updateFlag_(false), voxClass_(VoxClass::NO_EDGE), voxPPI_(0), voxScore_(projectionPlaneCount_, 0) {}
+    : updateFlag_(false), voxClass_(VoxClass::NO_EDGE), voxPPI_(0), voxScore_{0} {}
 
 // TODO(lf): check if the initial segmentation can be done inside the precomputation of the refineSegmentation
 // TODO(lf): use auto& : ... everywhere instead of for loop (and try avoiding using pointCount or size())
@@ -110,7 +110,7 @@ void PPISegmenter::initialSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>
 
 inline void PPISegmenter::updateVoxelAttribute(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
                                                const std::vector<size_t>& pointsPPIs) {
-    std::vector<size_t>& voxScore = voxAttribute.voxScore_;
+    std::array<size_t, 6>& voxScore = voxAttribute.voxScore_;
 
     // Single Direct Edge Voxel : One point in the voxel //
     if (voxAttribute.voxClass_ == VoxClass::S_DIRECT_EDGE) {
@@ -139,7 +139,7 @@ inline void PPISegmenter::updateVoxelAttribute(VoxelAttribute& voxAttribute, con
     voxAttribute.voxPPI_ = static_cast<size_t>(std::distance(voxScore.begin(), maxScore));
 }
 
-void PPISegmenter::computeExtendedScore(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
+void PPISegmenter::computeExtendedScore(std::array<size_t,6>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
                                         const std::vector<VoxelAttribute>& voxAttributeList) {
     std::fill(voxExtendedScore.begin(), voxExtendedScore.end(), 0);
     for (const auto& voxelIndex : ADJ_List) {
@@ -150,7 +150,7 @@ void PPISegmenter::computeExtendedScore(std::vector<size_t>& voxExtendedScore, c
 }
 
 // TODO(lf)warning : adjacent (old name) voxel contain the voxel itself!
-void PPISegmenter::updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& voxExtendedScore,
+void PPISegmenter::updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAttributeList, const std::array<size_t,6>& voxExtendedScore,
                                              const std::vector<size_t>& IDEV_List) {
     // Common and effective way to find the index of the maximum element in a C++ container
     const auto& maxScoreSmooth = std::max_element(voxExtendedScore.begin(), voxExtendedScore.end());
@@ -164,7 +164,7 @@ void PPISegmenter::updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAtt
     }
 }
 
-inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI, const std::vector<size_t>& voxExtendedScore) {
+inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI, const std::array<size_t,6>& voxExtendedScore) {
     // TODO(lf): why not to check if S_DIRECT_EDGE ?
 
     if (voxClass == VoxClass::M_DIRECT_EDGE) {  // TMC2 : VoxClass::S_DIRECT_EDGE or VoxClass::INDIRECT_EDGE
@@ -191,7 +191,7 @@ inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI,
 
 // TODO(lf): special algorithm trajectory for S_DIRECT_EDGE_VOXEL
 inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices, const double weight,
-                                           const std::vector<size_t>& voxExtendedScore) const {
+                                           const std::array<size_t,6>& voxExtendedScore) const {
     std::vector<double> weightedScoreSmooth(p_->projectionPlaneCount);
     for (size_t k = 0; k < p_->projectionPlaneCount; ++k) {
         weightedScoreSmooth[k] = weight * static_cast<double>(voxExtendedScore[k]);
@@ -403,6 +403,8 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
     // TODO(lf): in the for loop over all voxel, we access a lot of list to get the related voxel element. Why not TODO(lf)a structure voxel
     // with everything at the same memory location and so reduce memory call ?
 
+    std::array<size_t, 6> voxExtendedScore{0};
+
     for (size_t iter = 0; iter < p_->refineSegmentationIterationCount; ++iter) {
         // todo(mf):how to make the declaration only if we export files
         for (size_t voxelIndex = 0; voxelIndex < voxelCount; ++voxelIndex) {
@@ -414,8 +416,8 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
                 }
                 continue;  // This voxel has been marked as NE-V before the current iteration //
             }
-
-            std::vector<size_t> voxExtendedScore(p_->projectionPlaneCount, 0);
+            
+            voxExtendedScore.fill(0);
             computeExtendedScore(voxExtendedScore, ADJ_List[voxelIndex], voxAttributeList);
             updateAdjacentVoxelsClass(voxAttributeList, voxExtendedScore, IDEV_List[voxelIndex]);
             if (checkNEV(voxClass, voxAttributeList[voxelIndex].voxPPI_, voxExtendedScore)) {

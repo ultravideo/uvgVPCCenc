@@ -59,7 +59,7 @@ struct VoxelAttribute {
     // size_t nbPoint_;  // TODO(lf): not used ?
     VoxClass voxClass_;
     size_t voxPPI_;
-    std::vector<size_t> voxScore_;  // TODO(lf): should be an array ?
+    std::array<size_t, 6> voxScore_;  // TODO(lf): should be an array ?
     // Voxel score is a PPI histogram : how many points inside the voxel is associated with each projection planes //
 
     explicit VoxelAttribute(const size_t projectionPlaneCount_);
@@ -84,17 +84,17 @@ class PPISegmenter {
         std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
         std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs);        
 
-    static void computeExtendedScore(std::vector<size_t>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
+    static void computeExtendedScore(std::array<size_t,6>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
                                                const std::vector<VoxelAttribute>& voxAttributeList);
 
     static void updateAdjacentVoxelsClass(std::vector<VoxelAttribute>& voxAttributeList,
-                                                    const std::vector<size_t>& voxExtendedScore,
+                                                    const std::array<size_t,6>& voxExtendedScore,
                                                     const std::vector<size_t>& IDEV_List);
     static inline bool checkNEV(const VoxClass voxClass, const size_t voxPPI,
-                                          const std::vector<size_t>& voxExtendedScore);
+                                          const std::array<size_t,6>& voxExtendedScore);
 
     inline void refinePointsPPIs(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices,
-                                           const double weight, const std::vector<size_t>& voxExtendedScore) const;
+                                           const double weight, const std::array<size_t, 6>& voxExtendedScore) const;
     static inline void updateVoxelAttribute(VoxelAttribute& voxAttribute, const std::vector<size_t>& voxPoints,
                                                       const std::vector<size_t>& pointsPPIs);
     
