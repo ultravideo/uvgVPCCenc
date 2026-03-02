@@ -266,12 +266,12 @@ void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxel
     for (size_t v_idx = 0; v_idx < filledVoxels.size(); ++v_idx) {
         // Iterate through all voxels to set score, classification and voxel PPI //
         // First classification : NE-V or DE-V (SDE-V or MDE-V) //
-        VoxelAttribute& voxAttribute = voxAttributeList[v_idx];
-        if (pointListInVoxels[v_idx].size() == 1) {
-            // Single Direct Edge Voxel : One point in the voxel //
-            voxAttribute.voxClass_ = VoxClass::S_DIRECT_EDGE;
-        }
-        updateVoxelAttribute(voxAttribute, pointListInVoxels[v_idx], pointsPPIs);
+        // VoxelAttribute& voxAttribute = voxAttributeList[v_idx];
+        // if (pointListInVoxels[v_idx].size() == 1) {
+        //     // Single Direct Edge Voxel : One point in the voxel //
+        //     voxAttribute.voxClass_ = VoxClass::S_DIRECT_EDGE;
+        // }
+        // updateVoxelAttribute(voxAttribute, pointListInVoxels[v_idx], pointsPPIs);
 
         const size_t cur_pos_1D = filledVoxels[v_idx];
         // find valid 3D search range centered on cur_pos_1D //
@@ -374,7 +374,6 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
     const size_t gridMaxAxisValue = (1U << p_->geoBitDepthRefineSegmentation);
     std::vector<bool> occFlagArray(gridMaxAxisValue * gridMaxAxisValue * gridMaxAxisValue, false);
 
-    // std::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
     robin_hood::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
 
     std::vector<size_t> filledVoxels;                    // list of location1D
@@ -384,18 +383,26 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
 
     const size_t voxelCount = filledVoxels.size();
 
-    // if export files
     if(p_->exportStatistics){
-        // stats.setNumberOfVoxelsRS(frame->frameId, voxelCount);
         stats.collectData(frame->frameId, DataId::NumberOfVoxelsRS, voxelCount);
     }
 
+    // The 1st classification is made here (+ score computation)
     std::vector<VoxelAttribute> voxAttributeList(voxelCount, VoxelAttribute(p_->projectionPlaneCount));
+    for (size_t v_idx = 0; v_idx < filledVoxels.size(); ++v_idx) {
+        // Iterate through all voxels to set score, classification and voxel PPI //
+        // First classification : NE-V or DE-V (SDE-V or MDE-V) //
+        VoxelAttribute& voxAttribute = voxAttributeList[v_idx];
+        if (pointListInVoxels[v_idx].size() == 1) {
+            // Single Direct Edge Voxel : One point in the voxel //
+            voxAttribute.voxClass_ = VoxClass::S_DIRECT_EDGE;
+        }
+        updateVoxelAttribute(voxAttribute, pointListInVoxels[v_idx], pointsPPIs);
+    }
+
     std::vector<std::vector<size_t>> ADJ_List(voxelCount);   // large    // This is voxNeighborsList
     std::vector<std::vector<size_t>> IDEV_List(voxelCount);  // small    // This is voxAdjacentsList
     std::vector<double> voxWeightList(voxelCount);
-    fillNeighborAndAdjacentLists(filledVoxels, occFlagArray, voxelIdxMap, ADJ_List, IDEV_List, pointListInVoxels, voxWeightList,
-                                 voxAttributeList, pointsPPIs);
 
     // TODO(lf): find a way to break the refine segmentation iteration before reaching the number of iteration parameter (if number of updated
     // voxel lower than something for example)
@@ -404,9 +411,13 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
     // with everything at the same memory location and so reduce memory call ?
 
     std::array<size_t, 6> voxExtendedScore{0};
+    std::vector<uint8_t> hasBeenComputed(voxelCount, 0);
+
+    const size_t bitMask = (1U << p_->geoBitDepthRefineSegmentation) - 1;
+    const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
+
 
     for (size_t iter = 0; iter < p_->refineSegmentationIterationCount; ++iter) {
-        // todo(mf):how to make the declaration only if we export files
         for (size_t voxelIndex = 0; voxelIndex < voxelCount; ++voxelIndex) {
             // TODO(lf): should we use a stack of voxel index instead of a for loop with a lot of if(true) ?
             const VoxClass& voxClass = voxAttributeList[voxelIndex].voxClass_;
@@ -418,7 +429,66 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
             }
             
             voxExtendedScore.fill(0);
-            computeExtendedScore(voxExtendedScore, ADJ_List[voxelIndex], voxAttributeList);
+            if(hasBeenComputed[voxelIndex] == 1){
+                computeExtendedScore(voxExtendedScore, ADJ_List[voxelIndex], voxAttributeList);
+            } else {
+                hasBeenComputed[voxelIndex] = 1;
+            
+                size_t num_nn_points = 0;
+                size_t cur_pos_1D = filledVoxels[voxelIndex];
+                const typeGeometryInput z = cur_pos_1D >> (p_->geoBitDepthRefineSegmentation * 2);
+                const typeGeometryInput y = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
+                const typeGeometryInput x = cur_pos_1D & bitMask;
+            
+                const uvgutils::VectorN<typeGeometryInput, 3> currentPoint = {x, y, z};
+            
+                for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
+                    for (const auto& shift : adjacentPointsSearch[dist]) {
+                        uvgutils::VectorN<typeGeometryInput, 3> pointAdj;
+                        // TODO(lf): to discuss and verify : pointAdj need to be in signed type as the shift can generate negative values.
+                        // However, such negative values, in usigned type, will be higher than the max treshold (the max boundary of the
+                        // grid). By using this bit overflow, we divide by two the number of check (we don't check if the shifted point is
+                        // higher than 0)
+                        pointAdj[0] = currentPoint[0] + shift[0];
+                        pointAdj[1] = currentPoint[1] + shift[1];
+                        pointAdj[2] = currentPoint[2] + shift[2];
+            
+                        // check if valid 3D coordinate (not outside the grid) //
+                        if (pointAdj[0] > gridMaxAxisValue || pointAdj[1] > gridMaxAxisValue || pointAdj[2] > gridMaxAxisValue) {
+                            continue;
+                        }
+            
+                        const size_t pointAdjLocation1D = pointAdj[0] + (pointAdj[1] << p_->geoBitDepthRefineSegmentation) +
+                                                            (pointAdj[2] << (p_->geoBitDepthRefineSegmentation * 2));
+            
+                        if (occFlagArray[pointAdjLocation1D]) {
+                            const size_t neighbor_v_idx = voxelIdxMap.at(pointAdjLocation1D);
+                            // ADJ_List.push_back(neighbor_v_idx);  // TODO(lf): do a big check everywhere because here adjacent and neighbor are inverted
+                            ADJ_List[voxelIndex].push_back(neighbor_v_idx);
+            
+                            // Extended score computation
+                            for (size_t k = 0; k < p_->projectionPlaneCount; ++k) {
+                                voxExtendedScore[k] += voxAttributeList[neighbor_v_idx].voxScore_[k];
+                            }
+            
+                            const size_t IDEV_range = 3; // TODO(lf)justifiy this value, and make it dependent on the geobitdepth
+                            if (dist <= IDEV_range) {
+                                IDEV_List[voxelIndex].push_back(neighbor_v_idx);
+                            }
+            
+                            num_nn_points += pointListInVoxels[neighbor_v_idx].size();
+                            if (num_nn_points >= p_->refineSegmentationMaxNNTotalPointCount) {
+                                break;
+                            }
+                        }
+                        if (num_nn_points >= p_->refineSegmentationMaxNNTotalPointCount) {
+                            break;
+                        }
+                    }
+                }
+                voxWeightList[voxelIndex] = p_->refineSegmentationLambda / static_cast<double>(num_nn_points);  // NOLINT(clang-analyzer-core.DivideZero)
+            }
+
             updateAdjacentVoxelsClass(voxAttributeList, voxExtendedScore, IDEV_List[voxelIndex]);
             if (checkNEV(voxClass, voxAttributeList[voxelIndex].voxPPI_, voxExtendedScore)) {
                 continue;  // The current iteration found that this voxel is NE-V //
@@ -440,7 +510,6 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
                 voxAttributeList[voxelIndex].updateFlag_ = true;
             }
             
-            // if export files
             if(p_->exportStatistics){
                 for(size_t i = 0 ; i < pointListInVoxels[voxelIndex].size() ; ++i){
                     stats.collectData(frame->frameId, DataId::ScoreComputations, iter);
@@ -464,7 +533,7 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
             std::fill(voxAttributeList[voxelIndex].voxScore_.begin(), voxAttributeList[voxelIndex].voxScore_.end(), 0);
             updateVoxelAttribute(voxAttributeList[voxelIndex], pointListInVoxels[voxelIndex], pointsPPIs);
         }
-        // if export files 
+
         // Compute de number of changes of classification
         if(p_->exportStatistics){
             for(auto& voxel : voxAttributeList){

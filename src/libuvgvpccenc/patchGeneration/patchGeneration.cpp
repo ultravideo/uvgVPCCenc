@@ -94,7 +94,6 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     
     // todo(mf): add the condition for export intermediates files
     if(p_->exportStatistics){
-        // stats.setGeometrySize(frame->frameId, frame->pointsGeometry.size());
         stats.collectData(frame->frameId, DataId::NumberOfPoints, frame->pointsGeometry.size());
     }
 
@@ -111,7 +110,6 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     }
 
     if(p_->exportStatistics){
-        // stats.setNumberOfVoxels(frame->frameId, voxelizedPointsGeometry.size());
         stats.collectData(frame->frameId, DataId::NumberOfVoxels, voxelizedPointsGeometry.size());
     }
 
@@ -147,7 +145,6 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     PatchSegmentation::patchSegmentation(frame, pointsPPIs);
 
     if(p_->exportStatistics){
-        // stats.setNumberOfPatches(frame->frameId, frame->patchList.size());
         stats.collectData(frame->frameId, DataId::NumberOfPatches, frame->patchList.size());
     }
 
