@@ -9,5 +9,5 @@ var searchData=
   ['version_6',['version',['../structcli_1_1opts__t.html#a11e1940d73deb7994633f15a2f2d23ec',1,'cli::opts_t']]],
   ['voxclass_5f_7',['voxClass_',['../structVoxelAttribute.html#aaca598aa577b7a1c2133207e357e3a64',1,'VoxelAttribute']]],
   ['voxppi_5f_8',['voxPPI_',['../structVoxelAttribute.html#a76b9cd5ba6552e64dd8f7f87d1413794',1,'VoxelAttribute']]],
-  ['voxscore_5f_9',['voxScore_',['../structVoxelAttribute.html#a67be1a2a991d0e51b2e36aa6d3277016',1,'VoxelAttribute']]]
+  ['voxscore_5f_9',['voxScore_',['../structVoxelAttribute.html#a31590320586456e52f2b655e190b5e2b',1,'VoxelAttribute']]]
 ];

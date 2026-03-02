@@ -1,0 +1,9 @@
+<map id="cli::stringToInt" name="cli::stringToInt">
+<area shape="rect" id="Node000001" title=" " alt="" coords="272,31,385,56"/>
+<area shape="rect" id="Node000002" href="$namespacecli.html#a2d93061cde230144d832875cd3e999b6" title="Parse command line options." alt="" coords="108,5,224,31"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="258,35,224,30,225,24,259,30"/>
+<area shape="rect" id="Node000004" href="$namespacecli.html#aae876520a89b0c21c3bca826687a160e" title=" " alt="" coords="109,55,223,80"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="259,56,223,62,222,56,258,51"/>
+<area shape="rect" id="Node000003" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,5,60,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="94,21,60,21,60,15,94,15"/>
+</map>

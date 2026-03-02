@@ -1,11 +1,13 @@
 <map id="cli::opts_parse" name="cli::opts_parse">
-<area shape="rect" id="Node000001" title="Parse command line options." alt="" coords="5,55,121,80"/>
+<area shape="rect" id="Node000001" title="Parse command line options." alt="" coords="5,80,121,105"/>
 <area shape="rect" id="Node000002" href="$getopt_8c.html#a670b3d6580b88001f22388938a15504d" title=" " alt="" coords="185,5,284,31"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="107,52,175,32,177,37,109,57"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="88,78,168,40,184,33,186,38,170,44,90,82"/>
 <area shape="rect" id="Node000003" href="$namespacecli.html#aad9dd85363af7529cc26e1cf5def6450" title="Print the help message of the application." alt="" coords="179,55,290,80"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="122,65,166,65,166,70,122,70"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="121,81,166,75,166,80,122,87"/>
 <area shape="rect" id="Node000004" href="$namespacecli.html#a168b4d6afdac8a3811a23b5d58ced3fa" title="Print the version of the uvgVPCCenc library." alt="" coords="169,104,300,129"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="109,77,177,97,175,102,107,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="122,98,156,103,156,108,121,103"/>
+<area shape="rect" id="Node000006" href="$namespacecli.html#ac4cff10fb86b38e537816bb8e32d3005" title=" " alt="" coords="178,153,291,179"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="93,103,170,138,189,146,187,151,168,143,90,108"/>
 <area shape="rect" id="Node000005" href="$namespaceuvgvpcc__enc.html#a81d86f6ad45b7b1ae67d8d944d880022" title=" " alt="" coords="348,104,539,129"/>
 <area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="300,114,334,114,334,119,300,119"/>
 </map>
