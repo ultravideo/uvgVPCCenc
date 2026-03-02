@@ -199,7 +199,7 @@ void allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t
 
     const size_t imageSize = p_->mapWidth * gofMapsHeight;
     
-    if (p_->dynamicMapHeight) {
+    if (!p_->dynamicMapHeight) {
         assert(gofMapsHeight == p_->minimumMapHeight);
     }
 
