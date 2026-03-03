@@ -8,6 +8,7 @@ add_library(utilsLibrary STATIC
     parameters.cpp
     fileExport.cpp
     statsCollector.cpp
+    commonMemory.cpp
 )
 
 target_link_libraries(utilsLibrary

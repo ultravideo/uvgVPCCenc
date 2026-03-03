@@ -145,13 +145,13 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     PatchSegmentation::patchSegmentation(frame, pointsPPIs);
 
     if(p_->exportStatistics){
-        stats.collectData(frame->frameId, DataId::NumberOfPatches, frame->patchList.size());
+        stats.collectData(frame->frameId, DataId::NumberOfPatches, (*frame->patchList).size());
     }
 
     // Sort patches //
     // Sort patches from the biggest to the smallest // // TODO(lf): might be better to use area ?
     // Notice that after this sorting, the patch Id does not correspond to the position of the patch in the frame.patchList
-    std::sort(frame->patchList.begin(), frame->patchList.end(), [](const uvgvpcc_enc::Patch& patchA, const uvgvpcc_enc::Patch& patchB) {
+    std::sort((*frame->patchList).begin(), (*frame->patchList).end(), [](const uvgvpcc_enc::Patch& patchA, const uvgvpcc_enc::Patch& patchB) {
         return std::max(patchA.widthInPixel_, patchA.heightInPixel_) > std::max(patchB.widthInPixel_, patchB.heightInPixel_);
     });
 

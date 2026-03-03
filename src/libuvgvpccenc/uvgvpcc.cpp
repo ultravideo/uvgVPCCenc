@@ -56,11 +56,13 @@
 #include "patchGeneration/patchGeneration.hpp"
 #include "patchGeneration/utilsPatchGeneration.hpp"
 #include "patchPacking/patchPacking.hpp"
+#include "utils/constants.hpp"
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
 #include "utils/preset.hpp"
 #include "uvgutils/jobManagement.hpp"
 #include "uvgutils/log.hpp"
+#include "utils/commonMemory.hpp"
 
 namespace uvgvpcc_enc {
 
@@ -68,6 +70,7 @@ namespace {
 
 Parameters param;
 // Map storing all parameters intending to change the state of the encoder from outside of the library.
+CommonMemory commonMemory;
 std::unordered_map<std::string, std::string> apiInputParameters;
 bool errorInAPI = false;
 bool initializationDone = false;
@@ -261,6 +264,13 @@ void verifyConfig() {
                                                            "Low delay bitstream (lowDelayBitstream=true) is an experimental feature. "
                                                            "The generated bitstream will probably not be decoded by TMC2.\n");
     }
+
+    if (p_->sizeGOF > MAX_GOF_SIZE) {
+        throw std::runtime_error("The sizeGOF (" +
+                                 std::to_string(p_->sizeGOF) +
+                                 ") is bigger than the compilation constant MAX_GOF_SIZE (" +
+                                 std::to_string(MAX_GOF_SIZE) + ").");        
+    }
 }
 
 void setInputGeoPrecision() {
@@ -440,7 +450,7 @@ void parseUvgvpccParameters() {
     if (p_->maxConcurrentFrames == 0) {
         uvgutils::Logger::log<uvgutils::LogLevel::INFO>("API",
                                                         "'maxConcurrentFrames' is set to 0. The maximum number of frame processed in "
-                                                        "parallel by uvgVPCC is then the four times GOF size: " +
+                                                        "parallel by uvgVPCCenc is then four times the GOF size: " +
                                                             std::to_string(4 * p_->sizeGOF) + "\n");
         setParameterValue("maxConcurrentFrames", std::to_string(4 * p_->sizeGOF), false);
     }
@@ -498,14 +508,40 @@ static void initializeContext() {
 const Parameters* p_ = &param;
 
 void Frame::printInfo() const {
+    // lf: I removed all information accessed through pointers to avoid issues when the pointers are not initialized.
     uvgutils::Logger::log<uvgutils::LogLevel::DEBUG>(
         "FRAME-INFO", "Frame " + std::to_string(frameId) + " :\n" + "\tPath: " + pointCloudPath + "\n" + "\tFrame Number: " +
-                          std::to_string(frameNumber) + "\n" + "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
-                          "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n" + "\tpatchList size: " +
-                          std::to_string(patchList.size()) + "\n" + "\toccupancyMapDS size: " + std::to_string(occupancyMapDS.size()) + "\n" +
-                          "\tgeometryMapL1 size: " + std::to_string(geometryMapL1.size()) + "\n" + "\tgeometryMapL2 size: " +
-                          std::to_string(geometryMapL2.size()) + "\n" + "\tattributeMapL1 size: " + std::to_string(attributeMapL1.size()) +
-                          "\n" + "\tattributeMapL2 size: " + std::to_string(attributeMapL2.size()) + "\n");
+                            std::to_string(frameNumber) + "\n" + "\tpointsGeometry size: " + std::to_string(pointsGeometry.size()) + "\n" +
+                            "\tpointsAttribute size: " + std::to_string(pointsAttribute.size()) + "\n");        
+
+}
+
+GOF::GOF(const size_t& id) : gofId(id) {
+    auto& cm = CommonMemory::get();
+    framePatches         = cm.getOrCreateFramePatches        (gofId);
+    frameOccupancyMaps   = cm.getOrCreateFrameOccupancyMaps  (gofId);
+    frameOccupancyMapsDS = cm.getOrCreateFrameOccupancyMapsDS(gofId);
+    frameGeometryMapsL1  = cm.getOrCreateFrameGeometryMapsL1 (gofId);
+    frameGeometryMapsL2  = cm.getOrCreateFrameGeometryMapsL2 (gofId);
+    frameAttributeMapsL1 = cm.getOrCreateFrameAttributeMapsL1(gofId);
+    frameAttributeMapsL2 = cm.getOrCreateFrameAttributeMapsL2(gofId);
+}
+
+void GOF::setFrameMemoryPtrs(std::shared_ptr<Frame>& frame) {
+    const size_t framePos = frame->frameId % p_->sizeGOF;
+    frame->patchList = &(*framePatches)[framePos];
+
+    frame->occupancyMapNew = &(*frameOccupancyMaps)[framePos];
+    frame->occupancyMapNew = &(*frameOccupancyMaps)[framePos];
+    frame->occupancyMapDSNew = &(*frameOccupancyMapsDS)[framePos];
+    frame->geometryMapL1New = &(*frameGeometryMapsL1)[framePos];
+    frame->geometryMapL2New = &(*frameGeometryMapsL2)[framePos];
+    frame->attributeMapL1New = &(*frameAttributeMapsL1)[framePos];
+    frame->attributeMapL2New = &(*frameAttributeMapsL2)[framePos];
+}
+
+GOF::~GOF() {
+    CommonMemory::get().clearGofMaps(gofId);
 }
 
 /// @brief Create the context of the uvgVPCCenc encoder. Parse the input parameters and verify if the given configuration is valid. Initialize
@@ -566,8 +602,7 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
 
     if (frame->frameId % p_->sizeGOF == 0) {
         // The current frame is the first of its GOF. Create all GOF related jobs.
-        g_threadHandler.currentGOF = std::make_shared<GOF>();
-        g_threadHandler.currentGOF->gofId = g_threadHandler.gofId++;
+        g_threadHandler.currentGOF = std::make_shared<GOF>(g_threadHandler.gofId++);
         g_threadHandler.currentGOF->nbFrames = 0;
         g_threadHandler.currentGOF->mapHeightGOF = p_->minimumMapHeight;
         g_threadHandler.currentGOF->mapHeightDSGOF = p_->minimumMapHeight / p_->occupancyMapDSResolution;
@@ -598,6 +633,9 @@ void API::encodeFrame(std::shared_ptr<Frame>& frame, v3c_unit_stream* output) {
     g_threadHandler.currentGOF->frames.push_back(frame);
     g_threadHandler.currentGOF->nbFrames++;
     frame->gof = g_threadHandler.currentGOF;
+    frame->gofId = g_threadHandler.currentGOF->gofId;
+    g_threadHandler.currentGOF->setFrameMemoryPtrs(frame);
+
     auto patchGen = JOBF(g_threadHandler.currentGOF->gofId, frame->frameId, 0, PatchGeneration::generateFramePatches, frame);
 
     if (p_->interPatchPacking) {

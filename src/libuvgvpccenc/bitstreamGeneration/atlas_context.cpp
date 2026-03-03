@@ -119,9 +119,9 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
     const size_t levelOfDetailX = 1;  // lf addition, in TMC2 those are patch parameters. However, they are also global parameters.
     const size_t levelOfDetailY = 1;  // TODO(lf): check if those are really constant, and do not depends on other parameters
 
-    for (size_t patch_index = 0; patch_index < frameUVG->patchList.size(); ++patch_index) {
+    for (size_t patch_index = 0; patch_index < (*frameUVG->patchList).size(); ++patch_index) {
         // std::cout << "-- DEBUG: Creating atlas patch, index: " << patch_index << std::endl;
-        const uvgvpcc_enc::Patch& patchUVG = frameUVG->patchList[patch_index];
+        const uvgvpcc_enc::Patch& patchUVG = (*frameUVG->patchList)[patch_index];
         const uint8_t patchMode = static_cast<uint8_t>(ATDU_PATCH_MODE_I_TILE::I_INTRA);
         patch_information_data pid;
         pid.patchMode = patchMode;
@@ -155,7 +155,7 @@ atlas_tile_data_unit atlas_context::create_atlas_tile_data_unit(const uvgvpcc_en
         atdu.patch_information_data_.push_back(pid);
     }
 
-    std::vector<uvgvpcc_enc::Patch>().swap(frameUVG->patchList);  // Release memory
+    // std::vector<uvgvpcc_enc::Patch>().swap(*frameUVG->patchList);  // lf: Release memory
 
     // Last patch is I_END patch
     patch_information_data end_patch;

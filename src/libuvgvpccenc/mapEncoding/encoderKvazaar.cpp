@@ -64,24 +64,24 @@ void setMapList(const std::shared_ptr<uvgvpcc_enc::GOF>& gof, std::vector<std::r
     mapList.reserve(gof->nbFrames);
     if (encoderType == OCCUPANCY) {
         for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-            mapList.emplace_back(frame->occupancyMapDS);
+            mapList.emplace_back(*frame->occupancyMapDSNew);
         }
         // bitstream = &gof->bitstreamOccupancy;
 
     } else if (encoderType == GEOMETRY) {
         for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-            mapList.emplace_back(frame->geometryMapL1);
+            mapList.emplace_back(*frame->geometryMapL1New);
             if (p_->doubleLayer) {
-                mapList.emplace_back(frame->geometryMapL2);
+                mapList.emplace_back(*frame->geometryMapL2New);
             }
         }
         // bitstream = &gof->bitstreamGeometry;
 
     } else if (encoderType == ATTRIBUTE) {
         for (const std::shared_ptr<uvgvpcc_enc::Frame>& frame : gof->frames) {
-            mapList.emplace_back(frame->attributeMapL1);
+            mapList.emplace_back(*frame->attributeMapL1New);
             if (p_->doubleLayer) {
-                mapList.emplace_back(frame->attributeMapL2);
+                mapList.emplace_back(*frame->attributeMapL2New);
             }
         }
         // bitstream = &gof->bitstreamAttribute;

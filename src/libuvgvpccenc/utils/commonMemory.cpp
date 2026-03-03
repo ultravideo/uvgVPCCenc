@@ -1,7 +1,7 @@
 /*****************************************************************************
  * This file is part of uvgVPCCenc V-PCC encoder.
  *
- * Copyright (c) 2024-present, Tampere University, ITU/ISO/IEC, project contributors
+ * Copyright (c) 2024, Tampere University, ITU/ISO/IEC, project contributors
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without modification,
@@ -30,36 +30,37 @@
  * INCLUDING NEGLIGENCE OR OTHERWISE ARISING IN ANY WAY OUT OF THE USE OF THIS
  ****************************************************************************/
 
-/// \file Common tools used by the uvgVPCCenc library.
+/// \file Library common memory related operations.
 
-#pragma once
 
-#include <array>
-#include <cstddef>
-#include <cstdint>
-#include <iomanip>
-#include <limits>
-#include <sstream>
-
-#include "uvgutils/utils.hpp"
+#include "commonMemory.hpp"
 
 namespace uvgvpcc_enc {
 
-using typeGeometryInput = uint16_t;
+// lf: Use leaky singleton to ensure the CommonMemory instance is not destroy before any GOF is used.
+CommonMemory& CommonMemory::get() {
+    static CommonMemory* instance = new CommonMemory();
+    return *instance;
+}
 
-const typeGeometryInput g_infiniteDepth = (std::numeric_limits<typeGeometryInput>::max)();  // TODO(lf)be sure it is well sync with type geo
-const size_t g_infinitenumber = (std::numeric_limits<size_t>::max)();
-const size_t g_valueNotSet = (std::numeric_limits<size_t>::max)();
+void CommonMemory::clearGofMaps(const size_t& gofId) {
+    std::lock_guard<std::mutex> lock(mapMutex);
 
-constexpr size_t INVALID_PATCH_INDEX = std::numeric_limits<size_t>::max();
-constexpr size_t PPI_NON_ASSIGNED = std::numeric_limits<size_t>::max();
-constexpr size_t UNDEFINED_PARENT_PPI = std::numeric_limits<size_t>::max() - 1;  // TODO(lf) temp
+    auto eraseFromMap = [&gofId](auto& map, const char* mapName) {
+        auto it = map.find(gofId);
+        assert(it != map.end() && (std::string("Try to clear a gof map '") + mapName +
+               "' but the gofId key does not exist: " + std::to_string(gofId) + "\n").c_str());
+        map.erase(it);
+    };
 
-// Projection Plan Index, 0-5 -> one of the six bounding box plan. 6+ -> used for slicing ppi attribution
-enum class PPI : uint8_t { ppi0, ppi1, ppi2, ppi3, ppi4, ppi5, ppiBlank, notAssigned};
-
-// lf: centralized memory handling //
-constexpr size_t MAX_GOF_SIZE = 16; 
+    eraseFromMap(mapFramePatches,           "mapFramePatches");
+    eraseFromMap(mapFrameOccupancyMaps,     "mapFrameOccupancyMaps");
+    eraseFromMap(mapFrameOccupancyMapsDS,   "mapFrameOccupancyMapsDS");
+    eraseFromMap(mapFrameGeometryMapsL1,    "mapFrameGeometryMapsL1");
+    eraseFromMap(mapFrameGeometryMapsL2,    "mapFrameGeometryMapsL2");
+    eraseFromMap(mapFrameAttributeMapsL1,   "mapFrameAttributeMapsL1");
+    eraseFromMap(mapFrameAttributeMapsL2,   "mapFrameAttributeMapsL2");
+}
 
 
 }  // namespace uvgvpcc_enc

@@ -123,11 +123,11 @@ inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSe
 }
 
 inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& seedIndexNewPerf,
-                                     std::vector<bool>& pointIsInAPatchNewPerf, ConnectedComponent& cc,
+                                     std::vector<bool>& pointIsInAPatch, ConnectedComponent& cc,
                                      robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
                                      const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed) {
     cc.points.push_back(seedIndexNewPerf);
-    pointIsInAPatchNewPerf[seedIndexNewPerf] = true;
+    pointIsInAPatch[seedIndexNewPerf] = true;
     mapLocation1D.erase(location1DFromPoint(ptSeed));
 
     const size_t uAxis = cc.tangentAxis;    // 0, 1 or 2
@@ -161,7 +161,7 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
                     mapLocation1D.erase(it);
 
                     cc.points.push_back(adjPtIndex);
-                    pointIsInAPatchNewPerf[adjPtIndex] = true;
+                    pointIsInAPatch[adjPtIndex] = true;
 
                     fifo.emplace_back(adjPtIndex);
 
@@ -311,7 +311,7 @@ inline void setPatchL1(Patch& patch, const int& minD, const std::vector<typeGeom
 
 template <size_t Ppi, bool DoubleLayer>
 inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uvgvpcc_enc::Frame>& frame, Patch& patch,
-                          robin_hood::unordered_map<size_t, size_t>& mapLocation1D, std::vector<bool>& pointIsInAPatchNewPerf,
+                          robin_hood::unordered_map<size_t, size_t>& mapLocation1D, std::vector<bool>& pointIsInAPatch,
                           const typeGeometryInput& minD, robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
     constexpr size_t normalAxis = getPatchNormalAxis<Ppi>();
     constexpr size_t tangentAxis = getPatchTangentAxis<Ppi>();
@@ -334,7 +334,7 @@ inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uv
         const size_t loc1D = location1DFromPoint(point);
 
         if (patchDL1 == g_infiniteDepth) {
-            pointIsInAPatchNewPerf[pointIndex] = false;
+            pointIsInAPatch[pointIndex] = false;
             mapLocation1D.emplace(loc1D, pointIndex);
             // lf: this point has been filtered (tmp_a>32). It will be processed during next iteration. There is no point in L1 here as the
             // filtering process is done on block of pixels.
@@ -378,7 +378,7 @@ inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uv
             if (deltaD <= p_->maxAllowedDist2RawPointsDetection) {
                 continue;
             }
-            pointIsInAPatchNewPerf[pointIndex] = false;
+            pointIsInAPatch[pointIndex] = false;
             mapLocation1D.emplace(loc1D, pointIndex);
         } else {
             assert(d > patchDL1);
@@ -386,7 +386,7 @@ inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uv
             if (deltaD < p_->surfaceThickness) {
                 continue;
             }
-            pointIsInAPatchNewPerf[pointIndex] = false;
+            pointIsInAPatch[pointIndex] = false;
             mapLocation1D.emplace(loc1D, pointIndex);
         }
     }
@@ -394,7 +394,7 @@ inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uv
 
 template <size_t Ppi>
 inline void createPatch(Patch& patch, const ConnectedComponent& cc, const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
-                        std::vector<bool>& pointIsInAPatchNewPerf, robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
+                        std::vector<bool>& pointIsInAPatch, robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
                         robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Create patch for frame " + std::to_string(frame->frameId) + "\n");
     constexpr size_t normalAxis = getPatchNormalAxis<Ppi>();
@@ -437,14 +437,14 @@ inline void createPatch(Patch& patch, const ConnectedComponent& cc, const std::s
     setPatchL1<projectionMode>(patch, minD, peakPerBlock);
 
     if (p_->doubleLayer) {
-        finalizePatch<Ppi, true>(cc, frame, patch, mapLocation1D, pointIsInAPatchNewPerf, minD, resamplePointSetLocation1D);
+        finalizePatch<Ppi, true>(cc, frame, patch, mapLocation1D, pointIsInAPatch, minD, resamplePointSetLocation1D);
     } else {
-        finalizePatch<Ppi, false>(cc, frame, patch, mapLocation1D, pointIsInAPatchNewPerf, minD, resamplePointSetLocation1D);
+        finalizePatch<Ppi, false>(cc, frame, patch, mapLocation1D, pointIsInAPatch, minD, resamplePointSetLocation1D);
     }
 }
 
 template <bool FirstIteration>
-inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf, std::vector<bool>& pointCanBeASeedNewPerf,
+inline void createConnectedComponents(std::vector<bool>& pointIsInAPatch, std::vector<bool>& pointCanBeASeed,
                                       const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                                       const robin_hood::unordered_set<size_t>& resamplePointSetLocation1D,
                                       const std::vector<size_t>& pointsPPIs,
@@ -452,17 +452,17 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,
                                       std::vector<ConnectedComponent>& connectedComponents) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION",
                                                      "Create connected components for frame " + std::to_string(frame->frameId) + "\n");
-    for (size_t seedIndexNewPerf = 0; seedIndexNewPerf < pointIsInAPatchNewPerf.size(); ++seedIndexNewPerf) {
-        if (pointIsInAPatchNewPerf[seedIndexNewPerf]) continue;
+    for (size_t seedIndexNewPerf = 0; seedIndexNewPerf < pointIsInAPatch.size(); ++seedIndexNewPerf) {
+        if (pointIsInAPatch[seedIndexNewPerf]) continue;
         if constexpr (!FirstIteration) {
-            if (!pointCanBeASeedNewPerf[seedIndexNewPerf]) continue;
+            if (!pointCanBeASeed[seedIndexNewPerf]) continue;
         }
 
         const uvgutils::VectorN<typeGeometryInput, 3> ptSeed = frame->pointsGeometry[seedIndexNewPerf];
         if constexpr (!FirstIteration) {
             // Find a correct seed point to start a connected component
             if (findNeighborSeed(ptSeed, resamplePointSetLocation1D)) {
-                pointCanBeASeedNewPerf[seedIndexNewPerf] = false;
+                pointCanBeASeed[seedIndexNewPerf] = false;
                 continue;
             }
         }
@@ -470,7 +470,7 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatchNewPerf,
         // There is no neighboring point of this seed that is in the resample. It is then a correct seed.
         const size_t ppiCC = pointsPPIs[seedIndexNewPerf];
         connectedComponents.emplace_back(ppiCC);
-        createConnectedComponent(frame, seedIndexNewPerf, pointIsInAPatchNewPerf, connectedComponents.back(), mapList[ppiCC], ptSeed);
+        createConnectedComponent(frame, seedIndexNewPerf, pointIsInAPatch, connectedComponents.back(), mapList[ppiCC], ptSeed);
     }
 }
 
@@ -481,10 +481,13 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
                                                      "Patch segmentation of frame " + std::to_string(frame->frameId) + "\n");
 
     const size_t pointCount = frame->pointsGeometry.size();
-    frame->patchList.reserve(256);
-
-    std::vector<bool> pointIsInAPatchNewPerf(pointCount, false);
-    std::vector<bool> pointCanBeASeedNewPerf(pointCount, true);
+    
+    auto gofPtr = frame->gof.lock();
+    assert(gofPtr);
+    const size_t framePos = frame->frameId % p_->sizeGOF;
+    
+    std::vector<bool> pointIsInAPatch(pointCount, false);
+    std::vector<bool> pointCanBeASeed(pointCount, true);
     std::array<robin_hood::unordered_map<size_t, size_t>, 6> mapList;
     for (auto& map : mapList) {
         map.reserve(65536);
@@ -495,41 +498,47 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         assert(pointsPPIs[ptIndex] < 6);
         mapList[pointsPPIs[ptIndex]].emplace(pointLocation1D, ptIndex);
     }
-
+    
     robin_hood::unordered_set<size_t> resamplePointSetLocation1D;
     resamplePointSetLocation1D.reserve(pointCount);
-
+    
     std::vector<ConnectedComponent> connectedComponents;
     connectedComponents.reserve(256);
-
+    
     // Connected components creation (first iteration)
-    createConnectedComponents<true>(pointIsInAPatchNewPerf, pointCanBeASeedNewPerf, frame, resamplePointSetLocation1D, pointsPPIs, mapList,
-                                    connectedComponents);
+    createConnectedComponents<true>(pointIsInAPatch, pointCanBeASeed, frame, resamplePointSetLocation1D, pointsPPIs, mapList,
+        connectedComponents);
+        
+    
+    auto& patchList = *frame->patchList;
+    patchList.reserve(256);
+    
     while (!connectedComponents.empty()) {
         // Patches creation
         for (const ConnectedComponent& cc : connectedComponents) {
             if (cc.points.size() < p_->minPointCountPerCC) continue;
-            frame->patchList.emplace_back();
-            auto& patch = frame->patchList.back();
-            patch.patchIndex_ = frame->patchList.size();
+            patchList.emplace_back();
+            auto& patch = patchList.back();
+            patch.patchIndex_ = patchList.size();
+
             switch (cc.ppi) {
                 case 0:
-                    createPatch<0>(patch, cc, frame, pointIsInAPatchNewPerf, mapList[0], resamplePointSetLocation1D);
+                    createPatch<0>(patch, cc, frame, pointIsInAPatch, mapList[0], resamplePointSetLocation1D);
                     break;
                 case 1:
-                    createPatch<1>(patch, cc, frame, pointIsInAPatchNewPerf, mapList[1], resamplePointSetLocation1D);
+                    createPatch<1>(patch, cc, frame, pointIsInAPatch, mapList[1], resamplePointSetLocation1D);
                     break;
                 case 2:
-                    createPatch<2>(patch, cc, frame, pointIsInAPatchNewPerf, mapList[2], resamplePointSetLocation1D);
+                    createPatch<2>(patch, cc, frame, pointIsInAPatch, mapList[2], resamplePointSetLocation1D);
                     break;
                 case 3:
-                    createPatch<3>(patch, cc, frame, pointIsInAPatchNewPerf, mapList[3], resamplePointSetLocation1D);
+                    createPatch<3>(patch, cc, frame, pointIsInAPatch, mapList[3], resamplePointSetLocation1D);
                     break;
                 case 4:
-                    createPatch<4>(patch, cc, frame, pointIsInAPatchNewPerf, mapList[4], resamplePointSetLocation1D);
+                    createPatch<4>(patch, cc, frame, pointIsInAPatch, mapList[4], resamplePointSetLocation1D);
                     break;
                 case 5:
-                    createPatch<5>(patch, cc, frame, pointIsInAPatchNewPerf, mapList[5], resamplePointSetLocation1D);
+                    createPatch<5>(patch, cc, frame, pointIsInAPatch, mapList[5], resamplePointSetLocation1D);
                     break;
                 default:
                     assert(false);
@@ -539,7 +548,7 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
 
         // Connected components creation
         connectedComponents.clear();
-        createConnectedComponents<false>(pointIsInAPatchNewPerf, pointCanBeASeedNewPerf, frame, resamplePointSetLocation1D, pointsPPIs,
+        createConnectedComponents<false>(pointIsInAPatch, pointCanBeASeed, frame, resamplePointSetLocation1D, pointsPPIs,
                                          mapList, connectedComponents);
     }
 
@@ -547,7 +556,7 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         size_t numberOfLostPointPS = 0;
         std::vector<uvgutils::VectorN<uint8_t, 3>> attributes(frame->pointsGeometry.size());
         std::vector<bool> pointColored(frame->pointsGeometry.size(), false);
-        for (const auto& patch : frame->patchList) {
+        for (const auto& patch : patchList) {
             const auto color = patchColors[patch.patchIndex_ % patchColors.size()];
             for (size_t v = 0; v < patch.heightInPixel_; ++v) {
                 for (size_t u = 0; u < patch.widthInPixel_; ++u) {
@@ -580,9 +589,11 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         stats.collectData(frame->frameId, DataId::NumberOfLostPoints, numberOfLostPointPS);
     }
 
+
     if (p_->exportIntermediateFiles) {
         FileExport::exportPointCloudPatchSegmentationColor(frame);
         FileExport::exportPointCloudPatchSegmentationBorder(frame);
         FileExport::exportPointCloudPatchSegmentationBorderBlank(frame);
     }
+
 }

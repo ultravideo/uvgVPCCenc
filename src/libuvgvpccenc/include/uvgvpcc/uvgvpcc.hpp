@@ -32,6 +32,8 @@
 
 #pragma once
 
+#include <array>
+#include <cassert>
 #include <cstddef>
 #include <cstdint>
 #include <iostream>
@@ -41,12 +43,11 @@
 #include <sstream>
 #include <string>
 #include <vector>
-#include <algorithm>
-#include <unordered_map>
 
 #include "../utils/parameters.hpp"
 #include "../utils/constants.hpp"
 #include "uvgutils/utils.hpp"
+// #include "../utils/commonMemory.hpp"
 
 /// \file Main file of the uvgVPCCenc library that defines the main structures (GOF, frame, patch) and the API.
 
@@ -173,6 +174,7 @@ struct GOF;
 // TODO(lf): Avid using both constant sized and dynamic sized memory member within the same struct.
 struct Frame {
     size_t frameId;      // aka relative index (0 if first encoded frame)
+    size_t gofId;
     size_t frameNumber;  // aka number from the input frame file name (TODO(lf): correct)
     std::weak_ptr<GOF> gof;
     std::shared_ptr<std::counting_semaphore<UINT16_MAX>> conccurentFrameSem;
@@ -183,28 +185,28 @@ struct Frame {
     std::vector<uvgutils::VectorN<typeGeometryInput, 3>> pointsGeometry;
     std::vector<uvgutils::VectorN<uint8_t, 3>> pointsAttribute;
 
-    std::vector<Patch> patchList;
-
-    size_t mapHeight = 0;  // TODO(lf): Will be a gof parameter ?
+    size_t mapHeight = 0;
     size_t mapHeightDS = 0;
 
-    std::vector<uint8_t> occupancyMap;    // (boolean vector)
-    std::vector<uint8_t> occupancyMapDS;  // Down-scaled occupancy map of the frame (boolean vector)
-
-    std::vector<uint8_t> geometryMapL1;  // first layer
-    std::vector<uint8_t> geometryMapL2;  // second layer
-
-    std::vector<uint8_t> attributeMapL1;  // Store the three channels continuously (all R, then all G, than all B)
-    std::vector<uint8_t> attributeMapL2;
-
     Frame(const size_t& frameId, const size_t& frameNumber, const std::string& pointCloudPath)
-        : frameId(frameId), frameNumber(frameNumber), pointCloudPath(pointCloudPath), pointCount(0), mapHeight(p_->minimumMapHeight), mapHeightDS(p_->minimumMapHeight / p_->occupancyMapDSResolution) {}
+        : frameId(frameId), frameNumber(frameNumber), pointCloudPath(pointCloudPath), pointCount(0), mapHeight(p_->minimumMapHeight), mapHeightDS(p_->minimumMapHeight / p_->occupancyMapDSResolution),patchList(nullptr) {}
     ~Frame() {
         if (conccurentFrameSem) {
             conccurentFrameSem->release();
         }
     };
     void printInfo() const;
+
+    // lf: Centralized memory handling //
+    std::vector<Patch>* patchList;
+
+    std::vector<uint8_t>* occupancyMapNew;    // (boolean vector)
+    std::vector<uint8_t>* occupancyMapDSNew;  // Down-scaled occupancy map of the frame (boolean vector)
+    std::vector<uint8_t>* geometryMapL1New;  // first layer
+    std::vector<uint8_t>* geometryMapL2New;  // second layer
+    std::vector<uint8_t>* attributeMapL1New;  // Store the three channels continuously (all R, then all G, than all B)
+    std::vector<uint8_t>* attributeMapL2New;    
+
 };
 
 struct GOF {
@@ -218,6 +220,19 @@ struct GOF {
     std::vector<uint8_t> bitstreamOccupancy;
     std::vector<uint8_t> bitstreamGeometry;
     std::vector<uint8_t> bitstreamAttribute;
+
+    // lf: centralized memory handling //
+    std::array<std::vector<Patch>, MAX_GOF_SIZE>* framePatches;
+    std::array<std::vector<uint8_t>, MAX_GOF_SIZE>* frameOccupancyMaps;
+    std::array<std::vector<uint8_t>, MAX_GOF_SIZE>* frameOccupancyMapsDS;
+    std::array<std::vector<uint8_t>, MAX_GOF_SIZE>* frameGeometryMapsL1;
+    std::array<std::vector<uint8_t>, MAX_GOF_SIZE>* frameGeometryMapsL2;
+    std::array<std::vector<uint8_t>, MAX_GOF_SIZE>* frameAttributeMapsL1;
+    std::array<std::vector<uint8_t>, MAX_GOF_SIZE>* frameAttributeMapsL2;
+
+    GOF(const size_t& gofId);
+    void setFrameMemoryPtrs(std::shared_ptr<Frame>& frame);
+    ~GOF();
 };
 
 /// @brief API of the uvgVPCCenc library

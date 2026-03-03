@@ -34,11 +34,13 @@
 
 #pragma once
 
+#include <cstddef>
 #include <stdexcept>
 #include <string>
 #include <vector>
 
 #include "uvgutils/utils.hpp"
+
 
 namespace uvgvpcc_enc {
 
@@ -191,6 +193,8 @@ struct Parameters {
     // bool useEncoderCommand = false; // lf : All mention of this parameter has been commented. This might be usefull to support command line
     // 2D encoder in the futur.
 };
+
+
 
 enum ParameterType { BOOL, INT, UINT, STRING, FLOAT, DOUBLE };
 
