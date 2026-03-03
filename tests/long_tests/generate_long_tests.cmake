@@ -30,7 +30,7 @@ set(RATES "16-22-2" "32-42-4")
 set(PRESETS fast slow)
 set(DOUBLE_LAYER true false)
 
-# Define per-sequence frame lists (this acts as your map)
+# Define per-sequence frame lists
 set(FRAMES_ReadyForWinter 1 20)
 set(FRAMES_FlowerWave 1 10)
 set(FRAMES_Gymnast 1 18)
