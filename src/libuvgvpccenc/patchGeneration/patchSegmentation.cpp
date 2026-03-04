@@ -8,15 +8,15 @@
  * are permitted provided that the following conditions are met:
  *
  * * Redistributions of source code must retain the above copyright notice, this
- *   list of conditions and the following disclaimer.
+ * list of conditions and the following disclaimer.
  *
  * * Redistributions in binary form must reproduce the above copyright notice, this
- *   list of conditions and the following disclaimer in the documentation and/or
- *   other materials provided with the distribution.
+ * list of conditions and the following disclaimer in the documentation and/or
+ * other materials provided with the distribution.
  *
  * * Neither the name of the Tampere University or ITU/ISO/IEC nor the names of its
- *   contributors may be used to endorse or promote products derived from
- *   this software without specific prior written permission.
+ * contributors may be used to endorse or promote products derived from
+ * this software without specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  * ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
@@ -125,7 +125,8 @@ inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSe
 inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& seedIndexNewPerf,
                                      std::vector<bool>& pointIsInAPatch, ConnectedComponent& cc,
                                      robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
-                                     const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed) {
+                                     const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed,
+                                     std::vector<size_t>& fifo) {
     cc.points.push_back(seedIndexNewPerf);
     pointIsInAPatch[seedIndexNewPerf] = true;
     mapLocation1D.erase(location1DFromPoint(ptSeed));
@@ -136,9 +137,10 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
     cc.minV = ptSeed[vAxis];
     cc.maxU = ptSeed[uAxis];
     cc.maxV = ptSeed[vAxis];
-    std::vector<size_t> fifo;
-    fifo.reserve(65536);
+    
+    fifo.clear();
     fifo.emplace_back(seedIndexNewPerf);
+    
     const typeGeometryInput maxVal = (1U << p_->geoBitDepthInput) - 1;
     size_t fifoReadIndex = 0;
     while (fifoReadIndex < fifo.size()) {
@@ -240,8 +242,8 @@ inline void setInitialPatchL1(Patch& patch, const ConnectedComponent& cc, std::v
         }
 
         // valid point for L1
-        // lf : si 0, alors L1 détient les valeurs les plus petites
-        // lf : si 1, alors L1 détient les valeurs les plus grandes
+        // lf : if 0, then L1 hold the smallest values
+        // lf : if 1, then L1 hold the highest values
 
         patch.depthL1_[p] = d;
         patch.depthPCidxL1_[p] = pointIndex;
@@ -395,7 +397,8 @@ inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uv
 template <size_t Ppi>
 inline void createPatch(Patch& patch, const ConnectedComponent& cc, const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                         std::vector<bool>& pointIsInAPatch, robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
-                        robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
+                        robin_hood::unordered_set<size_t>& resamplePointSetLocation1D,
+                        std::vector<typeGeometryInput>& sharedPeakPerBlock) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Create patch for frame " + std::to_string(frame->frameId) + "\n");
     constexpr size_t normalAxis = getPatchNormalAxis<Ppi>();
     constexpr size_t tangentAxis = getPatchTangentAxis<Ppi>();
@@ -427,14 +430,14 @@ inline void createPatch(Patch& patch, const ConnectedComponent& cc, const std::s
     patch.depthL1_.assign(patchSize, g_infiniteDepth);
     patch.depthPCidxL1_.assign(patchSize, g_infinitenumber);
 
-    std::vector<typeGeometryInput> peakPerBlock(patch.widthInOccBlk_ * patch.heightInOccBlk_, !projectionMode ? g_infiniteDepth : 0);
+    sharedPeakPerBlock.assign(patch.widthInOccBlk_ * patch.heightInOccBlk_, !projectionMode ? g_infiniteDepth : 0);
 
-    setInitialPatchL1<normalAxis, tangentAxis, bitangentAxis, projectionMode>(patch, cc, peakPerBlock, frame);
+    setInitialPatchL1<normalAxis, tangentAxis, bitangentAxis, projectionMode>(patch, cc, sharedPeakPerBlock, frame);
 
-    const int minD = getMinD<projectionMode>(peakPerBlock);
+    const int minD = getMinD<projectionMode>(sharedPeakPerBlock);
     patch.posD_ = static_cast<size_t>(minD);
 
-    setPatchL1<projectionMode>(patch, minD, peakPerBlock);
+    setPatchL1<projectionMode>(patch, minD, sharedPeakPerBlock);
 
     if (p_->doubleLayer) {
         finalizePatch<Ppi, true>(cc, frame, patch, mapLocation1D, pointIsInAPatch, minD, resamplePointSetLocation1D);
@@ -449,7 +452,8 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatch, std::v
                                       const robin_hood::unordered_set<size_t>& resamplePointSetLocation1D,
                                       const std::vector<size_t>& pointsPPIs,
                                       std::array<robin_hood::unordered_map<size_t, size_t>, 6>& mapList,
-                                      std::vector<ConnectedComponent>& connectedComponents) {
+                                      std::vector<ConnectedComponent>& connectedComponents,
+                                      std::vector<size_t>& sharedFifo) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION",
                                                      "Create connected components for frame " + std::to_string(frame->frameId) + "\n");
     for (size_t seedIndexNewPerf = 0; seedIndexNewPerf < pointIsInAPatch.size(); ++seedIndexNewPerf) {
@@ -458,7 +462,7 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatch, std::v
             if (!pointCanBeASeed[seedIndexNewPerf]) continue;
         }
 
-        const uvgutils::VectorN<typeGeometryInput, 3> ptSeed = frame->pointsGeometry[seedIndexNewPerf];
+        const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed = frame->pointsGeometry[seedIndexNewPerf];
         if constexpr (!FirstIteration) {
             // Find a correct seed point to start a connected component
             if (findNeighborSeed(ptSeed, resamplePointSetLocation1D)) {
@@ -470,7 +474,7 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatch, std::v
         // There is no neighboring point of this seed that is in the resample. It is then a correct seed.
         const size_t ppiCC = pointsPPIs[seedIndexNewPerf];
         connectedComponents.emplace_back(ppiCC);
-        createConnectedComponent(frame, seedIndexNewPerf, pointIsInAPatch, connectedComponents.back(), mapList[ppiCC], ptSeed);
+        createConnectedComponent(frame, seedIndexNewPerf, pointIsInAPatch, connectedComponents.back(), mapList[ppiCC], ptSeed, sharedFifo);
     }
 }
 
@@ -504,10 +508,15 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
     
     std::vector<ConnectedComponent> connectedComponents;
     connectedComponents.reserve(256);
+
+    std::vector<size_t> sharedFifo;
+    sharedFifo.reserve(65536);
+    std::vector<typeGeometryInput> sharedPeakPerBlock;
+    sharedPeakPerBlock.reserve(16384); 
     
     // Connected components creation (first iteration)
     createConnectedComponents<true>(pointIsInAPatch, pointCanBeASeed, frame, resamplePointSetLocation1D, pointsPPIs, mapList,
-        connectedComponents);
+        connectedComponents, sharedFifo);
         
     
     auto& patchList = *frame->patchList;
@@ -523,22 +532,22 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
 
             switch (cc.ppi) {
                 case 0:
-                    createPatch<0>(patch, cc, frame, pointIsInAPatch, mapList[0], resamplePointSetLocation1D);
+                    createPatch<0>(patch, cc, frame, pointIsInAPatch, mapList[0], resamplePointSetLocation1D, sharedPeakPerBlock);
                     break;
                 case 1:
-                    createPatch<1>(patch, cc, frame, pointIsInAPatch, mapList[1], resamplePointSetLocation1D);
+                    createPatch<1>(patch, cc, frame, pointIsInAPatch, mapList[1], resamplePointSetLocation1D, sharedPeakPerBlock);
                     break;
                 case 2:
-                    createPatch<2>(patch, cc, frame, pointIsInAPatch, mapList[2], resamplePointSetLocation1D);
+                    createPatch<2>(patch, cc, frame, pointIsInAPatch, mapList[2], resamplePointSetLocation1D, sharedPeakPerBlock);
                     break;
                 case 3:
-                    createPatch<3>(patch, cc, frame, pointIsInAPatch, mapList[3], resamplePointSetLocation1D);
+                    createPatch<3>(patch, cc, frame, pointIsInAPatch, mapList[3], resamplePointSetLocation1D, sharedPeakPerBlock);
                     break;
                 case 4:
-                    createPatch<4>(patch, cc, frame, pointIsInAPatch, mapList[4], resamplePointSetLocation1D);
+                    createPatch<4>(patch, cc, frame, pointIsInAPatch, mapList[4], resamplePointSetLocation1D, sharedPeakPerBlock);
                     break;
                 case 5:
-                    createPatch<5>(patch, cc, frame, pointIsInAPatch, mapList[5], resamplePointSetLocation1D);
+                    createPatch<5>(patch, cc, frame, pointIsInAPatch, mapList[5], resamplePointSetLocation1D, sharedPeakPerBlock);
                     break;
                 default:
                     assert(false);
@@ -549,7 +558,7 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
         // Connected components creation
         connectedComponents.clear();
         createConnectedComponents<false>(pointIsInAPatch, pointCanBeASeed, frame, resamplePointSetLocation1D, pointsPPIs,
-                                         mapList, connectedComponents);
+                                         mapList, connectedComponents, sharedFifo);
     }
 
     if(p_->exportStatistics){
