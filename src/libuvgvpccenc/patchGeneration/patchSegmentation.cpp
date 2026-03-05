@@ -107,14 +107,24 @@ inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3> 
 
 inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed,
                              const robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
+    const typeGeometryInput maxVal = (1U << p_->geoBitDepthInput) - 1;
     for (size_t dist = 0; dist < p_->maxAllowedDist2RawPointsDetection; ++dist) {
         for (const auto& shift : adjacentPointsSearch[dist]) {
-            uvgutils::VectorN<typeGeometryInput, 3> pointAdj;
-            pointAdj[0] = ptSeed[0] + shift[0];
-            pointAdj[1] = ptSeed[1] + shift[1];
-            pointAdj[2] = ptSeed[2] + shift[2];
-            const size_t pointAdjLocation1D = location1DFromPoint(pointAdj);
-            if (resamplePointSetLocation1D.contains(pointAdjLocation1D)) {
+            
+            const int x = static_cast<int>(ptSeed[0]) + shift[0];
+            const int y = static_cast<int>(ptSeed[1]) + shift[1];
+            const int z = static_cast<int>(ptSeed[2]) + shift[2];
+
+            if (x < 0 || y < 0 || z < 0 || x > maxVal || y > maxVal || z > maxVal) continue;
+
+            const uvgutils::VectorN<typeGeometryInput, 3> adjPt = {
+                static_cast<typeGeometryInput>(x),
+                static_cast<typeGeometryInput>(y),
+                static_cast<typeGeometryInput>(z)
+            };
+
+            const size_t adjLoc1D = location1DFromPoint(adjPt);
+            if (resamplePointSetLocation1D.contains(adjLoc1D)) {
                 return true;
             }
         }
@@ -149,11 +159,18 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
 
         for (size_t dist = 0; dist < p_->patchSegmentationMaxPropagationDistance; ++dist) {
             for (const auto& shift : adjacentPointsSearch[dist]) {
-                uvgutils::VectorN<typeGeometryInput, 3> adjPt = {
-                    static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(pt[0]) + static_cast<typeGeometryInput>(shift[0])),
-                    static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(pt[1]) + static_cast<typeGeometryInput>(shift[1])),
-                    static_cast<typeGeometryInput>(static_cast<typeGeometryInput>(pt[2]) + static_cast<typeGeometryInput>(shift[2]))};
-                if (adjPt[0] > maxVal || adjPt[1] > maxVal || adjPt[2] > maxVal) continue;
+
+                const int x = static_cast<int>(pt[0]) + shift[0];
+                const int y = static_cast<int>(pt[1]) + shift[1];
+                const int z = static_cast<int>(pt[2]) + shift[2];
+
+                if (x < 0 || y < 0 || z < 0 || x > maxVal || y > maxVal || z > maxVal) continue;
+
+                const uvgutils::VectorN<typeGeometryInput, 3> adjPt = {
+                    static_cast<typeGeometryInput>(x),
+                    static_cast<typeGeometryInput>(y),
+                    static_cast<typeGeometryInput>(z)
+                };
 
                 const size_t adjLoc1D = location1DFromPoint(adjPt);
 
