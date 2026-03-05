@@ -143,7 +143,6 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     // Patch segmentation //
     PatchSegmentation::patchSegmentation(frame, pointsPPIs);
 
-
     if(p_->exportStatistics){
         stats.collectData(frame->frameId, DataId::NumberOfPatches, (*frame->patchList).size());
     }

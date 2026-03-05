@@ -107,26 +107,25 @@ inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3> 
 
 inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed,
                              const robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
-    const typeGeometryInput maxVal = (1U << p_->geoBitDepthInput) - 1;
-    for (size_t dist = 0; dist < p_->maxAllowedDist2RawPointsDetection; ++dist) {
-        for (const auto& shift : adjacentPointsSearch[dist]) {
-            
-            const int x = static_cast<int>(ptSeed[0]) + shift[0];
-            const int y = static_cast<int>(ptSeed[1]) + shift[1];
-            const int z = static_cast<int>(ptSeed[2]) + shift[2];
-
-            if (x < 0 || y < 0 || z < 0 || x > maxVal || y > maxVal || z > maxVal) continue;
-
-            const uvgutils::VectorN<typeGeometryInput, 3> adjPt = {
-                static_cast<typeGeometryInput>(x),
-                static_cast<typeGeometryInput>(y),
-                static_cast<typeGeometryInput>(z)
-            };
-
-            const size_t adjLoc1D = location1DFromPoint(adjPt);
-            if (resamplePointSetLocation1D.contains(adjLoc1D)) {
-                return true;
-            }
+    const size_t adjacentRange = adjacentPointsSearchFlatOffsets[p_->maxAllowedDist2RawPointsDetection];
+    const size_t gbd = p_->geoBitDepthInput;
+    const size_t gbd2 = p_->geoBitDepthInput * 2;
+    const uint32_t maxVal = (1U << gbd) - 1;
+    
+    for(size_t i = 0; i < adjacentRange; ++i) {
+        const auto& shift = adjacentPointsSearchFlat[i];
+        
+        // Calculate as signed, then cast to unsigned for the following combined bounds checking
+        const uint32_t x = static_cast<uint32_t>(static_cast<int>(ptSeed[0]) + shift[0]);
+        const uint32_t y = static_cast<uint32_t>(static_cast<int>(ptSeed[1]) + shift[1]);
+        const uint32_t z = static_cast<uint32_t>(static_cast<int>(ptSeed[2]) + shift[2]);
+        
+        // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
+        if (x > maxVal || y > maxVal || z > maxVal) continue;
+        
+        const size_t adjLoc1D = x + (y << gbd) + (z << gbd2);
+        if (resamplePointSetLocation1D.contains(adjLoc1D)) {
+            return true;
         }
     }
     return false;
@@ -150,48 +149,48 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
     
     fifo.clear();
     fifo.emplace_back(seedIndexNewPerf);
-    
-    const typeGeometryInput maxVal = (1U << p_->geoBitDepthInput) - 1;
+
+    const size_t adjacentRange = adjacentPointsSearchFlatOffsets[p_->patchSegmentationMaxPropagationDistance];
+    const size_t gbd = p_->geoBitDepthInput;
+    const size_t gbd2 = p_->geoBitDepthInput * 2;
+    const uint32_t maxVal = (1U << gbd) - 1;
     size_t fifoReadIndex = 0;
     while (fifoReadIndex < fifo.size()) {
         const size_t idx = fifo[fifoReadIndex++];
         const auto& pt = frame->pointsGeometry[idx];
 
-        for (size_t dist = 0; dist < p_->patchSegmentationMaxPropagationDistance; ++dist) {
-            for (const auto& shift : adjacentPointsSearch[dist]) {
+        for(size_t i = 0; i < adjacentRange; ++i) {
+            const auto& shift = adjacentPointsSearchFlat[i];
+            
+            // Calculate as signed, then cast to unsigned for the following combined bounds checking
+            const uint32_t x = static_cast<uint32_t>(static_cast<int>(pt[0]) + shift[0]);
+            const uint32_t y = static_cast<uint32_t>(static_cast<int>(pt[1]) + shift[1]);
+            const uint32_t z = static_cast<uint32_t>(static_cast<int>(pt[2]) + shift[2]);
 
-                const int x = static_cast<int>(pt[0]) + shift[0];
-                const int y = static_cast<int>(pt[1]) + shift[1];
-                const int z = static_cast<int>(pt[2]) + shift[2];
+            // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
+            if (x > maxVal || y > maxVal || z > maxVal) continue;
 
-                if (x < 0 || y < 0 || z < 0 || x > maxVal || y > maxVal || z > maxVal) continue;
-
+            const size_t adjLoc1D = x + (y << gbd) + (z << gbd2);
+            auto it = mapLocation1D.find(adjLoc1D);
+            if (it != mapLocation1D.end()) {
+                const size_t adjPtIndex = it->second;
+                mapLocation1D.erase(it);
+                cc.points.push_back(adjPtIndex);
+                pointIsInAPatch[adjPtIndex] = true;
+                fifo.emplace_back(adjPtIndex);
+                
                 const uvgutils::VectorN<typeGeometryInput, 3> adjPt = {
                     static_cast<typeGeometryInput>(x),
                     static_cast<typeGeometryInput>(y),
                     static_cast<typeGeometryInput>(z)
                 };
+                const typeGeometryInput adjU = adjPt[uAxis];
+                const typeGeometryInput adjV = adjPt[vAxis];
 
-                const size_t adjLoc1D = location1DFromPoint(adjPt);
-
-                auto it = mapLocation1D.find(adjLoc1D);
-                if (it != mapLocation1D.end()) {
-                    const size_t adjPtIndex = it->second;
-                    mapLocation1D.erase(it);
-
-                    cc.points.push_back(adjPtIndex);
-                    pointIsInAPatch[adjPtIndex] = true;
-
-                    fifo.emplace_back(adjPtIndex);
-
-                    const typeGeometryInput adjU = adjPt[uAxis];
-                    const typeGeometryInput adjV = adjPt[vAxis];
-
-                    cc.minU = std::min(cc.minU, adjU);
-                    cc.minV = std::min(cc.minV, adjV);
-                    cc.maxU = std::max(cc.maxU, adjU);
-                    cc.maxV = std::max(cc.maxV, adjV);
-                }
+                cc.minU = std::min(cc.minU, adjU);
+                cc.minV = std::min(cc.minV, adjV);
+                cc.maxU = std::max(cc.maxU, adjU);
+                cc.maxV = std::max(cc.maxV, adjV);
             }
         }
     }

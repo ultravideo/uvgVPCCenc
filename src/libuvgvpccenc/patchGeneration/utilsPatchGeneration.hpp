@@ -36,9 +36,7 @@
 
 #include <sys/types.h>
 
-#include <algorithm>
 #include <cstdint>
-#include <fstream>
 #include <vector>
 
 #include "robin_hood.h"
@@ -99,6 +97,58 @@ static const std::array<std::vector<uvgutils::VectorN<int32_t, 3>>, 9> adjacentP
      {2, -1, 2},  {2, -1, -2},  {2, -2, 1}, {2, -2, -1}, {1, 2, 2},  {1, 2, -2},  {1, -2, 2},  {1, -2, -2},  {-1, 2, 2},  {-1, 2, -2},
      {-1, -2, 2}, {-1, -2, -2}, {-2, 2, 1}, {-2, 2, -1}, {-2, 1, 2}, {-2, 1, -2}, {-2, -1, 2}, {-2, -1, -2}, {-2, -2, 1}, {-2, -2, -1}},
 }};
+
+
+// All 122 shift vectors stored in a single contiguous block of memory
+static constexpr std::array<std::array<int16_t, 3>, 122> adjacentPointsSearchFlat = {{
+    // Adjacent shift for squared distance 1 (Offset 0, Size 6)
+    {1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1},
+    
+    // Adjacent shift for squared distance 2 (Offset 6, Size 12)
+    {1, 1, 0}, {1, -1, 0}, {-1, 1, 0}, {-1, -1, 0}, {0, 1, 1}, {0, 1, -1}, 
+    {0, -1, 1}, {0, -1, -1}, {1, 0, 1}, {-1, 0, 1}, {1, 0, -1}, {-1, 0, -1},
+    
+    // Adjacent shift for squared distance 3 (Offset 18, Size 8)
+    {1, 1, 1}, {1, 1, -1}, {1, -1, 1}, {1, -1, -1}, 
+    {-1, 1, 1}, {-1, 1, -1}, {-1, -1, 1}, {-1, -1, -1},
+    
+    // Adjacent shift for squared distance 4 (Offset 26, Size 6)
+    {2, 0, 0}, {-2, 0, 0}, {0, 2, 0}, {0, -2, 0}, {0, 0, 2}, {0, 0, -2},
+    
+    // Adjacent shift for squared distance 5 (Offset 32, Size 24)
+    {2, 1, 0}, {2, -1, 0}, {1, 2, 0}, {1, -2, 0}, {-1, 2, 0}, {-1, -2, 0}, {-2, 1, 0}, {-2, -1, 0},
+    {0, 2, 1}, {0, 2, -1}, {0, 1, 2}, {0, 1, -2}, {0, -1, 2}, {0, -1, -2}, {0, -2, 1}, {0, -2, -1},
+    {1, 0, 2}, {-1, 0, 2}, {2, 0, 1}, {-2, 0, 1}, {2, 0, -1}, {-2, 0, -1}, {1, 0, -2}, {-1, 0, -2},
+    
+    // Adjacent shift for squared distance 6 (Offset 56, Size 24)
+    {2, 1, 1}, {2, 1, -1}, {2, -1, 1}, {2, -1, -1}, {1, 2, 1}, {1, 2, -1}, {1, 1, 2}, {1, 1, -2},
+    {1, -1, 2}, {1, -1, -2}, {1, -2, 1}, {1, -2, -1}, {-1, 2, 1}, {-1, 2, -1}, {-1, 1, 2}, {-1, 1, -2},
+    {-1, -1, 2}, {-1, -1, -2}, {-1, -2, 1}, {-1, -2, -1}, {-2, 1, 1}, {-2, 1, -1}, {-2, -1, 1}, {-2, -1, -1},
+    
+    // Adjacent shift for squared distance 7 does not exist in an integer grid.
+    
+    // Adjacent shift for squared distance 8 (Offset 80, Size 12)
+    {2, 2, 0}, {2, -2, 0}, {-2, 2, 0}, {-2, -2, 0}, {0, 2, 2}, {0, 2, -2}, 
+    {0, -2, 2}, {0, -2, -2}, {2, 0, 2}, {-2, 0, 2}, {2, 0, -2}, {-2, 0, -2},
+    
+    // Adjacent shift for squared distance 9 (Offset 92, Size 30)
+    {3, 0, 0}, {-3, 0, 0}, {0, 3, 0}, {0, -3, 0}, {0, 0, 3}, {0, 0, -3}, {2, 2, 1}, {2, 2, -1}, {2, 1, 2}, {2, 1, -2},
+    {2, -1, 2}, {2, -1, -2}, {2, -2, 1}, {2, -2, -1}, {1, 2, 2}, {1, 2, -2}, {1, -2, 2}, {1, -2, -2}, {-1, 2, 2}, {-1, 2, -2},
+    {-1, -2, 2}, {-1, -2, -2}, {-2, 2, 1}, {-2, 2, -1}, {-2, 1, 2}, {-2, 1, -2}, {-2, -1, 2}, {-2, -1, -2}, {-2, -2, 1}, {-2, -2, -1}
+}};
+
+static constexpr std::array<size_t, 9> adjacentPointsSearchFlatOffsets = {
+    0,
+    6,
+    18,
+    26,
+    32,
+    56,
+    80,
+    80,
+    92
+};
+
 
 const std::array<uvgutils::VectorN<uint8_t, 3>, 114> patchColors = {{
     // Red color is for points not being part of a patch before the 2D projection.
