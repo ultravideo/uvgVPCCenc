@@ -261,8 +261,13 @@ void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxel
                                                 std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
                                                 std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
                                                 std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs) {
-    const typeGeometryInput gridMaxAxisValue = (1U << p_->geoBitDepthRefineSegmentation) - 1;
-    // TODO(lf): verify this above minus 1 is correct and that it is done everywhere it is needed
+    
+    const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
+    const size_t gbdrs2 = p_->geoBitDepthRefineSegmentation * 2;
+    const uint32_t maxVal = (1U << gbdrs) - 1;
+    const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
+    const size_t bitMask = (1U << gbdrs) - 1;
+    
     for (size_t v_idx = 0; v_idx < filledVoxels.size(); ++v_idx) {
         // Iterate through all voxels to set score, classification and voxel PPI //
         // First classification : NE-V or DE-V (SDE-V or MDE-V) //
@@ -280,38 +285,26 @@ void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxel
         // Inverse of this operation : const size_t pos_1D = x + (y << p_->geoBitDepthRefineSegmentation) + (z <<
         // (p_->geoBitDepthRefineSegmentation * 2)); For  p_->geoBitDepthRefineSegmentation==8, it is 00000000 00000000 00000000 00000000
         // 00000000 00000000 00000000 11111111
-        const size_t bitMask = (1U << p_->geoBitDepthRefineSegmentation) - 1;
-        const typeGeometryInput z = cur_pos_1D >> (p_->geoBitDepthRefineSegmentation * 2);
-        const typeGeometryInput y = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
-        const typeGeometryInput x = cur_pos_1D & bitMask;
-
-        const uvgutils::VectorN<typeGeometryInput, 3> currentPoint = {x, y, z};
+        const typeGeometryInput curz = cur_pos_1D >> (p_->geoBitDepthRefineSegmentation * 2);
+        const typeGeometryInput cury = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
+        const typeGeometryInput curx = cur_pos_1D & bitMask;
 
         // TODO(lf): find a way to directly add cur_pos_1D and pointAdjLocation1D, and then check if it is a valid point without extracting
         // the x y and z values
-
-        const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
         for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
             for (const auto& shift : adjacentPointsSearch[dist]) {
-                uvgutils::VectorN<typeGeometryInput, 3> pointAdj;
-                // TODO(lf): to discuss and verify : pointAdj need to be in signed type as the shift can generate negative values.
-                // However, such negative values, in usigned type, will be higher than the max treshold (the max boundary of the
-                // grid). By using this bit overflow, we divide by two the number of check (we don't check if the shifted point is
-                // higher than 0)
-                pointAdj[0] = currentPoint[0] + shift[0];
-                pointAdj[1] = currentPoint[1] + shift[1];
-                pointAdj[2] = currentPoint[2] + shift[2];
 
-                // check if valid 3D coordinate (not outside the grid) //
-                if (pointAdj[0] > gridMaxAxisValue || pointAdj[1] > gridMaxAxisValue || pointAdj[2] > gridMaxAxisValue) {
-                    continue;
-                }
-
-                const size_t pointAdjLocation1D = pointAdj[0] + (pointAdj[1] << p_->geoBitDepthRefineSegmentation) +
-                                                  (pointAdj[2] << (p_->geoBitDepthRefineSegmentation * 2));
-
-                if (occFlagArray[pointAdjLocation1D]) {
-                    const size_t neighbor_v_idx = voxelIdxMap.at(pointAdjLocation1D);
+                // Calculate as signed, then cast to unsigned for the following combined bounds checking
+                const uint32_t x = static_cast<uint32_t>(static_cast<int>(curx) + shift[0]);
+                const uint32_t y = static_cast<uint32_t>(static_cast<int>(cury) + shift[1]);
+                const uint32_t z = static_cast<uint32_t>(static_cast<int>(curz) + shift[2]);
+                
+                // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
+                if (x > maxVal || y > maxVal || z > maxVal) continue;
+                
+                const size_t adjLoc1D = x + (y << gbdrs) + (z << gbdrs2);
+                if (occFlagArray[adjLoc1D]) {
+                    const size_t neighbor_v_idx = voxelIdxMap.at(adjLoc1D);
                     ADJ_List[v_idx].push_back(
                         neighbor_v_idx);  // TODO(lf): do a big check everywhere because here adjacent and neighbor are inverted
 
@@ -370,9 +363,13 @@ in a voxel. The former is usually isolated points, and the latter indicates the 
 void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
                                       const size_t& frameId) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Refine segmentation of frame " + std::to_string(frameId) + "\n");
+    
+    const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
+    const size_t gbdrs2 = p_->geoBitDepthRefineSegmentation * 2;
+    const uint32_t maxVal = (1U << gbdrs) - 1;
+    
     // One boolean for each voxel of the grid, indicating if a voxel is filled or not //
-    const size_t gridMaxAxisValue = (1U << p_->geoBitDepthRefineSegmentation);
-    std::vector<bool> occFlagArray(gridMaxAxisValue * gridMaxAxisValue * gridMaxAxisValue, false);
+    std::vector<bool> occFlagArray(maxVal * maxVal * maxVal, false);
 
     robin_hood::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
 
@@ -413,9 +410,8 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
     std::array<size_t, 6> voxExtendedScore{0};
     std::vector<uint8_t> hasBeenComputed(voxelCount, 0);
 
-    const size_t bitMask = (1U << p_->geoBitDepthRefineSegmentation) - 1;
+    const size_t bitMask = (1U << gbdrs) - 1;
     const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
-
 
     for (size_t iter = 0; iter < p_->refineSegmentationIterationCount; ++iter) {
         for (size_t voxelIndex = 0; voxelIndex < voxelCount; ++voxelIndex) {
@@ -436,33 +432,24 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
             
                 size_t num_nn_points = 0;
                 size_t cur_pos_1D = filledVoxels[voxelIndex];
-                const typeGeometryInput z = cur_pos_1D >> (p_->geoBitDepthRefineSegmentation * 2);
-                const typeGeometryInput y = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
-                const typeGeometryInput x = cur_pos_1D & bitMask;
-            
-                const uvgutils::VectorN<typeGeometryInput, 3> currentPoint = {x, y, z};
+                const typeGeometryInput curz = cur_pos_1D >> (p_->geoBitDepthRefineSegmentation * 2);
+                const typeGeometryInput cury = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
+                const typeGeometryInput curx = cur_pos_1D & bitMask;
             
                 for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
                     for (const auto& shift : adjacentPointsSearch[dist]) {
-                        uvgutils::VectorN<typeGeometryInput, 3> pointAdj;
-                        // TODO(lf): to discuss and verify : pointAdj need to be in signed type as the shift can generate negative values.
-                        // However, such negative values, in usigned type, will be higher than the max treshold (the max boundary of the
-                        // grid). By using this bit overflow, we divide by two the number of check (we don't check if the shifted point is
-                        // higher than 0)
-                        pointAdj[0] = currentPoint[0] + shift[0];
-                        pointAdj[1] = currentPoint[1] + shift[1];
-                        pointAdj[2] = currentPoint[2] + shift[2];
-            
-                        // check if valid 3D coordinate (not outside the grid) //
-                        if (pointAdj[0] > gridMaxAxisValue || pointAdj[1] > gridMaxAxisValue || pointAdj[2] > gridMaxAxisValue) {
-                            continue;
-                        }
-            
-                        const size_t pointAdjLocation1D = pointAdj[0] + (pointAdj[1] << p_->geoBitDepthRefineSegmentation) +
-                                                            (pointAdj[2] << (p_->geoBitDepthRefineSegmentation * 2));
-            
-                        if (occFlagArray[pointAdjLocation1D]) {
-                            const size_t neighbor_v_idx = voxelIdxMap.at(pointAdjLocation1D);
+
+                       // Calculate as signed, then cast to unsigned for the following combined bounds checking
+                        const uint32_t x = static_cast<uint32_t>(static_cast<int>(curx) + shift[0]);
+                        const uint32_t y = static_cast<uint32_t>(static_cast<int>(cury) + shift[1]);
+                        const uint32_t z = static_cast<uint32_t>(static_cast<int>(curz) + shift[2]);
+                        
+                        // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
+                        if (x > maxVal || y > maxVal || z > maxVal) continue;
+                        
+                        const size_t adjLoc1D = x + (y << gbdrs) + (z << gbdrs2);
+                        if (occFlagArray[adjLoc1D]) {
+                            const size_t neighbor_v_idx = voxelIdxMap.at(adjLoc1D);
                             // ADJ_List.push_back(neighbor_v_idx);  // TODO(lf): do a big check everywhere because here adjacent and neighbor are inverted
                             ADJ_List[voxelIndex].push_back(neighbor_v_idx);
             

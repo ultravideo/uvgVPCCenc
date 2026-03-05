@@ -49,7 +49,7 @@ using namespace uvgvpcc_enc;
 
 // TODO(lf): how to handle this type of lut table variable ?
 // NOLINTNEXTLINE(cert-err58-cpp)
-static const std::array<std::vector<uvgutils::VectorN<int32_t, 3>>, 9> adjacentPointsSearch = {{
+static const std::array<std::vector<std::array<int16_t, 3>>, 9> adjacentPointsSearch = {{
     // Adjacent shift for squared distance 1
     {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}},
     // Adjacent shift for squared distance 2
