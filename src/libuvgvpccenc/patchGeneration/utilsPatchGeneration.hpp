@@ -100,7 +100,7 @@ static const std::array<std::vector<std::array<int16_t, 3>>, 9> adjacentPointsSe
 
 
 // All 122 shift vectors stored in a single contiguous block of memory
-static constexpr std::array<std::array<int16_t, 3>, 122> adjacentPointsSearchFlat = {{
+static constexpr std::array<std::array<int, 3>, 122> adjacentPointsSearchFlat = {{
     // Adjacent shift for squared distance 1 (Offset 0, Size 6)
     {1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1},
     

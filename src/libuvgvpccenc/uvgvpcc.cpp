@@ -271,6 +271,21 @@ void verifyConfig() {
                                  ") is bigger than the compilation constant MAX_GOF_SIZE (" +
                                  std::to_string(MAX_GOF_SIZE) + ").");        
     }
+
+    if (p_->maxAllowedDist2RawPointsDetection > adjacentPointsSearchFlatOffsets.size()) {
+        throw std::runtime_error("The maxAllowedDist2RawPointsDetection (" +
+                            std::to_string(p_->maxAllowedDist2RawPointsDetection) +
+                            ") is bigger than the size of adjacentPointsSearchFlatOffsets (" +
+                            std::to_string(adjacentPointsSearchFlatOffsets.size()) + ")."); 
+    }
+
+    if (p_->patchSegmentationMaxPropagationDistance > adjacentPointsSearchFlatOffsets.size()) {
+        throw std::runtime_error("The patchSegmentationMaxPropagationDistance (" +
+                            std::to_string(p_->patchSegmentationMaxPropagationDistance) +
+                            ") is bigger than the size of adjacentPointsSearchFlatOffsets (" +
+                            std::to_string(adjacentPointsSearchFlatOffsets.size()) + ")."); 
+    }    
+
 }
 
 void setInputGeoPrecision() {

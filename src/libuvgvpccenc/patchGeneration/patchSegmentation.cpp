@@ -101,8 +101,12 @@ struct ConnectedComponent {
     }
 };
 
-inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3> point) {
-    return point[0] + (point[1] << p_->geoBitDepthInput) + (point[2] << (p_->geoBitDepthInput * 2));
+inline size_t location1DFromCoordinates(const int x,const int y,const int z, const size_t gdb, const size_t gdb2) {
+    return static_cast<size_t>(x) + (static_cast<size_t>(y) << gdb) + (static_cast<size_t>(z) << gdb2);
+}
+
+inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3>& point, const size_t gdb, const size_t gdb2) {
+    return location1DFromCoordinates(point[0],point[1],point[2],gdb,gdb2);
 }
 
 inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed,
@@ -110,20 +114,18 @@ inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSe
     const size_t adjacentRange = adjacentPointsSearchFlatOffsets[p_->maxAllowedDist2RawPointsDetection];
     const size_t gbd = p_->geoBitDepthInput;
     const size_t gbd2 = p_->geoBitDepthInput * 2;
-    const uint32_t maxVal = (1U << gbd) - 1;
+    const typeGeometryInput maxVal = (1U << gbd) - 1;
     
     for(size_t i = 0; i < adjacentRange; ++i) {
         const auto& shift = adjacentPointsSearchFlat[i];
         
-        // Calculate as signed, then cast to unsigned for the following combined bounds checking
-        const uint32_t x = static_cast<uint32_t>(static_cast<int>(ptSeed[0]) + shift[0]);
-        const uint32_t y = static_cast<uint32_t>(static_cast<int>(ptSeed[1]) + shift[1]);
-        const uint32_t z = static_cast<uint32_t>(static_cast<int>(ptSeed[2]) + shift[2]);
+        const int x = static_cast<int>(ptSeed[0]) + shift[0];
+        const int y = static_cast<int>(ptSeed[1]) + shift[1];
+        const int z = static_cast<int>(ptSeed[2]) + shift[2];
+
+        if (x < 0 || x > maxVal || y < 0 || y > maxVal || z < 0 || z > maxVal) continue;
         
-        // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
-        if (x > maxVal || y > maxVal || z > maxVal) continue;
-        
-        const size_t adjLoc1D = x + (y << gbd) + (z << gbd2);
+        const size_t adjLoc1D = location1DFromCoordinates(x,y,z,gbd,gbd2);
         if (resamplePointSetLocation1D.contains(adjLoc1D)) {
             return true;
         }
@@ -131,14 +133,16 @@ inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSe
     return false;
 }
 
-inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& seedIndexNewPerf,
+inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t& seedIndex,
                                      std::vector<bool>& pointIsInAPatch, ConnectedComponent& cc,
                                      robin_hood::unordered_map<size_t, size_t>& mapLocation1D,
                                      const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed,
                                      std::vector<size_t>& fifo) {
-    cc.points.push_back(seedIndexNewPerf);
-    pointIsInAPatch[seedIndexNewPerf] = true;
-    mapLocation1D.erase(location1DFromPoint(ptSeed));
+    cc.points.push_back(seedIndex);
+    pointIsInAPatch[seedIndex] = true;
+    const size_t gbd = p_->geoBitDepthInput;
+    const size_t gbd2 = p_->geoBitDepthInput * 2;    
+    mapLocation1D.erase(location1DFromPoint(ptSeed,gbd,gbd2));
 
     const size_t uAxis = cc.tangentAxis;    // 0, 1 or 2
     const size_t vAxis = cc.bitangentAxis;  // 0, 1 or 2
@@ -148,11 +152,9 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
     cc.maxV = ptSeed[vAxis];
     
     fifo.clear();
-    fifo.emplace_back(seedIndexNewPerf);
+    fifo.emplace_back(seedIndex);
 
     const size_t adjacentRange = adjacentPointsSearchFlatOffsets[p_->patchSegmentationMaxPropagationDistance];
-    const size_t gbd = p_->geoBitDepthInput;
-    const size_t gbd2 = p_->geoBitDepthInput * 2;
     const uint32_t maxVal = (1U << gbd) - 1;
     size_t fifoReadIndex = 0;
     while (fifoReadIndex < fifo.size()) {
@@ -161,16 +163,13 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
 
         for(size_t i = 0; i < adjacentRange; ++i) {
             const auto& shift = adjacentPointsSearchFlat[i];
-            
-            // Calculate as signed, then cast to unsigned for the following combined bounds checking
-            const uint32_t x = static_cast<uint32_t>(static_cast<int>(pt[0]) + shift[0]);
-            const uint32_t y = static_cast<uint32_t>(static_cast<int>(pt[1]) + shift[1]);
-            const uint32_t z = static_cast<uint32_t>(static_cast<int>(pt[2]) + shift[2]);
+            const int x = static_cast<int>(pt[0]) + shift[0];
+            const int y = static_cast<int>(pt[1]) + shift[1];
+            const int z = static_cast<int>(pt[2]) + shift[2];
 
-            // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
-            if (x > maxVal || y > maxVal || z > maxVal) continue;
+            if (x < 0 || x > maxVal || y < 0 || y > maxVal || z < 0 || z > maxVal) continue;
 
-            const size_t adjLoc1D = x + (y << gbd) + (z << gbd2);
+            const size_t adjLoc1D = location1DFromCoordinates(x,y,z,gbd,gbd2);
             auto it = mapLocation1D.find(adjLoc1D);
             if (it != mapLocation1D.end()) {
                 const size_t adjPtIndex = it->second;
@@ -343,13 +342,16 @@ inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uv
         patch.depthPCidxL2_ = patch.depthPCidxL1_;  // Deep copy
     }
 
+    const size_t gbd = p_->geoBitDepthInput;
+    const size_t gbd2 = p_->geoBitDepthInput * 2;
+
     for (const size_t& pointIndex : cc.points) {
         const auto& point = frame->pointsGeometry[pointIndex];
         const size_t u = static_cast<size_t>(point[tangentAxis] - patch.posU_);
         const size_t v = static_cast<size_t>(point[bitangentAxis] - patch.posV_);
         const size_t p = v * patch.widthInPixel_ + u;
         const typeGeometryInput patchDL1 = patch.depthL1_[p];
-        const size_t loc1D = location1DFromPoint(point);
+        const size_t loc1D = location1DFromPoint(point,gbd,gbd2);
 
         if (patchDL1 == g_infiniteDepth) {
             pointIsInAPatch[pointIndex] = false;
@@ -383,7 +385,7 @@ inline void finalizePatch(const ConnectedComponent& cc, const std::shared_ptr<uv
                 if (patch.depthL2_[p] != g_infiniteDepth && patch.depthL2_[p] != patchDL1) {
                     const auto overwrittenIdx = patch.depthPCidxL2_[p];
                     const auto& overwrittenPt = frame->pointsGeometry[overwrittenIdx];
-                    const size_t overwrittenLoc1D = location1DFromPoint(overwrittenPt);
+                    const size_t overwrittenLoc1D = location1DFromPoint(overwrittenPt,gbd,gbd2);
                     resamplePointSetLocation1D.erase(overwrittenLoc1D);
                     // The overwritten point is between the two layers, it is discarded.
                 }
@@ -472,25 +474,25 @@ inline void createConnectedComponents(std::vector<bool>& pointIsInAPatch, std::v
                                       std::vector<size_t>& sharedFifo) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION",
                                                      "Create connected components for frame " + std::to_string(frame->frameId) + "\n");
-    for (size_t seedIndexNewPerf = 0; seedIndexNewPerf < pointIsInAPatch.size(); ++seedIndexNewPerf) {
-        if (pointIsInAPatch[seedIndexNewPerf]) continue;
+    for (size_t seedIndex = 0; seedIndex < pointIsInAPatch.size(); ++seedIndex) {
+        if (pointIsInAPatch[seedIndex]) continue;
         if constexpr (!FirstIteration) {
-            if (!pointCanBeASeed[seedIndexNewPerf]) continue;
+            if (!pointCanBeASeed[seedIndex]) continue;
         }
 
-        const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed = frame->pointsGeometry[seedIndexNewPerf];
+        const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed = frame->pointsGeometry[seedIndex];
         if constexpr (!FirstIteration) {
             // Find a correct seed point to start a connected component
             if (findNeighborSeed(ptSeed, resamplePointSetLocation1D)) {
-                pointCanBeASeed[seedIndexNewPerf] = false;
+                pointCanBeASeed[seedIndex] = false;
                 continue;
             }
         }
 
         // There is no neighboring point of this seed that is in the resample. It is then a correct seed.
-        const size_t ppiCC = pointsPPIs[seedIndexNewPerf];
+        const size_t ppiCC = pointsPPIs[seedIndex];
         connectedComponents.emplace_back(ppiCC);
-        createConnectedComponent(frame, seedIndexNewPerf, pointIsInAPatch, connectedComponents.back(), mapList[ppiCC], ptSeed, sharedFifo);
+        createConnectedComponent(frame, seedIndex, pointIsInAPatch, connectedComponents.back(), mapList[ppiCC], ptSeed, sharedFifo);
     }
 }
 
@@ -512,9 +514,11 @@ void PatchSegmentation::patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Fra
     for (auto& map : mapList) {
         map.reserve(65536);
     }
+
+    const size_t gbd = p_->geoBitDepthInput;
+    const size_t gbd2 = p_->geoBitDepthInput * 2;    
     for (size_t ptIndex = 0; ptIndex < pointCount; ++ptIndex) {
-        const auto& point = frame->pointsGeometry[ptIndex];
-        const size_t pointLocation1D = point[0] + (point[1] << p_->geoBitDepthInput) + (point[2] << (p_->geoBitDepthInput * 2));
+        const size_t pointLocation1D = location1DFromPoint(frame->pointsGeometry[ptIndex],gbd,gbd2);
         assert(pointsPPIs[ptIndex] < 6);
         mapList[pointsPPIs[ptIndex]].emplace(pointLocation1D, ptIndex);
     }
