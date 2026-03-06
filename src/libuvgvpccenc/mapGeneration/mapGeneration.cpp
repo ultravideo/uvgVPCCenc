@@ -132,10 +132,10 @@ void writePatchT(const uvgvpcc_enc::Patch& patch, const size_t& imageSize, const
     const auto* depthPCidxL2 = patch.depthPCidxL2_.data();
     const auto& attributes = frame->pointsAttribute;
 
-    auto* geomL1 = frame->geometryMapL1New->data();
-    auto* attrL1 = frame->attributeMapL1New->data();
-    auto* geomL2 = frame->geometryMapL2New->data();
-    auto* attrL2 = frame->attributeMapL2New->data();
+    auto* geomL1 = frame->geometryMapL1->data();
+    auto* attrL1 = frame->attributeMapL1->data();
+    auto* geomL2 = frame->geometryMapL2->data();
+    auto* attrL2 = frame->attributeMapL2->data();
 
     for (size_t v = 0; v < patchHeight; ++v) {
         const size_t vOffset = v * patchWidth;
@@ -207,8 +207,8 @@ void allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t
 
     // TODO(lf): is it necessary ? Yes if resizing due to bigger occupancy map (larger than minimumHeight parameter)
     // assert(frame->occupancyMap.size() <= imageSize); //TODO(lf) there is a bug here
-    if (frame->occupancyMapNew->size() != imageSize) {
-        frame->occupancyMapNew->resize(imageSize, 0);
+    if (frame->occupancyMap->size() != imageSize) {
+        frame->occupancyMap->resize(imageSize, 0);
     }
 
     if (p_->exportIntermediateFiles) {
@@ -216,15 +216,15 @@ void allocateMaps(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const size_t
     }
 
     const size_t imageSizeDS = imageSize / (p_->occupancyMapDSResolution * p_->occupancyMapDSResolution);
-    frame->occupancyMapDSNew->resize(imageSizeDS + (imageSizeDS >> 1U), 0U);  // TODO(lf): should be done at the down scaling function
+    frame->occupancyMapDS->resize(imageSizeDS + (imageSizeDS >> 1U), 0U);  // TODO(lf): should be done at the down scaling function
 
-    frame->geometryMapL1New->resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
-    frame->attributeMapL1New->resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
+    frame->geometryMapL1->resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
+    frame->attributeMapL1->resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
     // TODO(lf): what is the justification for the max value ?
 
     if (p_->doubleLayer) {
-        frame->geometryMapL2New->resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
-        frame->attributeMapL2New->resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
+        frame->geometryMapL2->resize(imageSize + (imageSize >> 1U), p_->mapGenerationBackgroundValueGeometry);
+        frame->attributeMapL2->resize(static_cast<size_t>(imageSize) * 3, p_->mapGenerationBackgroundValueAttribute);
     }
 }
 
@@ -450,9 +450,9 @@ void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>&
 
     // TODO(lf): occupancy map downscaling can be done after write patches (or in parallel) maybe
     if (p_->occupancyMapDSResolution == 2) {
-        occupancyMapDownscaling<2>(frame->mapHeight, *frame->occupancyMapNew, *frame->occupancyMapDSNew);
+        occupancyMapDownscaling<2>(frame->mapHeight, *frame->occupancyMap, *frame->occupancyMapDS);
     } else if (p_->occupancyMapDSResolution == 4) {
-        occupancyMapDownscaling<4>(frame->mapHeight, *frame->occupancyMapNew, *frame->occupancyMapDSNew);
+        occupancyMapDownscaling<4>(frame->mapHeight, *frame->occupancyMap, *frame->occupancyMapDS);
     } else {
         assert(false && "Unsupported downscaling factor for occupancy map.");
     }
@@ -474,15 +474,15 @@ void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>&
     writePatches(frame, frame->mapHeight);
 
     // Geometry map background filling
-    bgFillGeometry(*frame->occupancyMapDSNew, frame->mapHeight, *frame->geometryMapL1New);
+    bgFillGeometry(*frame->occupancyMapDS, frame->mapHeight, *frame->geometryMapL1);
     if (p_->doubleLayer) {
-        bgFillGeometry(*frame->occupancyMapDSNew, frame->mapHeight, *frame->geometryMapL2New);
+        bgFillGeometry(*frame->occupancyMapDS, frame->mapHeight, *frame->geometryMapL2);
     }
 
     // Attribute map background filling
-    bgFillAttribute(*frame, *frame->attributeMapL1New);
+    bgFillAttribute(*frame, *frame->attributeMapL1);
     if (p_->doubleLayer) {
-        bgFillAttribute(*frame, *frame->attributeMapL2New);
+        bgFillAttribute(*frame, *frame->attributeMapL2);
     }
 
     if (p_->exportIntermediateFiles) {
@@ -494,14 +494,14 @@ void MapGeneration::generateFrameMaps(const std::shared_ptr<uvgvpcc_enc::Frame>&
     // used different conversion standards, resulting in incorrect quality assessment. TODO(lf): Find the mention of the conversion standard
     // within the ISO norm.
     if (p_->useTmc2YuvDownscaling) {
-        RGB444toYUV420TMC2(*frame->attributeMapL1New, p_->mapWidth, frame->mapHeight);
+        RGB444toYUV420TMC2(*frame->attributeMapL1, p_->mapWidth, frame->mapHeight);
         if (p_->doubleLayer) {
-            RGB444toYUV420TMC2(*frame->attributeMapL2New, p_->mapWidth, frame->mapHeight);
+            RGB444toYUV420TMC2(*frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
         }
     } else {
-        RGB444toYUV420(*frame->attributeMapL1New, p_->mapWidth, frame->mapHeight);
+        RGB444toYUV420(*frame->attributeMapL1, p_->mapWidth, frame->mapHeight);
         if (p_->doubleLayer) {
-            RGB444toYUV420(*frame->attributeMapL2New, p_->mapWidth, frame->mapHeight);
+            RGB444toYUV420(*frame->attributeMapL2, p_->mapWidth, frame->mapHeight);
         }
     }
 

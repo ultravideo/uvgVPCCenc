@@ -583,18 +583,18 @@ void exportImageOccupancy(const std::shared_ptr<Frame>& frame) {
         // Export the pristine occupancy map (YUV400)
         const std::string outputPath = p_->intermediateFilesDir + "/06-occupancy/OCCUPANCY_f" + uvgutils::zeroPad(frame->frameNumber, 3) +
                                        "_YUV400_" + std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".yuv";
-        exportImage(outputPath, *frame->occupancyMapNew);
+        exportImage(outputPath, *frame->occupancyMap);
     }
 
     {
         // Export the recolored occupancy map for human viewing (RGB, PNG lossless)
-        const size_t imageSize = frame->occupancyMapNew->size();
+        const size_t imageSize = frame->occupancyMap->size();
         const std::string outputPath = p_->intermediateFilesDir + "/06-occupancyRecolored/OCCUPANCY-RECOLORED_f" +
                                        uvgutils::zeroPad(frame->frameNumber, 3) + "_RGB444_" + std::to_string(p_->mapWidth) + "x" +
                                        std::to_string(frame->mapHeight) + ".rgb";
         std::vector<uint8_t> occupancyMapRecolored(imageSize * 3);
         for (size_t i = 0; i < imageSize; ++i) {
-            const uint8_t grayValue = 164 * (*frame->occupancyMapNew)[i];
+            const uint8_t grayValue = 164 * (*frame->occupancyMap)[i];
             occupancyMapRecolored[i * 3] = grayValue;
             occupancyMapRecolored[i * 3 + 1] = grayValue;
             occupancyMapRecolored[i * 3 + 2] = grayValue;
@@ -612,19 +612,19 @@ void exportImageOccupancyDS(const std::shared_ptr<Frame>& frame) {
         const std::string outputPath =
             p_->intermediateFilesDir + "/07-occupancyDS/OCCUPANCY-DS_f" + uvgutils::zeroPad(frame->frameNumber, 3) + "_YUV420_" +
             std::to_string(p_->mapWidth / p_->occupancyMapDSResolution) + "x" + std::to_string(frame->mapHeightDS) + ".yuv";
-        exportImage(outputPath, *frame->occupancyMapDSNew);
+        exportImage(outputPath, *frame->occupancyMapDS);
     }
 
     {
         // Export the recolored occupancy map for human viewing (RGB)
-        const size_t imageSize = frame->occupancyMapDSNew->size();
+        const size_t imageSize = frame->occupancyMapDS->size();
         const std::string outputPath = p_->intermediateFilesDir + "/07-occupancyDSRecolored/OCCUPANCY-DS-RECOLORED_f" +
                                        uvgutils::zeroPad(frame->frameNumber, 3) + "_RGB444_" +
                                        std::to_string(p_->mapWidth / p_->occupancyMapDSResolution) + "x" +
                                        std::to_string(p_->mapWidth / p_->occupancyMapDSResolution) + ".rgb";
         std::vector<uint8_t> occupancyMapDSRecolored(imageSize * 3);
         for (size_t i = 0; i < imageSize; ++i) {
-            const uint8_t grayValue = 164 * (*frame->occupancyMapDSNew)[i];
+            const uint8_t grayValue = 164 * (*frame->occupancyMapDS)[i];
             occupancyMapDSRecolored[i * 3] = grayValue;
             occupancyMapDSRecolored[i * 3 + 1] = grayValue;
             occupancyMapDSRecolored[i * 3 + 2] = grayValue;
@@ -639,9 +639,9 @@ void exportImageAttribute(const std::shared_ptr<Frame>& frame) {
     const std::string outputPath = p_->intermediateFilesDir + "/08-attribute/ATTRIBUTE_f" + uvgutils::zeroPad(frame->frameNumber, 3) +
                                    "_RGB444_" + std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".rgb";
     if (p_->doubleLayer) {
-        exportImageRepacked(outputPath, *frame->attributeMapL1New, *frame->attributeMapL2New);
+        exportImageRepacked(outputPath, *frame->attributeMapL1, *frame->attributeMapL2);
     } else {
-        exportImageRepacked(outputPath, *frame->attributeMapL1New);
+        exportImageRepacked(outputPath, *frame->attributeMapL1);
     }
 }
 
@@ -651,9 +651,9 @@ void exportImageGeometry(const std::shared_ptr<Frame>& frame) {
     const std::string outputPath = p_->intermediateFilesDir + "/09-geometry/GEOMETRY_f" + uvgutils::zeroPad(frame->frameNumber, 3) +
                                    "_YUV420_" + std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".yuv";
     if (p_->doubleLayer) {
-        exportImage(outputPath, *frame->geometryMapL1New, *frame->geometryMapL2New);
+        exportImage(outputPath, *frame->geometryMapL1, *frame->geometryMapL2);
     } else {
-        exportImage(outputPath, *frame->geometryMapL1New);
+        exportImage(outputPath, *frame->geometryMapL1);
     }
 }
 
@@ -664,9 +664,9 @@ void exportImageAttributeBgFill(const std::shared_ptr<Frame>& frame) {
                                    uvgutils::zeroPad(frame->frameNumber, 3) + "_RGB444_" + std::to_string(p_->mapWidth) + "x" +
                                    std::to_string(frame->mapHeight) + ".rgb";
     if (p_->doubleLayer) {
-        exportImage(outputPath, *frame->attributeMapL1New, *frame->attributeMapL2New);
+        exportImage(outputPath, *frame->attributeMapL1, *frame->attributeMapL2);
     } else {
-        exportImage(outputPath, *frame->attributeMapL1New);
+        exportImage(outputPath, *frame->attributeMapL1);
     }
 }
 
@@ -677,9 +677,9 @@ void exportImageGeometryBgFill(const std::shared_ptr<Frame>& frame) {
                                    uvgutils::zeroPad(frame->frameNumber, 3) + "_YUV420_" + std::to_string(p_->mapWidth) + "x" +
                                    std::to_string(frame->mapHeight) + ".yuv";
     if (p_->doubleLayer) {
-        exportImage(outputPath, *frame->geometryMapL1New, *frame->geometryMapL2New);
+        exportImage(outputPath, *frame->geometryMapL1, *frame->geometryMapL2);
     } else {
-        exportImage(outputPath, *frame->geometryMapL1New);
+        exportImage(outputPath, *frame->geometryMapL1);
     }
 }
 
@@ -689,9 +689,9 @@ void exportImageAttributeYUV(const std::shared_ptr<Frame>& frame) {
     const std::string outputPath = p_->intermediateFilesDir + "/12-attributeYUV/ATTRIBUTE-YUV_f" + uvgutils::zeroPad(frame->frameNumber, 3) +
                                    "_YUV420_" + std::to_string(p_->mapWidth) + "x" + std::to_string(frame->mapHeight) + ".yuv";
     if (p_->doubleLayer) {
-        exportImage(outputPath, *frame->attributeMapL1New, *frame->attributeMapL2New);
+        exportImage(outputPath, *frame->attributeMapL1, *frame->attributeMapL2);
     } else {
-        exportImage(outputPath, *frame->attributeMapL1New);
+        exportImage(outputPath, *frame->attributeMapL1);
     }
 }
 

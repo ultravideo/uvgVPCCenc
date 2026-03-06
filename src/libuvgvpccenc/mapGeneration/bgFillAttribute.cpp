@@ -467,7 +467,7 @@ void attributeBgFillBBPE(uvgvpcc_enc::Frame& frame, std::vector<uint8_t>& attrib
                 const size_t yDS = yBBPE_DS_offset + j;
                 const size_t rowOffset = yDS * occupancyMapDSWidth;
                 for (size_t i = 0; i < blockSizeBBPEInDSBlk; ++i) {
-                    if ((*frame.occupancyMapDSNew)[rowOffset + xBBPE_DS_offset + i] > 0U) {
+                    if ((*frame.occupancyMapDS)[rowOffset + xBBPE_DS_offset + i] > 0U) {
                         occupied = true;
                         break;
                     }
@@ -482,7 +482,7 @@ void attributeBgFillBBPE(uvgvpcc_enc::Frame& frame, std::vector<uint8_t>& attrib
             for (size_t j = 0; j < blockSize; ++j) {
                 const size_t rowOffset = (yBBPE_Pixel_offset + j) * mapWidth + xBBPE_Pixel_offset;
                 for (size_t i = 0; i < blockSize; ++i) {
-                    occupiedPixelCount += (*frame.occupancyMapNew)[rowOffset + i];
+                    occupiedPixelCount += (*frame.occupancyMap)[rowOffset + i];
                 }
             }
 
@@ -506,7 +506,7 @@ void attributeBgFillBBPE(uvgvpcc_enc::Frame& frame, std::vector<uint8_t>& attrib
                 for (size_t i = 0; i < blockSize; ++i) {
                     const size_t x = xBBPE_Pixel_offset + i;
                     const size_t loc = i + j * blockSize;
-                    iterations[loc] = (*frame.occupancyMapNew)[x + yStride];
+                    iterations[loc] = (*frame.occupancyMap)[x + yStride];
                 }
             }
 
@@ -574,11 +574,11 @@ void attributeBgFillBBPE(uvgvpcc_enc::Frame& frame, std::vector<uint8_t>& attrib
 void bgFillAttribute(uvgvpcc_enc::Frame& frame, std::vector<uint8_t>& attributeMap) {
     // TODO(lf): make an enum and use a switch
     if (p_->attributeBgFill == "patchExtension") {
-        bgFillAttributePatchExtension(*frame.occupancyMapDSNew, frame.mapHeight, attributeMap);
+        bgFillAttributePatchExtension(*frame.occupancyMapDS, frame.mapHeight, attributeMap);
     } else if (p_->attributeBgFill == "bbpe") {
         attributeBgFillBBPE(frame, attributeMap);
     } else if (p_->attributeBgFill == "pushPull") {
-        bgFillAttributePushPull(*frame.occupancyMapNew, frame.mapHeight, attributeMap);
+        bgFillAttributePushPull(*frame.occupancyMap, frame.mapHeight, attributeMap);
     } else if (p_->attributeBgFill == "none") {
         // Skip attribute map background filling
     } else {

@@ -546,13 +546,13 @@ void GOF::setFrameMemoryPtrs(std::shared_ptr<Frame>& frame) {
     const size_t framePos = frame->frameId % p_->sizeGOF;
     frame->patchList = &(*framePatches)[framePos];
 
-    frame->occupancyMapNew = &(*frameOccupancyMaps)[framePos];
-    frame->occupancyMapNew = &(*frameOccupancyMaps)[framePos];
-    frame->occupancyMapDSNew = &(*frameOccupancyMapsDS)[framePos];
-    frame->geometryMapL1New = &(*frameGeometryMapsL1)[framePos];
-    frame->geometryMapL2New = &(*frameGeometryMapsL2)[framePos];
-    frame->attributeMapL1New = &(*frameAttributeMapsL1)[framePos];
-    frame->attributeMapL2New = &(*frameAttributeMapsL2)[framePos];
+    frame->occupancyMap = &(*frameOccupancyMaps)[framePos];
+    frame->occupancyMap = &(*frameOccupancyMaps)[framePos];
+    frame->occupancyMapDS = &(*frameOccupancyMapsDS)[framePos];
+    frame->geometryMapL1 = &(*frameGeometryMapsL1)[framePos];
+    frame->geometryMapL2 = &(*frameGeometryMapsL2)[framePos];
+    frame->attributeMapL1 = &(*frameAttributeMapsL1)[framePos];
+    frame->attributeMapL2 = &(*frameAttributeMapsL2)[framePos];
 }
 
 GOF::~GOF() {

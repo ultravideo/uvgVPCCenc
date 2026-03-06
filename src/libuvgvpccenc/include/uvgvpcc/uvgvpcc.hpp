@@ -200,12 +200,12 @@ struct Frame {
     // lf: Centralized memory handling //
     std::vector<Patch>* patchList;
 
-    std::vector<uint8_t>* occupancyMapNew;    // (boolean vector)
-    std::vector<uint8_t>* occupancyMapDSNew;  // Down-scaled occupancy map of the frame (boolean vector)
-    std::vector<uint8_t>* geometryMapL1New;  // first layer
-    std::vector<uint8_t>* geometryMapL2New;  // second layer
-    std::vector<uint8_t>* attributeMapL1New;  // Store the three channels continuously (all R, then all G, than all B)
-    std::vector<uint8_t>* attributeMapL2New;    
+    std::vector<uint8_t>* occupancyMap;    // (boolean vector)
+    std::vector<uint8_t>* occupancyMapDS;  // Down-scaled occupancy map of the frame (boolean vector)
+    std::vector<uint8_t>* geometryMapL1;  // first layer
+    std::vector<uint8_t>* geometryMapL2;  // second layer
+    std::vector<uint8_t>* attributeMapL1;  // Store the three channels continuously (all R, then all G, than all B)
+    std::vector<uint8_t>* attributeMapL2;    
 
 };
 
