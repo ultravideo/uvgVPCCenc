@@ -49,7 +49,7 @@ using namespace uvgvpcc_enc;
 
 // TODO(lf): how to handle this type of lut table variable ?
 // NOLINTNEXTLINE(cert-err58-cpp)
-static const std::array<std::vector<std::array<int16_t, 3>>, 9> adjacentPointsSearch = {{
+static const std::array<std::vector<std::array<int, 3>>, 9> adjacentPointsSearch = {{
     // Adjacent shift for squared distance 1
     {{1, 0, 0}, {-1, 0, 0}, {0, 1, 0}, {0, -1, 0}, {0, 0, 1}, {0, 0, -1}},
     // Adjacent shift for squared distance 2
@@ -187,6 +187,15 @@ struct vector3Hash {
         return hash;
     }
 };
+
+
+inline size_t location1DFromCoordinates(const int x, const int y, const int z, const size_t gdb, const size_t gdb2) {
+    return static_cast<size_t>(x) + (static_cast<size_t>(y) << gdb) + (static_cast<size_t>(z) << gdb2);
+}
+
+inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3>& point, const size_t gdb, const size_t gdb2) {
+    return location1DFromCoordinates(point[0],point[1],point[2],gdb,gdb2);
+}
 
 // The voxelization is done so to have those three vectors sharing the same order (that is sharing the same voxel index) :
 // -> A list of voxel (vector of coordinates)

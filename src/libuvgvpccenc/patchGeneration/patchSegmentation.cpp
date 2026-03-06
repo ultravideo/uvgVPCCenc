@@ -101,20 +101,13 @@ struct ConnectedComponent {
     }
 };
 
-inline size_t location1DFromCoordinates(const int x,const int y,const int z, const size_t gdb, const size_t gdb2) {
-    return static_cast<size_t>(x) + (static_cast<size_t>(y) << gdb) + (static_cast<size_t>(z) << gdb2);
-}
-
-inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3>& point, const size_t gdb, const size_t gdb2) {
-    return location1DFromCoordinates(point[0],point[1],point[2],gdb,gdb2);
-}
 
 inline bool findNeighborSeed(const uvgutils::VectorN<typeGeometryInput, 3>& ptSeed,
                              const robin_hood::unordered_set<size_t>& resamplePointSetLocation1D) {
     const size_t adjacentRange = adjacentPointsSearchFlatOffsets[p_->maxAllowedDist2RawPointsDetection];
     const size_t gbd = p_->geoBitDepthInput;
     const size_t gbd2 = p_->geoBitDepthInput * 2;
-    const typeGeometryInput maxVal = (1U << gbd) - 1;
+    const int maxVal = (1U << gbd) - 1;
     
     for(size_t i = 0; i < adjacentRange; ++i) {
         const auto& shift = adjacentPointsSearchFlat[i];
@@ -155,7 +148,7 @@ inline void createConnectedComponent(const std::shared_ptr<uvgvpcc_enc::Frame>& 
     fifo.emplace_back(seedIndex);
 
     const size_t adjacentRange = adjacentPointsSearchFlatOffsets[p_->patchSegmentationMaxPropagationDistance];
-    const uint32_t maxVal = (1U << gbd) - 1;
+    const int maxVal = (1U << gbd) - 1;
     size_t fifoReadIndex = 0;
     while (fifoReadIndex < fifo.size()) {
         const size_t idx = fifo[fifoReadIndex++];

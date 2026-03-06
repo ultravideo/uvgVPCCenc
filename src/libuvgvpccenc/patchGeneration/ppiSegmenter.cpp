@@ -218,6 +218,8 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgutils::VectorN<
                                             std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels) {
     const size_t voxelizationShift =
         p_->geoBitDepthVoxelized - p_->geoBitDepthRefineSegmentation;  // i.e. : 9 - 8 = 1 (meaning 2x2x2 voxel dimension)
+    const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
+    const size_t gbdrs2 = p_->geoBitDepthRefineSegmentation * 2;        
 
     // TODO(lf): this is a simple heuristic from longdress (10->9->8). At least round up to the power of 2
     // (as it will already be done by the reserve function)
@@ -236,10 +238,10 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgutils::VectorN<
     for (size_t point_idx = 0; point_idx < inputPointsGeometry.size(); ++point_idx) {
         const uvgutils::VectorN<typeGeometryInput, 3>& inputPoint = inputPointsGeometry[point_idx];
 
-        const size_t vx = inputPoint[0] >> voxelizationShift;
-        const size_t vy = inputPoint[1] >> voxelizationShift;
-        const size_t vz = inputPoint[2] >> voxelizationShift;
-        const size_t pos_1D = vx + (vy << p_->geoBitDepthRefineSegmentation) + (vz << (p_->geoBitDepthRefineSegmentation << 1U));
+        const int vx = inputPoint[0] >> voxelizationShift;
+        const int vy = inputPoint[1] >> voxelizationShift;
+        const int vz = inputPoint[2] >> voxelizationShift;
+        const size_t pos_1D = location1DFromCoordinates(vx, vy, vz, gbdrs,gbdrs2);
 
         if (!occFlagArray[pos_1D]) {
             occFlagArray[pos_1D] = true;
@@ -255,6 +257,7 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgutils::VectorN<
 }
 
 // TODO(lf): tackle the cognitive complexity
+// TODO(mf): can be removed ?
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
 void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray,
                                                 robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
@@ -264,9 +267,9 @@ void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxel
     
     const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
     const size_t gbdrs2 = p_->geoBitDepthRefineSegmentation * 2;
-    const uint32_t maxVal = (1U << gbdrs) - 1;
     const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
     const size_t bitMask = (1U << gbdrs) - 1;
+    const int maxVal = (1U << gbdrs) - 1;
     
     for (size_t v_idx = 0; v_idx < filledVoxels.size(); ++v_idx) {
         // Iterate through all voxels to set score, classification and voxel PPI //
@@ -278,31 +281,29 @@ void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxel
         // }
         // updateVoxelAttribute(voxAttribute, pointListInVoxels[v_idx], pointsPPIs);
 
-        const size_t cur_pos_1D = filledVoxels[v_idx];
         // find valid 3D search range centered on cur_pos_1D //
-        size_t num_nn_points = 0;  // The number of points within neighboring voxels
-
+        
         // Inverse of this operation : const size_t pos_1D = x + (y << p_->geoBitDepthRefineSegmentation) + (z <<
         // (p_->geoBitDepthRefineSegmentation * 2)); For  p_->geoBitDepthRefineSegmentation==8, it is 00000000 00000000 00000000 00000000
         // 00000000 00000000 00000000 11111111
-        const typeGeometryInput curz = cur_pos_1D >> (p_->geoBitDepthRefineSegmentation * 2);
-        const typeGeometryInput cury = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
-        const typeGeometryInput curx = cur_pos_1D & bitMask;
-
+        const size_t cur_pos_1D = filledVoxels[v_idx];
+        const int curz = cur_pos_1D >> gbdrs2;
+        const int cury = (cur_pos_1D >> gbdrs) & bitMask;
+        const int curx = cur_pos_1D & bitMask;        
+        
+        size_t num_nn_points = 0;  // The number of points within neighboring voxels
         // TODO(lf): find a way to directly add cur_pos_1D and pointAdjLocation1D, and then check if it is a valid point without extracting
         // the x y and z values
         for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
             for (const auto& shift : adjacentPointsSearch[dist]) {
 
-                // Calculate as signed, then cast to unsigned for the following combined bounds checking
-                const uint32_t x = static_cast<uint32_t>(static_cast<int>(curx) + shift[0]);
-                const uint32_t y = static_cast<uint32_t>(static_cast<int>(cury) + shift[1]);
-                const uint32_t z = static_cast<uint32_t>(static_cast<int>(curz) + shift[2]);
+                const int x = curx + shift[0];
+                const int y = cury + shift[1];
+                const int z = curz + shift[2];
                 
-                // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
-                if (x > maxVal || y > maxVal || z > maxVal) continue;
+                if (x < 0 || x > maxVal || y < 0 || y > maxVal || z < 0 || z > maxVal) continue;
                 
-                const size_t adjLoc1D = x + (y << gbdrs) + (z << gbdrs2);
+                const size_t adjLoc1D = location1DFromCoordinates(x,y,z,gbdrs,gbdrs2);
                 if (occFlagArray[adjLoc1D]) {
                     const size_t neighbor_v_idx = voxelIdxMap.at(adjLoc1D);
                     ADJ_List[v_idx].push_back(
@@ -363,13 +364,13 @@ in a voxel. The former is usually isolated points, and the latter indicates the 
 void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
                                       const size_t& frameId) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Refine segmentation of frame " + std::to_string(frameId) + "\n");
-    
     const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
     const size_t gbdrs2 = p_->geoBitDepthRefineSegmentation * 2;
-    const uint32_t maxVal = (1U << gbdrs) - 1;
+    const size_t gridSize = 1U << gbdrs;
+    const int maxVal = gridSize - 1;
     
     // One boolean for each voxel of the grid, indicating if a voxel is filled or not //
-    std::vector<bool> occFlagArray(maxVal * maxVal * maxVal, false);
+    std::vector<bool> occFlagArray(gridSize * gridSize * gridSize, false);
 
     robin_hood::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
 
@@ -430,24 +431,22 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
             } else {
                 hasBeenComputed[voxelIndex] = 1;
             
+                const size_t cur_pos_1D = filledVoxels[voxelIndex];
+                const int curz = cur_pos_1D >> gbdrs2;
+                const int cury = (cur_pos_1D >> gbdrs) & bitMask;
+                const int curx = cur_pos_1D & bitMask;
+                
                 size_t num_nn_points = 0;
-                size_t cur_pos_1D = filledVoxels[voxelIndex];
-                const typeGeometryInput curz = cur_pos_1D >> (p_->geoBitDepthRefineSegmentation * 2);
-                const typeGeometryInput cury = (cur_pos_1D >> p_->geoBitDepthRefineSegmentation) & bitMask;
-                const typeGeometryInput curx = cur_pos_1D & bitMask;
-            
                 for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
                     for (const auto& shift : adjacentPointsSearch[dist]) {
 
-                       // Calculate as signed, then cast to unsigned for the following combined bounds checking
-                        const uint32_t x = static_cast<uint32_t>(static_cast<int>(curx) + shift[0]);
-                        const uint32_t y = static_cast<uint32_t>(static_cast<int>(cury) + shift[1]);
-                        const uint32_t z = static_cast<uint32_t>(static_cast<int>(curz) + shift[2]);
-                        
-                        // Negative values wrap around to very large numbers, so only one check is needed by axis (no need to check if values are >0)
-                        if (x > maxVal || y > maxVal || z > maxVal) continue;
-                        
-                        const size_t adjLoc1D = x + (y << gbdrs) + (z << gbdrs2);
+                        const int x = curx + shift[0];
+                        const int y = cury + shift[1];
+                        const int z = curz + shift[2];
+
+                        if (x < 0 || x > maxVal || y < 0 || y > maxVal || z < 0 || z > maxVal) continue;
+
+                        const size_t adjLoc1D = location1DFromCoordinates(x,y,z,gbdrs,gbdrs2);
                         if (occFlagArray[adjLoc1D]) {
                             const size_t neighbor_v_idx = voxelIdxMap.at(adjLoc1D);
                             // ADJ_List.push_back(neighbor_v_idx);  // TODO(lf): do a big check everywhere because here adjacent and neighbor are inverted
@@ -502,10 +501,10 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
                     stats.collectData(frame->frameId, DataId::ScoreComputations, iter);
                 }
                 switch (voxAttributeList[voxelIndex].voxClass_){
-                    case VoxClass::NO_EDGE:               stats.collectData(frame->frameId, DataId::NoEdge_R,       iter); break;
-                    case VoxClass::INDIRECT_EDGE:         stats.collectData(frame->frameId, DataId::IndirectEdge_R, iter); break;
-                    case VoxClass::S_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::SingleEdge_R,   iter); break;
-                    case VoxClass::M_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::MultiEdge_R,    iter); break;
+                    case VoxClass::NO_EDGE:       stats.collectData(frame->frameId, DataId::NoEdge_R,       iter); break;
+                    case VoxClass::INDIRECT_EDGE: stats.collectData(frame->frameId, DataId::IndirectEdge_R, iter); break;
+                    case VoxClass::S_DIRECT_EDGE: stats.collectData(frame->frameId, DataId::SingleEdge_R,   iter); break;
+                    case VoxClass::M_DIRECT_EDGE: stats.collectData(frame->frameId, DataId::MultiEdge_R,    iter); break;
                 }
             }
         }
@@ -526,10 +525,10 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
             for(auto& voxel : voxAttributeList){
                 VoxClass VC = voxel.voxClass_;
                 switch (VC) {
-                    case VoxClass::NO_EDGE:               stats.collectData(frame->frameId, DataId::NoEdge,       iter); break;
-                    case VoxClass::INDIRECT_EDGE:         stats.collectData(frame->frameId, DataId::IndirectEdge, iter); break;
-                    case VoxClass::S_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::SingleEdge,   iter); break;
-                    case VoxClass::M_DIRECT_EDGE:         stats.collectData(frame->frameId, DataId::MultiEdge,    iter); break;
+                    case VoxClass::NO_EDGE:       stats.collectData(frame->frameId, DataId::NoEdge,       iter); break;
+                    case VoxClass::INDIRECT_EDGE: stats.collectData(frame->frameId, DataId::IndirectEdge, iter); break;
+                    case VoxClass::S_DIRECT_EDGE: stats.collectData(frame->frameId, DataId::SingleEdge,   iter); break;
+                    case VoxClass::M_DIRECT_EDGE: stats.collectData(frame->frameId, DataId::MultiEdge,    iter); break;
                 }
             }
         }
