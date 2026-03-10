@@ -97,6 +97,8 @@ struct Parameters {
     size_t refineSegmentationMaxNNVoxelDistanceLUT;  // lf note : 9**2 = 81 ~ 192/2
     double refineSegmentationLambda;
     size_t refineSegmentationIterationCount;
+
+    size_t refineSegmentationIDEVDist = 3;
     // TODO(lf)check the config if all concerned parameters are poqwer of two
     // Slicing Algorithm refine segmentation parameter
     size_t slicingRefineSegmentationMaxNNVoxelDistanceLUT;  // lf note : 9**2 = 81 ~ 192/2

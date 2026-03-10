@@ -189,6 +189,7 @@ void initializeParameterMap(Parameters& param) {
         {"refineSegmentationMaxNNVoxelDistanceLUT", {UINT, "", &param.refineSegmentationMaxNNVoxelDistanceLUT}},
         {"refineSegmentationLambda", {DOUBLE, "", &param.refineSegmentationLambda}},
         {"refineSegmentationIterationCount", {UINT, "", &param.refineSegmentationIterationCount}},
+        {"refineSegmentationIDEVDist", {UINT, "", &param.refineSegmentationIDEVDist}},
         // __ PPI smoothing with Slicing Algorithm __ //
         {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", {UINT, "", &param.slicingRefineSegmentationMaxNNVoxelDistanceLUT}},
         {"slicingRefineSegmentationLambda", {DOUBLE, "", &param.slicingRefineSegmentationLambda}},

@@ -364,11 +364,10 @@ void PPISegmenter_NewRS::refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_
                                 voxExtendedScore[k] += voxAttributeList[neighbor_v_idx].voxScore_[k];
                             }
             
-                            const size_t IDEV_range = 3; // TODO(lf)justifiy this value, and make it dependent on the geobitdepth
+                            const size_t IDEV_range = p_->refineSegmentationIDEVDist; // TODO(lf)justifiy this value, and make it dependent on the geobitdepth
                             if (dist <= IDEV_range) {
                                 IDEV_List[voxelIndex].push_back(neighbor_v_idx);
                             }
-            
                             num_nn_points += pointListInVoxels[neighbor_v_idx].size();
                         }
                     }
