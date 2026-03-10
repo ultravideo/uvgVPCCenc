@@ -169,6 +169,25 @@ const std::array<uvgutils::VectorN<uint8_t, 3>, 114> patchColors = {{
     {245, 245, 245}, {255, 255, 255},
 }};
 
+// Look Up Table of the dot product's values depending on the projection plane and the point's PPI
+    // normalsDotProducts[i][j] is the dot product value of the current point's corresponding normal of PPI = i with the corresponding normal of PPI = j
+static const std::array<std::array<int8_t,6>, 6> normalsDotProducts = {{
+
+    {1, 0, 0, -1, 0, 0},
+
+    {0, 1, 0, 0, -1, 0},
+
+    {0, 0, 1, 0, 0, -1},
+
+    {-1, 0, 0, 1, 0, 0},
+
+    {0, -1, 0, 0, 1, 0},
+
+    {0, 0, -1, 0, 0, 1}
+    
+}};
+
+
 template <typename T, typename TT>
 inline double dotProduct(const std::array<T, 3>& arr1, const std::array<TT, 3>& arr2) {
     return arr1[0] * arr2[0] + arr1[1] * arr2[1] + arr1[2] * arr2[2];

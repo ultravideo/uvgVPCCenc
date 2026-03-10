@@ -50,7 +50,7 @@
 #include <string>
 #include <vector>
 
-#include "ppiSegmenter.hpp"
+#include "slicingPpiSegmenter.hpp"
 #include "robin_hood.h"
 #include "utils/fileExport.hpp"
 #include "utils/parameters.hpp"
@@ -807,16 +807,16 @@ inline uvgutils::VectorN<double, 3> ppiToNormal(const PPI& ppi) {
     return {0.0, 0.0, 0.0};
 }
 
-inline size_t getParentPpi(const PPI& ppiX, const PPI& ppiY, const PPI& ppiZ, const size_t& nAttributions, uvgutils::VectorN<double, 3>& normal) {
+inline size_t getParentPpi(const PPI& ppiX, const PPI& ppiY, const PPI& ppiZ, const size_t& nAttributions, bool& hasNormal) {
     if (nAttributions == 1) return UNDEFINED_PARENT_PPI;
 
     // If two axes agree → choose that PPI and mark point as weighted (unity normal)
     if (ppiX == ppiY || ppiZ == ppiY) {
-        normal = ppiToNormal(ppiY);
+        hasNormal = true;
         return static_cast<size_t>(ppiY);
     }
     if (ppiX == ppiZ) {
-        normal = ppiToNormal(ppiX);
+        hasNormal = true;
         return static_cast<size_t>(ppiX);
     }
     if (nAttributions == 3) {
@@ -893,8 +893,9 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
 
     std::vector<size_t> parentPointsPPIs(nbPoints);
     std::vector<uvgutils::VectorN<typeGeometryInput, 3>> parentPointsGeometry(nbPoints);
-    std::vector<uvgutils::VectorN<double, 3>> parentPointsNormal(nbPoints, {{0.0, 0.0, 0.0}});
+    std::vector<bool> normalBool(nbPoints, false);
     std::vector<size_t> parentPointsIndexInPG(nbPoints);
+    bool hasNormal = false;
 
     size_t sizeParentSublist = 0;  // For refine segmentation parent sublist data structure creation
     for (int ptIndexPG = 0; ptIndexPG < nbPoints; ++ptIndexPG) {
@@ -911,12 +912,16 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
         if (nAttributions == 0) continue;
 
         // Assign PPI and determine parent normal (weighted or non-weighted).
-        pointPPIs[ptIndexPG] = getParentPpi(ppiX, ppiY, ppiZ, nAttributions, parentPointsNormal[sizeParentSublist]);
+        pointPPIs[ptIndexPG] = getParentPpi(ppiX, ppiY, ppiZ, nAttributions, hasNormal);
+
 
         if (pointPPIs[ptIndexPG] == UNDEFINED_PARENT_PPI) {
             // Mark as undefined parent, will be resolved later.
             continue;
         }
+
+        // If we are here, a normal can be "attributed" only if nAttribution != 3 (nAttribution = 3 means PPI, but not weighted by a normal)
+        normalBool[sizeParentSublist] = hasNormal;
 
         // Store defined parent in the sublist for refine segmentation.
         pointPPIs[ptIndexPG] = pointPPIs[ptIndexPG];
@@ -924,6 +929,7 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
         parentPointsIndexInPG[sizeParentSublist] = ptIndexPG;
         parentPointsGeometry[sizeParentSublist] = pointsGeometry[ptIndexPG];
         ++sizeParentSublist;
+        hasNormal = false;
     }
 
     // Handle undefined parents (always considered non-weighted → normal (0,0,0)).
@@ -937,7 +943,7 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
         parentPointsPPIs[sizeParentSublist] = parentPpi;
         parentPointsIndexInPG[sizeParentSublist] = ptIndexPG;
         parentPointsGeometry[sizeParentSublist] = pointsGeometry[ptIndexPG];
-        parentPointsNormal[sizeParentSublist] = {0.0, 0.0, 0.0};
+        normalBool[sizeParentSublist] = false;
         ++sizeParentSublist;
     }
 
@@ -947,10 +953,11 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
 
     // Refine segmentation only on the parent sublist.
     parentPointsGeometry.resize(sizeParentSublist);
-    parentPointsNormal.resize(sizeParentSublist);
+    normalBool.resize(sizeParentSublist);
     parentPointsPPIs.resize(sizeParentSublist);
-    PPISegmenter ppiSegmenter(parentPointsGeometry, parentPointsNormal);
-    ppiSegmenter.refineSegmentation(frame, parentPointsPPIs, frame->frameId);
+
+    PPISegmenter_NewRS ppiSegmenter_NewRS(parentPointsGeometry, normalBool);
+    ppiSegmenter_NewRS.refineSegmentation_NewRS(frame, parentPointsPPIs, frame->frameId);
 
     // Copy refined PPI values back to the full list of points.
     for (int ptIndexSublist = 0; ptIndexSublist < sizeParentSublist; ++ptIndexSublist) {
@@ -965,6 +972,7 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     // Finally, propagate PPI from refined parents to their children.
     childPPIAttribution(childToParentX, childToParentY, childToParentZ, pointPPIs);
 }
+
 
 void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                                    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
@@ -984,7 +992,10 @@ void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     // Child points always have normal (0,0,0).
 
     std::vector<uvgutils::VectorN<double, 3>> pointsNormal(nbPoints);
+    std::vector<bool> normalBool(nbPoints, false);
+    bool hasNormal = {};
     for (int ptIndexPG = 0; ptIndexPG < nbPoints; ++ptIndexPG) {
+        hasNormal = false;
         const PPI ppiX = pointPPIsX[ptIndexPG];
         const PPI ppiY = pointPPIsY[ptIndexPG];
         const PPI ppiZ = pointPPIsZ[ptIndexPG];
@@ -998,7 +1009,11 @@ void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
         if (nAttributions == 0) continue;
 
         // Assign parent PPI and compute its normal (weighted or non-weighted).
-        pointPPIs[ptIndexPG] = getParentPpi(ppiX, ppiY, ppiZ, nAttributions, pointsNormal[ptIndexPG]);
+        //pointPPIs[ptIndexPG] = getParentPpi(ppiX, ppiY, ppiZ, nAttributions, pointsNormal[ptIndexPG]);
+        pointPPIs[ptIndexPG] = getParentPpi(ppiX, ppiY, ppiZ, nAttributions, hasNormal);
+
+        // Quelque chose
+        normalBool[ptIndexPG] = hasNormal;
     }
 
     // Handle undefined parent points (always considered non-weighted → normal (0,0,0)):
@@ -1016,13 +1031,14 @@ void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     // 1) First propagate PPI from parents to children
     // 2) Then refine segmentation on all points
     childPPIAttribution(childToParentX, childToParentY, childToParentZ, pointPPIs);
-    PPISegmenter ppiSegmenter(pointsGeometry, pointsNormal);
-    ppiSegmenter.refineSegmentation(frame, pointPPIs, frame->frameId);
+    PPISegmenter_NewRS ppiSegmenter_NewRS(pointsGeometry, normalBool);
+    ppiSegmenter_NewRS.refineSegmentation_NewRS(frame, pointPPIs, frame->frameId);
 
     if (p_->exportIntermediateFiles) {
         FileExport::exportPointCloudRefineSegmentation(frame, pointsGeometry, pointPPIs);
     }
 }
+
 
 }  // anonymous namespace
 
