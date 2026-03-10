@@ -170,7 +170,7 @@ inline void PPISegmenter_NewRS::refinePointsPPIs_NewRS(std::vector<size_t>& poin
                                          const std::array<size_t,6>& voxExtendedScore, const size_t nnPointCount) const {
     std::array<double,6> weightedScoreSmooth{0};
     for (size_t k = 0; k < p_->projectionPlaneCount; ++k) {
-        weightedScoreSmooth[k] = p_->refineSegmentationLambda / nnPointCount * static_cast<double>(voxExtendedScore[k]); 
+        weightedScoreSmooth[k] = p_->refineSegmentationLambda * static_cast<double>(voxExtendedScore[k]); 
     }
     // For each point in the current voxel //
     for (const auto& pointIndex : pointsIndices) {
@@ -178,10 +178,10 @@ inline void PPISegmenter_NewRS::refinePointsPPIs_NewRS(std::vector<size_t>& poin
         const bool normalBool = normalExists_[pointIndex];
         // Here the new calculation method
         // If normalBool = false : the right member=0
-        double scoreMax2 = weightedScoreSmooth[0] + static_cast<double>(normalBool) * static_cast<double>(dotProductList[0]);
+        double scoreMax2 = weightedScoreSmooth[0] + static_cast<double>(normalBool) * static_cast<double>(dotProductList[0])  *  static_cast<double>(nnPointCount);
         size_t PPIscoreMax = 0;
         for (size_t k = 1; k < p_->projectionPlaneCount; ++k) {
-            const double score2 = weightedScoreSmooth[k] + static_cast<double>(normalBool) * static_cast<double>(dotProductList[k]);
+            const double score2 = weightedScoreSmooth[k] + static_cast<double>(normalBool) * static_cast<double>(dotProductList[k])  *  static_cast<double>(nnPointCount);
             if (score2 > scoreMax2) {
                 scoreMax2 = score2;
                 PPIscoreMax = k;
