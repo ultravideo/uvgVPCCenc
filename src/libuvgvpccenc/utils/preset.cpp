@@ -61,13 +61,11 @@ Preset preset_vox9_fast = {
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "7"},
     {"refineSegmentationMaxNNVoxelDistanceLUT", "2"},  // old : 2
-    {"refineSegmentationMaxNNTotalPointCount", "32"},  // old : 32
     {"refineSegmentationLambda", "3.5"},               // old : 3.5
     {"refineSegmentationIterationCount", "3"},         // old : 3
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "32"},
     {"slicingRefineSegmentationLambda", "3.5"},
     {"slicingRefineSegmentationIterationCount", "3"},
 
@@ -103,13 +101,11 @@ Preset preset_vox9_slow = {
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "8"},             // TODO(lf)-PRESET: fixed
     {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},   // TODO(lf)-PRESET: fixed
-    {"refineSegmentationMaxNNTotalPointCount", "256"},  // TODO(lf)-PRESET: fixed
     {"refineSegmentationLambda", "3"},                  // TODO(lf)-PRESET : should be tested with iterations
     {"refineSegmentationIterationCount", "15"},         // old : 15 // TODO(lf)-PRESET : should be tested with lambda
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "4"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},
     {"slicingRefineSegmentationLambda", "5"},
     {"slicingRefineSegmentationIterationCount", "10"},
 
@@ -145,13 +141,11 @@ Preset preset_vox10_fast = {
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "8"},  // fixed
     {"refineSegmentationMaxNNVoxelDistanceLUT", "2"},
-    {"refineSegmentationMaxNNTotalPointCount", "32"},
     {"refineSegmentationLambda", "3.5"},
     {"refineSegmentationIterationCount", "3"},  // old : 3
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "2"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "32"},
     {"slicingRefineSegmentationLambda", "3.5"},
     {"slicingRefineSegmentationIterationCount", "3"},
 
@@ -186,13 +180,11 @@ Preset preset_vox10_slow = {
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "9"},  // fixed
     {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},
-    {"refineSegmentationMaxNNTotalPointCount", "256"},
     {"refineSegmentationLambda", "3.0"},
     {"refineSegmentationIterationCount", "15"},  // old : 15
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "6"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "132"},
     {"slicingRefineSegmentationLambda", "5"},
     {"slicingRefineSegmentationIterationCount", "10"},
 
@@ -227,13 +219,11 @@ Preset preset_vox11_fast = {
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "6"},
     {"refineSegmentationMaxNNVoxelDistanceLUT", "5"},
-    {"refineSegmentationMaxNNTotalPointCount", "256"},
     {"refineSegmentationLambda", "3.5"},
     {"refineSegmentationIterationCount", "9"},
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "5"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "256"},
     {"slicingRefineSegmentationLambda", "3.5"},
     {"slicingRefineSegmentationIterationCount", "9"},
 
@@ -268,13 +258,11 @@ Preset preset_vox11_slow = {
     // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
     {"geoBitDepthRefineSegmentation", "10"},
     {"refineSegmentationMaxNNVoxelDistanceLUT", "9"},
-    {"refineSegmentationMaxNNTotalPointCount", "512"},
     {"refineSegmentationLambda", "3.5"},
     {"refineSegmentationIterationCount", "19"},
 
     // ___ PPI smoothing for Slicing Algorithm ___ //
     {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", "9"},
-    {"slicingRefineSegmentationMaxNNTotalPointCount", "512"},
     {"slicingRefineSegmentationLambda", "3.5"},
     {"slicingRefineSegmentationIterationCount", "19"},
 

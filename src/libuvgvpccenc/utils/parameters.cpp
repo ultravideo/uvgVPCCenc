@@ -187,12 +187,10 @@ void initializeParameterMap(Parameters& param) {
         // ___ PPI smoothing  ___  //    (fast grid-based refine segmentation)
         {"geoBitDepthRefineSegmentation", {UINT, "", &param.geoBitDepthRefineSegmentation}},
         {"refineSegmentationMaxNNVoxelDistanceLUT", {UINT, "", &param.refineSegmentationMaxNNVoxelDistanceLUT}},
-        {"refineSegmentationMaxNNTotalPointCount", {UINT, "", &param.refineSegmentationMaxNNTotalPointCount}},
         {"refineSegmentationLambda", {DOUBLE, "", &param.refineSegmentationLambda}},
         {"refineSegmentationIterationCount", {UINT, "", &param.refineSegmentationIterationCount}},
         // __ PPI smoothing with Slicing Algorithm __ //
         {"slicingRefineSegmentationMaxNNVoxelDistanceLUT", {UINT, "", &param.slicingRefineSegmentationMaxNNVoxelDistanceLUT}},
-        {"slicingRefineSegmentationMaxNNTotalPointCount", {UINT, "", &param.slicingRefineSegmentationMaxNNTotalPointCount}},
         {"slicingRefineSegmentationLambda", {DOUBLE, "", &param.slicingRefineSegmentationLambda}},
         {"slicingRefineSegmentationIterationCount", {UINT, "", &param.slicingRefineSegmentationIterationCount}},
 

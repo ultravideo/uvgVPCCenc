@@ -95,13 +95,11 @@ struct Parameters {
     size_t geoBitDepthRefineSegmentation;  // refineSegmentationGeometryBitDepth3D
     // TODO(lf)verify that all scale set by user are compatible
     size_t refineSegmentationMaxNNVoxelDistanceLUT;  // lf note : 9**2 = 81 ~ 192/2
-    size_t refineSegmentationMaxNNTotalPointCount;
     double refineSegmentationLambda;
     size_t refineSegmentationIterationCount;
     // TODO(lf)check the config if all concerned parameters are poqwer of two
     // Slicing Algorithm refine segmentation parameter
     size_t slicingRefineSegmentationMaxNNVoxelDistanceLUT;  // lf note : 9**2 = 81 ~ 192/2
-    size_t slicingRefineSegmentationMaxNNTotalPointCount;
     double slicingRefineSegmentationLambda;
     size_t slicingRefineSegmentationIterationCount;
 

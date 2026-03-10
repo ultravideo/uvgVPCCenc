@@ -76,13 +76,7 @@ class PPISegmenter {
    private:
     static void voxelizationWithBitArray(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
                                          std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
-                                         std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);                                         
-
-    static void fillNeighborAndAdjacentLists(
-        std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
-        std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
-        std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
-        std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs);        
+                                         std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);                                               
 
     static void computeExtendedScore(std::array<size_t,6>& voxExtendedScore, const std::vector<size_t>& ADJ_List,
                                                const std::vector<VoxelAttribute>& voxAttributeList);

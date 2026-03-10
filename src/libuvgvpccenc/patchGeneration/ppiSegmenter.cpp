@@ -192,7 +192,7 @@ inline bool PPISegmenter::checkNEV(const VoxClass voxClass, const size_t voxPPI,
 // TODO(lf): special algorithm trajectory for S_DIRECT_EDGE_VOXEL
 inline void PPISegmenter::refinePointsPPIs(std::vector<size_t>& pointsPPIs, const std::vector<size_t>& pointsIndices, const double weight,
                                            const std::array<size_t,6>& voxExtendedScore) const {
-    std::vector<double> weightedScoreSmooth(p_->projectionPlaneCount);
+    std::array<double,6> weightedScoreSmooth{0};
     for (size_t k = 0; k < p_->projectionPlaneCount; ++k) {
         weightedScoreSmooth[k] = weight * static_cast<double>(voxExtendedScore[k]);
     }
@@ -253,79 +253,6 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgutils::VectorN<
             const size_t filled_v_idx = voxelIdxMap.at(pos_1D);
             pointListInVoxels[filled_v_idx].push_back(point_idx);
         }
-    }
-}
-
-// TODO(lf): tackle the cognitive complexity
-// TODO(mf): can be removed ?
-// NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void PPISegmenter::fillNeighborAndAdjacentLists(std::vector<size_t>& filledVoxels, std::vector<bool>& occFlagArray,
-                                                robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
-                                                std::vector<std::vector<size_t>>& ADJ_List, std::vector<std::vector<size_t>>& IDEV_List,
-                                                std::vector<std::vector<size_t>>& pointListInVoxels, std::vector<double>& voxWeightList,
-                                                std::vector<VoxelAttribute>& voxAttributeList, const std::vector<size_t>& pointsPPIs) {
-    
-    const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
-    const size_t gbdrs2 = p_->geoBitDepthRefineSegmentation * 2;
-    const size_t distanceSearch = p_->refineSegmentationMaxNNVoxelDistanceLUT;
-    const size_t bitMask = (1U << gbdrs) - 1;
-    const int maxVal = (1U << gbdrs) - 1;
-    
-    for (size_t v_idx = 0; v_idx < filledVoxels.size(); ++v_idx) {
-        // Iterate through all voxels to set score, classification and voxel PPI //
-        // First classification : NE-V or DE-V (SDE-V or MDE-V) //
-        // VoxelAttribute& voxAttribute = voxAttributeList[v_idx];
-        // if (pointListInVoxels[v_idx].size() == 1) {
-        //     // Single Direct Edge Voxel : One point in the voxel //
-        //     voxAttribute.voxClass_ = VoxClass::S_DIRECT_EDGE;
-        // }
-        // updateVoxelAttribute(voxAttribute, pointListInVoxels[v_idx], pointsPPIs);
-
-        // find valid 3D search range centered on cur_pos_1D //
-        
-        // Inverse of this operation : const size_t pos_1D = x + (y << p_->geoBitDepthRefineSegmentation) + (z <<
-        // (p_->geoBitDepthRefineSegmentation * 2)); For  p_->geoBitDepthRefineSegmentation==8, it is 00000000 00000000 00000000 00000000
-        // 00000000 00000000 00000000 11111111
-        const size_t cur_pos_1D = filledVoxels[v_idx];
-        const int curz = cur_pos_1D >> gbdrs2;
-        const int cury = (cur_pos_1D >> gbdrs) & bitMask;
-        const int curx = cur_pos_1D & bitMask;        
-        
-        size_t num_nn_points = 0;  // The number of points within neighboring voxels
-        // TODO(lf): find a way to directly add cur_pos_1D and pointAdjLocation1D, and then check if it is a valid point without extracting
-        // the x y and z values
-        for (size_t dist = 0; dist < distanceSearch; ++dist) {  // dist is squared distance
-            for (const auto& shift : adjacentPointsSearch[dist]) {
-
-                const int x = curx + shift[0];
-                const int y = cury + shift[1];
-                const int z = curz + shift[2];
-                
-                if (x < 0 || x > maxVal || y < 0 || y > maxVal || z < 0 || z > maxVal) continue;
-                
-                const size_t adjLoc1D = location1DFromCoordinates(x,y,z,gbdrs,gbdrs2);
-                if (occFlagArray[adjLoc1D]) {
-                    const size_t neighbor_v_idx = voxelIdxMap.at(adjLoc1D);
-                    ADJ_List[v_idx].push_back(
-                        neighbor_v_idx);  // TODO(lf): do a big check everywhere because here adjacent and neighbor are inverted
-
-                    const size_t IDEV_range = 3;  // TODO(lf)justifiy thise value, and make it dependent on the geobitdepth
-                    if (dist <= IDEV_range) {
-                        IDEV_List[v_idx].push_back(neighbor_v_idx);
-                    }
-
-                    num_nn_points += pointListInVoxels[neighbor_v_idx].size();
-                    if (num_nn_points >= p_->refineSegmentationMaxNNTotalPointCount) {
-                        break;
-                    }
-                }
-                if (num_nn_points >= p_->refineSegmentationMaxNNTotalPointCount) {
-                    break;
-                }
-            }
-        }
-
-        voxWeightList[v_idx] = p_->refineSegmentationLambda / static_cast<double>(num_nn_points);  // NOLINT(clang-analyzer-core.DivideZero)
     }
 }
 
@@ -463,12 +390,6 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
                             }
             
                             num_nn_points += pointListInVoxels[neighbor_v_idx].size();
-                            if (num_nn_points >= p_->refineSegmentationMaxNNTotalPointCount) {
-                                break;
-                            }
-                        }
-                        if (num_nn_points >= p_->refineSegmentationMaxNNTotalPointCount) {
-                            break;
                         }
                     }
                 }

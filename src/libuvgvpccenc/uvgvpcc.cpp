@@ -423,9 +423,8 @@ void setMode() {
     }
 }
 
-void updateParametersForSlicing(const size_t distLUT, const size_t NNCount, const double lambda, const size_t refineIteration) {
+void updateParametersForSlicing(const size_t distLUT, const double lambda, const size_t refineIteration) {
     setParameterValue("refineSegmentationMaxNNVoxelDistanceLUT", std::to_string(distLUT), true);
-    setParameterValue("refineSegmentationMaxNNTotalPointCount", std::to_string(NNCount), true);
     setParameterValue("refineSegmentationLambda", std::to_string(lambda), true);
     setParameterValue("refineSegmentationIterationCount", std::to_string(refineIteration), true);
 }
@@ -450,7 +449,7 @@ void parseUvgvpccParameters() {
     }
     //  Change the Refine Segmentation parameters for the Slicing Algorithm
     if (p_->activateSlicing) {
-        updateParametersForSlicing(p_->slicingRefineSegmentationMaxNNVoxelDistanceLUT, p_->slicingRefineSegmentationMaxNNTotalPointCount,
+        updateParametersForSlicing(p_->slicingRefineSegmentationMaxNNVoxelDistanceLUT,
                                    p_->slicingRefineSegmentationLambda, p_->slicingRefineSegmentationIterationCount);
     }
 
