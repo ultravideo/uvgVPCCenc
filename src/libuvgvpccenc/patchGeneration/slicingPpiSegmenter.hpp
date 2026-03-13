@@ -77,13 +77,15 @@ class PPISegmenter_NewRS {
     PPISegmenter_NewRS(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                  const std::vector<bool>& normalExists);
 
+    template<typename keyType>
     void refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,std::vector<size_t>& pointsPPIs, const size_t& frameId);
 
    private:
-
+   
+    template<typename keyType>
     static void voxelizationWithBitArray_NewRS(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
-                                         std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
-                                         std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);    
+                                         std::vector<bool>& occFlagArray, robin_hood::unordered_map<keyType, size_t>& voxelIdxMap,
+                                         std::vector<keyType>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);    
 
     static void computeExtendedScore_NewRS(std::array<size_t,6>& voxExtendedScore,
                                         const std::vector<VoxelAttribute_NewRS>& voxAttributeList,

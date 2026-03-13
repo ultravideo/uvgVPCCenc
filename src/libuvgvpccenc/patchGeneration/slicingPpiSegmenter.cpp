@@ -36,6 +36,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <iterator>
 #include <memory>
 #include <string>
@@ -192,9 +193,10 @@ inline void PPISegmenter_NewRS::refinePointsPPIs_NewRS(std::vector<size_t>& poin
 
 }
 
+template<typename keyType>
 void PPISegmenter_NewRS::voxelizationWithBitArray_NewRS(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
-                                            std::vector<bool>& occFlagArray, robin_hood::unordered_map<size_t, size_t>& voxelIdxMap,
-                                            std::vector<size_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels) {
+                                            std::vector<bool>& occFlagArray, robin_hood::unordered_map<keyType, size_t>& voxelIdxMap,
+                                            std::vector<keyType>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels) {
     const size_t voxelizationShift =
         p_->geoBitDepthVoxelized - p_->geoBitDepthRefineSegmentation;  // i.e. : 9 - 8 = 1 (meaning 2x2x2 voxel dimension)
     const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
@@ -220,7 +222,7 @@ void PPISegmenter_NewRS::voxelizationWithBitArray_NewRS(const std::vector<uvguti
         const int vx = inputPoint[0] >> voxelizationShift;
         const int vy = inputPoint[1] >> voxelizationShift;
         const int vz = inputPoint[2] >> voxelizationShift;
-        const size_t pos_1D = location1DFromCoordinates(vx, vy, vz, gbdrs,gbdrs2);
+        const keyType pos_1D = location1DFromCoordinates<keyType>(vx, vy, vz, gbdrs,gbdrs2);
 
         if (!occFlagArray[pos_1D]) {
             occFlagArray[pos_1D] = true;
@@ -267,6 +269,7 @@ in a voxel. The former is usually isolated points, and the latter indicates the 
 // TODO(lf): in the whole refine segmentation, be consistent between talking about grid cell or voxel
 // TODO(lf): use two flags, compute one time the flag for S or M instead of checking it like the other classification
 // TODO(lf): the refine segmentation voxelization (voxel dim etc..) should depend on geometry bit, not on the max range
+template<typename keyType>
 void PPISegmenter_NewRS::refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
                                       const size_t& frameId) {
     uvgutils::Logger::log<uvgutils::LogLevel::TRACE>("PATCH GENERATION", "Refine segmentation of frame " + std::to_string(frameId) + "\n");
@@ -278,9 +281,9 @@ void PPISegmenter_NewRS::refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_
     // One boolean for each voxel of the grid, indicating if a voxel is filled or not //
     std::vector<bool> occFlagArray(gridSize * gridSize * gridSize, false);
 
-    robin_hood::unordered_map<size_t, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
+    robin_hood::unordered_map<keyType, size_t> voxelIdxMap;  // location1D -> index in voxel list (filledVoxels)
 
-    std::vector<size_t> filledVoxels;                    // list of location1D
+    std::vector<keyType> filledVoxels;                    // list of location1D
     std::vector<std::vector<size_t>> pointListInVoxels;  // for each voxel, the list of the index of the points inside
 
     voxelizationWithBitArray_NewRS(pointsGeometry_, occFlagArray, voxelIdxMap, filledVoxels, pointListInVoxels);
@@ -293,7 +296,7 @@ void PPISegmenter_NewRS::refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_
 
     // The 1st classification is made here (+ score computation)
     std::vector<VoxelAttribute_NewRS> voxAttributeList(voxelCount, VoxelAttribute_NewRS(p_->projectionPlaneCount));
-    for (size_t v_idx = 0; v_idx < filledVoxels.size(); ++v_idx) {
+    for (size_t v_idx = 0; v_idx < voxelCount; ++v_idx) {
         // Iterate through all voxels to set score, classification and voxel PPI //
         // First classification : NE-V or DE-V (SDE-V or MDE-V) //
         VoxelAttribute_NewRS& voxAttribute = voxAttributeList[v_idx];
@@ -338,7 +341,7 @@ void PPISegmenter_NewRS::refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_
             } else {
                 hasBeenComputed[voxelIndex] = 1;
             
-                const size_t cur_pos_1D = filledVoxels[voxelIndex];
+                const int cur_pos_1D = static_cast<int>(filledVoxels[voxelIndex]);
                 const int curz = cur_pos_1D >> gbdrs2;
                 const int cury = (cur_pos_1D >> gbdrs) & bitMask;
                 const int curx = cur_pos_1D & bitMask;
@@ -353,7 +356,7 @@ void PPISegmenter_NewRS::refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_
 
                         if (x < 0 || x > maxVal || y < 0 || y > maxVal || z < 0 || z > maxVal) continue;
 
-                        const size_t adjLoc1D = location1DFromCoordinates(x,y,z,gbdrs,gbdrs2);
+                        const keyType adjLoc1D = location1DFromCoordinates<keyType>(x,y,z,gbdrs,gbdrs2);
                         if (occFlagArray[adjLoc1D]) {
                             const size_t neighbor_v_idx = voxelIdxMap.at(adjLoc1D);
                             // ADJ_List.push_back(neighbor_v_idx);  // TODO(lf): do a big check everywhere because here adjacent and neighbor are inverted
@@ -438,3 +441,22 @@ void PPISegmenter_NewRS::refineSegmentation_NewRS(const std::shared_ptr<uvgvpcc_
         FileExport::exportPointCloudRefineSegmentation(frame, pointsGeometry_, pointsPPIs);
     }
 }
+
+
+template void PPISegmenter_NewRS::voxelizationWithBitArray_NewRS<uint16_t>(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
+                                            std::vector<bool>& occFlagArray, robin_hood::unordered_map<uint16_t, size_t>& voxelIdxMap,
+                                            std::vector<uint16_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);
+template void PPISegmenter_NewRS::voxelizationWithBitArray_NewRS<uint32_t>(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
+                                            std::vector<bool>& occFlagArray, robin_hood::unordered_map<uint32_t, size_t>& voxelIdxMap,
+                                            std::vector<uint32_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);
+template void PPISegmenter_NewRS::voxelizationWithBitArray_NewRS<uint64_t>(const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& inputPointsGeometry,
+                                            std::vector<bool>& occFlagArray, robin_hood::unordered_map<uint64_t, size_t>& voxelIdxMap,
+                                            std::vector<uint64_t>& filledVoxels, std::vector<std::vector<size_t>>& pointListInVoxels);                                                                                        
+
+
+template void PPISegmenter_NewRS::refineSegmentation_NewRS<uint16_t>(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
+                                    const size_t& frameId);
+template void PPISegmenter_NewRS::refineSegmentation_NewRS<uint32_t>(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
+                                    const size_t& frameId);
+template void PPISegmenter_NewRS::refineSegmentation_NewRS<uint64_t>(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, std::vector<size_t>& pointsPPIs,
+                                    const size_t& frameId);

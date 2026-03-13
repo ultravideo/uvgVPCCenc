@@ -36,6 +36,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <cstdint>
 #include <iterator>
 #include <memory>
 #include <string>
@@ -241,7 +242,7 @@ void PPISegmenter::voxelizationWithBitArray(const std::vector<uvgutils::VectorN<
         const int vx = inputPoint[0] >> voxelizationShift;
         const int vy = inputPoint[1] >> voxelizationShift;
         const int vz = inputPoint[2] >> voxelizationShift;
-        const size_t pos_1D = location1DFromCoordinates(vx, vy, vz, gbdrs,gbdrs2);
+        const size_t pos_1D = location1DFromCoordinates<uint64_t>(vx, vy, vz, gbdrs,gbdrs2);
 
         if (!occFlagArray[pos_1D]) {
             occFlagArray[pos_1D] = true;
@@ -373,7 +374,7 @@ void PPISegmenter::refineSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>&
 
                         if (x < 0 || x > maxVal || y < 0 || y > maxVal || z < 0 || z > maxVal) continue;
 
-                        const size_t adjLoc1D = location1DFromCoordinates(x,y,z,gbdrs,gbdrs2);
+                        const size_t adjLoc1D = location1DFromCoordinates<uint64_t>(x,y,z,gbdrs,gbdrs2);
                         if (occFlagArray[adjLoc1D]) {
                             const size_t neighbor_v_idx = voxelIdxMap.at(adjLoc1D);
                             // ADJ_List.push_back(neighbor_v_idx);  // TODO(lf): do a big check everywhere because here adjacent and neighbor are inverted

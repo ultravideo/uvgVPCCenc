@@ -37,6 +37,7 @@
 #include <algorithm>
 #include <cassert>
 #include <cstddef>
+#include <cstdint>
 #include <cstdlib>
 #include <memory>
 #include <string>
@@ -141,7 +142,17 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     }
 
     // Patch segmentation //
-    PatchSegmentation::patchSegmentation(frame, pointsPPIs);
+    // keyType is for location1D, which concatenate X, Y and Z coordinates in one number.
+    const size_t gbd3 = 3*p_->geoBitDepthInput;
+    if(gbd3 <= 16) {
+        PatchSegmentation::patchSegmentation<uint16_t>(frame, pointsPPIs);
+    } else if (gbd3 <= 32) {
+        PatchSegmentation::patchSegmentation<uint32_t>(frame, pointsPPIs);
+    } else if (gbd3 <= 64) {
+        PatchSegmentation::patchSegmentation<uint64_t>(frame, pointsPPIs);
+    } else {
+        assert(false);
+    }
 
     if(p_->exportStatistics){
         stats.collectData(frame->frameId, DataId::NumberOfPatches, (*frame->patchList).size());

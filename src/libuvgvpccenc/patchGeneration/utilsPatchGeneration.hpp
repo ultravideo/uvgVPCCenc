@@ -208,12 +208,14 @@ struct vector3Hash {
 };
 
 
-inline size_t location1DFromCoordinates(const int x, const int y, const int z, const size_t gdb, const size_t gdb2) {
-    return static_cast<size_t>(x) + (static_cast<size_t>(y) << gdb) + (static_cast<size_t>(z) << gdb2);
+template <typename keyType>
+inline keyType location1DFromCoordinates(const int x, const int y, const int z, const size_t gdb, const size_t gdb2) {
+    return static_cast<keyType>(x) + (static_cast<keyType>(y) << gdb) + (static_cast<keyType>(z) << gdb2);
 }
 
-inline size_t location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3>& point, const size_t gdb, const size_t gdb2) {
-    return location1DFromCoordinates(point[0],point[1],point[2],gdb,gdb2);
+template <typename keyType>
+inline keyType location1DFromPoint(const uvgutils::VectorN<typeGeometryInput, 3>& point, const size_t gdb, const size_t gdb2) {
+    return location1DFromCoordinates<keyType>(point[0],point[1],point[2],gdb,gdb2);
 }
 
 // The voxelization is done so to have those three vectors sharing the same order (that is sharing the same voxel index) :

@@ -41,5 +41,6 @@ using namespace uvgvpcc_enc;
 
 class PatchSegmentation {
    public:
+    template<typename keyType>
     static void patchSegmentation(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<size_t>& pointsPPIs);
 };

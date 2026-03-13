@@ -957,7 +957,17 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     parentPointsPPIs.resize(sizeParentSublist);
 
     PPISegmenter_NewRS ppiSegmenter_NewRS(parentPointsGeometry, normalBool);
-    ppiSegmenter_NewRS.refineSegmentation_NewRS(frame, parentPointsPPIs, frame->frameId);
+    
+    const size_t gbdrs = p_->geoBitDepthRefineSegmentation;
+    if(3*gbdrs <= 16) {
+        ppiSegmenter_NewRS.refineSegmentation_NewRS<uint16_t>(frame, parentPointsPPIs, frame->frameId);
+    } else if (3*gbdrs <= 32) {
+        ppiSegmenter_NewRS.refineSegmentation_NewRS<uint32_t>(frame, parentPointsPPIs, frame->frameId);
+    } else if (3*gbdrs <= 64) {
+        ppiSegmenter_NewRS.refineSegmentation_NewRS<uint64_t>(frame, parentPointsPPIs, frame->frameId);
+    } else {
+        assert(false);
+    }
 
     // Copy refined PPI values back to the full list of points.
     for (int ptIndexSublist = 0; ptIndexSublist < sizeParentSublist; ++ptIndexSublist) {
@@ -1032,7 +1042,19 @@ void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     // 2) Then refine segmentation on all points
     childPPIAttribution(childToParentX, childToParentY, childToParentZ, pointPPIs);
     PPISegmenter_NewRS ppiSegmenter_NewRS(pointsGeometry, normalBool);
-    ppiSegmenter_NewRS.refineSegmentation_NewRS(frame, pointPPIs, frame->frameId);
+
+
+    // keyType is for location1D, which concatenate X, Y and Z coordinates in one number.
+    const size_t gbdrs3 = 3*p_->geoBitDepthRefineSegmentation;
+    if(gbdrs3 <= 16) {
+        ppiSegmenter_NewRS.refineSegmentation_NewRS<uint16_t>(frame, pointPPIs, frame->frameId);
+    } else if (gbdrs3 <= 32) {
+        ppiSegmenter_NewRS.refineSegmentation_NewRS<uint32_t>(frame, pointPPIs, frame->frameId);
+    } else if (gbdrs3 <= 64) {
+        ppiSegmenter_NewRS.refineSegmentation_NewRS<uint64_t>(frame, pointPPIs, frame->frameId);
+    } else {
+        assert(false);
+    }
 
     if (p_->exportIntermediateFiles) {
         FileExport::exportPointCloudRefineSegmentation(frame, pointsGeometry, pointPPIs);
