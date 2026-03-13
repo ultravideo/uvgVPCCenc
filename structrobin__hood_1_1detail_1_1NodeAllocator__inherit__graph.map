@@ -1,5 +1,9 @@
 <map id="robin_hood::detail::NodeAllocator&lt; T, MinSize, MaxSize, IsFlat &gt;" name="robin_hood::detail::NodeAllocator&lt; T, MinSize, MaxSize, IsFlat &gt;">
-<area shape="rect" id="Node000001" title=" " alt="" coords="31,5,221,100"/>
-<area shape="rect" id="Node000002" href="$classrobin__hood_1_1detail_1_1Table.html" title=" " alt="" coords="5,148,247,503"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="129,114,129,147,123,147,123,114"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="247,5,438,100"/>
+<area shape="rect" id="Node000002" href="$classrobin__hood_1_1detail_1_1Table.html" title=" " alt="" coords="5,148,232,532"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="282,112,246,150,234,164,230,161,242,146,278,108"/>
+<area shape="rect" id="Node000003" href="$classrobin__hood_1_1detail_1_1Table.html" title=" " alt="" coords="256,148,429,532"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="345,114,345,148,340,148,340,114"/>
+<area shape="rect" id="Node000004" href="$classrobin__hood_1_1detail_1_1Table.html" title=" " alt="" coords="454,163,695,517"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="407,108,443,146,456,161,452,165,439,150,403,112"/>
 </map>

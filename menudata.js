@@ -203,6 +203,7 @@ var menudata={children:[
 {text:"f",url:"globals_func.html#index_f"},
 {text:"g",url:"globals_func.html#index_g"},
 {text:"k",url:"globals_func.html#index_k"},
+{text:"l",url:"globals_func.html#index_l"},
 {text:"m",url:"globals_func.html#index_m"},
 {text:"r",url:"globals_func.html#index_r"},
 {text:"u",url:"globals_func.html#index_u"},

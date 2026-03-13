@@ -82,9 +82,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;sys/types.h&gt;</code><br />
-<code>#include &lt;algorithm&gt;</code><br />
 <code>#include &lt;cstdint&gt;</code><br />
-<code>#include &lt;fstream&gt;</code><br />
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="robin__hood_8h_source.html">robin_hood.h</a>&quot;</code><br />
 <code>#include &quot;<a class="el" href="constants_8hpp_source.html">utils/constants.hpp</a>&quot;</code><br />
@@ -113,6 +111,12 @@ Functions</h2></td></tr>
 <tr class="memitem:a254e1f999f13aa89c65618b5cd6f707e" id="r_a254e1f999f13aa89c65618b5cd6f707e"><td class="memTemplParams" colspan="2">template&lt;typename T , typename TT &gt; </td></tr>
 <tr class="memitem:a254e1f999f13aa89c65618b5cd6f707e"><td class="memTemplItemLeft" align="right" valign="top">double&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a254e1f999f13aa89c65618b5cd6f707e">dotProduct</a> (const std::array&lt; T, 3 &gt; &amp;arr1, const std::array&lt; TT, 3 &gt; &amp;arr2)</td></tr>
 <tr class="separator:a254e1f999f13aa89c65618b5cd6f707e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18f0e878038ced54295d93eadc7ea15c" id="r_a18f0e878038ced54295d93eadc7ea15c"><td class="memTemplParams" colspan="2">template&lt;typename keyType &gt; </td></tr>
+<tr class="memitem:a18f0e878038ced54295d93eadc7ea15c"><td class="memTemplItemLeft" align="right" valign="top">keyType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a18f0e878038ced54295d93eadc7ea15c">location1DFromCoordinates</a> (const int <a class="el" href="slicingComputation_8cpp.html#a6150e0515f7202e2fb518f7206ed97dc">x</a>, const int <a class="el" href="slicingComputation_8cpp.html#a0a2f84ed7838f07779ae24c5a9086d33">y</a>, const int z, const size_t gdb, const size_t gdb2)</td></tr>
+<tr class="separator:a18f0e878038ced54295d93eadc7ea15c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61585719de30a6c8b4a6f65766a6e941" id="r_a61585719de30a6c8b4a6f65766a6e941"><td class="memTemplParams" colspan="2">template&lt;typename keyType &gt; </td></tr>
+<tr class="memitem:a61585719de30a6c8b4a6f65766a6e941"><td class="memTemplItemLeft" align="right" valign="top">keyType&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#a61585719de30a6c8b4a6f65766a6e941">location1DFromPoint</a> (const <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &amp;point, const size_t gdb, const size_t gdb2)</td></tr>
+<tr class="separator:a61585719de30a6c8b4a6f65766a6e941"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab18bfceeb4a48a9bd18002f5dfa76bea" id="r_ab18bfceeb4a48a9bd18002f5dfa76bea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="utilsPatchGeneration_8hpp.html#ab18bfceeb4a48a9bd18002f5dfa76bea">voxelization</a> (const std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &gt; &amp;inputPointsGeometry, std::vector&lt; <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &gt; &amp;voxelizedPointsGeometry, std::vector&lt; size_t &gt; &amp;pointsIdToVoxelId, const size_t inputBitResolution, const size_t outputBitResolution)</td></tr>
 <tr class="separator:ab18bfceeb4a48a9bd18002f5dfa76bea"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -162,6 +166,106 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><div class="zoom"><iframe scrolling="no" frameborder="0" src="utilsPatchGeneration_8hpp_a254e1f999f13aa89c65618b5cd6f707e_icgraph.svg" width="100%" height="376"><p><b>This browser is not able to show SVG: try Firefox, Chrome, Safari, or Opera instead.</b></p></iframe></div></div>
 </div>
+
+</div>
+</div>
+<a id="a18f0e878038ced54295d93eadc7ea15c" name="a18f0e878038ced54295d93eadc7ea15c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18f0e878038ced54295d93eadc7ea15c">&#9670;&#160;</a></span>location1DFromCoordinates()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename keyType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">keyType location1DFromCoordinates </td>
+          <td>(</td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>x</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>y</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const int&#160;</td>
+          <td class="paramname"><em>z</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>gdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>gdb2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a61585719de30a6c8b4a6f65766a6e941" name="a61585719de30a6c8b4a6f65766a6e941"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61585719de30a6c8b4a6f65766a6e941">&#9670;&#160;</a></span>location1DFromPoint()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename keyType &gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">keyType location1DFromPoint </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="classuvgutils_1_1VectorN.html">uvgutils::VectorN</a>&lt; <a class="el" href="namespaceuvgvpcc__enc.html#aa57c25323a3e0431ab72477c855be165">typeGeometryInput</a>, 3 &gt; &amp;&#160;</td>
+          <td class="paramname"><em>point</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>gdb</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const size_t&#160;</td>
+          <td class="paramname"><em>gdb2</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
 
 </div>
 </div>

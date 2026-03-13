@@ -6,7 +6,7 @@ var searchData=
   ['patch_5finformation_5fdata_5f_3',['patch_information_data_',['../structatlas__tile__data__unit.html#a4a5df65f7b568b96a7cee4f05ddb849c',1,'atlas_tile_data_unit']]],
   ['patchcolors_4',['patchColors',['../utilsPatchGeneration_8hpp.html#a55c3b815998c208f3d1488090d15dec8',1,'utilsPatchGeneration.hpp']]],
   ['patchindex_5f_5',['patchIndex_',['../structuvgvpcc__enc_1_1Patch.html#a20da68531ba96c0c43bf2994a088284b',1,'uvgvpcc_enc::Patch']]],
-  ['patchlist_6',['patchList',['../structuvgvpcc__enc_1_1Frame.html#a7495fe4219bb830c46b6499762670391',1,'uvgvpcc_enc::Frame']]],
+  ['patchlist_6',['patchList',['../structuvgvpcc__enc_1_1Frame.html#a105343b23da6a0a6dae9c04e27db0689',1,'uvgvpcc_enc::Frame']]],
   ['patchmode_7',['patchMode',['../structpatch__information__data.html#ab9e1ea41c56c1f7ecd59d706d7d94030',1,'patch_information_data']]],
   ['patchoccupancymap_5f_8',['patchOccupancyMap_',['../structuvgvpcc__enc_1_1Patch.html#ab5bfc9cc18e3ae7efde470ea22e10553',1,'uvgvpcc_enc::Patch']]],
   ['patchppi_5f_9',['patchPpi_',['../structuvgvpcc__enc_1_1Patch.html#adf2368e1dc884767b327c6801b1e76c9',1,'uvgvpcc_enc::Patch']]],

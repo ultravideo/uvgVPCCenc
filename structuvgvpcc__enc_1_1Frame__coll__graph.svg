@@ -27,24 +27,24 @@
 <text text-anchor="start" x="4.5" y="-201.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-201.5" font-family="Helvetica,sans-Serif" font-size="10.00">frameId</text>
 <text text-anchor="start" x="4.5" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">frameNumber</text>
+<text text-anchor="start" x="17.5" y="-186.5" font-family="Helvetica,sans-Serif" font-size="10.00">gofId</text>
 <text text-anchor="start" x="4.5" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">gof</text>
+<text text-anchor="start" x="17.5" y="-171.5" font-family="Helvetica,sans-Serif" font-size="10.00">frameNumber</text>
 <text text-anchor="start" x="4.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">conccurentFrameSem</text>
+<text text-anchor="start" x="17.5" y="-156.5" font-family="Helvetica,sans-Serif" font-size="10.00">gof</text>
 <text text-anchor="start" x="4.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointCloudPath</text>
+<text text-anchor="start" x="17.5" y="-141.5" font-family="Helvetica,sans-Serif" font-size="10.00">conccurentFrameSem</text>
 <text text-anchor="start" x="4.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointCount</text>
+<text text-anchor="start" x="17.5" y="-126.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointCloudPath</text>
 <text text-anchor="start" x="4.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointsGeometry</text>
+<text text-anchor="start" x="17.5" y="-111.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointCount</text>
 <text text-anchor="start" x="4.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointsAttribute</text>
+<text text-anchor="start" x="17.5" y="-96.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointsGeometry</text>
 <text text-anchor="start" x="4.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
-<text text-anchor="start" x="17.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">patchList</text>
+<text text-anchor="start" x="17.5" y="-81.5" font-family="Helvetica,sans-Serif" font-size="10.00">pointsAttribute</text>
 <text text-anchor="start" x="4.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-66.5" font-family="Helvetica,sans-Serif" font-size="10.00">mapHeight</text>
-<text text-anchor="start" x="17.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 7 more...</text>
+<text text-anchor="start" x="17.5" y="-51.5" font-family="Helvetica,sans-Serif" font-size="10.00">and 8 more...</text>
 <text text-anchor="start" x="4.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>
 <text text-anchor="start" x="17.5" y="-36.5" font-family="Helvetica,sans-Serif" font-size="10.00">Frame()</text>
 <text text-anchor="start" x="4.5" y="-21.5" font-family="Helvetica,sans-Serif" font-size="10.00">+</text>

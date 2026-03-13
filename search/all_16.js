@@ -1,7 +1,7 @@
 var searchData=
 [
   ['uchar_0',['UChar',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeeaf97d5cb62f8cf5dbb26c17171dd5fe69',1,'miniply']]],
-  ['uint_1',['uint',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea0b1291eded63143ac04709711274785a',1,'miniply::UInt'],['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a3afaf2bea30a00cacf776a73055b8386',1,'uvgvpcc_enc::UINT']]],
+  ['uint_1',['uint',['../namespaceuvgvpcc__enc.html#a3dccc2812db619d45f2cccb9979b1791a3afaf2bea30a00cacf776a73055b8386',1,'uvgvpcc_enc::UINT'],['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeea0b1291eded63143ac04709711274785a',1,'miniply::UInt']]],
   ['unaligned_5fload_2',['unaligned_load',['../namespacerobin__hood_1_1detail.html#a1fec4e0dc29e5012571013d9c515a5c3',1,'robin_hood::detail']]],
   ['undefined_5fparent_5fppi_3',['UNDEFINED_PARENT_PPI',['../namespaceuvgvpcc__enc.html#aa17cbc0840fc950afb824b87e98b68b5',1,'uvgvpcc_enc']]],
   ['unionpatchreferenceidx_4',['unionPatchReferenceIdx',['../structuvgvpcc__enc_1_1Patch.html#ac260789cd30f365db87905b240e39a12',1,'uvgvpcc_enc::Patch']]],
@@ -11,7 +11,7 @@ var searchData=
   ['unordered_5fnode_5fmap_8',['unordered_node_map',['../namespacerobin__hood.html#a2e2271031a2b264cc9d03efbd341480d',1,'robin_hood']]],
   ['unordered_5fnode_5fset_9',['unordered_node_set',['../namespacerobin__hood.html#a35ac3809f46870e89ce60ed13602961b',1,'robin_hood']]],
   ['unordered_5fset_10',['unordered_set',['../namespacerobin__hood.html#abf796922444376d6bca38c81bfe18fdc',1,'robin_hood']]],
-  ['updateflag_5f_11',['updateFlag_',['../structVoxelAttribute.html#a17d65149568b8d1a326a3f6cdb6a3b56',1,'VoxelAttribute']]],
+  ['updateflag_5f_11',['updateflag_',['../structVoxelAttribute.html#a17d65149568b8d1a326a3f6cdb6a3b56',1,'VoxelAttribute::updateFlag_'],['../structVoxelAttribute__NewRS.html#a8b7c59308db03de04d9020a555e33aac',1,'VoxelAttribute_NewRS::updateFlag_']]],
   ['usedmemory_12',['usedmemory',['../classnanoflann_1_1PooledAllocator.html#a738180fd27be69129876271b5ac20f43',1,'nanoflann::PooledAllocator::usedMemory'],['../classnanoflann_1_1KDTreeBaseClass.html#a01e8a4ba6f6110969d2768aed4f292b5',1,'nanoflann::KDTreeBaseClass::usedMemory()']]],
   ['usetmc2yuvdownscaling_13',['useTmc2YuvDownscaling',['../structuvgvpcc__enc_1_1Parameters.html#a7cfd4b3b9a41342b1cd718d8edbc5d65',1,'uvgvpcc_enc::Parameters']]],
   ['ushort_14',['UShort',['../namespaceminiply.html#a282856f3225b4c51be9c8baa4258daeeadfe785f133347f9b473f99009732b1bc',1,'miniply']]],

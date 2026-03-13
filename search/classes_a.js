@@ -1,11 +1,8 @@
 var searchData=
 [
-  ['mapgeneration_0',['MapGeneration',['../classMapGeneration.html',1,'']]],
-  ['merge_5fpatch_5fdata_5funit_1',['merge_patch_data_unit',['../structmerge__patch__data__unit.html',1,'']]],
-  ['metric_2',['Metric',['../structnanoflann_1_1Metric.html',1,'nanoflann']]],
-  ['metric_5fl1_3',['metric_L1',['../structnanoflann_1_1metric__L1.html',1,'nanoflann']]],
-  ['metric_5fl2_4',['metric_L2',['../structnanoflann_1_1metric__L2.html',1,'nanoflann']]],
-  ['metric_5fl2_5fsimple_5',['metric_L2_Simple',['../structnanoflann_1_1metric__L2__Simple.html',1,'nanoflann']]],
-  ['metric_5fso2_6',['metric_SO2',['../structnanoflann_1_1metric__SO2.html',1,'nanoflann']]],
-  ['metric_5fso3_7',['metric_SO3',['../structnanoflann_1_1metric__SO3.html',1,'nanoflann']]]
+  ['l1_5fadaptor_0',['L1_Adaptor',['../structnanoflann_1_1L1__Adaptor.html',1,'nanoflann']]],
+  ['l2_5fadaptor_1',['L2_Adaptor',['../structnanoflann_1_1L2__Adaptor.html',1,'nanoflann']]],
+  ['l2_5fsimple_5fadaptor_2',['L2_Simple_Adaptor',['../structnanoflann_1_1L2__Simple__Adaptor.html',1,'nanoflann']]],
+  ['l2_5fsimple_5fadaptor_3c_20t_2c_20datasource_2c_20distancetype_2c_20uint32_5ft_20_3e_3',['L2_Simple_Adaptor&lt; T, DataSource, DistanceType, uint32_t &gt;',['../structnanoflann_1_1L2__Simple__Adaptor.html',1,'nanoflann']]],
+  ['logger_4',['Logger',['../classuvgutils_1_1Logger.html',1,'uvgutils']]]
 ];

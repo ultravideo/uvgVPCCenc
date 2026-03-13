@@ -1,13 +1,15 @@
 <map id="src/libuvgvpccenc/patchGeneration/utilsPatchGeneration.hpp" name="src/libuvgvpccenc/patchGeneration/utilsPatchGeneration.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="555,5,805,45"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="692,5,943,45"/>
 <area shape="rect" id="Node000002" href="$normalOrientation_8cpp.html" title=" " alt="" coords="5,93,256,133"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="547,50,251,96,251,91,546,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="679,46,268,96,256,98,256,92,268,91,678,40"/>
 <area shape="rect" id="Node000003" href="$patchGeneration_8cpp.html" title=" " alt="" coords="280,93,531,133"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="607,52,466,96,465,91,606,47"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="714,51,496,96,495,91,713,46"/>
 <area shape="rect" id="Node000004" href="$patchSegmentation_8cpp.html" title=" " alt="" coords="555,93,805,133"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="683,59,683,93,677,93,677,59"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="777,55,711,96,709,91,774,51"/>
 <area shape="rect" id="Node000005" href="$ppiSegmenter_8cpp.html" title=" " alt="" coords="829,93,1080,133"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="754,47,895,91,894,96,753,52"/>
-<area shape="rect" id="Node000006" href="$uvgvpcc_8cpp.html" title=" " alt="" coords="1105,101,1327,126"/>
-<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="811,45,1145,98,1144,103,810,50"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="861,51,926,91,923,96,858,55"/>
+<area shape="rect" id="Node000006" href="$slicingPpiSegmenter_8cpp.html" title=" " alt="" coords="1104,93,1355,133"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="921,46,1140,91,1139,96,920,51"/>
+<area shape="rect" id="Node000007" href="$uvgvpcc_8cpp.html" title=" " alt="" coords="1379,101,1602,126"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="957,40,1367,91,1418,98,1417,103,1366,96,956,45"/>
 </map>

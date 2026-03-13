@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['searchparameters_0',['SearchParameters',['../structnanoflann_1_1SearchParameters.html',1,'nanoflann']]],
-  ['skip_5fpatch_5fdata_5funit_1',['skip_patch_data_unit',['../structskip__patch__data__unit.html',1,'']]],
-  ['so2_5fadaptor_2',['SO2_Adaptor',['../structnanoflann_1_1SO2__Adaptor.html',1,'nanoflann']]],
-  ['so3_5fadaptor_3',['SO3_Adaptor',['../structnanoflann_1_1SO3__Adaptor.html',1,'nanoflann']]],
-  ['statscollector_4',['StatsCollector',['../classStatsCollector.html',1,'']]]
+  ['radiusresultset_0',['RadiusResultSet',['../classnanoflann_1_1RadiusResultSet.html',1,'nanoflann']]],
+  ['raw_5fpatch_5fdata_5funit_1',['raw_patch_data_unit',['../structraw__patch__data__unit.html',1,'']]],
+  ['ref_5flist_5fstruct_2',['ref_list_struct',['../structref__list__struct.html',1,'']]],
+  ['resultitem_3',['ResultItem',['../structnanoflann_1_1ResultItem.html',1,'nanoflann']]],
+  ['rknnresultset_4',['RKNNResultSet',['../classnanoflann_1_1RKNNResultSet.html',1,'nanoflann']]]
 ];

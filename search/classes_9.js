@@ -1,8 +1,16 @@
 var searchData=
 [
-  ['l1_5fadaptor_0',['L1_Adaptor',['../structnanoflann_1_1L1__Adaptor.html',1,'nanoflann']]],
-  ['l2_5fadaptor_1',['L2_Adaptor',['../structnanoflann_1_1L2__Adaptor.html',1,'nanoflann']]],
-  ['l2_5fsimple_5fadaptor_2',['L2_Simple_Adaptor',['../structnanoflann_1_1L2__Simple__Adaptor.html',1,'nanoflann']]],
-  ['l2_5fsimple_5fadaptor_3c_20t_2c_20datasource_2c_20distancetype_2c_20uint32_5ft_20_3e_3',['L2_Simple_Adaptor&lt; T, DataSource, DistanceType, uint32_t &gt;',['../structnanoflann_1_1L2__Simple__Adaptor.html',1,'nanoflann']]],
-  ['logger_4',['Logger',['../classuvgutils_1_1Logger.html',1,'uvgutils']]]
+  ['kdtree_0',['KdTree',['../classKdTree.html',1,'']]],
+  ['kdtreebaseclass_1',['KDTreeBaseClass',['../classnanoflann_1_1KDTreeBaseClass.html',1,'nanoflann']]],
+  ['kdtreebaseclass_3c_20kdtreesingleindexadaptor_3c_20distance_2c_20datasetadaptor_2c_20_2d1_2c_20uint32_5ft_20_3e_2c_20distance_2c_20datasetadaptor_2c_20_2d1_2c_20uint32_5ft_20_3e_2',['KDTreeBaseClass&lt; KDTreeSingleIndexAdaptor&lt; Distance, DatasetAdaptor, -1, uint32_t &gt;, Distance, DatasetAdaptor, -1, uint32_t &gt;',['../classnanoflann_1_1KDTreeBaseClass.html',1,'nanoflann']]],
+  ['kdtreebaseclass_3c_20kdtreesingleindexdynamicadaptor_5f_3c_20distance_2c_20datasetadaptor_2c_20_2d1_2c_20uint32_5ft_20_3e_2c_20distance_2c_20datasetadaptor_2c_20_2d1_2c_20uint32_5ft_20_3e_3',['KDTreeBaseClass&lt; KDTreeSingleIndexDynamicAdaptor_&lt; Distance, DatasetAdaptor, -1, uint32_t &gt;, Distance, DatasetAdaptor, -1, uint32_t &gt;',['../classnanoflann_1_1KDTreeBaseClass.html',1,'nanoflann']]],
+  ['kdtreebaseclass_3c_20kdtreesingleindexdynamicadaptor_5f_3c_20distance_2c_20datasetadaptor_2c_20dim_2c_20uint32_5ft_20_3e_2c_20distance_2c_20datasetadaptor_2c_20dim_2c_20uint32_5ft_20_3e_4',['KDTreeBaseClass&lt; KDTreeSingleIndexDynamicAdaptor_&lt; Distance, DatasetAdaptor, DIM, uint32_t &gt;, Distance, DatasetAdaptor, DIM, uint32_t &gt;',['../classnanoflann_1_1KDTreeBaseClass.html',1,'nanoflann']]],
+  ['kdtreeeigenmatrixadaptor_5',['KDTreeEigenMatrixAdaptor',['../structnanoflann_1_1KDTreeEigenMatrixAdaptor.html',1,'nanoflann']]],
+  ['kdtreesingleindexadaptor_6',['KDTreeSingleIndexAdaptor',['../classnanoflann_1_1KDTreeSingleIndexAdaptor.html',1,'nanoflann']]],
+  ['kdtreesingleindexadaptorparams_7',['KDTreeSingleIndexAdaptorParams',['../structnanoflann_1_1KDTreeSingleIndexAdaptorParams.html',1,'nanoflann']]],
+  ['kdtreesingleindexdynamicadaptor_8',['KDTreeSingleIndexDynamicAdaptor',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor.html',1,'nanoflann']]],
+  ['kdtreesingleindexdynamicadaptor_5f_9',['KDTreeSingleIndexDynamicAdaptor_',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html',1,'nanoflann']]],
+  ['kdtreesingleindexdynamicadaptor_5f_3c_20distance_2c_20datasetadaptor_2c_20_2d1_20_3e_10',['KDTreeSingleIndexDynamicAdaptor_&lt; Distance, DatasetAdaptor, -1 &gt;',['../classnanoflann_1_1KDTreeSingleIndexDynamicAdaptor__.html',1,'nanoflann']]],
+  ['kdtreevectorofvectorsadaptor_11',['KDTreeVectorOfVectorsAdaptor',['../structKDTreeVectorOfVectorsAdaptor.html',1,'']]],
+  ['knnresultset_12',['KNNResultSet',['../classnanoflann_1_1KNNResultSet.html',1,'nanoflann']]]
 ];

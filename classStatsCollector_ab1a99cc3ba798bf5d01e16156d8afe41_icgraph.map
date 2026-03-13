@@ -1,15 +1,16 @@
 <map id="StatsCollector::collectData" name="StatsCollector::collectData">
-<area shape="rect" id="Node000001" title=" " alt="" coords="887,34,1081,59"/>
-<area shape="rect" id="Node000002" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="347,26,541,66"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="924,33,838,17,714,8,590,17,521,29,521,24,589,12,714,3,839,12,924,28"/>
-<area shape="rect" id="Node000005" href="$classPatchSegmentation.html#ae9e1573c095e27775256945bfee089ac" title=" " alt="" coords="636,26,792,66"/>
-<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="873,49,792,49,792,44,873,44"/>
-<area shape="rect" id="Node000006" href="$classPPISegmenter.html#a581dc0d578e49609015b82b1f9c46f8a" title=" " alt="" coords="589,91,839,116"/>
-<area shape="poly" id="edge6_Node000001_Node000006" title=" " alt="" coords="914,65,839,81,779,94,778,88,838,76,913,59"/>
-<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,26,299,66"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,49,299,49,299,44,333,44"/>
-<area shape="rect" id="Node000004" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,34,60,59"/>
-<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="94,49,60,49,60,44,94,44"/>
-<area shape="poly" id="edge5_Node000005_Node000002" title=" " alt="" coords="622,49,542,49,542,44,622,44"/>
-<area shape="poly" id="edge7_Node000006_Node000002" title=" " alt="" coords="636,91,589,81,534,69,535,64,590,76,637,86"/>
+<area shape="rect" id="Node000001" title=" " alt="" coords="887,67,1081,93"/>
+<area shape="rect" id="Node000002" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="347,31,541,71"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="947,63,897,40,838,21,769,10,715,9,590,21,521,33,521,28,589,16,714,3,770,5,839,16,899,35,950,59"/>
+<area shape="rect" id="Node000005" href="$classPatchSegmentation.html#a963380b29b8e3be6e657c17efbecb5ee" title=" " alt="" coords="636,31,792,71"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="873,71,792,62,793,57,873,65"/>
+<area shape="rect" id="Node000006" href="$classPPISegmenter.html#a581dc0d578e49609015b82b1f9c46f8a" title=" " alt="" coords="589,95,839,121"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="873,94,837,98,836,93,873,89"/>
+<area shape="rect" id="Node000007" href="$classPPISegmenter__NewRS.html#a96d1c098a345cc689616904ac391884c" title=" " alt="" coords="609,145,819,185"/>
+<area shape="poly" id="edge7_Node000001_Node000007" title=" " alt="" coords="938,100,839,135,794,148,793,143,838,130,936,95"/>
+<area shape="rect" id="Node000003" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,31,299,71"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="333,53,299,53,299,48,333,48"/>
+<area shape="rect" id="Node000004" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,38,60,63"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="94,53,60,53,60,48,94,48"/>
+<area shape="poly" id="edge6_Node000006_Node000002" title=" " alt="" coords="636,95,589,85,534,73,535,68,590,80,637,90"/>
 </map>

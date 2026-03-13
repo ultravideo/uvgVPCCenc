@@ -1,7 +1,8 @@
 var searchData=
 [
-  ['table_0',['Table',['../classrobin__hood_1_1detail_1_1Table.html',1,'robin_hood::detail']]],
-  ['threadqueue_1',['ThreadQueue',['../classuvgutils_1_1ThreadQueue.html',1,'uvgutils']]],
-  ['timer_2',['Timer',['../classuvgutils_1_1Timer.html',1,'uvgutils']]],
-  ['traits_3',['traits',['../structnanoflann_1_1metric__L1_1_1traits.html',1,'nanoflann::metric_L1::traits&lt; T, DataSource, IndexType &gt;'],['../structnanoflann_1_1metric__L2_1_1traits.html',1,'nanoflann::metric_L2::traits&lt; T, DataSource, IndexType &gt;'],['../structnanoflann_1_1metric__L2__Simple_1_1traits.html',1,'nanoflann::metric_L2_Simple::traits&lt; T, DataSource, IndexType &gt;'],['../structnanoflann_1_1metric__SO2_1_1traits.html',1,'nanoflann::metric_SO2::traits&lt; T, DataSource, IndexType &gt;'],['../structnanoflann_1_1metric__SO3_1_1traits.html',1,'nanoflann::metric_SO3::traits&lt; T, DataSource, IndexType &gt;']]]
+  ['searchparameters_0',['SearchParameters',['../structnanoflann_1_1SearchParameters.html',1,'nanoflann']]],
+  ['skip_5fpatch_5fdata_5funit_1',['skip_patch_data_unit',['../structskip__patch__data__unit.html',1,'']]],
+  ['so2_5fadaptor_2',['SO2_Adaptor',['../structnanoflann_1_1SO2__Adaptor.html',1,'nanoflann']]],
+  ['so3_5fadaptor_3',['SO3_Adaptor',['../structnanoflann_1_1SO3__Adaptor.html',1,'nanoflann']]],
+  ['statscollector_4',['StatsCollector',['../classStatsCollector.html',1,'']]]
 ];

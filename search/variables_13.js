@@ -2,7 +2,7 @@ var searchData=
 [
   ['undefined_5fparent_5fppi_0',['UNDEFINED_PARENT_PPI',['../namespaceuvgvpcc__enc.html#aa17cbc0840fc950afb824b87e98b68b5',1,'uvgvpcc_enc']]],
   ['unionpatchreferenceidx_1',['unionPatchReferenceIdx',['../structuvgvpcc__enc_1_1Patch.html#ac260789cd30f365db87905b240e39a12',1,'uvgvpcc_enc::Patch']]],
-  ['updateflag_5f_2',['updateFlag_',['../structVoxelAttribute.html#a17d65149568b8d1a326a3f6cdb6a3b56',1,'VoxelAttribute']]],
+  ['updateflag_5f_2',['updateflag_',['../structVoxelAttribute.html#a17d65149568b8d1a326a3f6cdb6a3b56',1,'VoxelAttribute::updateFlag_'],['../structVoxelAttribute__NewRS.html#a8b7c59308db03de04d9020a555e33aac',1,'VoxelAttribute_NewRS::updateFlag_']]],
   ['usedmemory_3',['usedMemory',['../classnanoflann_1_1PooledAllocator.html#a738180fd27be69129876271b5ac20f43',1,'nanoflann::PooledAllocator']]],
   ['usetmc2yuvdownscaling_4',['useTmc2YuvDownscaling',['../structuvgvpcc__enc_1_1Parameters.html#a7cfd4b3b9a41342b1cd718d8edbc5d65',1,'uvgvpcc_enc::Parameters']]],
   ['uvg266_5flog_5fcallback_5',['uvg266_log_callback',['../catchLibLog_8hpp.html#abfbb25a1b79edceb712aa64f5fa9da59',1,'catchLibLog.hpp']]],

@@ -1,0 +1,13 @@
+<map id="robin_hood::detail::Table::at" name="robin_hood::detail::Table::at">
+<area shape="rect" id="Node000001" title=" " alt="" coords="887,35,1025,75"/>
+<area shape="rect" id="Node000002" href="$classPPISegmenter.html#a581dc0d578e49609015b82b1f9c46f8a" title=" " alt="" coords="589,13,839,38"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="872,47,818,41,819,35,873,42"/>
+<area shape="rect" id="Node000006" href="$classPPISegmenter__NewRS.html#a96d1c098a345cc689616904ac391884c" title=" " alt="" coords="609,63,819,103"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="873,67,820,73,819,68,872,62"/>
+<area shape="rect" id="Node000003" href="$classPatchGeneration.html#a0f5554a29116f3ceeba740292bffa5d7" title=" " alt="" coords="347,5,541,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="576,28,541,28,541,23,576,23"/>
+<area shape="rect" id="Node000004" href="$namespaceuvgvpcc__enc_1_1API.html#ac96f1663ec59a1bbc04778ae958780fa" title="Entry point of the uvgVPCCenc library. Take as input a frame. Create all the jobs for processing this..." alt="" coords="108,5,299,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="333,28,299,28,299,23,333,23"/>
+<area shape="rect" id="Node000005" href="$uvgVPCCencAppExample_8cpp.html#aee608aedd5b0b58f2966c2ff15101925" title="This example application offers a simple approach to working with the uvgVPCCenc library and highligh..." alt="" coords="5,13,60,38"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="94,28,60,28,60,23,94,23"/>
+</map>
