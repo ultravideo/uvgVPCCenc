@@ -190,7 +190,6 @@ inline void PPISegmenter_NewRS::refinePointsPPIs_NewRS(std::vector<size_t>& poin
         }
         pointsPPIs[pointIndex] = PPIscoreMax;
     }
-
 }
 
 template<typename keyType>

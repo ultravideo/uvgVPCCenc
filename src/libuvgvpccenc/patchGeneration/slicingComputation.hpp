@@ -41,6 +41,7 @@ using namespace std;
 
 namespace slicingComputation {
 /* Global function of the slicing algorithm */
+template<typename indexType>
 void ppiAssignationSlicing(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                            const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, std::vector<size_t>& pointPPIs);
 

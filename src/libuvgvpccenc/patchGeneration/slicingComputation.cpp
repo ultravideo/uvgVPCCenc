@@ -297,9 +297,9 @@ struct MapSearch {
     void erase(const size_t& pos1D) { pos1DToIndexSlicePointsNotInASubsliceYet.erase(pos1D); }
 };
 
-template <const std::array<size_t, 2>& axis>
+template <typename indexType,const std::array<size_t, 2>& axis>
 inline bool findNSetNextPoint(size_t& bestCandidateIndexSlice, size_t& distanceBestCandidate,
-                              robin_hood::unordered_map<size_t, size_t>& childToParentAxis, const size_t& currentPointIndexPG,
+                              robin_hood::unordered_map<indexType, size_t>& childToParentAxis, const size_t& currentPointIndexPG,
                               const std::vector<size_t>& slice, std::vector<bool>& isInASubslice, MapSearch<axis>& mapSearch,
                               const Point2D& currentPoint2D, const Vector2D& previousVector) {
     const size_t bitDepth = 1U << p_->geoBitDepthVoxelized;
@@ -357,7 +357,7 @@ inline bool findNSetNextPoint(size_t& bestCandidateIndexSlice, size_t& distanceB
         if (neighborIndexSlice != INDEX_NA) {
             if (isInASubslice[neighborIndexSlice]) continue;
             isInASubslice[neighborIndexSlice] = true;
-            const size_t neighborIndexPG = slice[neighborIndexSlice];
+            const indexType neighborIndexPG = slice[neighborIndexSlice];
             childToParentAxis[neighborIndexPG] = currentPointIndexPG;
             mapSearch.addSubsliceChild(adjPos1D);
         }
@@ -482,16 +482,18 @@ inline PPI getPreviousPPI(const Vector2D& previousVector) {
 }
 
 // Weaving of a single subslice
-template <const std::array<size_t, 2>& axis>
+template <typename indexType,const std::array<size_t, 2>& axis>
 void subsliceWeaving(
     const size_t subsliceStartingPointIndexPG,  // Point geometry (global shared indexing) index of the starting point in the subslice
     const Point2D& startingPoint2D,
     const std::vector<size_t>& slice,  // Slice containing the point indices in PG
-    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, robin_hood::unordered_map<size_t, size_t>& childToParentAxis,
+    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
+    robin_hood::unordered_map<indexType, size_t>& childToParentAxis,
     std::vector<bool>& isInASubslice,           // Flags to track which slice points are already in a subslice
     std::vector<size_t>& parentOrderedIndexPG,  // Ordered list of parents (global indices)
     std::vector<PPI>& parentOrderedPPIs,        // Ordered list of PPIs corresponding to parents
     std::vector<size_t>& subsliceOrderedIndexPGIntermediaryExportation, MapSearch<axis>& mapSearch, const size_t& frameId) {
+        
     size_t currentPointIndexPG = subsliceStartingPointIndexPG;
     Point2D currentPoint2D = startingPoint2D;
     Vector2D startingVector = {0, 0};  // start - current
@@ -504,7 +506,7 @@ void subsliceWeaving(
         size_t distanceBestCandidate = {};
         size_t bestCandidateIndexSlice = {};
         const bool hasNeighbor =
-            findNSetNextPoint<axis>(bestCandidateIndexSlice, distanceBestCandidate, childToParentAxis, currentPointIndexPG, slice,
+            findNSetNextPoint<indexType,axis>(bestCandidateIndexSlice, distanceBestCandidate, childToParentAxis, currentPointIndexPG, slice,
                                     isInASubslice, mapSearch, currentPoint2D, previousVector);
         if (!hasNeighbor) {
             break;  // No new neighbors: end of subslice
@@ -585,9 +587,9 @@ void subsliceWeaving(
     mapSearch.endOfSubslice();
 }
 
-template <const std::array<size_t, 2>& axis>
+template <typename indexType,const std::array<size_t, 2>& axis>
 void sliceWeaving(const std::vector<size_t>& slice, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
-                  robin_hood::unordered_map<size_t, size_t>& childToParentAxis, std::vector<PPI>& pointPPIsAxis, const size_t& frameId) {
+                  robin_hood::unordered_map<indexType, size_t>& childToParentAxis, std::vector<PPI>& pointPPIsAxis, const size_t& frameId) {
     const size_t sliceSize = slice.size();
     int startingPointIndexSlice = -1;
 
@@ -627,7 +629,7 @@ void sliceWeaving(const std::vector<size_t>& slice, const std::vector<uvgutils::
             subsliceOrderedIndexPGIntermediaryExportation.emplace_back(startingPointIndexPG);
         }
 
-        subsliceWeaving<axis>(startingPointIndexPG, startingPoint2D, slice, pointsGeometry, childToParentAxis, isInASubslice,
+        subsliceWeaving<indexType,axis>(startingPointIndexPG, startingPoint2D, slice, pointsGeometry, childToParentAxis, isInASubslice,
                               parentOrderedIndexPG, parentOrderedPPIs, subsliceOrderedIndexPGIntermediaryExportation, mapSearch, frameId);
     }
 
@@ -642,9 +644,10 @@ void sliceWeaving(const std::vector<size_t>& slice, const std::vector<uvgutils::
     }
 }
 
-void childPPIAttribution(const robin_hood::unordered_map<size_t, size_t>& childToParentX,
-                         const robin_hood::unordered_map<size_t, size_t>& childToParentY,
-                         const robin_hood::unordered_map<size_t, size_t>& childToParentZ, std::vector<size_t>& pointPPIs) {
+template<typename indexType>
+void childPPIAttribution(const robin_hood::unordered_map<indexType, size_t>& childToParentX,
+                         const robin_hood::unordered_map<indexType, size_t>& childToParentY,
+                         const robin_hood::unordered_map<indexType, size_t>& childToParentZ, std::vector<size_t>& pointPPIs) {
     for (size_t ptIndexPG = 0; ptIndexPG < pointPPIs.size(); ++ptIndexPG) {
         if (pointPPIs[ptIndexPG] < 6) continue;  // Already has a PPI
 
@@ -768,17 +771,17 @@ void createTempPointCloudForSlicingExportation(const std::shared_ptr<Frame>& fra
     FileExport::exportPointCloudSubslices(frame, pointsGeometry, attributes, axisStr);
 }
 
-template <const std::array<size_t, 2>& axis>
+template <typename indexType, const std::array<size_t, 2>& axis>
 inline void axisSlicesWeaving(std::vector<std::optional<std::vector<size_t>>>& levelToSlice,
                               const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
-                              robin_hood::unordered_map<size_t, size_t>& childToParent, std::vector<PPI>& pointPPIsAxis,
+                              robin_hood::unordered_map<indexType, size_t>& childToParent, std::vector<PPI>& pointPPIsAxis,
                               const size_t& frameId) {
     childToParent.reserve(pointsGeometry.size());
     for (auto& sliceOpt : levelToSlice) {
         if (sliceOpt.has_value()) {
             auto& slice = sliceOpt.value();
             sortSlice<axis>(pointsGeometry, slice);
-            sliceWeaving<axis>(slice, pointsGeometry, childToParent, pointPPIsAxis, frameId);
+            sliceWeaving<indexType,axis>(slice, pointsGeometry, childToParent, pointPPIsAxis, frameId);
         }
     }
 }
@@ -828,10 +831,11 @@ inline size_t getParentPpi(const PPI& ppiX, const PPI& ppiY, const PPI& ppiZ, co
     return UNDEFINED_PARENT_PPI;
 }
 
+template<typename indexType>
 inline size_t getUndefinedParentPpi(const std::vector<size_t>& pointPPIs, const PPI& ppiX, const PPI& ppiY, const PPI& ppiZ,
-                                    const robin_hood::unordered_map<size_t, size_t>& childToParentX,
-                                    const robin_hood::unordered_map<size_t, size_t>& childToParentY,
-                                    const robin_hood::unordered_map<size_t, size_t>& childToParentZ, const size_t& idx) {
+                                    const robin_hood::unordered_map<indexType, size_t>& childToParentX,
+                                    const robin_hood::unordered_map<indexType, size_t>& childToParentY,
+                                    const robin_hood::unordered_map<indexType, size_t>& childToParentZ, const size_t& idx) {
     // An undefined parent is a point with ambiguous or incomplete PPI attribution.
     // Strategy:
     //  1) Try to inherit a valid PPI from its own parent along missing axes.
@@ -870,12 +874,13 @@ inline size_t getUndefinedParentPpi(const std::vector<size_t>& pointPPIs, const 
 }
 
 // TODO(lf): in the end handle all memory swap etc...
+template<typename indexType>
 void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                                    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                                    const std::vector<PPI>& pointPPIsX, const std::vector<PPI>& pointPPIsY, const std::vector<PPI>& pointPPIsZ,
-                                   const robin_hood::unordered_map<size_t, size_t>& childToParentX,
-                                   const robin_hood::unordered_map<size_t, size_t>& childToParentY,
-                                   const robin_hood::unordered_map<size_t, size_t>& childToParentZ, std::vector<size_t>& pointPPIs) {
+                                   const robin_hood::unordered_map<indexType, size_t>& childToParentX,
+                                   const robin_hood::unordered_map<indexType, size_t>& childToParentY,
+                                   const robin_hood::unordered_map<indexType, size_t>& childToParentZ, std::vector<size_t>& pointPPIs) {
     const size_t nbPoints = pointsGeometry.size();
 
     // A parent point is a point with at least one temporary PPI
@@ -898,7 +903,7 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     bool hasNormal = false;
 
     size_t sizeParentSublist = 0;  // For refine segmentation parent sublist data structure creation
-    for (int ptIndexPG = 0; ptIndexPG < nbPoints; ++ptIndexPG) {
+    for (size_t ptIndexPG = 0; ptIndexPG < nbPoints; ++ptIndexPG) {
         const PPI ppiX = pointPPIsX[ptIndexPG];
         const PPI ppiY = pointPPIsY[ptIndexPG];
         const PPI ppiZ = pointPPIsZ[ptIndexPG];
@@ -970,7 +975,7 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     }
 
     // Copy refined PPI values back to the full list of points.
-    for (int ptIndexSublist = 0; ptIndexSublist < sizeParentSublist; ++ptIndexSublist) {
+    for (size_t ptIndexSublist = 0; ptIndexSublist < sizeParentSublist; ++ptIndexSublist) {
         const size_t parentPointIndexPG = parentPointsIndexInPG[ptIndexSublist];
         pointPPIs[parentPointIndexPG] = parentPointsPPIs[ptIndexSublist];
     }
@@ -980,16 +985,16 @@ void finalPPIAttributionFastPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
     }
 
     // Finally, propagate PPI from refined parents to their children.
-    childPPIAttribution(childToParentX, childToParentY, childToParentZ, pointPPIs);
+    childPPIAttribution<indexType>(childToParentX, childToParentY, childToParentZ, pointPPIs);
 }
 
-
+template<typename indexType>
 void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                                    const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry,
                                    const std::vector<PPI>& pointPPIsX, const std::vector<PPI>& pointPPIsY, const std::vector<PPI>& pointPPIsZ,
-                                   const robin_hood::unordered_map<size_t, size_t>& childToParentX,
-                                   const robin_hood::unordered_map<size_t, size_t>& childToParentY,
-                                   const robin_hood::unordered_map<size_t, size_t>& childToParentZ, std::vector<size_t>& pointPPIs) {
+                                   const robin_hood::unordered_map<indexType, size_t>& childToParentX,
+                                   const robin_hood::unordered_map<indexType, size_t>& childToParentY,
+                                   const robin_hood::unordered_map<indexType, size_t>& childToParentZ, std::vector<size_t>& pointPPIs) {
     const size_t nbPoints = pointsGeometry.size();
 
     // A parent point is a point with at least one temporary PPI
@@ -1064,6 +1069,7 @@ void finalPPIAttributionSlowPreset(const std::shared_ptr<uvgvpcc_enc::Frame>& fr
 
 }  // anonymous namespace
 
+template<typename indexType>
 void ppiAssignationSlicing(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
                            const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, std::vector<size_t>& pointPPIs) {
     // Create the 2D slices for each axis.
@@ -1081,12 +1087,12 @@ void ppiAssignationSlicing(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
     std::vector<PPI> pointPPIsX(nbPoints, PPI::notAssigned);
     std::vector<PPI> pointPPIsY(nbPoints, PPI::notAssigned);
     std::vector<PPI> pointPPIsZ(nbPoints, PPI::notAssigned);
-    robin_hood::unordered_map<size_t, size_t> childToParentX;
-    robin_hood::unordered_map<size_t, size_t> childToParentY;
-    robin_hood::unordered_map<size_t, size_t> childToParentZ;
-    axisSlicesWeaving<axisX>(levelToSliceX, pointsGeometry, childToParentX, pointPPIsX, frameId);
-    axisSlicesWeaving<axisY>(levelToSliceY, pointsGeometry, childToParentY, pointPPIsY, frameId);
-    axisSlicesWeaving<axisZ>(levelToSliceZ, pointsGeometry, childToParentZ, pointPPIsZ, frameId);
+    robin_hood::unordered_map<indexType, size_t> childToParentX;
+    robin_hood::unordered_map<indexType, size_t> childToParentY;
+    robin_hood::unordered_map<indexType, size_t> childToParentZ;
+    axisSlicesWeaving<indexType,axisX>(levelToSliceX, pointsGeometry, childToParentX, pointPPIsX, frameId);
+    axisSlicesWeaving<indexType,axisY>(levelToSliceY, pointsGeometry, childToParentY, pointPPIsY, frameId);
+    axisSlicesWeaving<indexType,axisZ>(levelToSliceZ, pointsGeometry, childToParentZ, pointPPIsZ, frameId);
     if (p_->exportIntermediateFiles) {
         createTempPointCloudForSlicingExportation<axisX>(frame, pointsGeometry);
         createTempPointCloudForSlicingExportation<axisY>(frame, pointsGeometry);
@@ -1100,11 +1106,15 @@ void ppiAssignationSlicing(const std::shared_ptr<uvgvpcc_enc::Frame>& frame,
         finalPPIAttributionFastPreset(frame, pointsGeometry, pointPPIsX, pointPPIsY, pointPPIsZ, childToParentX, childToParentY,
                                       childToParentZ, pointPPIs);
     } else if (p_->presetName == "slow") {
-        finalPPIAttributionSlowPreset(frame, pointsGeometry, pointPPIsX, pointPPIsY, pointPPIsZ, childToParentX, childToParentY,
+        finalPPIAttributionSlowPreset<indexType>(frame, pointsGeometry, pointPPIsX, pointPPIsY, pointPPIsZ, childToParentX, childToParentY,
                                       childToParentZ, pointPPIs);
     } else {
         assert(false);
     }
 }
+
+template void ppiAssignationSlicing<uint16_t>(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, std::vector<size_t>& pointPPIs);
+template void ppiAssignationSlicing<uint32_t>(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, std::vector<size_t>& pointPPIs);
+template void ppiAssignationSlicing<uint64_t>(const std::shared_ptr<uvgvpcc_enc::Frame>& frame, const std::vector<uvgutils::VectorN<typeGeometryInput, 3>>& pointsGeometry, std::vector<size_t>& pointPPIs);
 
 }  // namespace slicingComputation

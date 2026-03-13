@@ -49,6 +49,7 @@
 #include "patchSegmentation.hpp"
 #include "ppiSegmenter.hpp"
 #include "slicingComputation.hpp"
+#include "utils/constants.hpp"
 #include "utils/parameters.hpp"
 #include "utilsPatchGeneration.hpp"
 #include "uvgutils/log.hpp"
@@ -116,7 +117,16 @@ void PatchGeneration::generateFramePatches(std::shared_ptr<uvgvpcc_enc::Frame> f
     std::vector<size_t> voxelsPPIs(voxelizedPointsGeometry.size(),PPI_NON_ASSIGNED);
 
     if (p_->activateSlicing) {
-        slicingComputation::ppiAssignationSlicing(frame, voxelizedPointsGeometry, voxelsPPIs);
+        const size_t pointCount = voxelizedPointsGeometry.size();
+        if(pointCount <= std::numeric_limits<std::uint16_t>::max()) {
+            slicingComputation::ppiAssignationSlicing<uint16_t>(frame, voxelizedPointsGeometry, voxelsPPIs);
+        } else if (pointCount <= std::numeric_limits<std::uint32_t>::max()) {
+            slicingComputation::ppiAssignationSlicing<uint32_t>(frame, voxelizedPointsGeometry, voxelsPPIs);
+        } else if (pointCount <= std::numeric_limits<std::uint64_t>::max()) {
+            slicingComputation::ppiAssignationSlicing<uint64_t>(frame, voxelizedPointsGeometry, voxelsPPIs);
+        } else {
+            assert(false);
+        }
     } else {
         // kdtree init and knn searches //
         std::vector<std::vector<size_t>> pointsNNList;
